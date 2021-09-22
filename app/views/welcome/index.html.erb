@@ -1,1 +1,6 @@
 <%= link_to "Sign In With Google", "/auth/google_oauth2" %>
+<% if current_user %>
+  <h1>Logged In</h1>
+<% else %>
+  <h1>Not Logged In</h1>
+<% end %>
