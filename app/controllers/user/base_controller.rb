@@ -2,8 +2,8 @@ class User::BaseController < ApplicationController
   before_action :verify_google_user
 
   def verify_google_user
-    raise RoutingError unless valid_google_user?
-    raise RoutingError unless valid_google_oauth_token?
+    redirect_to '/welcome' unless valid_google_user? && valid_google_oauth_token?
+    # redirect_to '/welcome' unless valid_google_oauth_token?
 
   end
 

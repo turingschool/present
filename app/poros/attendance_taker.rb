@@ -2,7 +2,9 @@ class AttendanceTaker
   def self.take_attendance(attendance, user)
     sheet_data = GoogleSheetsService.get_sheet_matrix(attendance.turing_module, user)
     sheet_matrix = sheet_data[:values]
+    # require 'pry';binding.pry
     zoom_names = sheet_matrix[1]
+    # require 'pry';binding.pry
     # MegsZoomClass.whatever(zoom_names, attendance.zoom_meeting_id)
     participant_report = ZoomFacade.past_participants_in_meeting(attendance.zoom_meeting_id, zoom_names)
     if participant_report
