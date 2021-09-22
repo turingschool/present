@@ -1,5 +1,5 @@
 <h2>Take Attendace for Module <%= @module.name %> for the <%= @module.inning.name %> Inning</h2>
-<%= form_with model: [@module, @attendance], local: true do |f| %>
+<%= form_with model: [:user, @module, @attendance], local: true do |f| %>
   <%= f.label "Enter the Zoom Meeting ID" %>
   <%= f.text_field :zoom_meeting_id %>
   <%= f.submit %>

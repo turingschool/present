@@ -1,6 +1,11 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
   if Rails.env.production?
-    provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET']
+    provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
+    {
+      redirect_uri: 'https://turing-present.herokuapp.com/auth/google_oauth2/callback',
+      scope: 'spreadsheets,email',
+      access_type: 'offline'
+    }
   else
     provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
     {
