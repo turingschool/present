@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
   def index
-    @inning = Inning.last
+    @innings = Inning.all
   end
 end
