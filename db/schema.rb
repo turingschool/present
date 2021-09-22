@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_22_164218) do
+ActiveRecord::Schema.define(version: 2021_09_22_164420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(version: 2021_09_22_164218) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "turing_modules", force: :cascade do |t|
+    t.string "name"
+    t.bigint "inning_id"
+    t.string "google_spreadsheet_id"
+    t.string "google_sheet_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inning_id"], name: "index_turing_modules_on_inning_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "google_id"
     t.string "email"
@@ -29,4 +39,5 @@ ActiveRecord::Schema.define(version: 2021_09_22_164218) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "turing_modules", "innings"
 end
