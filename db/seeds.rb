@@ -1,7 +1,8 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+@inning = Inning.create!(name: "2108")
+@turing_module = @inning.turing_modules.create!(name: 'Combined Mod 4', google_spreadsheet_id: '1v3C4DXVmmvV1r7vEuo0Xo58AwAJ-SligrplOiLUjWnw', google_sheet_name: "2103")
+@turing_module = @inning.turing_modules.create!(name: 'FE3', google_spreadsheet_id: '10MNyOoYB4w9QCj9y_90DHVUe8DX2OO8ZoGUm8_4suf4', google_sheet_name: "2105")
+@turing_module = @inning.turing_modules.create!(name: 'FE2', google_spreadsheet_id: '10MNyOoYB4w9QCj9y_90DHVUe8DX2OO8ZoGUm8_4suf4', google_sheet_name: "2107")
+@turing_module = @inning.turing_modules.create!(name: 'FE1', google_spreadsheet_id: '10MNyOoYB4w9QCj9y_90DHVUe8DX2OO8ZoGUm8_4suf4', google_sheet_name: "2108")
+@turing_module = @inning.turing_modules.create!(name: 'BE3', google_spreadsheet_id: '13jZKWzDx87Epgf_DBOy2k2ilFlJXfJU3MdQ8tqv9HaM', google_sheet_name: "2105")
+@turing_module = @inning.turing_modules.create!(name: 'BE2', google_spreadsheet_id: '13jZKWzDx87Epgf_DBOy2k2ilFlJXfJU3MdQ8tqv9HaM', google_sheet_name: "2107")
+@turing_module = @inning.turing_modules.create!(name: 'BE1', google_spreadsheet_id: '13jZKWzDx87Epgf_DBOy2k2ilFlJXfJU3MdQ8tqv9HaM', google_sheet_name: "2108")
