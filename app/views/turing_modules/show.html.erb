@@ -1,0 +1,9 @@
+<h1>Attendances for <%= @module.name %> for the <%= @module.inning.name %> Inning</h1>
+
+<table>
+  <% @attendances.each do |attendance| %>
+    <tr>
+      <td><%= attendance.zoom_meeting_id %></td>
+    </tr>
+  <% end %>
+</table>

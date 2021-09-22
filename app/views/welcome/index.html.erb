@@ -1,6 +1,15 @@
-<%= link_to "Sign In With Google", "/auth/google_oauth2" %>
+
 <% if current_user %>
-  <h1>Logged In</h1>
+  <h1><%= @inning.name %> Inning</h1>
+  <h3>Modules</h3>
+    <table>
+      <% @inning.turing_modules.each do |mod| %>
+        <tr>
+          <td><%= link_to mod.name, turing_module_path(mod) %></td>
+          <td><%= link_to 'Take Attendance for this Module', "/turing_modules/#{mod.id}/attendances/new" %></td>
+        </tr>
+      <% end %>
+    </table>
 <% else %>
-  <h1>Not Logged In</h1>
+  <%= link_to "Sign In With Google", "/auth/google_oauth2" %> to get started
 <% end %>

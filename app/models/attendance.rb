@@ -3,4 +3,5 @@ class Attendance < ApplicationRecord
   belongs_to :user
 
   validates_presence_of :zoom_meeting_id
+  validates_uniqueness_of :zoom_meeting_id
 end
