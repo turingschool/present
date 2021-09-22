@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_22_164420) do
+ActiveRecord::Schema.define(version: 2021_09_22_164631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attendances", force: :cascade do |t|
+    t.bigint "turing_module_id"
+    t.string "zoom_meeting_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["turing_module_id"], name: "index_attendances_on_turing_module_id"
+  end
 
   create_table "innings", force: :cascade do |t|
     t.string "name"
@@ -39,5 +47,6 @@ ActiveRecord::Schema.define(version: 2021_09_22_164420) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "attendances", "turing_modules"
   add_foreign_key "turing_modules", "innings"
 end
