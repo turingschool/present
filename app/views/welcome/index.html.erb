@@ -1,15 +1,21 @@
 
 <% if current_user %>
-  <h1><%= @inning.name %> Inning</h1>
-  <h3>Modules</h3>
-    <table>
-      <% @inning.turing_modules.each do |mod| %>
-        <tr>
-          <td><%= link_to mod.name, turing_module_path(mod) %></td>
-          <td><%= link_to 'Take Attendance for this Module', "/turing_modules/#{mod.id}/attendances/new" %></td>
-        </tr>
-      <% end %>
-    </table>
+  <% if @innings && !@innings.empty? %>
+    <h1>Innings</h1>
+
+    <% @innings.each do |inning| %> 
+      <%= link_to inning.name, inning_path(inning)%>
+    <% end %>
+  <% end %>
+<br>
+<hr>
+  <h3>Create a New Inning: </h3>
+  <%= form_with url:'/innings', method: :post, local: true do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name, placeholder: 'Ex: 1806, 2105, etc.' %>
+    <%= f.submit "Submit" %>
+  <% end %>
+    
 <% else %>
   <%= link_to "Sign In With Google", "/auth/google_oauth2" %> to get started
 <% end %>
