@@ -230,6 +230,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  ruby
 
 DEPENDENCIES
   bootsnap (>= 1.1.0)
