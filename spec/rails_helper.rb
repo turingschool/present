@@ -103,3 +103,10 @@ def full_roster_names
   "Zach T (he/him)# BE",
   "Zach G (he/him) BE%3"]
 end 
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
