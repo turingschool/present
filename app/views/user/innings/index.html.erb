@@ -1,0 +1,16 @@
+<% if @innings && !@innings.empty? %>
+  <h1>Innings</h1>
+
+  <% @innings.each do |inning| %> 
+    <%= link_to inning.name, user_inning_path(inning)%>
+  <% end %>
+<% end %>
+<br>
+<hr>
+<h3>Create a New Inning: </h3>
+<%= form_with url:'/user/innings', method: :post, local: true do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name, placeholder: 'Ex: 1806, 2105, etc.' %>
+  <%= f.submit "Submit" %>
+<% end %>
+

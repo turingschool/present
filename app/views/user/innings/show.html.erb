@@ -6,8 +6,8 @@
     <table>
         <% @inning.turing_modules.each do |mod| %>
         <tr>
-            <td><%= link_to mod.name, turing_module_path(mod) %>---</td>
-            <td><%= link_to 'Take Attendance for this Module', "/turing_modules/#{mod.id}/attendances/new" %></td>
+          <td><%= link_to mod.name, user_turing_module_path(mod) %>---</td>
+          <td><%= link_to 'Take Attendance for this Module', new_user_turing_module_attendance_path(mod) %></td>
         </tr>
         <% end %>
     </table>
@@ -16,7 +16,7 @@
 <hr>
 <h3>Create a New Module for the <%= @inning.name %> inning: </h2>
 
-<%= form_with url:'/turing_modules', method: :post, local: true do |f| %>
+<%= form_with url:'/user/turing_modules', method: :post, local: true do |f| %>
     <%= f.hidden_field :inning_id, value: @inning.id %>
     <%= f.label "Module Name:" %>
     <%= f.text_field :name, placeholder: 'Ex: BE Mod 3, FE Mod 1' %><br><br>

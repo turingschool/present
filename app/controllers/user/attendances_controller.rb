@@ -1,4 +1,4 @@
-class AttendancesController < ApplicationController
+class User::AttendancesController < User::BaseController
   def new
     @module = TuringModule.find(params[:turing_module_id])
     @attendance = Attendance.new
@@ -6,8 +6,9 @@ class AttendancesController < ApplicationController
 
   def create
     @module = TuringModule.find(params[:turing_module_id])
-    @module.attendances.create(attendance_params)
-    redirect_to turing_module_path(@module)
+    attendance = @module.attendances.create(attendance_params)
+    AttendanceTaker.take_attendance(attendance, current_user)
+    redirect_to user_turing_module_path(@module)
   end
 
   private
