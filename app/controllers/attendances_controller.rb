@@ -6,7 +6,8 @@ class AttendancesController < ApplicationController
 
   def create
     @module = TuringModule.find(params[:turing_module_id])
-    @module.attendances.create(attendance_params)
+    attendance = @module.attendances.create(attendance_params)
+    AttendanceTaker.take_attendance(attendance, current_user)
     redirect_to turing_module_path(@module)
   end
 

@@ -1,9 +1,11 @@
 class GoogleSheetsService
 
-  def get_sheet_matrix(turing_module, user)
-    endpoint = "#{turing_module.google_spreadsheet_id}/values/#{google_sheet_name}"
-    response = conn(user).get(endpoint)
-    JSON.parse(response.body)
+  def self.get_sheet_matrix(turing_module, user)
+    endpoint = "#{turing_module.google_spreadsheet_id}/values/#{turing_module.google_sheet_name}"
+    response = conn(user).get(endpoint) do |req|
+      req.params = {majorDimension: 'COLUMNS'}
+    end
+    JSON.parse(response.body, symbolize_names: true)
   end
 
   private
