@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Sheets API Flow' do
   before :each do
     visit root_path
-    save_and_open_page
+
     click_link "Sign In With Google"
     @user = User.last
     @inning = Inning.create!(name: "2107")
