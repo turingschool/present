@@ -2,7 +2,7 @@ ____ Wrote Tests ____ Implemented ____ Reviewed
 
 ## Neccesary checkmarks:
 
-    [] All Tests are Passing
+    [] All Tests are Passing in all environments
 
     [] The code will run locally
 
@@ -15,6 +15,10 @@ ____ Wrote Tests ____ Implemented ____ Reviewed
 ## Description of Change:
 
     description: 
+    
+## Requested feedback: 
+    
+    I'd like feedback on... 
 
 ## Check the correct boxes
 
