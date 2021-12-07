@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   get '/auth/google_oauth2/callback', to: 'sessions#create'
   delete '/sessions', to: 'sessions#destroy'
 
-  namespace :user do
+  scope module: :user do
+    get '/dashboard', to: 'dashboard#show'
     resources :innings, only:[:show, :create, :index]
     resources :turing_modules, only: [:show, :create] do
       resources :attendances, only: [:new, :create]
