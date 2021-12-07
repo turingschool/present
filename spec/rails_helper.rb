@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
@@ -102,7 +105,7 @@ def full_roster_names
   "Taylor G (he/him)# FE",
   "Zach T (he/him)# BE",
   "Zach G (he/him) BE%3"]
-end 
+end
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
