@@ -12,4 +12,8 @@ TravisCI Link Needed
 
 ### Instructions for running locally
 
-(coming soon)
+* Clone
+* Bundle
+* Go to Google Cloud Console, find client_id and secret
+* Run Figaro install
+* Add GOOGLE_OAUTH_CLIENT_ID and GOOGLE_OAUTH_CLIENT_SECRET to application.yml
