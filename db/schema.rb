@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_22_211011) do
+ActiveRecord::Schema.define(version: 2021_12_10_222506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,12 +32,14 @@ ActiveRecord::Schema.define(version: 2021_09_22_211011) do
   end
 
   create_table "turing_modules", force: :cascade do |t|
-    t.string "name"
     t.bigint "inning_id"
     t.string "google_spreadsheet_id"
     t.string "google_sheet_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "program"
+    t.integer "module_number"
+    t.boolean "calendar_integration", default: false
     t.index ["inning_id"], name: "index_turing_modules_on_inning_id"
   end
 
