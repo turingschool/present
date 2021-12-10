@@ -71,6 +71,11 @@ GEM
     diff-lcs (1.4.4)
     erubi (1.10.0)
     execjs (2.8.1)
+    factory_bot (6.2.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
     faraday (1.8.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -259,6 +264,7 @@ DEPENDENCIES
   byebug
   capybara
   coffee-rails (~> 4.2)
+  factory_bot_rails
   faraday
   figaro
   jbuilder (~> 2.5)
@@ -283,4 +289,4 @@ RUBY VERSION
    ruby 2.7.2p137
 
 BUNDLED WITH
-   2.2.11
+   2.2.31

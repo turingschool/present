@@ -5,6 +5,7 @@ require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'support/factory_bot'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -102,7 +103,7 @@ def full_roster_names
   "Taylor G (he/him)# FE",
   "Zach T (he/him)# BE",
   "Zach G (he/him) BE%3"]
-end 
+end
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
