@@ -11,7 +11,7 @@ class TuringModule < ApplicationRecord
 
   validates_inclusion_of :calendar_integration, in: [true, false]
 
-  enum program: [:FE, :BE]
+  enum program: [:FE, :BE, :Combined]
 
   def name
     "#{self.program} Mod #{self.module_number}"
