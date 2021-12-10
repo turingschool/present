@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   scope module: :user do
     get '/dashboard', to: 'dashboard#show'
     resources :innings, only:[:show, :create, :index]
-    resources :turing_modules, only: [:show, :create] do
+    resources :turing_modules, path: '/modules', only: [:show, :create] do
       resources :attendances, only: [:new, :create]
     end
   end
