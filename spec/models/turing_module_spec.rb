@@ -12,5 +12,13 @@ RSpec.describe TuringModule, type: :model do
   it { should have_many :attendances }
   xit {should validate_presence_of :google_sheet_name} # Do we need this?
 
-
+  describe 'instance methods' do
+    describe '#name' do
+      it 'returns a combo of the module number and program' do
+        inning = Inning.create!(name: '2104')
+        test_module = inning.turing_modules.create!(google_spreadsheet_id: 'sdlfj', program: :FE, module_number: 3)
+        expect(test_module.name).to eq('FE Mod 3')
+      end
+    end
+  end
 end
