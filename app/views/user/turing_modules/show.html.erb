@@ -2,3 +2,21 @@
 <p class='s-p'><%= @module.inning.name %> inning</p>
 <%= link_to @module.google_spreadsheet_id %>
 <p class='s-p'>Calendar Integration: <%= @module.calendar_integration ? 'ON':'OFF' %></p>
+
+<section id='past-attendances' class='s-content'>
+  <h3 class='s-h3'>Past Attendances</h3>
+  <table>
+    <tr>
+      <th>Meeting Title</th>
+      <th>Start Time</th>
+      <th>Zoom Meeting ID</th>
+    </tr>
+    <% @module.attendances.each do |attendance| %>
+      <tr id='attendance-<%= attendance.id %>'>
+        <td><%= attendance.meeting_title %></td>
+        <td><%= attendance.meeting_time %></td>
+        <td><%= attendance.zoom_meeting_id %></td>
+      </tr>
+    <% end %>
+  </table>
+</section>
