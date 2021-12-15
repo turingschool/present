@@ -8,7 +8,9 @@
 * [Saville Style System](https://savile.turing.edu/)
 * [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418)
 * Test Spreadsheets
-  * [FE Attendance]()
+  * [FE Attendance](https://docs.google.com/spreadsheets/d/1sb75ubr7sTEwB20LdvA940yky9jPdcRq_MvG-zBvSLY/edit#gid=304214010)
+  * [BE Attendance](https://docs.google.com/spreadsheets/d/1DYcKbsZysTT8Boc3hdm4AY0_6518aNK_B9LfyVGhsZ0/edit#gid=567134850)
+  * [M4 Attendance](https://docs.google.com/spreadsheets/d/1hfVjlho0yCeITj1alyC1x6LDtwG0Z0KPyVz-v8pBT3A/edit#gid=309257798)
 
 TravisCI Link Needed
 
