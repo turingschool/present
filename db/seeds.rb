@@ -1,8 +1,4 @@
-@user = User.first
-
-Attendance.destroy_all
-TuringModule.destroy_all
-Inning.destroy_all
+@user = User.create!(google_id: 'na', email: 'test@gmail.com', google_oauth_token: 'na')
 
 @inning = Inning.create!(name: "2108")
 @mod4 = @inning.turing_modules.create!(program: 'Combined', module_number: 4, google_spreadsheet_id: '1v3C4DXVmmvV1r7vEuo0Xo58AwAJ-SligrplOiLUjWnw')
