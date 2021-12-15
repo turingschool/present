@@ -30,11 +30,4 @@ RSpec.describe 'Modules show page' do
       end
     end
   end
-
-  # As a logged in User,
-  # When I visit a Module's show page,
-  # then I see a subheading for Attendances,
-  # and underneath that heading I see all
-  # past attendances that were taken for this Module
-  # including the attendance's Time, Meeting Title, and Meeting ID.
 end
