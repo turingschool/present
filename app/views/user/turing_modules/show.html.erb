@@ -1,6 +1,6 @@
 <h1 class='s-h1'><%= @module.name %></h1>
 <p class='s-p'><%= @module.inning.name %> inning</p>
-<%= link_to @module.google_spreadsheet_id %>
+<%= link_to 'Attendance Sheet', @module.google_sheet.link, target: :_blank %>
 <p class='s-p'>Calendar Integration: <%= @module.calendar_integration ? 'ON':'OFF' %></p>
 
 <section id='past-attendances' class='s-content'>
