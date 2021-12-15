@@ -2,8 +2,8 @@ user = User.create!(google_id: 'na', email: 'testgmail.com', google_oauth_token:
 inning = Inning.create!(name: "2108")
 
 fe_attendance_spreadsheet = GoogleSpreadsheet.create!(google_id: '1sb75ubr7sTEwB20LdvA940yky9jPdcRq_MvG-zBvSLY')
-m4_attendance_spreadsheet = GoogleSpreadsheet.create!(google_id: '1hfVjlho0yCeITj1alyC1x6LDtwG0Z0KPyVz-v8pBT3A')
 be_attendance_spreadsheet = GoogleSpreadsheet.create!(google_id: '1DYcKbsZysTT8Boc3hdm4AY0_6518aNK_B9LfyVGhsZ0')
+m4_attendance_spreadsheet = GoogleSpreadsheet.create!(google_id: '1hfVjlho0yCeITj1alyC1x6LDtwG0Z0KPyVz-v8pBT3A')
 
 mod4 = inning.turing_modules.create!(program: 'Combined', module_number: 4)
 fe1 = inning.turing_modules.create!(program: 'FE', module_number: 1)
