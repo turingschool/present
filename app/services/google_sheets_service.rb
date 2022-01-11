@@ -1,18 +1,21 @@
 class GoogleSheetsService
 
-  def self.get_sheet_matrix(turing_module, user)
-    response = conn(user).get(sheet_endpoint(turing_module)) do |req|
-      req.params = {majorDimension: 'COLUMNS'}
+  def self.get_headers(google_sheet, user)
+    url = sheet_endpoint(google_sheet) + '!1:1'
+    response = conn(user).get(url) do |req|
+      req.params = {majorDimension: 'ROWS'}
     end
     JSON.parse(response.body, symbolize_names: true)
   end
 
-  def self.update_sheet(turing_module, user, sheet_matrix)
-    response = conn(user).put(sheet_endpoint(turing_module)) do |req|
+  def self.update_column(google_sheet, column, values, user)
+    range = column_range(column, values)
+    url = sheet_endpoint(google_sheet) + '!' + range
+    response = conn(user).put(url) do |req|
       req.body = {
-        range: turing_module.google_sheet_name,
+        range: range,
         majorDimension: 'COLUMNS',
-        values: sheet_matrix
+        values: [values]
       }.to_json
 
       req.params = {'valueInputOption' => 'RAW'}
@@ -21,8 +24,16 @@ class GoogleSheetsService
   end
 
   private
-  def self.sheet_endpoint(turing_module)
-    "#{turing_module.google_spreadsheet_id}/values/#{turing_module.google_sheet_name}"
+  def self.sheet_endpoint(google_sheet)
+    spreadsheet_id = google_sheet.google_spreadsheet.google_id
+    sheet_name = google_sheet.name
+    "#{spreadsheet_id}/values/#{sheet_name}"
+  end
+
+  def self.column_range(column, values)
+    start_cell = "#{column}2"
+    end_cell = "#{column}#{values.length + 1}"
+    "#{start_cell}:#{end_cell}"
   end
 
   def self.conn(user)
