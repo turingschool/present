@@ -50,6 +50,7 @@ group :development, :test do
   gem 'launchy'
   gem 'factory_bot_rails'
   gem 'simplecov'
+  gem 'webmock'
 end
 
 group :development do
