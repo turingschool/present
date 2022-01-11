@@ -10,6 +10,15 @@ FactoryBot.define do
       factory :fe1 do
         module_number { 1 }
       end
+
+      factory :fe2 do
+        module_number { 2 }
+      end
+    end
+
+    factory :m4 do
+      program { :Combined }
+      module_number { 4 }
     end
   end
 end
