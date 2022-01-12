@@ -1,9 +1,31 @@
 class GoogleSheetsService
 
+  def self.get_sheet_matrix(google_sheet, user)
+    url = sheet_endpoint(google_sheet)
+    response = conn(user).get(url) do |req|
+      req.params = {majorDimension: 'COLUMNS'}
+    end
+    JSON.parse(response.body, symbolize_names: true)
+  end
+
   def self.get_headers(google_sheet, user)
     url = sheet_endpoint(google_sheet) + '!1:1'
     response = conn(user).get(url) do |req|
       req.params = {majorDimension: 'ROWS'}
+    end
+    JSON.parse(response.body, symbolize_names: true)
+  end
+
+  def self.update_sheet(google_sheet, values, user)
+    url = sheet_endpoint(google_sheet)
+    response = conn(user).put(url) do |req|
+      req.body = {
+        range: google_sheet.name,
+        majorDimension: 'COLUMNS',
+        values: values
+      }.to_json
+
+      req.params = {'valueInputOption' => 'RAW'}
     end
     JSON.parse(response.body, symbolize_names: true)
   end
@@ -13,7 +35,7 @@ class GoogleSheetsService
     url = sheet_endpoint(google_sheet) + '!' + range
     response = conn(user).put(url) do |req|
       req.body = {
-        range: range,
+        range: google_sheet.name + '!' + range,
         majorDimension: 'COLUMNS',
         values: [values]
       }.to_json
@@ -24,7 +46,7 @@ class GoogleSheetsService
   end
 
   private
-  def self.sheet_endpoint(google_sheet)
+  def self.sheet_endpoint(google_sheet, range = '')
     spreadsheet_id = google_sheet.google_spreadsheet.google_id
     sheet_name = google_sheet.name
     "#{spreadsheet_id}/values/#{sheet_name}"
