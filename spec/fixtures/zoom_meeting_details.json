@@ -1,19 +1,19 @@
 {
-    "uuid": "Deh9ckbSQBuBdig/8EKMQQ==",
-    "id": 95490216907,
+    "uuid": "Q3fil/e9QDCbwrHNqegnPg==",
+    "id": 97807509963,
     "host_id": "sTvg885jQfeUPBCiLefv8Q",
     "host_email": "travis@turing.io",
     "assistant_id": "",
     "topic": "Cohort Standup",
     "type": 2,
     "status": "waiting",
-    "start_time": "2021-12-14T16:00:00Z",
+    "start_time": "2021-12-17T16:00:00Z",
     "duration": 30,
     "timezone": "America/Denver",
     "agenda": "",
-    "created_at": "2021-11-17T16:48:38Z",
-    "start_url": "https://turingschool.zoom.us/s/95490216907?zak=eyJ0eXAiOiJKV1QiLCJzdiI6IjAwMDAwMSIsInptX3NrbSI6InptX28ybSIsImFsZyI6IkhTMjU2In0.eyJhdWQiOiJjbGllbnRzbSIsInVpZCI6InNUdmc4ODVqUWZlVVBCQ2lMZWZ2OFEiLCJpc3MiOiJ3ZWIiLCJzdHkiOjEwMCwid2NkIjoiYXcxIiwiY2x0IjowLCJtbnVtIjoiOTU0OTAyMTY5MDciLCJzdGsiOiIyRG0xMGRlaXJlUGQ2RXRBR200enBPRERDdWp3S2plTVpBd1cyLXJqMk40LkJnWWdhVWsxYW1FemVtOXRjVE5ZZUd0b2FUSkdWbWhHZG1GNlFtWXlUa01yYnpOQU1HRTJaVGM0TkRJeE1qUXlOREUwTkRFeU5UZ3hZVEUxTVdZMFpXWTNNRGc1WkdZM016WmtPR0U0WlRrMk1XWTNORFppTXpZMVpEY3hNbVEyWldFelpRQU1jbVZzY0hoWEwxVkRaMEU5QUFOaGR6RUFBQUY5eXNNOWh3QVNkUUFBQUEiLCJleHAiOjE2Mzk3OTE1MzIsImlhdCI6MTYzOTc4NDMzMiwiYWlkIjoiQkp2NnhtclpRT1NJcHlFTm8yc1hTZyIsImNpZCI6IiJ9.GhQ3Ig8p8Odo9xafZtu-bu4gPNOuRyDuotB-4MyfOCY",
-    "join_url": "https://turingschool.zoom.us/j/95490216907",
+    "created_at": "2021-11-17T16:52:40Z",
+    "start_url": "https://turingschool.zoom.us/s/97807509963?zak=eyJ0eXAiOiJKV1QiLCJzdiI6IjAwMDAwMSIsInptX3NrbSI6InptX28ybSIsImFsZyI6IkhTMjU2In0.eyJpc3MiOiJ3ZWIiLCJjbHQiOjAsIm1udW0iOiI5NzgwNzUwOTk2MyIsInN0ayI6IjloSzVsaFg3V2E3QndCeDJiOTd5Yks4bmlOVkVNYXF5T29zTmxhYWFVOGcuQmdZZ2FVazFhbUV6ZW05dGNUTlllR3RvYVRKR1ZtaEdkbUY2UW1ZeVRrTXJiek5BTUdFMlpUYzROREl4TWpReU5ERTBOREV5TlRneFlURTFNV1kwWldZM01EZzVaR1kzTXpaa09HRTRaVGsyTVdZM05EWmlNelkxWkRjeE1tUTJaV0V6WlFBTWNtVnNjSGhYTDFWRFowRTlBQU5oZHpFQUFBRi1Td0NHTHdBU2RRQUFBQSIsImF1ZCI6ImNsaWVudHNtIiwidWlkIjoic1R2Zzg4NWpRZmVVUEJDaUxlZnY4USIsInNrIjoiMCIsInN0eSI6MTAwLCJ3Y2QiOiJhdzEiLCJleHAiOjE2NDE5NDMwMzIsImlhdCI6MTY0MTkzNTgzMiwiYWlkIjoiQkp2NnhtclpRT1NJcHlFTm8yc1hTZyIsImNpZCI6IiJ9.pl64XrvLWcIxIHcNLk5jYGOqqfRTgUiUonpRMFvd4ls",
+    "join_url": "https://turingschool.zoom.us/j/97807509963",
     "settings": {
         "host_video": true,
         "participant_video": true,
@@ -47,7 +47,8 @@
         },
         "alternative_hosts_email_notification": true,
         "device_testing": false,
-        "focus_mode": false
+        "focus_mode": false,
+        "private_meeting": false
     },
     "pre_schedule": false
 }
