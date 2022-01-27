@@ -1,9 +1,4 @@
-<h1>Attendances for <%= @module.name %> for the <%= @module.inning.name %> Inning</h1>
-
-<table>
-  <% @attendances.each do |attendance| %>
-    <tr>
-      <td><%= attendance.zoom_meeting_id %></td>
-    </tr>
-  <% end %>
-</table>
+<h1 class='s-h1'><%= @module.name %></h1>
+<p class='s-p'><%= @module.inning.name %> inning</p>
+<%= link_to @module.google_spreadsheet_id %>
+<p class='s-p'>Calendar Integration: <%= @module.calendar_integration ? 'ON':'OFF' %></p>
