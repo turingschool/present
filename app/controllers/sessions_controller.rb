@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
       google_oauth_token: auth_hash['credentials']['token']
     })
     session[:user_id] = user.id
-    redirect_to root_path
+    redirect_to dashboard_path
   end
 
   def destroy

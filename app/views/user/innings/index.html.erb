@@ -1,8 +1,8 @@
 <% if @innings && !@innings.empty? %>
   <h1>Innings</h1>
 
-  <% @innings.each do |inning| %> 
-    <%= link_to inning.name, user_inning_path(inning)%>
+  <% @innings.each do |inning| %>
+    <%= link_to inning.name, inning_path(inning)%>
   <% end %>
 <% end %>
 <br>
@@ -13,4 +13,3 @@
   <%= f.text_field :name, placeholder: 'Ex: 1806, 2105, etc.' %>
   <%= f.submit "Submit" %>
 <% end %>
-
