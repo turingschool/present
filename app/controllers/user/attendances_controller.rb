@@ -8,7 +8,7 @@ class User::AttendancesController < User::BaseController
     @module = TuringModule.find(params[:turing_module_id])
     attendance = @module.attendances.create(attendance_params)
     AttendanceTaker.take_attendance(attendance, current_user)
-    redirect_to user_turing_module_path(@module)
+    redirect_to turing_module_path(@module)
   end
 
   private

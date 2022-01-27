@@ -1,8 +1,8 @@
 class TuringModule < ApplicationRecord
   belongs_to :inning
   has_many :attendances
+  has_one :google_sheet
 
-  validates_presence_of :google_spreadsheet_id, :program
   validates_numericality_of :module_number, {
     greater_than_or_equal_to: 1,
     less_than_or_equal_to: 4,
@@ -11,6 +11,7 @@ class TuringModule < ApplicationRecord
 
   validates_inclusion_of :calendar_integration, in: [true, false]
 
+  validates_presence_of :program
   enum program: [:FE, :BE, :Combined]
 
   def name

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_14_224634) do
+ActiveRecord::Schema.define(version: 2021_12_15_173839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,19 @@ ActiveRecord::Schema.define(version: 2021_12_14_224634) do
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
+  create_table "google_sheets", force: :cascade do |t|
+    t.bigint "google_spreadsheet_id"
+    t.bigint "turing_module_id"
+    t.string "name"
+    t.string "google_id"
+    t.index ["google_spreadsheet_id"], name: "index_google_sheets_on_google_spreadsheet_id"
+    t.index ["turing_module_id"], name: "index_google_sheets_on_turing_module_id"
+  end
+
+  create_table "google_spreadsheets", force: :cascade do |t|
+    t.string "google_id"
+  end
+
   create_table "innings", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -35,8 +48,6 @@ ActiveRecord::Schema.define(version: 2021_12_14_224634) do
 
   create_table "turing_modules", force: :cascade do |t|
     t.bigint "inning_id"
-    t.string "google_spreadsheet_id"
-    t.string "google_sheet_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "program"
@@ -56,5 +67,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_224634) do
 
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
+  add_foreign_key "google_sheets", "google_spreadsheets"
+  add_foreign_key "google_sheets", "turing_modules"
   add_foreign_key "turing_modules", "innings"
 end
