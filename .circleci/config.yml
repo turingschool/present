@@ -1,44 +1,60 @@
-version: 2
-jobs:
-  build:
-    working_directory: ~/your-app-name
-    docker:
-      - image: circleci/ruby:2.4.1
-        environment:
-          PGHOST: localhost
-          PGUSER: your-app-name
+version: 2.1 # use CircleCI 2.1
+orbs:
+   heroku: circleci/heroku@1.0.1 # Use the Heroku orb in your config
+workflows:
+  heroku_deploy:
+    jobs:
+      - build
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+          requires:
+            - build # only run deploy-via-git job if the build job has completed
+          filters:
+            branches:
+              only: main # only run deploy-via-git job on main branch
+jobs: # a collection of steps
+  build: # runs not using Workflows must have a `build` job as entry point
+    parallelism: 1 # run three instances of this job in parallel
+    docker: # run the steps with Docker
+      - image: circleci/ruby:2.7.2 # ...with this image as the primary container; this is where all `steps` will run
+        environment: # environment variables for primary container
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
           RAILS_ENV: test
-      - image: postgres:9.5
-        environment:
-          POSTGRES_USER: your-app-name
-          POSTGRES_DB: your-app-name_test
-          POSTGRES_PASSWORD: ""
-    steps:
-      - checkout
-
-      # Restore Cached Dependencies
-      - type: cache-restore
-        name: Restore bundle cache
-        key: your-app-name-{{ checksum "Gemfile.lock" }}
-
-      # Bundle install dependencies
-      - run: bundle install --path vendor/bundle
-
-      # Cache Dependencies
-      - type: cache-save
-        name: Store bundle cache
-        key: your-app-name-{{ checksum "Gemfile.lock" }}
-        paths:
-          - vendor/bundle
-
-      # Wait for DB
-      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
-
-      # Setup the environment
-      - run: cp .sample.env .env
-
-      # Setup the database
-      - run: bundle exec rake db:setup
-
-      # Run the tests
-      - run: bundle exec rake
+      - image: circleci/postgres:11 # database image
+        environment: # environment variables for database, it is kind of obvious but it is important that they match with your test config in database.yml
+          POSTGRES_USER: postgres
+          POSTGRES_DB: attendance_tracker_hackathon_test
+          POSTGRES_PASSWORD: attendance_tracker_hackathon_test
+    steps: # a collection of executable commands
+      - checkout # special step to check out source code to working directory
+      # Which version of bundler?
+      - run:
+          name: Force Bundler Version
+          command: |
+            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+            source $BASH_ENV
+            gem install bundler
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: bin/rails db:schema:load --trace
+      - run:
+          name: Run rspec in parallel
+          command: |
+            bundle exec rspec --profile 10 \
+                              --format RspecJunitFormatter \
+                              --out test_results/rspec.xml \
+                              --format progress \
+                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+      # Save test results for timing analysis
+      - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: test_results
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for example deploy configs
