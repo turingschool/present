@@ -1,9 +1,24 @@
-<h1>Attendances for <%= @module.name %> for the <%= @module.inning.name %> Inning</h1>
+<h1 class='s-h1'><%= @module.name %></h1>
+<p class='s-p'><%= @module.inning.name %> inning</p>
+<%= link_to 'Attendance Sheet', @module.google_sheet.link, target: :_blank %>
+<p class='s-p'>Calendar Integration: <%= @module.calendar_integration ? 'ON':'OFF' %></p>
 
-<table>
-  <% @attendances.each do |attendance| %>
+
+<%= link_to 'Take Attendance', new_turing_module_attendance_path(@module), class: 's-button' %>
+<section id='past-attendances' class='s-content'>
+  <h3 class='s-h3'>Past Attendances</h3>
+  <table>
     <tr>
-      <td><%= attendance.zoom_meeting_id %></td>
+      <th>Meeting Title</th>
+      <th>Start Time</th>
+      <th>Zoom Meeting ID</th>
     </tr>
-  <% end %>
-</table>
+    <% @module.attendances.each do |attendance| %>
+      <tr id='attendance-<%= attendance.id %>', class='attendance'>
+        <td><%= attendance.meeting_title %></td>
+        <td><%= attendance.meeting_time %></td>
+        <td><%= attendance.zoom_meeting_id %></td>
+      </tr>
+    <% end %>
+  </table>
+</section>

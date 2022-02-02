@@ -1,35 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AttendanceTrackerHackathon</title>
+    <title>Present</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://savile.turing.edu/css/v1/1-latest.css">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">Present!</a>
-        </div>
-        <ul class="nav navbar-nav">
-          <% if current_user %>
-            <li class="active"><%= link_to "All Innings", root_path %></li>
-            <li class="active"><%= link_to 'Log Out', '/sessions', method: :delete %></li>
-          <% else %>
-            <li class="active"><%= link_to "Sign In With Google", "/auth/google_oauth2" %></li>
-          <% end %>
-        </ul>
-      </div>
+    <nav class="s-nav s-nav-sticky">
+      <a class="s-nav-icon" href="/">
+        <h1 class="s-h1">Present!</h1>
+      </a>
+      <ul class="s-nav-menu">
+        <% if current_user %>
+          <li><%= link_to "All Innings", root_path %></li>
+          <li><%= link_to 'Log Out', '/sessions', method: :delete %></li>
+        <% else %>
+          <li><%= link_to "Sign In With Google", "/auth/google_oauth2" %></li>
+        <% end %>
+      </ul>
     </nav>
     <%= yield %>
   </body>

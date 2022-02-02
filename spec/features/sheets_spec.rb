@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Sheets API Flow' do
+xdescribe 'Sheets API Flow' do
   before :each do
     visit root_path
 
@@ -17,7 +17,7 @@ describe 'Sheets API Flow' do
     expect(sheet_matrix).to eq(expected_matrix)
   end
 
-  xit 'can get a meeting id and return the zoom names stored in the sheet' do
+  it 'can get a meeting id and return the zoom names stored in the sheet' do
 
 
     SheetsFacade.get
