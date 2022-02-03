@@ -36,9 +36,6 @@ jobs: # a collection of steps
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run: 
-          name: Install node 
-          command: npm install --save
       - run:
           name: Database setup
           command: bin/rails db:schema:load --trace
