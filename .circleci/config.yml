@@ -38,7 +38,7 @@ jobs: # a collection of steps
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: 
           name: Install node 
-          command: brew install node
+          command: npm install --save
       - run:
           name: Database setup
           command: bin/rails db:schema:load --trace
