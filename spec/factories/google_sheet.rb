@@ -26,6 +26,34 @@ FactoryBot.define do
         name { '2110' }
         turing_module factory: :fe2
       end
+
+      factory :fe3_attendance_sheet do
+        google_id { '304214010' }
+        name { '2108' }
+        turing_module factory: :fe3
+      end
+    end
+
+    factory :be_attendance_sheet do
+      google_spreadsheet factory: :be_attendance
+
+      factory :be1_attendance_sheet do
+        google_id { '1333761590' }
+        name { '2111' }
+        turing_module factory: :fe1
+      end
+
+      factory :be2_attendance_sheet do
+        google_id { '2021375337' }
+        name { '2110' }
+        turing_module factory: :fe2
+      end
+
+      factory :be3_attendance_sheet do
+        google_id { '567134850' }
+        name { '2108' }
+        turing_module factory: :fe3
+      end
     end
   end
 end

@@ -14,6 +14,26 @@ FactoryBot.define do
       factory :fe2 do
         module_number { 2 }
       end
+
+      factory :fe3 do
+        module_number { 3 }
+      end
+    end
+
+    factory :backend do
+      program { :BE }
+
+      factory :be1 do
+        module_number { 1 }
+      end
+
+      factory :be2 do
+        module_number { 2 }
+      end
+
+      factory :be3 do
+        module_number { 3 }
+      end
     end
 
     factory :m4 do
