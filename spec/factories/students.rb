@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :student do
-    zoom_email { "MyString" }
-    zoom_id { "MyString" }
-    name { "MyString" }
+    turing_module
+    zoom_email { Faker::Internet.email }
+    sequence(:zoom_id) { |n| "<zoom_id>_#{n}" }
+    name { Faker::Name.name }
   end
 end
