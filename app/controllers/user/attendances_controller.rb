@@ -11,6 +11,9 @@ class User::AttendancesController < User::BaseController
     redirect_to turing_module_path(@module)
   end
 
+  def show
+  end
+
   private
   def attendance_params
     params.require(:attendance).permit(:zoom_meeting_id).merge(user: current_user)
