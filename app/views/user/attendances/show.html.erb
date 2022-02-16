@@ -1,0 +1,18 @@
+<h1 class='s-h1'><%= @module.name %></h1>
+<h3 class='s-h3'><%= @attendance.meeting_title %> - <%= @attendance.pretty_time %></h3>
+<table id='student-attendances'>
+  <tr>
+    <th>Student</th>
+    <th>Status</th>
+    <th>Zoom Email</th>
+    <th>Zoom ID</th>
+  </tr>
+  <% @attendance.student_attendances.each do |student_attendance| %>
+    <tr id='student-attendance-<%= student_attendance.id %>'>
+      <td><%= student_attendance.student.name %></td>
+      <td><%= student_attendance.status %></td>
+      <td><%= student_attendance.student.zoom_email %></td>
+      <td><%= student_attendance.student.zoom_id %></td>
+    </tr>
+  <% end %>
+</table>

@@ -12,6 +12,8 @@ class User::AttendancesController < User::BaseController
   end
 
   def show
+    @module = TuringModule.find(params[:turing_module_id])
+    @attendance = Attendance.find(params[:id])
   end
 
   private
