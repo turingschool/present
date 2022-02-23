@@ -1,4 +1,7 @@
-<h1><%= @inning.name %> Inning</h1>
+<h1 style="display:inline;"><%= @inning.name %> Inning</h1> <%= "(current inning)" if @inning.current%>
+<% if !@inning.current %>
+    <%= button_to "Set To Current Inning", inning_path(@inning), method: :patch, form: {style: 'display:inline-block;'} %>
+<% end %>
 
 <% if !@inning.turing_modules.empty? %>
     <h3>Modules</h3>

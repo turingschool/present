@@ -9,7 +9,13 @@ class User::InningsController < User::BaseController
     end 
 
     def index 
-        @innings = Inning.all
+        @innings = Inning.order(name: :desc)
+    end 
+
+    def update 
+        inning = Inning.find(params[:id])
+        inning.update_current_status_for_all_other_innings
+        redirect_to request.referer
     end 
 
     private 
