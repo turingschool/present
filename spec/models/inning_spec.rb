@@ -21,7 +21,7 @@ RSpec.describe Inning, type: :model do
       past_innings.first.update_current_status_for_all_other_innings
 
       Inning.all.reload
-      # binding.pry
+
       expect(past_innings.first.current).to eq(true)
 
       expect(Inning.where.not(id: past_innings.first.id).all?{ |inning| !inning.current }).to eq(true)
