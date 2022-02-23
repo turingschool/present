@@ -15,7 +15,7 @@
     </tr>
     <% @module.attendances.each do |attendance| %>
       <tr id='attendance-<%= attendance.id %>', class='attendance'>
-        <td><%= attendance.meeting_title %></td>
+        <td><%= link_to attendance.meeting_title, turing_module_attendance_path(@module, attendance) %></td>
         <td><%= attendance.meeting_time %></td>
         <td><%= attendance.zoom_meeting_id %></td>
       </tr>

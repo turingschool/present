@@ -18,8 +18,9 @@ class AttendanceTaker
 
   def self.column_name(column_index)
     alphabet = ("A".."Z").to_a
-
-    'A' * (column_index / 26) + alphabet[column_index % 26]
+    first_letter = ''
+    first_letter = alphabet[(column_index / 26 - 1)] if column_index > 25
+    first_letter + alphabet[column_index % 26]
   end
 
   def self.am_or_pm(datetime)

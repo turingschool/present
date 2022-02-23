@@ -11,6 +11,11 @@ class User::AttendancesController < User::BaseController
     redirect_to turing_module_path(@module)
   end
 
+  def show
+    @module = TuringModule.find(params[:turing_module_id])
+    @attendance = Attendance.find(params[:id])
+  end
+
   private
   def attendance_params
     params.require(:attendance).permit(:zoom_meeting_id).merge(user: current_user)
