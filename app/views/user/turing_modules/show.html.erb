@@ -1,6 +1,10 @@
 <h1 class='s-h1'><%= @module.name %></h1>
 <p class='s-p'><%= @module.inning.name %> inning</p>
-<%= link_to 'Attendance Sheet', @module.google_sheet.link, target: :_blank %>
+<% if @module.google_sheet %>
+  <%= link_to 'Attendance Sheet', @module.google_sheet.link, target: :_blank %>
+<% else %>
+  <p>Attendance Sheet: No Google Sheet associated with this module</p>
+<% end %>
 <p class='s-p'>Calendar Integration: <%= @module.calendar_integration ? 'ON':'OFF' %></p>
 
 
