@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :innings, only:[:show, :create, :index]
     resources :turing_modules, path: '/modules', only: [:show, :create] do
       resources :attendances, only: [:new, :create, :show]
+      resources :students, only: [:index]
     end
   end
 end

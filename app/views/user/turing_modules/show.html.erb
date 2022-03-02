@@ -6,6 +6,7 @@
   <p>Attendance Sheet: No Google Sheet associated with this module</p>
 <% end %>
 <p class='s-p'>Calendar Integration: <%= @module.calendar_integration ? 'ON':'OFF' %></p>
+<%= link_to "#{@module.students.length} Students", turing_module_students_path(@module) %>
 
 
 <%= link_to 'Take Attendance', new_turing_module_attendance_path(@module), class: 's-button' %>
