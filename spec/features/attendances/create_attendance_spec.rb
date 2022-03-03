@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Creating an Attendance' do
   it 'can fill in a past zoom meeting from the module show page' do
-    allow(AttendanceTaker).to receive(:take_attendance).and_return(nil)
+    allow(CreateAttendanceFacade).to receive(:run).and_return(nil)
     user = mock_login
     sheet = create(:fe1_attendance_sheet)
     test_module = sheet.turing_module
@@ -32,6 +32,7 @@ RSpec.describe 'Creating an Attendance' do
     test_spreadsheet = test_sheet.google_spreadsheet
     test_module = test_sheet.turing_module
     test_zoom_meeting_id = 97807509963
+    expected_column = 'AJ'
     # 12/17 am
     # column AJ
 
@@ -52,7 +53,7 @@ RSpec.describe 'Creating an Attendance' do
     fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
 
     expect(GoogleSheetsService).to receive(:update_column) \
-      .with(test_sheet, "AJ", expected_attendance_values, user)
+      .with(test_sheet, expected_column, expected_attendance_values, user)
 
     click_button 'Submit'
   end
