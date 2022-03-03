@@ -4,5 +4,7 @@
 <%= form_with model: [@module, @attendance], local: true do |f| %>
   <%= f.label "Enter the Zoom Meeting ID" %>
   <%= f.text_field :zoom_meeting_id %>
+  <%= f.check_box :populate_students %>
+  <%= f.label :populate_students, "Use this meeting to add students to your module" %>
   <%= f.submit 'Submit' %>
 <% end %>
