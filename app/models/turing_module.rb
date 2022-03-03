@@ -2,6 +2,7 @@ class TuringModule < ApplicationRecord
   belongs_to :inning
   has_many :attendances
   has_one :google_sheet
+  has_many :students
 
   validates_numericality_of :module_number, {
     greater_than_or_equal_to: 1,

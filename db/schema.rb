@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 2022_02_23_170415) do
 
   # These are extensions that must be enabled in order to support this database
@@ -47,6 +48,27 @@ ActiveRecord::Schema.define(version: 2022_02_23_170415) do
     t.boolean "current", default: false
   end
 
+  create_table "student_attendances", force: :cascade do |t|
+    t.integer "status"
+    t.bigint "student_id"
+    t.bigint "attendance_id"
+    t.datetime "join_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attendance_id"], name: "index_student_attendances_on_attendance_id"
+    t.index ["student_id"], name: "index_student_attendances_on_student_id"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string "zoom_email"
+    t.string "zoom_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "turing_module_id"
+    t.index ["turing_module_id"], name: "index_students_on_turing_module_id"
+  end
+
   create_table "turing_modules", force: :cascade do |t|
     t.bigint "inning_id"
     t.datetime "created_at", null: false
@@ -70,5 +92,8 @@ ActiveRecord::Schema.define(version: 2022_02_23_170415) do
   add_foreign_key "attendances", "users"
   add_foreign_key "google_sheets", "google_spreadsheets"
   add_foreign_key "google_sheets", "turing_modules"
+  add_foreign_key "student_attendances", "attendances"
+  add_foreign_key "student_attendances", "students"
+  add_foreign_key "students", "turing_modules"
   add_foreign_key "turing_modules", "innings"
 end

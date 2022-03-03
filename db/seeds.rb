@@ -1,3 +1,5 @@
+include FactoryBot::Syntax::Methods
+
 user = User.create!(google_id: 'na', email: 'testgmail.com', google_oauth_token: 'na')
 inning = Inning.create!(name: "2108")
 
@@ -21,7 +23,28 @@ fe3_attendance_sheet = fe_attendance_spreadsheet.google_sheets.create!(google_id
 be3_attendance_sheet = be_attendance_spreadsheet.google_sheets.create!(google_id: '567134850', name: '2108', turing_module: be3)
 m4_attendance_sheet = m4_attendance_spreadsheet.google_sheets.create!(google_id: '309257798', name: '2107', turing_module: mod4)
 
+standup = mod4.attendances.create!(zoom_meeting_id: 95490216907, meeting_title: 'Cohort Standup', meeting_time: "2021-12-14 16:00:00 UTC", user: user)
+mod4.attendances.create!(zoom_meeting_id: 94426586781, meeting_title: 'PD: Alumni Panel', meeting_time: "2021-12-9 20:00:00 UTC", user: user)
+mod4.attendances.create!(zoom_meeting_id: 99157739086, meeting_title: 'M4 Gear Up', meeting_time: "2021-12-7 20:00:00 UTC", user: user)
 
-fe3.attendances.create!(zoom_meeting_id: 95490216907, meeting_title: 'Cohort Standup', meeting_time: "2021-12-14 16:00:00 UTC", user: user)
-fe3.attendances.create!(zoom_meeting_id: 94426586781, meeting_title: 'PD: Alumni Panel', meeting_time: "2021-12-9 20:00:00 UTC", user: user)
-fe3.attendances.create!(zoom_meeting_id: 99157739086, meeting_title: 'M4 Gear Up', meeting_time: "2021-12-7 20:00:00 UTC", user: user)
+student_1 = mod4.students.create!("zoom_id": "16778240", "name": "Ryan Teske (He/Him)", "zoom_email": "ryanteske@outlook.com")
+student_2 = mod4.students.create!("zoom_id": "16780288", "name": "Natalia ZV (she/her)# FE", "zoom_email": "nzamboniv@gmail.com")
+student_3 = mod4.students.create!("zoom_id": "16781312", "name": "Jamie P (she/her)# BE", "zoom_email": "jamiejpace@gmail.com")
+student_4 = mod4.students.create!("zoom_id": "16784384", "name": "Weston E# (He/Him)# BE", "zoom_email": "ellisweston112@gmail.com")
+student_5 = mod4.students.create!("zoom_id": "16785408", "name": "Carlos G { he: him } FE", "zoom_email": "carlosalbertogomez108@gmail.com")
+student_6 = mod4.students.create!("zoom_id": "16786432", "name": "Anna J (she/her)# FE", "zoom_email": "ae.johnson2931@gmail.com")
+student_7 = mod4.students.create!("zoom_id": "16788480", "name": "Erin Q (she/her)# BE", "zoom_email": "equinn125@gmail.com")
+student_8 = mod4.students.create!("zoom_id": "16789504", "name": "Henry S (he/him)# BE", "zoom_email": "henry.schmid1@gmail.com")
+student_9 = mod4.students.create!("zoom_id": "16790528", "name": "Ozzie O (he# him) BE", "zoom_email": "mikeosmonson@gmail.com")
+student_10 = mod4.students.create!("zoom_id": "16792576", "name": "☘️Nolan C.", "zoom_email": "nolancaine2@gmail.com")
+
+create(:student_attendance, attendance: standup, student: student_1)
+create(:student_attendance, attendance: standup, student: student_2)
+create(:student_attendance, attendance: standup, student: student_3)
+create(:student_attendance, attendance: standup, student: student_4)
+create(:student_attendance, attendance: standup, student: student_5)
+create(:student_attendance, attendance: standup, student: student_6)
+create(:student_attendance, attendance: standup, student: student_7)
+create(:student_attendance, attendance: standup, student: student_8)
+create(:student_attendance, attendance: standup, student: student_9)
+create(:student_attendance, attendance: standup, student: student_10)

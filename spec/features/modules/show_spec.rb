@@ -32,4 +32,20 @@ RSpec.describe 'Modules show page' do
       end
     end
   end
+
+  it "has a link to each attendance's show page" do
+    sheet = create(:google_sheet)
+    test_module = sheet.turing_module
+    attendances = create_list(:attendance, 3, turing_module: test_module)
+    test_attendance = attendances[1]
+
+    visit "/modules/#{test_module.id}"
+
+    within('#past-attendances') do
+      within("#attendance-#{test_attendance.id}") do
+        click_link(test_attendance.meeting_title)
+        expect(current_path).to eq("/modules/#{test_module.id}/attendances/#{test_attendance.id}")
+      end
+    end
+  end
 end
