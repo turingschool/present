@@ -48,4 +48,12 @@ RSpec.describe 'Modules show page' do
       end
     end
   end
+
+  it 'shows a message when theres no sheet associated with the module' do
+    test_module = create(:turing_module)
+
+    visit "/modules/#{test_module.id}"
+
+    expect(page).to have_content('Attendance Sheet: No Google Sheet associated with this module')
+  end
 end
