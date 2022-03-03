@@ -60,13 +60,14 @@ RSpec.describe TuringModule, type: :model do
         test_module = create(:fe1)
         test_module.create_students_from_participants(participants)
         expect(test_module.students.length).to eq(participants.length)
-        participants.each do |participant|
+        all_participants_created = participants.all? do |participant|
           test_module.students.any? do |student|
             student.name == participant[:name] &&
             student.zoom_email == participant[:user_email] &&
             student.zoom_id == participant[:user_id]
           end
         end
+        expect(all_participants_created).to eq(true)
       end
     end
   end
