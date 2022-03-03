@@ -59,6 +59,47 @@ RSpec.describe 'Creating an Attendance' do
 
   it 'will work even if the sheet is resorted in the middle of taking attendance'
 
+  it 'can populate the module with students from the Zoom meeting' do
+    allow(AttendanceTaker).to receive(:take_attendance).and_return(nil)
+    user = mock_login
+    sheet = create(:fe1_attendance_sheet)
+    test_module = sheet.turing_module
+    test_zoom_meeting_id = 95490216907
+
+    visit turing_module_path(test_module)
+    expect(page).to have_link('0 Students')
+    click_link('Take Attendance')
+
+    check(:attendance_populate_students)
+    fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
+    click_button 'Submit'
+
+    click_link('23 Students')
+
+    expect(page).to have_css('.student', count: 23)
+    expected_students.each do |student|
+      expect(page).to have_content(student.name)
+      expect(page).to have_content(student.zoom_email)
+      expect(page).to have_content(student.zoom_id)
+    end
+  end
+
+  it 'creates students attendances'
+
+# As a logged in user
+# When I visit the show page for a module with no students,
+# and I click the button to "Add an Attendance",
+# Then I am redirected to the new attendance page
+# where I see a check box with a label
+# "Use this meeting to add students to your module".
+# When I click this checkbox,
+# And I add a Zoom meeting id to the text field,
+# and I click the submit button,
+# Then I am redirected back to the module's show page,
+# And I now see a link for '23 Students' (or however many students were in the Zoom meeting)
+# And when I click this link I am taken to the module's student index
+# where I see the information for each student that was on the Zoom call.
+
   let(:expected_attendance_values){
     [
       "absent",
@@ -104,5 +145,9 @@ RSpec.describe 'Creating an Attendance' do
       "present",
       "tardy"
     ]
+  }
+
+  let(:expected_students){
+    Student.new(name: 'test', zoom_email: 'test', zoom_id: 'test')
   }
 end
