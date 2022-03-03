@@ -2,9 +2,14 @@
 <p class='s-p'><%= @module.inning.name %> inning</p>
 <h3 class='s-h3'>Take Attendance for a Zoom Meeting</h3>
 <%= form_with model: [@module, @attendance], local: true do |f| %>
-  <%= f.label "Enter the Zoom Meeting ID" %>
-  <%= f.text_field :zoom_meeting_id %>
-  <%= f.check_box :populate_students %>
-  <%= f.label :populate_students, "Use this meeting to add students to your module" %>
-  <%= f.submit 'Submit' %>
+  <p class='s-p'>
+    <%= f.label "Enter the Zoom Meeting ID" %>
+    <%= f.text_field :zoom_meeting_id %>
+  </p>
+
+  <p class='s-p'>
+    <%= f.check_box :populate_students %>
+    <%= f.label :populate_students, "Use this meeting to add students to your module" %>
+  </p>
+  <%= f.submit 'Submit', class: 's-button' %>
 <% end %>
