@@ -18,4 +18,15 @@ class TuringModule < ApplicationRecord
   def name
     "#{self.program} Mod #{self.module_number}"
   end
+
+  def create_students_from_participants(participants)
+    participants.each do |participant|
+      attributes = {
+            name: participant[:name],
+            zoom_email: participant[:user_email],
+            zoom_id: participant[:user_id]
+          }
+      self.students.create(attributes)
+    end
+  end
 end
