@@ -1,10 +1,17 @@
 <% if @innings && !@innings.empty? %>
   <h1>Innings</h1>
 
+<section class="innings-list">
   <% @innings.each do |inning| %>
-    <%= link_to inning.name, inning_path(inning)%>
+    <ul>
+      <%= link_to inning.name, inning_path(inning)%>
+      <% if inning.current %>
+        (current inning)
+      <% end %>
+    </ul>
   <% end %>
 <% end %>
+</section>
 <br>
 <hr>
 <h3>Create a New Inning: </h3>
