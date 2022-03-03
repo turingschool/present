@@ -60,16 +60,16 @@ RSpec.describe 'Creating an Attendance' do
   it 'will work even if the sheet is resorted in the middle of taking attendance'
 
   it 'can populate the module with students from the Zoom meeting' do
-    allow(AttendanceTaker).to receive(:take_attendance).and_return(nil)
-    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
-
-    stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
     user = mock_login
     sheet = create(:fe1_attendance_sheet)
     test_module = sheet.turing_module
     test_zoom_meeting_id = 95490216907
+    allow(AttendanceTaker).to receive(:take_attendance).and_return(nil)
+    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
+      .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
+    stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
+      .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+
 
     visit turing_module_path(test_module)
     expect(page).to have_link('0 Students')
