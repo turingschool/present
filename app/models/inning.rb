@@ -3,8 +3,12 @@ class Inning < ApplicationRecord
 
   has_many :turing_modules
 
-  def update_current_status_for_all_other_innings
+  def make_current_inning
     self.update(current: true)
     Inning.where.not(id: self.id).update_all(current: false)
   end
+
+  def self.order_by_name
+    order(name: :desc)
+  end 
 end
