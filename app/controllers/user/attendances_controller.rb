@@ -8,7 +8,7 @@ class User::AttendancesController < User::BaseController
     @module = TuringModule.find(params[:turing_module_id])
     attendance = @module.attendances.create(attendance_params)
     # AttendanceTaker.take_attendance(attendance, user)
-    CreateAttendanceFacade.run(attendance, current_user, params[:attendance][:populate_students])
+    CreateAttendanceFacade.run(attendance, current_user, populate_students?)
     redirect_to turing_module_path(@module)
   end
 
@@ -20,5 +20,10 @@ class User::AttendancesController < User::BaseController
   private
   def attendance_params
     params.require(:attendance).permit(:zoom_meeting_id).merge(user: current_user)
+  end
+
+  def populate_students?
+    populate_students = params.require(:attendance)[:populate_students]
+    populate_students == "1" ? true : false
   end
 end
