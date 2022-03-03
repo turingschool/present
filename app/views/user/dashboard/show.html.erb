@@ -1,0 +1,5 @@
+<% if @current_inning %>
+    <h1>Current Inning: <%= link_to @current_inning.name, inning_path(@current_inning) %> </h1>
+<% else %>
+    <h1>No Current Inning Selected</h1>
+<% end %>

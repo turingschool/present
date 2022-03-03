@@ -16,7 +16,7 @@
       </a>
       <ul class="s-nav-menu">
         <% if current_user %>
-          <li><%= link_to "All Innings", root_path %></li>
+          <li><%= link_to "All Innings", innings_path %></li>
           <li><%= link_to 'Log Out', '/sessions', method: :delete %></li>
         <% else %>
           <li><%= link_to "Sign In With Google", "/auth/google_oauth2" %></li>
