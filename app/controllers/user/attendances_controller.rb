@@ -7,7 +7,6 @@ class User::AttendancesController < User::BaseController
   def create
     @module = TuringModule.find(params[:turing_module_id])
     attendance = @module.attendances.create(attendance_params)
-    # AttendanceTaker.take_attendance(attendance, user)
     CreateAttendanceFacade.run(attendance, current_user, populate_students?)
     redirect_to turing_module_path(@module)
   end
