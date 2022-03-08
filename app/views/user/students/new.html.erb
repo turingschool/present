@@ -1,0 +1,20 @@
+<h1 class='s-h1'>Create a new student for <%= @module.name %></h1>
+
+<%= form_with model: [@module, @student] do |f| %>
+  <p class='s-p'>
+    <%= f.label 'Student Name' %>
+    <%= f.text_field :name %>
+  </p>
+
+  <p class='s-p'>
+    <%= f.label "Student's Zoom Email" %>
+    <%= f.text_field :zoom_email %>
+  </p>
+
+  <p class='s-p'>
+    <%= f.label "Student's Zoom ID" %>
+    <%= f.text_field :zoom_id %>
+  </p>
+
+  <%= f.submit class: 's-button' %>
+<% end %>
