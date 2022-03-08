@@ -4,7 +4,7 @@ class CreateAttendanceFacade
     # Get Participant report
     # If we're populating attendance
       # Use participant report to create students
-    meeting_details = ZoomService.meeting_details(attendance.zoom_meeting_id)
+    # meeting_details = ZoomService.meeting_details(attendance.zoom_meeting_id)
     participants = ZoomService.past_participants_meeting_report(attendance.zoom_meeting_id)[:participants]
     attendance.turing_module.create_students_from_participants(participants) if populate_students
     # Use meeting details, participant report,
