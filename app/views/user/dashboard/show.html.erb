@@ -1,5 +1,11 @@
 <% if @current_inning %>
     <h1>Current Inning: <%= link_to @current_inning.name, inning_path(@current_inning) %> </h1>
+    <% if !@current_inning.turing_modules.empty? %>
+        <h2>Current Modules:</h2>
+        <% @current_inning.turing_modules.each do |mod| %>
+            <li><%= link_to mod.name, turing_module_path(mod) %></li>
+        <% end %>
+    <% end %>
 <% else %>
     <h1>No Current Inning Selected</h1>
 <% end %>
