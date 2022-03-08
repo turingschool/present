@@ -23,5 +23,52 @@ RSpec.describe TuringModule, type: :model do
         expect(test_module.name).to eq('FE Mod 3')
       end
     end
+
+    describe '#create_students_from_participants' do
+
+      let(:participants){
+        [
+          {
+            :user_id=>"16778240",
+            :name=>"Ryan Teske (He/Him)",
+            :user_email=>"ryanteske@outlook.com",
+          },
+          {
+            :user_id=>"16779264",
+            :name=>"Isika P (she/her# BE)",
+            :user_email=>"",
+          },
+          {
+            :user_id=>"16780288",
+            :name=>"Natalia ZV (she/her)# FE",
+            :user_email=>"nzamboniv@gmail.com",
+          },
+          {
+            :user_id=>"16781312",
+            :name=>"Jamie P (she/her)# BE",
+            :user_email=>"jamiejpace@gmail.com",
+          },
+          {
+            :user_id=>"16782336",
+            :name=>"Tanner D (he/him)# BE",
+            :user_email=>"",
+          }
+        ]
+      }
+
+      it 'creates a student for each participant' do
+        test_module = create(:fe1)
+        test_module.create_students_from_participants(participants)
+        expect(test_module.students.length).to eq(participants.length)
+        all_participants_created = participants.all? do |participant|
+          test_module.students.any? do |student|
+            student.name == participant[:name] &&
+            student.zoom_email == participant[:user_email] &&
+            student.zoom_id == participant[:user_id]
+          end
+        end
+        expect(all_participants_created).to eq(true)
+      end
+    end
   end
 end
