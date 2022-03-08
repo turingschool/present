@@ -22,7 +22,6 @@ class User::AttendancesController < User::BaseController
   end
 
   def populate_students?
-    populate_students = params.require(:attendance)[:populate_students]
-    populate_students == "1" ? true : false
+    ActiveModel::Type::Boolean.new.cast(params[:attendance][:populate_students])
   end
 end
