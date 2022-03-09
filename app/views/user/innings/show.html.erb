@@ -9,8 +9,8 @@
     <table>
         <% @inning.turing_modules.each do |mod| %>
         <tr>
-          <td><%= link_to mod.name, user_turing_module_path(mod) %>---</td>
-          <td><%= link_to 'Take Attendance for this Module', new_user_turing_module_attendance_path(mod) %></td>
+          <td><%= link_to mod.name, turing_module_path(mod) %>---</td>
+          <td><%= link_to 'Take Attendance for this Module', new_turing_module_attendance_path(mod) %></td>
         </tr>
         <% end %>
     </table>
