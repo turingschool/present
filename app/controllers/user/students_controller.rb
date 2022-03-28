@@ -13,4 +13,14 @@ class User::StudentsController < User::BaseController
     student.destroy
     redirect_to turing_module_students_path(student.turing_module)
   end
+
+  def edit
+    @student = Student.find(params[:id])
+  end
+
+  def update
+    student = Student.find(params[:id])
+    flash[:success] = 'Your changes have been saved.'
+    redirect_to student_path(student)
+  end
 end
