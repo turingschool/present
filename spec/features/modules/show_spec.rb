@@ -44,7 +44,7 @@ RSpec.describe 'Modules show page' do
     within('#past-attendances') do
       within("#attendance-#{test_attendance.id}") do
         click_link(test_attendance.meeting_title)
-        expect(current_path).to eq("/modules/#{test_module.id}/attendances/#{test_attendance.id}")
+        expect(current_path).to eq("/attendances/#{test_attendance.id}")
       end
     end
   end

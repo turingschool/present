@@ -4,7 +4,7 @@ RSpec.describe 'Student Delete' do
   it 'deletes a student from the show page' do
     student = create(:student)
 
-    visit turing_module_student_path(student.turing_module, student)
+    visit student_path(student)
 
     click_button 'Delete'
 
@@ -16,7 +16,7 @@ RSpec.describe 'Student Delete' do
     student = create(:student)
     create_list(:student_attendance, 3, student: student)
 
-    visit turing_module_student_path(student.turing_module, student)
+    visit student_path(student)
 
     click_button 'Delete'
 

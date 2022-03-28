@@ -9,7 +9,8 @@ class User::StudentsController < User::BaseController
   end
 
   def destroy
-    Student.destroy(params[:id])
-    redirect_to turing_module_students_path(params[:turing_module_id])
+    student = Student.find(params[:id])
+    student.destroy
+    redirect_to turing_module_students_path(student.turing_module)
   end
 end
