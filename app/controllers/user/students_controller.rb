@@ -20,7 +20,16 @@ class User::StudentsController < User::BaseController
 
   def update
     student = Student.find(params[:id])
-    flash[:success] = 'Your changes have been saved.'
+    if student.update(student_params)
+      flash[:success] = 'Your changes have been saved.'
+    else
+      flash[:error] = 'Sorry, your changes could not be saved'
+    end
     redirect_to student_path(student)
+  end
+
+private
+  def student_params
+    params.require(:student).permit(:name, :zoom_email, :zoom_id)
   end
 end
