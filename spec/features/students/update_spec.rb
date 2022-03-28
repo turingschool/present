@@ -39,4 +39,6 @@ RSpec.describe 'Student Update' do
     expect(page).to have_content("Your changes have been saved.")
     expect(page).to have_content(new_name)
   end
+
+  it 'wont save if changes are invalid' #student doesn't have any validates at the moment
 end
