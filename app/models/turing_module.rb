@@ -24,7 +24,7 @@ class TuringModule < ApplicationRecord
       attributes = {
             name: participant[:name],
             zoom_email: participant[:user_email],
-            zoom_id: participant[:user_id]
+            zoom_id: participant[:id]
           }
       self.students.create(attributes)
     end
