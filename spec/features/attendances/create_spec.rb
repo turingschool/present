@@ -26,7 +26,7 @@ RSpec.describe 'Creating an Attendance' do
     end
   end
 
-  it 'updates the sheet' do
+  xit 'updates the sheet' do
     user = mock_login
     test_sheet = create(:m4_attendance_sheet)
     test_spreadsheet = test_sheet.google_spreadsheet
