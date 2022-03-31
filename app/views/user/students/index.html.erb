@@ -9,7 +9,7 @@
   </tr>
   <% @module.students.each do |student| %>
     <tr class='student' id='student-<%= student.id %>'>
-      <td><%= student.name %></td>
+      <td><%= link_to student.name, turing_module_student_path(@module, student) %></td>
       <td><%= student.zoom_email %></td>
       <td><%= student.zoom_id %></td>
     </tr>
