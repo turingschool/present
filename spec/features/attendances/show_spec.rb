@@ -8,7 +8,7 @@ RSpec.describe 'attendance show page' do
     test_attendance = create(:attendance_with_students)
     student_attendances = test_attendance.student_attendances
 
-    visit "/modules/#{test_attendance.turing_module.id}/attendances/#{test_attendance.id}"
+    visit "/attendances/#{test_attendance.id}"
 
     expect(page).to have_content(test_attendance.turing_module.name)
     expect(page).to have_content(test_attendance.meeting_title)
@@ -22,7 +22,7 @@ RSpec.describe 'attendance show page' do
     test_attendance = create(:attendance_with_students)
     student_attendances = test_attendance.student_attendances
 
-    visit "/modules/#{test_attendance.turing_module.id}/attendances/#{test_attendance.id}"
+    visit "/attendances/#{test_attendance.id}"
 
     within '#student-attendances' do
       student_attendances.each do |student_attendance|
