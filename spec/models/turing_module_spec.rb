@@ -29,34 +29,34 @@ RSpec.describe TuringModule, type: :model do
       let(:participants){
         [
           {
-            :user_id=>"16778240",
+            :id=>"16778240",
             :name=>"Ryan Teske (He/Him)",
             :user_email=>"ryanteske@outlook.com",
           },
           {
-            :user_id=>"16779264",
+            :id=>"16779264",
             :name=>"Isika P (she/her# BE)",
             :user_email=>"",
           },
           {
-            :user_id=>"16780288",
+            :id=>"16780288",
             :name=>"Natalia ZV (she/her)# FE",
             :user_email=>"nzamboniv@gmail.com",
           },
           {
-            :user_id=>"16781312",
+            :id=>"16781312",
             :name=>"Jamie P (she/her)# BE",
             :user_email=>"jamiejpace@gmail.com",
           },
           {
-            :user_id=>"16782336",
-            :name=>"Tanner D (he/him)# BE",
+            :id=>"16782336",
+            :name=>"",
             :user_email=>"",
           }
         ]
       }
 
-      it 'creates a student for each participant' do
+      it 'creates a student for each unique participant' do
         test_module = create(:fe1)
         test_module.create_students_from_participants(participants)
         expect(test_module.students.length).to eq(participants.length)
@@ -64,10 +64,33 @@ RSpec.describe TuringModule, type: :model do
           test_module.students.any? do |student|
             student.name == participant[:name] &&
             student.zoom_email == participant[:user_email] &&
-            student.zoom_id == participant[:user_id]
+            student.zoom_id == participant[:id]
           end
         end
         expect(all_participants_created).to eq(true)
+      end
+
+      it 'can create a participant even if it is missing a name and email' do
+        test_module = create(:fe1)
+        test_module.create_students_from_participants(participants)
+        no_name = test_module.students.find do |student|
+          student.zoom_id == "16782336"
+        end
+        expect(no_name.name).to eq("")
+        expect(no_name.zoom_email).to eq("")
+      end
+
+      it 'will not create a duplicate student with the same Zoom id' do
+        duplicate_participant = participants.last.dup
+        participants << duplicate_participant
+        test_module = create(:fe1)
+        test_module.create_students_from_participants(participants)
+        test_module.reload
+        expect(test_module.students.length).to eq(participants.length - 1)
+        num_duplicates = test_module.students.count do |student|
+          student.zoom_id == duplicate_participant[:id]
+        end
+        expect(num_duplicates).to eq(1)
       end
     end
   end
