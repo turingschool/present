@@ -131,9 +131,6 @@ RSpec.describe 'Creating an Attendance' do
     
     expect(Attendance.last.student_attendances.count).to eq(44)
       
-    present_student_attendance = StudentAttendance.first
-    absent_student_attendance = StudentAttendance.last
-
     Attendance.last.student_attendances.each do |student_attendance|
       student = student_attendance.student
       expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom Email" => student.zoom_email, "Zoom ID" => student.zoom_id)
