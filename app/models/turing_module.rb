@@ -21,12 +21,14 @@ class TuringModule < ApplicationRecord
 
   def create_students_from_participants(participants)
     participants.each do |participant|
-      attributes = {
-            name: participant[:name],
-            zoom_email: participant[:user_email],
-            zoom_id: participant[:id]
-          }
-      self.students.create(attributes)
-    end
+      if !students.exists?(zoom_id: participant[:id]) #in the case that a student joins more than once
+        attributes = {
+              name: participant[:name],
+              zoom_email: participant[:user_email],
+              zoom_id: participant[:id]
+            }
+        self.students.create(attributes)
+      end
+    end 
   end
 end

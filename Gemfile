@@ -52,6 +52,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'webmock'
   gem 'faker'
+  gem 'capybara_table'
 end
 
 group :development do
