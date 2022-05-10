@@ -21,7 +21,7 @@ class TuringModule < ApplicationRecord
 
   def create_students_from_participants(participants)
     participants.each do |participant|
-      if !Student.exists?(zoom_id: participant[:id]) #in the case that a student joins more than once
+      if !students.exists?(zoom_id: participant[:id]) #in the case that a student joins more than once
         attributes = {
               name: participant[:name],
               zoom_email: participant[:user_email],
