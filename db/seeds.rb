@@ -1,5 +1,5 @@
 # user = User.create!(google_id: 'na', email: 'testgmail.com', google_oauth_token: 'na')
-inning = Inning.create!(name: "2111")
+inning = Inning.create!(name: "2203")
 
 # fe_attendance_spreadsheet = GoogleSpreadsheet.create!(google_id: '1sb75ubr7sTEwB20LdvA940yky9jPdcRq_MvG-zBvSLY')
 # be_attendance_spreadsheet = GoogleSpreadsheet.create!(google_id: '1DYcKbsZysTT8Boc3hdm4AY0_6518aNK_B9LfyVGhsZ0')
