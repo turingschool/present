@@ -30,3 +30,5 @@
 /config/application.yml
 
 coverage
+
+.ruby-version
