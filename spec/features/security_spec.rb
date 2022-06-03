@@ -16,8 +16,7 @@ RSpec.describe 'Security' do
 
   it 'does not allow a non-turing user to visit any routes under the user namespace' do
     user = mock_login
-
-    expect(user.organization_domain).to_not eq('turing.edu')
+    user.update(organization_domain: 'notturing.edu')
 
     visit '/innings/1'
 
