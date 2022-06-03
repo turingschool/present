@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 2022_05_21_063103) do
     t.datetime "updated_at", null: false
     t.string "google_refresh_token"
     t.bigint "turing_module_id"
+    t.string "organization_domain"
     t.index ["turing_module_id"], name: "index_users_on_turing_module_id"
   end
 

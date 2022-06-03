@@ -1,11 +1,13 @@
 class User::BaseController < ApplicationController
-  # before_action :verify_google_user
+  before_action :verify_google_user
   #
-  # def verify_google_user
-  #   redirect_to '/welcome' unless valid_google_user? && valid_google_oauth_token?
-  #   # redirect_to '/welcome' unless valid_google_oauth_token?
-  #
-  # end
+  def verify_google_user
+    if current_user.nil?
+      render 'welcome/index'
+    elsif !current_user.valid_google_user?
+      render 'error/unauthorized'
+    end
+  end
 
   # def valid_google_user?
   #   current_user
