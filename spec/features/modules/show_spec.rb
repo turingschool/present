@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Modules show page' do
+  before(:each) do
+    mock_login
+  end
+  
   it 'shows the modules attributes' do
     test_sheet = create(:google_sheet)
     test_module = test_sheet.turing_module

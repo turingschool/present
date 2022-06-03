@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Student Create' do
+  before(:each) do
+    mock_login
+  end
+  
   it 'links to the create page from the student index' do
     test_module = create(:fe3)
     visit turing_module_students_path(test_module)
