@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Student Update' do
+  before(:each) do
+    mock_login
+  end
+  
   it 'links to the edit page from the show page' do
     student = create(:student)
 

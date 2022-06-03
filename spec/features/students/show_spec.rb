@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Student Show Page' do
+  before(:each) do
+    mock_login
+  end
+  
   it 'is linked from the student index' do
     test_module = create(:fe3)
     students = create_list(:student, 11, turing_module: test_module)

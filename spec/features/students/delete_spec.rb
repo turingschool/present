@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Student Delete' do
+  before(:each) do
+    mock_login
+  end
+  
   it 'deletes a student from the show page' do
     student = create(:student)
 

@@ -6,4 +6,8 @@ class User < ApplicationRecord
   def my_module
     turing_module
   end
+
+  def valid_google_user?
+    organization_domain == 'turing.edu'
+  end
 end
