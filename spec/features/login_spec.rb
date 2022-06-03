@@ -18,6 +18,11 @@ RSpec.describe "Logging In" do
         "refresh_token" => "REFRESH_TOKEN",
         "expires_at" => 1496120719,
         "expires" => true
+      },
+      "extra" => {
+        "raw_info" => {
+          "hd" => "turing.edu"
+        }
       }
     })
 
