@@ -10,24 +10,30 @@
   </head>
 
   <body>
-    <nav class="s-nav s-nav-sticky">
-      <a class="s-nav-icon" href="/">
-        <h1 class="s-h1">Present!</h1>
-      </a>
-      <ul class="s-nav-menu">
-        <% if current_user %>
-          <li><%= link_to "All Innings", innings_path %></li>
-          <li><%= link_to 'Log Out', '/sessions', method: :delete %></li>
-        <% else %>
-          <li><%= link_to "Sign In With Google", "/auth/google_oauth2" %></li>
-        <% end %>
-      </ul>
-    </nav>
-    <% flash.each do |type, message| %>
-      <div class=<%= type %>>
-        <p><%= message %></p>
-      </div>
-    <% end %>
-    <%= yield %>
+    <section class="s-content">
+      <nav class="s-nav s-nav-sticky">
+        <a class="s-nav-icon" href="/">
+          <h1 class="s-h1">Present!</h1>
+        </a>
+        <ul class="s-nav-menu">
+          <% if current_user %>
+            <li class='s-nav-menu-item'><%= link_to "Dashboard", root_path %></li>
+            <li class='s-nav-menu-item'><%= link_to "Current Inning", inning_path(current_inning) if current_inning %></li>
+            <li class='s-nav-menu-item'><%= link_to "All Innings", innings_path %></li>
+            <li class='s-nav-menu-item'><%= link_to 'Log Out', '/sessions', method: :delete %></li>
+          <% else %>
+            <li><%= link_to "Sign In With Google", "/auth/google_oauth2" %></li>
+          <% end %>
+        </ul>
+      </nav>
+      <% flash.each do |type, message| %>
+        <div class=<%= type %>>
+          <p><%= message %></p>
+        </div>
+      <% end %>
+      <section id='main-content'>
+        <%= yield %>
+      </section>
+    </section>
   </body>
 </html>
