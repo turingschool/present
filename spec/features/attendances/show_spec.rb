@@ -1,7 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe 'attendance show page' do
+  before(:each) do
+    mock_login
+  end
+  
   it 'shows the module name, attendance date and time' do
+
     # test_attendance = create(:attendance)
     # students = create_list(:student, 10, turing_module: test_attendance.turing_module)
     # student_attendances = create_list(:student_attendance, 10, attendance: test_attendance)
