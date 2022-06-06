@@ -1,5 +1,5 @@
 class User::DashboardController < User::BaseController
   def show
-    @current_inning = Inning.find_by(current: true)
+    @my_module = current_user.my_module
   end
 end

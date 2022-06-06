@@ -1,47 +1,77 @@
 require 'rails_helper'
 
 RSpec.describe "Dashboard" do
-  it 'user can see current inning if there is one' do
-    user = mock_login
-
-    create(:inning)
-    current_inning = create(:inning, name:'2108', current: true)
-
-    visit '/dashboard'
-
-    expect(page).to have_content("Current Inning: #{current_inning.name}")
+  before(:each) do
+    @user = mock_login
   end
 
-  it 'user cant see current inning if there isnt one' do
-    user = mock_login
+  it 'shows a welcome message' do
+    visit '/'
 
-    create_list(:inning, 2)
-
-    visit '/dashboard'
-
-    expect(page).to have_content("No Current Inning Selected")
+    expect(page).to have_content("Welcome #{@user.email}!")
   end
 
-  it 'user can see current modules for the current inning' do 
-    user = mock_login
-    current_inning = create(:inning, name:'2108', current: true)
-    fe_3 = create(:turing_module, program: :FE, module_number: 3, inning_id: current_inning.id)
-    fe_1 = create(:turing_module, program: :FE, module_number: 1, inning_id: current_inning.id)
-    fe_2 = create(:turing_module, program: :FE, module_number: 2, inning_id: current_inning.id)
-    be1 = create(:turing_module, program: :BE, module_number: 1, inning_id: current_inning.id)
-    be2 = create(:turing_module, program: :BE, module_number: 2, inning_id: current_inning.id)
+  context 'if my_module is set' do
+    before(:each) do
+      @my_mod = create(:turing_module)
+      @user.update(turing_module: @my_mod)
+    end
 
-    visit dashboard_path
+    it 'user can see their module linked' do
+      visit '/'
 
-    within(".current-modules") do 
-      current_inning.turing_modules.each do |mod|
-        expect(page).to have_link("#{mod.program} Mod #{mod.module_number}")
-      end 
-    end 
-    
-    click_link("#{fe_3.program} Mod #{fe_3.module_number}")
-    expect(current_path).to eq(turing_module_path(fe_3))
-  end 
+      expect(page).to have_content("My Module: #{@my_mod.name}")
+      expect(page).to have_link(@my_mod.name, href: turing_module_path(@my_mod))
+    end
+
+    it 'user can take attendance for their mod' do
+      visit '/'
+
+      expect(page).to have_content('Take Attendance for my mod:')
+      expect(page.find('form#take-attendance')['method']).to eq('post')
+      expect(page.find('form#take-attendance')['action']).to eq(turing_module_attendances_path(@my_mod))
+    end
+
+    it 'does not show current inning info' do
+      current_inning = create(:inning, current: true)
+
+      visit '/'
+
+      expect(page).to_not have_content("Current Inning:")
+    end
+  end
+
+  context 'if my_module is not set and there is a current inning' do
+    before(:each) do
+      @current_inning = create(:inning, current: true)
+      @current_modules = create_list(:turing_module, 3, inning: @current_inning)
+    end
+
+    it 'User sees a message about my_module' do
+      visit '/'
+      expect(page).to have_content("My Module is not set. To set My Module visit a module page.")
+    end
+
+    it 'shows the current inning and its modules' do
+      visit '/'
+
+      expect(page).to have_content("Current Inning: #{@current_inning.name}")
+      @current_modules.each do |mod|
+        expect(page).to have_link(mod.name, href: turing_module_path(mod))
+      end
+    end
+  end
+
+  context 'if my_module is not set and there is no current inning' do
+    it 'shows a message about customizing the dashboard' do
+      visit '/'
+
+      expect(page).to have_content('No Inning is set as the current inning. Visit the All Innings page to set the current inning.')
+      within '#main-content' do
+        expect(page).to have_link('All Innings', href: innings_path)
+      end
+    end
+  end
 
 
 end
