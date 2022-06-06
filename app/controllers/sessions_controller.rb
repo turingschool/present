@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       organization_domain: auth_hash["extra"]["raw_info"]["hd"]
     })
     session[:user_id] = user.id
-    redirect_to dashboard_path
+    redirect_to root_path
   end
 
   def destroy
