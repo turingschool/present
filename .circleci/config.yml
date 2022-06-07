@@ -3,7 +3,7 @@ orbs:
    node: circleci/node@5.0.0
    heroku: circleci/heroku@1.0.1 # Use the Heroku orb in your config
 jobs: # a collection of steps
-  build: # runs not using Workflows must have a `build` job as entry point
+  build-and-test: # runs not using Workflows must have a `build` job as entry point
     docker: # run the steps with Docker
       - image: circleci/ruby:2.7.2 # ...with this image as the primary container; this is where all `steps` will run
         environment: # environment variables for primary container
@@ -39,23 +39,6 @@ jobs: # a collection of steps
       - run:
           name: Database setup
           command: bin/rails db:{create,migrate} --trace
-  test:
-    docker: # run the steps with Docker
-      - image: circleci/ruby:2.7.2 # ...with this image as the primary container; this is where all `steps` will run
-        environment: # environment variables for primary container
-          BUNDLE_JOBS: 3
-          BUNDLE_RETRY: 3
-          BUNDLE_PATH: vendor/bundle
-          PGHOST: 127.0.0.1
-          PGUSER: postgres
-          RAILS_ENV: test
-      - image: circleci/postgres:11 # database image
-        environment: # environment variables for database, it is kind of obvious but it is important that they match with your test config in database.yml
-          POSTGRES_USER: postgres
-          POSTGRES_DB: attendance_tracker_hackathon_test
-          POSTGRES_PASSWORD: attendance_tracker_hackathon_test
-    steps:
-      - checkout
       - run:
           name: Run rspec in parallel
           command: bundle exec rspec
@@ -63,11 +46,19 @@ jobs: # a collection of steps
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: test_results
       # See https://circleci.com/docs/2.0/deployment-integrations/ for example deploy configs
+  deploy:
+    - checkout
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
 workflows:
   build-test-deploy:
     jobs:
-      - build
-      - test:
+      - build-and-test
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
           requires:
-            - build
-    
+            - build-and-test
+          filters:
+            branches:
+              only: user_can_take_attendance
