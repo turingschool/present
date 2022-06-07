@@ -3,6 +3,11 @@ orbs:
    node: circleci/node@5.0.0
    heroku: circleci/heroku@1.0.1 # Use the Heroku orb in your config
 jobs: # a collection of steps
+  heroku-db-migrate:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      run: heroku run rails db:migrate
   build-and-test: # runs not using Workflows must have a `build` job as entry point
     docker: # run the steps with Docker
       - image: circleci/ruby:2.7.2 # ...with this image as the primary container; this is where all `steps` will run
@@ -46,11 +51,6 @@ jobs: # a collection of steps
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: test_results
       # See https://circleci.com/docs/2.0/deployment-integrations/ for example deploy configs
-  heroku-db-migrate:
-    docker:
-      - image: cimg/base:2021.04
-    steps:
-      run: heroku run rails db:migrate
 workflows:
   build-test-deploy:
     jobs:
