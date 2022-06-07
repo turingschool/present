@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'Modules show page' do
   before(:each) do
-    mock_login
+    @user = mock_login
   end
-  
+
   it 'shows the modules attributes' do
     test_sheet = create(:google_sheet)
     test_module = test_sheet.turing_module
@@ -13,8 +13,6 @@ RSpec.describe 'Modules show page' do
 
     expect(page).to have_content("#{test_module.program} Mod #{test_module.module_number}")
     expect(page).to have_content("#{test_module.inning.name} inning")
-    expect(page).to have_link('Attendance Sheet', href: test_sheet.link)
-    expect(page).to have_content("Calendar Integration: OFF")
   end
 
   it 'shows the past attendances for the module' do
@@ -53,11 +51,24 @@ RSpec.describe 'Modules show page' do
     end
   end
 
-  it 'shows a message when theres no sheet associated with the module' do
-    test_module = create(:turing_module)
+  it 'has a message if module is already set as My Module' do
+    mod = create(:turing_module)
+    @user.turing_module = mod
 
-    visit "/modules/#{test_module.id}"
+    visit turing_module_path(mod)
 
-    expect(page).to have_content('Attendance Sheet: No Google Sheet associated with this module')
+    expect(page).to have_content('(Set to My Module)')
+  end
+
+  it 'has a button to set the module as my_module' do
+    mod = create(:turing_module)
+
+    visit turing_module_path(mod)
+
+    click_button 'Set as My Module'
+
+    expect(current_path).to eq(turing_module_path(mod))
+    expect(page).to have_content('(Set to My Module)')
+    expect(@user.is_this_my_mod?(mod)).to eq(true)
   end
 end
