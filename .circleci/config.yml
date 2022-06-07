@@ -55,6 +55,3 @@ workflows:
             - build-and-test
           post-steps:
             - run: rails db:migrate
-      -  heroku-db-migrate:
-          requires:
-            - heroku/deploy-via-git
