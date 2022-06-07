@@ -1,0 +1,9 @@
+<h3>Modules</h3>
+<table class='inning-modules'>
+    <% modules.each do |mod| %>
+    <tr>
+      <td><%= link_to mod.name, turing_module_path(mod) %>---</td>
+      <td><%= link_to 'Take Attendance', new_turing_module_attendance_path(mod) %></td>
+    </tr>
+    <% end %>
+</table>

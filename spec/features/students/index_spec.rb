@@ -11,7 +11,7 @@ RSpec.describe 'Student Index' do
 
     visit turing_module_path(test_module)
 
-    click_link '11 Students'
+    click_link 'Students (11)'
 
     expect(current_path).to eq("/modules/#{test_module.id}/students")
   end

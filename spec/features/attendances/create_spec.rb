@@ -1,6 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe 'Creating an Attendance' do
+  before(:each) do
+    @user = mock_login
+  end
+
+  it 'links back to module and inning' do
+    mod = create(:turing_module)
+    inning = mod.inning
+    visit new_turing_module_attendance_path(mod)
+    expect(page).to have_link(mod.name, href: turing_module_path(mod))
+    expect(page).to have_link(inning.name, href: inning_path(inning))
+  end
+
   it 'can fill in a past zoom meeting from the module show page' do
     allow(CreateAttendanceFacade).to receive(:run).and_return(nil)
     user = mock_login
@@ -15,7 +27,7 @@ RSpec.describe 'Creating an Attendance' do
     expect(page).to have_content(test_module.inning.name)
     expect(page).to have_content('Take Attendance for a Zoom Meeting')
     fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
-    click_button 'Submit'
+    click_button 'Take Attendance'
 
     expect(current_path).to eq(turing_module_path(test_module))
     within('#past-attendances') do
@@ -25,7 +37,7 @@ RSpec.describe 'Creating an Attendance' do
       end
     end
   end
-  
+
   xit 'updates the sheet' do
     user = mock_login
     test_sheet = create(:m4_attendance_sheet)
@@ -35,31 +47,31 @@ RSpec.describe 'Creating an Attendance' do
     expected_column = 'AJ'
     # 12/17 am
     # column AJ
-    
+
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
     .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
-    
+
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
     .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
-    
+
     stub_request(:get, "https://sheets.googleapis.com/v4/spreadsheets/#{test_spreadsheet.google_id}/values/#{test_sheet.name}?majorDimension=COLUMNS") \
     .to_return(body: File.read('spec/fixtures/google_sheet_values.json'))
-    
+
     stub_request(:put, "https://sheets.googleapis.com/v4/spreadsheets/#{test_spreadsheet.google_id}/values/#{test_sheet.name}?valueInputOption=RAW") \
     .to_return(body: '{}')
-    
+
     visit turing_module_path(test_module)
     click_link('Take Attendance')
     fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
-    
+
     expect(GoogleSheetsService).to receive(:update_column) \
     .with(test_sheet, expected_column, expected_attendance_values, user)
-    
+
     click_button 'Submit'
   end
-  
+
   it 'will work even if the sheet is resorted in the middle of taking attendance'
-  
+
   it 'can populate the module with students from the Zoom meeting' do
     user = mock_login
     sheet = create(:fe1_attendance_sheet)
@@ -73,14 +85,14 @@ RSpec.describe 'Creating an Attendance' do
 
 
     visit turing_module_path(test_module)
-    expect(page).to have_link('0 Students')
+    expect(page).to have_link('Students (0)')
     click_link('Take Attendance')
 
     check(:attendance_populate_students)
     fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
-    click_button 'Submit'
+    click_button 'Take Attendance'
 
-    click_link("#{expected_students.length} Students")
+    click_link("Students (#{expected_students.length})")
 
     expect(page).to have_css('.student', count: expected_students.length)
     expected_students.each do |student|
@@ -89,8 +101,8 @@ RSpec.describe 'Creating an Attendance' do
       expect(page).to have_content(student.zoom_id)
     end
   end
-  
-  it 'can convert join time to a status' do 
+
+  it 'can convert join time to a status' do
     meeting_time = Time.parse("2021-12-17T16:00:00Z")
     no_show = CreateAttendanceFacade.convert_status(nil, meeting_time)
     early = CreateAttendanceFacade.convert_status(Time.parse("2021-12-17T15:48:18Z"), meeting_time)
@@ -105,38 +117,38 @@ RSpec.describe 'Creating an Attendance' do
     expect(over_one_minute_late).to eq("tardy")
     expect(between_one_and_thirty).to eq("tardy")
     expect(after_thirty).to eq("absent")
-  end 
-  
-  it 'creates students attendances' do 
+  end
+
+  it 'creates students attendances' do
     user = mock_login
     sheet = create(:m4_attendance_sheet)
     test_module = sheet.turing_module
     test_module.students = expected_students
     test_module.students.create(zoom_id: "234sdfsdf-A8zjQjKq9mogfJkvvA", name: "AN ABSENT STUDENT", zoom_email: "INCREDIBLYABSENT")
     test_zoom_meeting_id = 95490216907
-    
+
     allow(AttendanceTaker).to receive(:take_attendance).and_return(nil)
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
     .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
     .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
-    
+
     visit turing_module_path(test_module)
     click_link('Take Attendance')
-    
+
     fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
-    click_button 'Submit'
-    
+    click_button 'Take Attendance'
+
     visit "/attendances/#{Attendance.last.id}"
-    
+
     expect(Attendance.last.student_attendances.count).to eq(44)
-      
+
     Attendance.last.student_attendances.each do |student_attendance|
       student = student_attendance.student
       expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom Email" => student.zoom_email, "Zoom ID" => student.zoom_id)
-    end 
+    end
 
-  end 
+  end
 
   let(:expected_attendance_values){
     [

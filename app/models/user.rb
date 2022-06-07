@@ -10,4 +10,9 @@ class User < ApplicationRecord
   def valid_google_user?
     organization_domain == 'turing.edu'
   end
+
+  def is_this_my_mod?(turing_module)
+    return false if my_module.nil?
+    my_module.id == turing_module.id
+  end
 end

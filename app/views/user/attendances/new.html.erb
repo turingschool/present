@@ -1,15 +1,4 @@
-<h1 class='s-h1'><%= @module.name %></h1>
-<p class='s-p'><%= @module.inning.name %> inning</p>
+<h1><%= link_to @module.name, turing_module_path(@module) %></h1>
+<p class='s-p'><%= link_to "#{@module.inning.name} inning", inning_path(@module.inning) %> </p>
 <h3 class='s-h3'>Take Attendance for a Zoom Meeting</h3>
-<%= form_with model: [@module, @attendance], local: true do |f| %>
-  <p class='s-p'>
-    <%= f.label :zoom_meeting_id, "Enter the Zoom Meeting ID" %>
-    <%= f.text_field :zoom_meeting_id %>
-  </p>
-
-  <p class='s-p'>
-    <%= f.check_box :populate_students %>
-    <%= f.label :populate_students, "Use this meeting to add students to your module" %>
-  </p>
-  <%= f.submit 'Submit', class: 's-button' %>
-<% end %>
+<%= render partial: 'shared/take_attendance', locals: {attendance: @attendance, mod: @module} %>

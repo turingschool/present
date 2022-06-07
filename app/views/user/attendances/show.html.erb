@@ -1,5 +1,5 @@
-<h1 class='s-h1'><%= @module.name %></h1>
-<h3 class='s-h3'><%= @attendance.meeting_title %> - <%= @attendance.pretty_time %></h3>
+<h2><%= link_to @module.name, turing_module_path(@module) %></h2>
+<h3><%= @attendance.meeting_title %> - <%= @attendance.pretty_time %></h3>
 <table id='student-attendances'>
   <tr>
     <th>Student</th>

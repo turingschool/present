@@ -30,8 +30,9 @@ RSpec.describe "Logging In" do
 
     click_link 'Sign In With Google'
 
-    expect(current_path).to eq('/dashboard')
+    expect(current_path).to eq('/')
     expect(page).to have_link('Log Out')
+    expect(page).to_not have_link('Sign In With Google')
   end
 
   it 'if user exists'

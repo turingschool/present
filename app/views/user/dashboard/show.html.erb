@@ -1,13 +1,12 @@
-<% if @current_inning %>
-    <h1>Current Inning: <%= link_to @current_inning.name, inning_path(@current_inning) %> </h1>
-    <% if !@current_inning.turing_modules.empty? %>
-    <section class='current-modules'>
-        <h2>Current Modules:</h2>
-        <% @current_inning.turing_modules.each do |mod| %>
-            <li><%= link_to mod.name, turing_module_path(mod) %></li>
-        <% end %>
-    </section>
-    <% end %>
+<h1>Welcome <%= current_user.email %>!</h1>
+<% if @my_module %>
+  <h2>My Module: <%= link_to @my_module.name, turing_module_path(@my_module) %></h2>
+  <h3>Take Attendance for my mod:</h3>
+  <%= render partial: 'shared/take_attendance', locals: {attendance: Attendance.new, mod: @my_module} %>
+<% elsif current_inning %>
+  <p>My Module is not set. To set My Module visit a module page.</p>
+  <h2>Current Inning: <%= current_inning.name %></h2>
+  <%= render partial: 'shared/module_list', locals: {modules: current_inning.turing_modules} %>
 <% else %>
-    <h1>No Current Inning Selected</h1>
+  <p>No Inning is set as the current inning. Visit the <%= link_to 'All Innings', innings_path %> page to set the current inning.</p>
 <% end %>
