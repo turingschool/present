@@ -7,7 +7,7 @@ jobs: # a collection of steps
     docker:
       - image: cimg/base:2022.06
     steps:
-      run:
+      - run:
         name: db migrate
         command: heroku run rails db:migrate
   build-and-test: # runs not using Workflows must have a `build` job as entry point
