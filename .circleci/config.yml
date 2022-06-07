@@ -54,4 +54,4 @@ workflows:
           requires:
             - build-and-test
           post-steps:
-            - run: heroku run rails db:migrate
+            - run: heroku run -a $HEROKU_APP_NAME rails db:migrate
