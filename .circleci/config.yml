@@ -7,7 +7,8 @@ jobs: # a collection of steps
     docker:
       - image: cimg/base:2022.06
     steps:
-      run: heroku run rails db:migrate
+      run:
+        command: heroku run rails db:migrate
   build-and-test: # runs not using Workflows must have a `build` job as entry point
     docker: # run the steps with Docker
       - image: circleci/ruby:2.7.2 # ...with this image as the primary container; this is where all `steps` will run
