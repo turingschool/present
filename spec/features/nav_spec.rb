@@ -5,15 +5,14 @@ RSpec.describe "Nav Bar" do
     user = mock_login
 
     visit root_path
-
-    click_link "All Innings"
-
+    within('#nav') do
+      click_link "All Innings"
+    end
     expect(current_path).to eq(innings_path)
   end
 
   it 'non registered user cant see link to see all innings' do
     visit root_path
-
     expect(page).to_not have_link("All Innings")
   end
 
