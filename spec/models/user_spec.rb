@@ -38,5 +38,28 @@ RSpec.describe User, type: :model do
         expect(user.valid_google_user?).to eq(false)
       end
     end
+
+    describe 'is_this_my_mod?' do
+      it 'returns true if the mod is the users mod' do
+        user = create(:user)
+        mod = create(:turing_module)
+        user.turing_module = mod
+        expect(user.is_this_my_mod?(mod)).to eq(true)
+      end
+
+      it 'returns false if user has no My Module' do
+        user = create(:user)
+        mod = create(:turing_module)
+        expect(user.is_this_my_mod?(mod)).to eq(false)
+      end
+
+      it 'returns false if user has a different My Module' do
+        user = create(:user)
+        mymod = create(:turing_module)
+        diffmod = create(:turing_module)
+        user.turing_module = mymod
+        expect(user.is_this_my_mod?(diffmod)).to eq(false)
+      end
+    end
   end
 end
