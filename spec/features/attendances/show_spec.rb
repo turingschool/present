@@ -4,8 +4,8 @@ RSpec.describe 'attendance show page' do
   before(:each) do
     mock_login
   end
-  
-  it 'shows the module name, attendance date and time' do
+
+  it 'links to the module and shows attendance date and time' do
 
     # test_attendance = create(:attendance)
     # students = create_list(:student, 10, turing_module: test_attendance.turing_module)
@@ -15,7 +15,7 @@ RSpec.describe 'attendance show page' do
 
     visit "/attendances/#{test_attendance.id}"
 
-    expect(page).to have_content(test_attendance.turing_module.name)
+    expect(page).to have_link(test_attendance.turing_module.name, href: turing_module_path(test_attendance.turing_module))
     expect(page).to have_content(test_attendance.meeting_title)
     expect(page).to have_content(test_attendance.pretty_time)
   end
