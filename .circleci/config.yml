@@ -25,7 +25,6 @@ jobs: # a collection of steps
       - node/install:
           install-yarn: true
           node-version: '16.13'
-      - run: node --version
       - run:
           name: Force Bundler Version
           command: |
