@@ -33,10 +33,7 @@ jobs: # a collection of steps
             source $BASH_ENV
             gem install bundler
       - run:
-          name: Which bundler?
-          command: bundle -v
-      - run: 
-          name: Bundle install
+          name: Bundle Install
           command: bundle install
       - run:
           name: Wait for DB
