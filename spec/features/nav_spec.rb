@@ -4,7 +4,7 @@ RSpec.describe "Nav Bar" do
   it 'registered user can see link to see all innings' do
     user = mock_login
 
-    visit dashboard_path
+    visit root_path
 
     click_link "All Innings"
 

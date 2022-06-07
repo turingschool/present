@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   delete '/sessions', to: 'sessions#destroy'
 
   scope module: :user do
-    get '/dashboard', to: 'dashboard#show'
+    resources :users, only: [:update]
     resources :innings, only: [:show, :create, :index, :update]
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
       resources :attendances, only: [:new, :create, :show]

@@ -1,16 +1,13 @@
-<h1 class='s-h1'><%= @module.name %></h1>
-<p class='s-p'><%= @module.inning.name %> inning</p>
-<% if @module.google_sheet %>
-  <%= link_to 'Attendance Sheet', @module.google_sheet.link, target: :_blank %>
+<h1><%= @module.name %></h1>
+<% if current_user.is_this_my_mod?(@module) %>
+  <p>(Set to My Module)</p>
 <% else %>
-  <p>Attendance Sheet: No Google Sheet associated with this module</p>
+  <p><%= button_to 'Set as My Module', user_path(current_user), method: :patch, params: {turing_module_id: @module.id}, class: 's-button' %></p>
 <% end %>
-<p class='s-p'>Calendar Integration: <%= @module.calendar_integration ? 'ON':'OFF' %></p>
-<%= link_to "#{@module.students.length} Students", turing_module_students_path(@module) %>
-
-
-<%= link_to 'Take Attendance', new_turing_module_attendance_path(@module), class: 's-button' %>
-<section id='past-attendances' class='s-content'>
+<p><%= link_to "#{@module.inning.name} inning", inning_path(@module.inning), class: 's-link' %></p>
+<p><%= link_to "Students (#{@module.students.length})", turing_module_students_path(@module), class: 's-link' %></p>
+<p><%= link_to 'Take Attendance', new_turing_module_attendance_path(@module), class: 's-link' %></p>
+<section id='past-attendances'>
   <h3 class='s-h3'>Past Attendances</h3>
   <table>
     <tr>
