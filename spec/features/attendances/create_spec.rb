@@ -2,7 +2,15 @@ require 'rails_helper'
 
 RSpec.describe 'Creating an Attendance' do
   before(:each) do
-    mock_login
+    @user = mock_login
+  end
+
+  it 'links back to module and inning' do
+    mod = create(:turing_module)
+    inning = mod.inning
+    visit new_turing_module_attendance_path(mod)
+    expect(page).to have_link(mod.name, href: turing_module_path(mod))
+    expect(page).to have_link(inning.name, href: inning_path(inning))
   end
 
   it 'can fill in a past zoom meeting from the module show page' do
