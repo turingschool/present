@@ -57,3 +57,7 @@ workflows:
             - run:
                 name: migrate
                 command: heroku run -a $HEROKU_APP_NAME rails db:migrate
+          filters:
+            branches:
+              only:
+                - user_can_take_attendance
