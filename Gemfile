@@ -53,6 +53,7 @@ group :development, :test do
   gem 'webmock'
   gem 'faker'
   gem 'capybara_table'
+  gem 'orderly'
 end
 
 group :development do
