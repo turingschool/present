@@ -150,6 +150,37 @@ RSpec.describe 'Creating an Attendance' do
 
   end
 
+  it 'students are listed in alphabetical order by last name' do
+    user = mock_login
+    sheet = create(:m4_attendance_sheet)
+    test_module = sheet.turing_module
+    test_module.students = expected_students
+    student_a = test_module.students.create(zoom_id: "234s234n2l3kj4JkvvA", name: "Firstname Alastname", zoom_email: "Alastname")
+    student_z = test_module.students.create(zoom_id: "234sdfsdfaefja;lsdkfjkvvA", name: "Firstname Zlastname", zoom_email: "Zlastname")
+    student_b = test_module.students.create(zoom_id: "234sdfsdf-lkrj2l34lkn", name: "Firstname Blastname", zoom_email: "Blastname")
+    student_c = test_module.students.create(zoom_id: "234sdfsdf-8u90ohvaldkfj", name: "Firstname Clastname", zoom_email: "Clastname")
+    test_zoom_meeting_id = 95490216907
+
+    allow(AttendanceTaker).to receive(:take_attendance).and_return(nil)
+    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
+    .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
+    stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
+    .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+
+    visit turing_module_path(test_module)
+    click_link('Take Attendance')
+
+    fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
+    click_button 'Take Attendance'
+
+    visit "/attendances/#{Attendance.last.id}"
+
+    expect(student_a.name).to appear_before(student_b.name)
+    expect(student_b.name).to appear_before(student_c.name)
+    expect(student_c.name).to appear_before(student_z.name)
+
+  end
+
   let(:expected_attendance_values){
     [
       "absent",
