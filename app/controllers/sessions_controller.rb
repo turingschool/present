@@ -8,7 +8,8 @@ class SessionsController < ApplicationController
     user = User.find_or_create_by(google_id: auth_hash['uid'])
     user.update({
       email: auth_hash['info']['email'],
-      google_oauth_token: auth_hash['credentials']['token']
+      google_oauth_token: auth_hash['credentials']['token'],
+      organization_domain: auth_hash["extra"]["raw_info"]["hd"]
     })
     session[:user_id] = user.id
     redirect_to root_path

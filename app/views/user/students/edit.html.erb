@@ -1,0 +1,15 @@
+<%= form_with model: @student do |f| %>
+  <p class='s-p'>
+    <%= f.label :name, 'Name: ' %>
+    <%= f.text_field :name %>
+  </p>
+  <p class='s-p'>
+    <%= f.label 'Zoom Email: ' %>
+    <%= f.text_field :zoom_email %>
+  </p>
+  <p class='s-p'>
+    <%= f.label 'Zoom ID: ' %>
+    <%= f.text_field :zoom_id %>
+  </p>
+  <%= f.submit 'Save Changes', class: 's-button', data: {confirm: 'Are you sure you want to update this student?'} %>
+<% end %>

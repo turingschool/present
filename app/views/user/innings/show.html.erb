@@ -1,20 +1,14 @@
-<h1><%= @inning.name %> Inning</h1>
+<h1 style="display:inline;"><%= @inning.name %> Inning</h1> <%= "(current inning)" if @inning.current%>
+<% if !@inning.current %>
+    <%= button_to "Set To Current Inning", inning_path(@inning), method: :patch, form: {style: 'display:inline-block;'} %>
+<% end %>
 
 <% if !@inning.turing_modules.empty? %>
-    <h3>Modules</h3>
-
-    <table>
-        <% @inning.turing_modules.each do |mod| %>
-        <tr>
-          <td><%= link_to mod.name, user_turing_module_path(mod) %>---</td>
-          <td><%= link_to 'Take Attendance for this Module', new_user_turing_module_attendance_path(mod) %></td>
-        </tr>
-        <% end %>
-    </table>
+    <%= render partial: "shared/module_list", locals: {modules: @inning.turing_modules} %>
 <% end %>
 <br><br>
 <hr>
-<h3>Create a New Module for the <%= @inning.name %> inning: </h2>
+<h3>Create a New Module for the <%= @inning.name %> inning: </h3>
 
 <%= form_with url:'/user/turing_modules', method: :post, local: true do |f| %>
     <%= f.hidden_field :inning_id, value: @inning.id %>
@@ -26,6 +20,3 @@
     <%= f.text_field :google_sheet_name, placeholder: 'Ex: 2105, 2107, etc.'  %><br><br>
     <%= f.submit "Create New Module" %>
 <% end %>
-
-
-

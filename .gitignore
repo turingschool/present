@@ -16,7 +16,7 @@
 # Ignore uploaded files in development
 /storage/*
 !/storage/.keep
-
+/coverage
 /node_modules
 /yarn-error.log
 
@@ -28,3 +28,7 @@
 
 # Ignore application configuration
 /config/application.yml
+
+coverage
+
+.ruby-version

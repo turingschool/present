@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_22_211011) do
+ActiveRecord::Schema.define(version: 2022_05_21_063103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,23 +21,60 @@ ActiveRecord::Schema.define(version: 2021_09_22_211011) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.string "meeting_title"
+    t.datetime "meeting_time"
     t.index ["turing_module_id"], name: "index_attendances_on_turing_module_id"
     t.index ["user_id"], name: "index_attendances_on_user_id"
+  end
+
+  create_table "google_sheets", force: :cascade do |t|
+    t.bigint "google_spreadsheet_id"
+    t.bigint "turing_module_id"
+    t.string "name"
+    t.string "google_id"
+    t.index ["google_spreadsheet_id"], name: "index_google_sheets_on_google_spreadsheet_id"
+    t.index ["turing_module_id"], name: "index_google_sheets_on_turing_module_id"
+  end
+
+  create_table "google_spreadsheets", force: :cascade do |t|
+    t.string "google_id"
   end
 
   create_table "innings", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "current", default: false
+  end
+
+  create_table "student_attendances", force: :cascade do |t|
+    t.integer "status"
+    t.bigint "student_id"
+    t.bigint "attendance_id"
+    t.datetime "join_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attendance_id"], name: "index_student_attendances_on_attendance_id"
+    t.index ["student_id"], name: "index_student_attendances_on_student_id"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string "zoom_email"
+    t.string "zoom_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "turing_module_id"
+    t.index ["turing_module_id"], name: "index_students_on_turing_module_id"
   end
 
   create_table "turing_modules", force: :cascade do |t|
-    t.string "name"
     t.bigint "inning_id"
-    t.string "google_spreadsheet_id"
-    t.string "google_sheet_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "program"
+    t.integer "module_number"
+    t.boolean "calendar_integration", default: false
     t.index ["inning_id"], name: "index_turing_modules_on_inning_id"
   end
 
@@ -48,9 +85,17 @@ ActiveRecord::Schema.define(version: 2021_09_22_211011) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "google_refresh_token"
+    t.bigint "turing_module_id"
+    t.string "organization_domain"
+    t.index ["turing_module_id"], name: "index_users_on_turing_module_id"
   end
 
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
+  add_foreign_key "google_sheets", "google_spreadsheets"
+  add_foreign_key "google_sheets", "turing_modules"
+  add_foreign_key "student_attendances", "attendances"
+  add_foreign_key "student_attendances", "students"
+  add_foreign_key "students", "turing_modules"
   add_foreign_key "turing_modules", "innings"
 end

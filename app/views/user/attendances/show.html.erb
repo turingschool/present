@@ -1,0 +1,18 @@
+<h2><%= link_to @module.name, turing_module_path(@module) %></h2>
+<h3><%= @attendance.meeting_title %> - <%= @attendance.pretty_time %></h3>
+<table id='student-attendances'>
+  <tr>
+    <th>Student</th>
+    <th>Status</th>
+    <th>Zoom Email</th>
+    <th>Zoom ID</th>
+  </tr>
+  <% @attendance.student_attendances.by_last_name.each do |student_attendance| %>
+    <tr id='student-attendance-<%= student_attendance.id %>'>
+      <td><%= link_to student_attendance.student.name, student_path(student_attendance.student) %></td>
+      <td><%= student_attendance.status %></td>
+      <td><%= student_attendance.student.zoom_email %></td>
+      <td><%= student_attendance.student.zoom_id %></td>
+    </tr>
+  <% end %>
+</table>

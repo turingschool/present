@@ -1,10 +1,17 @@
 <% if @innings && !@innings.empty? %>
   <h1>Innings</h1>
 
-  <% @innings.each do |inning| %> 
-    <%= link_to inning.name, user_inning_path(inning)%>
+<section class="innings-list">
+  <% @innings.each do |inning| %>
+    <ul>
+      <%= link_to inning.name, inning_path(inning)%>
+      <% if inning.current %>
+        (current inning)
+      <% end %>
+    </ul>
   <% end %>
 <% end %>
+</section>
 <br>
 <hr>
 <h3>Create a New Inning: </h3>
@@ -13,4 +20,3 @@
   <%= f.text_field :name, placeholder: 'Ex: 1806, 2105, etc.' %>
   <%= f.submit "Submit" %>
 <% end %>
-
