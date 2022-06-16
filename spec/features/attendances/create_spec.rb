@@ -102,6 +102,44 @@ RSpec.describe 'Creating an Attendance' do
     end
   end
 
+  it 'can prompt user to add a new user if zoom attendee is not in student list' do 
+    user = mock_login
+    sheet = create(:m4_attendance_sheet)
+    test_module = sheet.turing_module
+    new_student = expected_students.pop
+    test_module.students = expected_students
+    test_zoom_meeting_id = 95490216907
+
+    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
+    .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
+    stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
+    .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+
+    visit turing_module_path(test_module)
+    click_link('Take Attendance')
+
+    fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
+    click_button 'Take Attendance'
+
+    visit "/attendances/#{Attendance.last.id}"
+
+    expect(test_module.students.count).to eq(42)
+    expect(page).to have_button("Add New Student")
+
+    click_button "Add New Student"
+    
+    expect(test_module.students.count).to eq(43)
+    expect(test_module.students.exists?(name: new_student.name)).to be(true)
+    
+    visit turing_module_students_path(test_module)
+
+    expect(page).to have_link(new_student.name)
+
+    visit "/attendances/#{Attendance.last.id}"
+
+    expect(page).to_not have_button("Add New Student")
+  end
+
   it 'can convert join time to a status' do
     meeting_time = Time.parse("2021-12-17T16:00:00Z")
     no_show = CreateAttendanceFacade.convert_status(nil, meeting_time)
