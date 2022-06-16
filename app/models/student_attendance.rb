@@ -10,4 +10,7 @@ class StudentAttendance < ApplicationRecord
       .order("last_name")
   end 
 
+  def visiting_student?
+    !student.turing_module
+  end   
 end
