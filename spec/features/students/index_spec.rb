@@ -35,4 +35,14 @@ RSpec.describe 'Student Index' do
       end
     end
   end
+
+  it 'links to the turing module page' do 
+    test_module = create(:fe3)
+
+    visit turing_module_students_path(test_module)
+
+    click_link(test_module.name)
+
+    expect(current_path).to eq(turing_module_path(test_module))
+  end 
 end
