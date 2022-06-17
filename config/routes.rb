@@ -7,8 +7,10 @@ Rails.application.routes.draw do
 
   scope module: :user do
     resources :users, only: [:update]
-    resources :innings, only: [:show, :create, :index, :update]
-    resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
+    resources :innings, only: [:show, :create, :index, :update] do
+      resources :turing_modules, only: [:create]
+    end
+    resources :turing_modules, path: '/modules', only: [:show], shallow: true do
       resources :attendances, only: [:new, :create, :show]
       resources :students
     end

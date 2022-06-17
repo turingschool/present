@@ -10,13 +10,10 @@
 <hr>
 <h3>Create a New Module for the <%= @inning.name %> inning: </h3>
 
-<%= form_with url:'/user/turing_modules', method: :post, local: true do |f| %>
-    <%= f.hidden_field :inning_id, value: @inning.id %>
-    <%= f.label "Module Name:" %>
-    <%= f.text_field :name, placeholder: 'Ex: BE Mod 3, FE Mod 1' %><br><br>
-    <%= f.label "Spreadsheet Link:" %>
-    <%= f.text_field :google_spreadsheet_link, placeholder: 'Attendance Sheet URL' %><br><br>
-    <%= f.label "Tab Name:"%>
-    <%= f.text_field :google_sheet_name, placeholder: 'Ex: 2105, 2107, etc.'  %><br><br>
+<%= form_with model: [@inning, TuringModule.new], local: true do |f| %>
+    <%= f.label "Program" %>
+    <%= f.select(:program, [['Frontend', :FE], ['Backend', :BE], ['Combined', :Combined]]) %>
+    <%= f.label "Module Number:" %>
+    <%= f.select(:module_number, 1..4) %>
     <%= f.submit "Create New Module" %>
 <% end %>
