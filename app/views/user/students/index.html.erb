@@ -1,6 +1,5 @@
-<h1 class='s-h1'><%= @module.name %></h1>
+<h1 class='s-h1'><%= link_to @module.name, turing_module_path(@module) %></h1>
 <h3 class='s-h3'>Students</h3>
-<%= link_to @module.name, turing_module_path(@module) %>
 <%= link_to 'Add a Student', new_turing_module_student_path(@module), class: 's-button'%>
 <table id='students'>
   <tr>
