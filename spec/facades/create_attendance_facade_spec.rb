@@ -86,42 +86,10 @@ RSpec.describe CreateAttendanceFacade do
       end
       expect(students_marked.sort).to eq(roster.sort)
     end
-
-    it 'gives each student an accurate status' do
-
-      #From spec/fixtures/zoom_meeting_participant_report.json:
-
-      #this student is not in the report and therefore did not join the meeting
-      completely_absent_student = @test_module.students.create!(zoom_id: 'ABC', name: 'Completely Absent', zoom_email: 'doesntmatter')
-
-      #this student joined early and rejoined late
-      present_student = Student.find_by(zoom_id: 'E0WPTrXCQAGkMsvF9rQgQA') #this student
-
-      #this student joined at exactly 1 minute late
-      barely_present_student = Student.find_by(zoom_id: 'qixZcwkKR3qLF8eIhJQB6g')
-
-      #this student joined 1:28 minutes past the start time
-      tardy_student = Student.find_by(zoom_id: 'I_HbqYdbR7mTSN98awLUVg')
-
-      #this student joined at exactly 30 minutes late
-      barely_tardy_student = Student.find_by(zoom_id: '8oidz5nrSpqDbMofdV1jkw')
-
-      #this student join more than 30 minutes after the meeting started
-      too_late_student = Student.find_by(zoom_id: 'CudREtxyR_e6J0TTPI0pGg')
-
-      new_attendance = CreateAttendanceFacade.take_attendance(@zoom_meeting, @test_module, @user)
-
-      expect(new_attendance.student_attendances.find_by(student: present_student).status).to eq("present")
-      expect(new_attendance.student_attendances.find_by(student: barely_present_student).status).to eq("present")
-      expect(new_attendance.student_attendances.find_by(student: tardy_student).status).to eq("tardy")
-      expect(new_attendance.student_attendances.find_by(student: barely_tardy_student).status).to eq("tardy")
-      expect(new_attendance.student_attendances.find_by(student: too_late_student).status).to eq("absent")
-      expect(new_attendance.student_attendances.find_by(student: completely_absent_student).status).to eq("absent")
-    end
   end
 
   context 'without students added to the module' do
-    it 'makes the call to add students to the module' do
+    it 'makes the call to add students to the module if the option is set to true' do
       expect(@test_module).to receive(:create_students_from_participants).with(@zoom_meeting.participant_report)
       new_attendance = CreateAttendanceFacade.take_attendance(@zoom_meeting, @test_module, @user, true)
     end
