@@ -14,8 +14,6 @@ class CreateAttendanceFacade
       status = convert_status(participant_join_time, Time.parse(meeting_start_time))
       StudentAttendance.create(status: status, join_time: participant_join_time, attendance: attendance, student: student)
     end
-
-    # AttendanceTaker.take_attendance(attendance, user)
   end
 
   def self.convert_status(join_time, meeting_start_time)

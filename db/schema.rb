@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_21_063103) do
+ActiveRecord::Schema.define(version: 2022_06_21_144738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,19 +25,6 @@ ActiveRecord::Schema.define(version: 2022_05_21_063103) do
     t.datetime "meeting_time"
     t.index ["turing_module_id"], name: "index_attendances_on_turing_module_id"
     t.index ["user_id"], name: "index_attendances_on_user_id"
-  end
-
-  create_table "google_sheets", force: :cascade do |t|
-    t.bigint "google_spreadsheet_id"
-    t.bigint "turing_module_id"
-    t.string "name"
-    t.string "google_id"
-    t.index ["google_spreadsheet_id"], name: "index_google_sheets_on_google_spreadsheet_id"
-    t.index ["turing_module_id"], name: "index_google_sheets_on_turing_module_id"
-  end
-
-  create_table "google_spreadsheets", force: :cascade do |t|
-    t.string "google_id"
   end
 
   create_table "innings", force: :cascade do |t|
@@ -92,8 +79,6 @@ ActiveRecord::Schema.define(version: 2022_05_21_063103) do
 
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
-  add_foreign_key "google_sheets", "google_spreadsheets"
-  add_foreign_key "google_sheets", "turing_modules"
   add_foreign_key "student_attendances", "attendances"
   add_foreign_key "student_attendances", "students"
   add_foreign_key "students", "turing_modules"
