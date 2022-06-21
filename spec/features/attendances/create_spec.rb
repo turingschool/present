@@ -65,11 +65,12 @@ RSpec.describe 'Creating an Attendance' do
   it 'creates students attendances' do
     test_module = create(:turing_module)
     test_module.students = expected_students
-    test_module.students.create(zoom_id: "234sdfsdf-A8zjQjKq9mogfJkvvA", name: "AN ABSENT STUDENT", zoom_email: "INCREDIBLYABSENT")
+    absent_student = test_module.students.create(zoom_id: "234sdfsdf-A8zjQjKq9mogfJkvvA", name: "AN ABSENT STUDENT", zoom_email: "INCREDIBLYABSENT")
     test_zoom_meeting_id = 95490216907
 
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
     .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
+
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
     .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
 
@@ -81,12 +82,13 @@ RSpec.describe 'Creating an Attendance' do
 
     visit "/attendances/#{Attendance.last.id}"
 
-    expect(Attendance.last.student_attendances.count).to eq(44)
+    expect(Attendance.last.student_attendances.count).to eq(expected_students.length + 1)
 
     Attendance.last.student_attendances.each do |student_attendance|
       student = student_attendance.student
       expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom Email" => student.zoom_email, "Zoom ID" => student.zoom_id)
     end
+    expect(find("#student-attendances")).to have_table_row("Student" => absent_student.name, "Status" => 'absent', "Zoom Email" => absent_student.zoom_email, "Zoom ID" => absent_student.zoom_id)
   end
 
   it 'students are listed in alphabetical order by last name' do
