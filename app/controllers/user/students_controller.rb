@@ -23,7 +23,7 @@ class User::StudentsController < User::BaseController
     if student.update(student_params)
       flash[:success] = 'Your changes have been saved.'
     else
-      flash[:error] = 'Sorry, your changes could not be saved'
+      flash[:error] = student.errors.full_messages.to_sentence
     end
     redirect_to student_path(student)
   end
