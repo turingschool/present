@@ -77,7 +77,6 @@ RSpec.describe 'Creating an Attendance' do
     sheet = create(:fe1_attendance_sheet)
     test_module = sheet.turing_module
     test_zoom_meeting_id = 95490216907
-    allow(AttendanceTaker).to receive(:take_attendance).and_return(nil)
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
     .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
@@ -127,7 +126,6 @@ RSpec.describe 'Creating an Attendance' do
     test_module.students.create(zoom_id: "234sdfsdf-A8zjQjKq9mogfJkvvA", name: "AN ABSENT STUDENT", zoom_email: "INCREDIBLYABSENT")
     test_zoom_meeting_id = 95490216907
 
-    allow(AttendanceTaker).to receive(:take_attendance).and_return(nil)
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
     .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
@@ -161,7 +159,6 @@ RSpec.describe 'Creating an Attendance' do
     student_c = test_module.students.create(zoom_id: "234sdfsdf-8u90ohvaldkfj", name: "Firstname Clastname", zoom_email: "Clastname")
     test_zoom_meeting_id = 95490216907
 
-    allow(AttendanceTaker).to receive(:take_attendance).and_return(nil)
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
     .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
