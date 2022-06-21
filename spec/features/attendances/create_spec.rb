@@ -13,110 +13,101 @@ RSpec.describe 'Creating an Attendance' do
     expect(page).to have_link(inning.name, href: inning_path(inning))
   end
 
-  it 'can fill in a past zoom meeting from the module show page' do
-    allow(CreateAttendanceFacade).to receive(:run).and_return(nil)
-    test_module = create(:turing_module)
-    test_zoom_meeting_id = 95490216907
+  context 'with valid meeting ids' do
+    before(:each) do
+      @test_zoom_meeting_id = 95490216907
 
-    visit turing_module_path(test_module)
-    click_link('Take Attendance')
-    expect(current_path).to eq("/modules/#{test_module.id}/attendances/new")
-    expect(page).to have_content(test_module.name)
-    expect(page).to have_content(test_module.inning.name)
-    expect(page).to have_content('Take Attendance for a Zoom Meeting')
-    fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
-    click_button 'Take Attendance'
+      stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
+      .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
 
-    expect(current_path).to eq(turing_module_path(test_module))
-    within('#past-attendances') do
-      expect(page).to have_css('.attendance', count: 1)
-      within(first('.attendance')) do
-        expect(page).to have_content(test_zoom_meeting_id)
+      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
+      .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+
+      @test_module = create(:turing_module)
+    end
+
+    it 'can fill in a past zoom meeting from the module show page' do
+      visit turing_module_path(@test_module)
+      click_link('Take Attendance')
+
+      expect(current_path).to eq("/modules/#{@test_module.id}/attendances/new")
+      expect(page).to have_content(@test_module.name)
+      expect(page).to have_content(@test_module.inning.name)
+      expect(page).to have_content('Take Attendance for a Zoom Meeting')
+      fill_in :attendance_zoom_meeting_id, with: @test_zoom_meeting_id
+      click_button 'Take Attendance'
+
+      new_attendance = Attendance.last
+      expect(current_path).to eq(attendance_path(new_attendance))
+      expect(page).to have_content(@test_zoom_meeting_id)
+    end
+
+    it 'can populate the module with students from the Zoom meeting' do
+      test_module = create(:turing_module)
+      @test_zoom_meeting_id = 95490216907
+
+      visit turing_module_path(test_module)
+      expect(page).to have_link('Students (0)')
+      click_link('Take Attendance')
+
+      check(:attendance_populate_students)
+      fill_in :attendance_zoom_meeting_id, with: @test_zoom_meeting_id
+      click_button 'Take Attendance'
+
+      visit turing_module_path(test_module)
+      click_link("Students (#{expected_students.length})")
+
+      expect(page).to have_css('.student', count: expected_students.length)
+      expected_students.each do |student|
+        expect(page).to have_content(student.name)
+        expect(page).to have_content(student.zoom_email)
+        expect(page).to have_content(student.zoom_id)
       end
     end
-  end
 
-  it 'can populate the module with students from the Zoom meeting' do
-    test_module = create(:turing_module)
-    test_zoom_meeting_id = 95490216907
-    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
-    .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
-    stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
-    .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+    it 'creates students attendances' do
+      test_module = create(:turing_module)
+      test_module.students = expected_students
+      absent_student = test_module.students.create(zoom_id: "234sdfsdf-A8zjQjKq9mogfJkvvA", name: "AN ABSENT STUDENT", zoom_email: "INCREDIBLYABSENT")
+      @test_zoom_meeting_id = 95490216907
 
-    visit turing_module_path(test_module)
-    expect(page).to have_link('Students (0)')
-    click_link('Take Attendance')
+      stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
+      .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
 
-    check(:attendance_populate_students)
-    fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
-    click_button 'Take Attendance'
+      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
+      .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
 
-    click_link("Students (#{expected_students.length})")
+      visit turing_module_path(test_module)
+      click_link('Take Attendance')
 
-    expect(page).to have_css('.student', count: expected_students.length)
-    expected_students.each do |student|
-      expect(page).to have_content(student.name)
-      expect(page).to have_content(student.zoom_email)
-      expect(page).to have_content(student.zoom_id)
+      fill_in :attendance_zoom_meeting_id, with: @test_zoom_meeting_id
+      click_button 'Take Attendance'
+
+      visit "/attendances/#{Attendance.last.id}"
+
+      expect(Attendance.last.student_attendances.count).to eq(expected_students.length + 1)
+
+      Attendance.last.student_attendances.each do |student_attendance|
+        student = student_attendance.student
+        expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom Email" => student.zoom_email, "Zoom ID" => student.zoom_id)
+      end
+      expect(find("#student-attendances")).to have_table_row("Student" => absent_student.name, "Status" => 'absent', "Zoom Email" => absent_student.zoom_email, "Zoom ID" => absent_student.zoom_id)
     end
   end
 
-  it 'creates students attendances' do
+  it 'shows a message if an invalid meeting id is entered' do
+    invalid_zoom_id = 'InvalidID'
+    stub_request(:get, "https://api.zoom.us/v2/meetings/#{invalid_zoom_id}") \
+    .to_return(body: File.read('spec/fixtures/zoom_meeting_details_invalid.json'))
+
     test_module = create(:turing_module)
-    test_module.students = expected_students
-    absent_student = test_module.students.create(zoom_id: "234sdfsdf-A8zjQjKq9mogfJkvvA", name: "AN ABSENT STUDENT", zoom_email: "INCREDIBLYABSENT")
-    test_zoom_meeting_id = 95490216907
+    visit new_turing_module_attendance_path(test_module)
 
-    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
-    .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
-
-    stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
-    .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
-
-    visit turing_module_path(test_module)
-    click_link('Take Attendance')
-
-    fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
+    fill_in :attendance_zoom_meeting_id, with: invalid_zoom_id
     click_button 'Take Attendance'
 
-    visit "/attendances/#{Attendance.last.id}"
-
-    expect(Attendance.last.student_attendances.count).to eq(expected_students.length + 1)
-
-    Attendance.last.student_attendances.each do |student_attendance|
-      student = student_attendance.student
-      expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom Email" => student.zoom_email, "Zoom ID" => student.zoom_id)
-    end
-    expect(find("#student-attendances")).to have_table_row("Student" => absent_student.name, "Status" => 'absent', "Zoom Email" => absent_student.zoom_email, "Zoom ID" => absent_student.zoom_id)
-  end
-
-  it 'students are listed in alphabetical order by last name' do
-    test_module = create(:turing_module)
-    test_module.students = expected_students
-    student_a = test_module.students.create(zoom_id: "234s234n2l3kj4JkvvA", name: "Firstname Alastname", zoom_email: "Alastname")
-    student_z = test_module.students.create(zoom_id: "234sdfsdfaefja;lsdkfjkvvA", name: "Firstname Zlastname", zoom_email: "Zlastname")
-    student_b = test_module.students.create(zoom_id: "234sdfsdf-lkrj2l34lkn", name: "Firstname Blastname", zoom_email: "Blastname")
-    student_c = test_module.students.create(zoom_id: "234sdfsdf-8u90ohvaldkfj", name: "Firstname Clastname", zoom_email: "Clastname")
-    test_zoom_meeting_id = 95490216907
-
-    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_meeting_id}/participants?page_size=300") \
-    .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
-    stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
-    .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
-
-    visit turing_module_path(test_module)
-    click_link('Take Attendance')
-
-    fill_in :attendance_zoom_meeting_id, with: test_zoom_meeting_id
-    click_button 'Take Attendance'
-
-    visit "/attendances/#{Attendance.last.id}"
-
-    expect(student_a.name).to appear_before(student_b.name)
-    expect(student_b.name).to appear_before(student_c.name)
-    expect(student_c.name).to appear_before(student_z.name)
-
+    expect(current_path).to eq(new_turing_module_attendance_path(test_module))
+    expect(page).to have_content("It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again.")
   end
 
   let(:expected_students){
