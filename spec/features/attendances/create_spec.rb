@@ -119,53 +119,6 @@ RSpec.describe 'Creating an Attendance' do
 
   end
 
-  let(:expected_attendance_values){
-    [
-      "absent",
-      "present",
-      "present",
-      "present",
-      "present",
-      "present",
-      "present",
-      "present",
-      "absent",
-      "present",
-      "present",
-      "present",
-      "present",
-      "present",
-      "present",
-      "present",
-      "tardy",
-      "absent",
-      "present",
-      "tardy",
-      "present",
-      "present",
-      "present",
-      "present",
-      "present",
-      "present",
-      "tardy",
-      "present",
-      "present",
-      "absent",
-      "absent",
-      "present",
-      "tardy",
-      "present",
-      "present",
-      "present",
-      "present",
-      "present",
-      "tardy",
-      "tardy",
-      "present",
-      "tardy"
-    ]
-  }
-
   let(:expected_students){
     [
       Student.new(zoom_id: "E0WPTrXCQAGkMsvF9rQgQA", name: "Ryan Teske (He/Him)", zoom_email: "ryanteske@outlook.com"),
