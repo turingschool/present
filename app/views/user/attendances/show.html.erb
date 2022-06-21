@@ -1,5 +1,6 @@
 <h2><%= link_to @module.name, turing_module_path(@module) %></h2>
 <h3><%= @attendance.meeting_title %> - <%= @attendance.pretty_time %></h3>
+<h3>Meeting ID: <%= @attendance.zoom_meeting_id %></h3>
 <table id='student-attendances'>
   <tr>
     <th>Student</th>
