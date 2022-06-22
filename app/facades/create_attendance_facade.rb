@@ -36,34 +36,25 @@ class CreateAttendanceFacade
         # mark them absent
     turing_module.create_students_from_participants(zoom_meeting.participant_report) if populate_students
     attendance = turing_module.attendances.create(zoom_meeting_id: zoom_meeting.id, meeting_time: zoom_meeting.start_time, meeting_title: zoom_meeting.title, user: user)
-    zoom_meeting.participant_report.each do |participant|
-      student = Student.find_or_create_by(zoom_id: participant[:id])
-      student_attendance = attendance.student_attendances.find_or_create_by(student: student)
-      student_attendance.assign_status(Time.parse(participant[:join_time]), Time.parse(zoom_meeting.start_time))
-    end
+    take_participant_attendance(attendance, zoom_meeting)
+    take_absentee_attendance(attendance, zoom_meeting, turing_module)
+    attendance
+  end
+
+  def self.take_absentee_attendance(attendance, zoom_meeting, turing_module)
     turing_module.students.each do |student|
       unless attendance.student_attendances.find_by(student: student)
         student_attendance = attendance.student_attendances.create(student: student)
         student_attendance.assign_status(nil, Time.parse(zoom_meeting.start_time))
       end
     end
-    attendance
   end
 
-
-
-  def self.attatch_status_to_participants(participants, meeting_start_time)
-    participants.map do |participant|
-      participant[:status] = convert_status(Time.parse(participant[:join_time]), Time.parse(meeting_start_time))
-      participant
+  def self.take_participant_attendance(attendance, zoom_meeting)
+    zoom_meeting.participant_report.each do |participant|
+      student = Student.find_or_create_by(zoom_id: participant[:id])
+      student_attendance = attendance.student_attendances.find_or_create_by(student: student)
+      student_attendance.assign_status(Time.parse(participant[:join_time]), Time.parse(zoom_meeting.start_time))
     end
-  end
-
-  def self.convert_status(join_time, meeting_start_time)
-    return 'absent' if join_time == nil
-    minutes_passed_start_time = (join_time - meeting_start_time)/60
-    return 'absent' if minutes_passed_start_time >= 30
-    return 'tardy' if 1 <= minutes_passed_start_time
-    return 'present'
   end
 end
