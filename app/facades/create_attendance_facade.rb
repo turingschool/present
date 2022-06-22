@@ -19,7 +19,7 @@ private
 
   def self.take_participant_attendance(attendance, zoom_meeting)
     zoom_meeting.participant_report.each do |participant|
-      student = Student.find_or_create_by(zoom_id: participant[:id])
+      student = Student.find_or_create_from_participant(participant)
       student_attendance = attendance.student_attendances.find_or_create_by(student: student)
       student_attendance.assign_status(Time.parse(participant[:join_time]), Time.parse(zoom_meeting.start_time))
     end
