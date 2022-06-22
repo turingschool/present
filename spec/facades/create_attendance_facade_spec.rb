@@ -98,6 +98,7 @@ RSpec.describe CreateAttendanceFacade do
       expect(Student.count).to eq(0)
       new_attendance = CreateAttendanceFacade.take_attendance(@zoom_meeting, @test_module, @user)
       expect(Student.count).to eq(roster.length)
+      expect(@test_module.students.length).to eq(0)
     end
   end
 end
