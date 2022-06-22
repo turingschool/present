@@ -93,5 +93,11 @@ RSpec.describe CreateAttendanceFacade do
       expect(@test_module).to receive(:create_students_from_participants).with(@zoom_meeting.participant_report)
       new_attendance = CreateAttendanceFacade.take_attendance(@zoom_meeting, @test_module, @user, true)
     end
+
+    it 'creates students but does not add them to the module if the option is not set to true' do
+      expect(Student.count).to eq(0)
+      new_attendance = CreateAttendanceFacade.take_attendance(@zoom_meeting, @test_module, @user)
+      expect(Student.count).to eq(roster.length)
+    end
   end
 end
