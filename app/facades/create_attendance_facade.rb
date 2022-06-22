@@ -7,6 +7,7 @@ class CreateAttendanceFacade
     attendance
   end
 
+private
   def self.take_absentee_attendance(attendance, zoom_meeting, turing_module)
     turing_module.students.each do |student|
       unless attendance.student_attendances.find_by(student: student)
