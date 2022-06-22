@@ -1,0 +1,35 @@
+<h2>What is Present?</h2>
+
+<p>Present is an attendance taking application for use at the Turing School of Software and Design. Present will take attendance for Zoom meetings according to Turing's attendance policy:</p>
+<ul>
+  <li>A student that arrives to class on time is marked "present"</li>
+  <li>A student that arrives to class 1 - 30 minutes late is marked "tardy"</li>
+  <li>A student that arrives to class more than 30 minutes late is marked "absent"</li>
+  <li>A student that does not attend class is marked "absent"</li>
+</ul>
+
+<h2>Zoom Settings</h2>
+<p>In order to use Present, you must enable these settings on Zoom.</p>
+
+<strong>Zoom Authentication</strong>
+<p>Your Zoom meetings must have Zoom Authentication enabled. This forces every attendee on the meeting to log in with Zoom before joining the meeting.</p>
+<p>You can enable this for all meetings you create by navigating to zoom.us -> Settings -> Meeting and toggling the option for "Only authenticated meeting participants and webinar attendees can join meetings and webinars"</p>
+
+<strong>Unique Meeting IDs</strong>
+<p>Present will only be able to take attendance for Zoom meetings with unique IDs.</p>
+<p>This means Present will not be able to take attendance for Personal Meeting rooms. These are reusable links customizable to each Zoom user. They have the url pattern https://turingschool.zoom.us/my/someuser.</p>
+<p>We recommend the Zoom for GSuite add-on or the Zoom Scheduler Chrome extension for easily creating unique Zoom meetings.</p>
+
+<h2>How do I use Present?</h2>
+
+
+<strong>Logging In</strong>
+<p>In order to use this application, you need to <%= link_to "Sign In With Google", "/auth/google_oauth2" %> with an account associated with the Turing.edu Google workspace.</p>
+
+<strong>Adding Students to your Module</strong>
+<p>Navigate to the "Current Inning", select your Module, click the "Take Attendance" link, and enter the Zoom ID of a recent meeting. Click the checkbox to use the meeting to populate your Module with students. This will add every user on the Zoom meeting as a student in your Module. If this does not add every student to the Module (for example, 1 or  more students were absent), you can use the checkbox option for future meetings to add more students.</p>
+<p>You can also manually edit your Module's roster. For example, if an instructor is added to the roster you can delete them, however this is not necessary to for the app to function. You can also edit the names of students, for example if they did not put their last name in their Zoom display name.</p>
+
+<strong>Taking Attendance</strong>
+<p>Once your Module's Roster has every student listed, you simply need to click the "Take Attendance" link for you Module, enter a Zoom meeting ID, and Present will generate an attendance report.</p>
+<p>On your Module's page, there is an option to save it as "My Module" which will make it easy to take attendance from your User Dashboard.</p>

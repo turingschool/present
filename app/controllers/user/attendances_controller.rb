@@ -5,10 +5,15 @@ class User::AttendancesController < User::BaseController
   end
 
   def create
-    @module = TuringModule.find(params[:turing_module_id])
-    attendance = @module.attendances.create(attendance_params)
-    CreateAttendanceFacade.run(attendance, current_user, populate_students?)
-    redirect_to turing_module_path(@module)
+    turing_module = TuringModule.find(params[:turing_module_id])
+    zoom_meeting = ZoomMeeting.new(params[:attendance][:zoom_meeting_id])
+    if zoom_meeting.valid_id?
+      attendance = CreateAttendanceFacade.take_attendance(zoom_meeting, turing_module, current_user, populate_students?)
+      redirect_to attendance_path(attendance)
+    else
+      flash[:error] = "It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again."
+      redirect_to new_turing_module_attendance_path(turing_module)
+    end
   end
 
   def show
@@ -16,11 +21,7 @@ class User::AttendancesController < User::BaseController
     @module = @attendance.turing_module
   end
 
-  private
-  def attendance_params
-    params.require(:attendance).permit(:zoom_meeting_id).merge(user: current_user)
-  end
-
+private
   def populate_students?
     ActiveModel::Type::Boolean.new.cast(params[:attendance][:populate_students])
   end

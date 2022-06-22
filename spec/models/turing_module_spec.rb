@@ -4,7 +4,6 @@ RSpec.describe TuringModule, type: :model do
   describe 'relationships' do
     it { should belong_to :inning }
     it { should have_many :attendances }
-    it { should have_one :google_sheet }
     it { should have_many :students }
   end
 

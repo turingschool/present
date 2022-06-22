@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
     user.update({
       email: auth_hash['info']['email'],
       google_oauth_token: auth_hash['credentials']['token'],
+      google_refresh_token: auth_hash['credentials']['refresh_token'],
       organization_domain: auth_hash["extra"]["raw_info"]["hd"]
     })
     session[:user_id] = user.id

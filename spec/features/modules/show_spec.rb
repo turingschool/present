@@ -6,8 +6,7 @@ RSpec.describe 'Modules show page' do
   end
 
   it 'shows the modules attributes' do
-    test_sheet = create(:google_sheet)
-    test_module = test_sheet.turing_module
+    test_module = create(:turing_module)
 
     visit "/modules/#{test_module.id}"
 
@@ -16,8 +15,7 @@ RSpec.describe 'Modules show page' do
   end
 
   it 'shows the past attendances for the module' do
-    sheet = create(:google_sheet)
-    test_module = sheet.turing_module
+    test_module = create(:turing_module)
 
     attendances = create_list(:attendance, 3, turing_module: test_module)
 
@@ -36,8 +34,7 @@ RSpec.describe 'Modules show page' do
   end
 
   it "has a link to each attendance's show page" do
-    sheet = create(:google_sheet)
-    test_module = sheet.turing_module
+    test_module = create(:turing_module)
     attendances = create_list(:attendance, 3, turing_module: test_module)
     test_attendance = attendances[1]
 

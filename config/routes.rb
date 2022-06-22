@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   get '/welcome', to: 'welcome#index'
   get '/auth/google_oauth2/callback', to: 'sessions#create'
   delete '/sessions', to: 'sessions#destroy'
-
+  get '/help', to: 'welcome#help'
+  
   scope module: :user do
     resources :users, only: [:update]
     resources :innings, only: [:show, :create, :index, :update]

@@ -1,26 +1,26 @@
-class User::InningsController < User::BaseController 
-    def show 
+class User::InningsController < User::BaseController
+    def show
         @inning = Inning.find(params[:id])
-    end 
+    end
 
-    def create 
+    def create
         new_inning = Inning.create(inning_params)
-        redirect_to user_inning_path(new_inning)
-    end 
+        redirect_to inning_path(new_inning)
+    end
 
-    def index 
+    def index
         @innings = Inning.order_by_name
-    end 
+    end
 
-    def update 
+    def update
         inning = Inning.find(params[:id])
         inning.make_current_inning
         redirect_to request.referer
-    end 
+    end
 
-    private 
+    private
 
     def inning_params
-        params.permit(:name)
-    end 
-end 
+        params.require(:inning).permit(:name)
+    end
+end
