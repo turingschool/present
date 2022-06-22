@@ -5,4 +5,10 @@ class Student < ApplicationRecord
 
   validates_presence_of :zoom_id
   validates_uniqueness_of :zoom_id
+
+  def self.find_or_create_from_participant(participant)
+    student = Student.find_by(zoom_id: participant[:id])
+    return student if student
+    Student.create(zoom_id: participant[:id], zoom_email: participant[:user_email], name: participant[:name])
+  end
 end
