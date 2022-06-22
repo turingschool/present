@@ -26,7 +26,7 @@ RSpec.describe 'Creating an Attendance' do
       @test_module = create(:turing_module)
     end
 
-    it 'can fill in a past zoom meeting from the module show page' do
+    it 'creates a new attendance by filling in a past zoom meeting' do
       visit turing_module_path(@test_module)
       click_link('Take Attendance')
 
