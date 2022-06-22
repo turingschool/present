@@ -14,12 +14,4 @@ class Attendance < ApplicationRecord
   def pretty_time
     meeting_time.in_time_zone('Mountain Time (US & Canada)').strftime('%l:%M %p').strip
   end
-  
-  def create_visiting_students(participants)
-    participants.each do |participant|
-      new_student = students.create(name: participant[:name], zoom_email: participant[:user_email], zoom_id:  participant[:id])
-      new_student_attendance = student_attendances.where(student_id: new_student.id)
-      new_student_attendance.update(status: participant[:status], join_time:  participant[:join_time])
-    end 
-  end
 end
