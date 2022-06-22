@@ -4,7 +4,7 @@ class CreateAttendanceFacade
     attendance = turing_module.attendances.create(zoom_meeting_id: zoom_meeting.id, meeting_time: zoom_meeting.start_time, meeting_title: zoom_meeting.title, user: user)
     take_participant_attendance(attendance, zoom_meeting)
     take_absentee_attendance(attendance, zoom_meeting, turing_module)
-    attendance
+    return attendance
   end
 
 private
