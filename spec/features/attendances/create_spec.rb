@@ -83,7 +83,7 @@ RSpec.describe 'Creating an Attendance' do
       click_button "Add New Student"
 
       expect(current_path).to eq(attendance_path(Attendance.last))
-      
+
       expect(@test_module.students.count).to eq(43)
       expect(@test_module.students.exists?(name: new_student.name)).to be(true)
 
@@ -94,6 +94,33 @@ RSpec.describe 'Creating an Attendance' do
       visit "/attendances/#{Attendance.last.id}"
 
       expect(page).to_not have_button("Add New Student")
+    end
+
+    it 'can add students to the module even if they are associated with another module' do
+      new_student = expected_students.pop
+      other_mod = create(:turing_module)
+      new_student.update(turing_module: other_mod)
+      @test_module.students = expected_students
+
+      visit turing_module_path(@test_module)
+      click_link('Take Attendance')
+      fill_in :attendance_zoom_meeting_id, with: @test_zoom_meeting_id
+      click_button 'Take Attendance'
+
+      visit "/attendances/#{Attendance.last.id}"
+
+      expect(@test_module.students.count).to eq(42)
+      expect(page).to have_button("Add New Student")
+
+      click_button "Add New Student"
+
+      visit turing_module_students_path(@test_module)
+
+      expect(page).to have_link(new_student.name)
+
+      visit turing_module_students_path(other_mod)
+
+      expect(page).to_not have_link(new_student.name)
     end
 
     it 'creates students attendances' do
