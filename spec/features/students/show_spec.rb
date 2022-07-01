@@ -4,7 +4,7 @@ RSpec.describe 'Student Show Page' do
   before(:each) do
     mock_login
   end
-  
+
   it 'is linked from the student index' do
     test_module = create(:fe3)
     students = create_list(:student, 11, turing_module: test_module)
@@ -24,5 +24,14 @@ RSpec.describe 'Student Show Page' do
     expect(page).to have_content(student.zoom_email)
     expect(page).to have_content(student.zoom_id)
     expect(page).to have_content(student.turing_module.name)
+  end
+
+  it 'the module name is a link' do
+    student = create(:student)
+    mod = student.turing_module
+    
+    visit student_path(student)
+
+    expect(page).to have_link(mod.name, href: turing_module_path(mod))
   end
 end
