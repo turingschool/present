@@ -51,7 +51,7 @@ RSpec.describe 'Student Update' do
 
     fill_in :student_zoom_id, with: ''
     click_button 'Save Changes'
-    expect(current_path).to eq(student_path(student))
+    expect(current_path).to eq(edit_student_path(student))
     expect(page).to have_content('Zoom can\'t be blank')
   end
 end

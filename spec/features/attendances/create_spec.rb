@@ -82,6 +82,8 @@ RSpec.describe 'Creating an Attendance' do
 
       click_button "Add New Student"
 
+      expect(current_path).to eq(attendance_path(Attendance.last))
+      
       expect(@test_module.students.count).to eq(43)
       expect(@test_module.students.exists?(name: new_student.name)).to be(true)
 
