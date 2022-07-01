@@ -1,7 +1,7 @@
 class Inning < ApplicationRecord
   validates_presence_of :name
 
-  has_many :turing_modules
+  has_many :turing_modules, dependent: :destroy
 
   def make_current_inning
     self.update(current: true)
@@ -10,5 +10,5 @@ class Inning < ApplicationRecord
 
   def self.order_by_name
     order(name: :desc)
-  end 
+  end
 end
