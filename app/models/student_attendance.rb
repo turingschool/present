@@ -10,6 +10,10 @@ class StudentAttendance < ApplicationRecord
       .order("last_name")
   end
 
+  def visiting_student?
+    !student.turing_module
+  end
+
   def assign_status(join_time, meeting_time)
     if self.join_time.nil? || self.join_time > join_time
       self.update(status: convert_status(join_time, meeting_time), join_time: join_time)
@@ -23,5 +27,4 @@ class StudentAttendance < ApplicationRecord
     return 'tardy' if minutes_passed_start_time > 1
     return 'present'
   end
-
 end

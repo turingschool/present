@@ -14,6 +14,9 @@
       <td><%= student_attendance.status %></td>
       <td><%= student_attendance.student.zoom_email %></td>
       <td><%= student_attendance.student.zoom_id %></td>
+      <% if student_attendance.visiting_student?  %>
+        <td><%= button_to "Add New Student", student_path(student_attendance.student), params: {student: {turing_module_id: @module.id}}, method: :patch, class: 's-button s-button-primary' %></td> 
+      <% end %>
     </tr>
   <% end %>
 </table>

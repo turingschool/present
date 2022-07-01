@@ -65,7 +65,7 @@ RSpec.describe StudentAttendance, type: :model do
         expect(student_attendance.status).to eq('present')
       end
 
-      it 'assigns tardy if the student is 1 second1 past 1 minute late' do
+      it 'assigns tardy if the student is 1 second past 1 minute late' do
         student_attendance = create(:student_attendance, join_time: nil)
         join_time = Time.parse("2021-12-17T16:01:01Z")
         start_time = Time.parse("2021-12-17T16:00:00Z")
