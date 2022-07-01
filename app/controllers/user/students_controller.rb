@@ -22,10 +22,15 @@ class User::StudentsController < User::BaseController
     student = Student.find(params[:id])
     if student.update(student_params)
       flash[:success] = 'Your changes have been saved.'
+      if request.referer.include? 'attendances'
+        redirect_to request.referer
+      else
+        redirect_to student_path(student)
+      end
     else
       flash[:error] = student.errors.full_messages.to_sentence
+      redirect_to request.referer
     end
-    redirect_to student_path(student)
   end
 
   def new
@@ -41,6 +46,6 @@ class User::StudentsController < User::BaseController
 
 private
   def student_params
-    params.require(:student).permit(:name, :zoom_email, :zoom_id)
+    params.require(:student).permit(:name, :zoom_email, :zoom_id, :turing_module_id)
   end
 end
