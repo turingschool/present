@@ -1,7 +1,6 @@
 class TuringModule < ApplicationRecord
   belongs_to :inning
   has_many :attendances
-  has_one :google_sheet
   has_many :students
 
   validates_numericality_of :module_number, {
@@ -21,14 +20,10 @@ class TuringModule < ApplicationRecord
 
   def create_students_from_participants(participants)
     participants.each do |participant|
-      if !students.exists?(zoom_id: participant[:id]) #in the case that a student joins more than once
-        attributes = {
-              name: participant[:name],
-              zoom_email: participant[:user_email],
-              zoom_id: participant[:id]
-            }
-        self.students.create(attributes)
+      student = Student.find_or_create_from_participant(participant)
+      if !students.exists?(student.id) #in the case that a student joins more than once
+        students << student
       end
-    end 
+    end
   end
 end

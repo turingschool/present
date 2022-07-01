@@ -50,6 +50,8 @@ Next you will need to obtain Zoom Credentials. Navigate to the [Zoom Marketplace
 
 If you do not wish to use Figaro you will need to use another method to set the `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET`, `ZOOM_API_SECRET`, and `ZOOM_API_KEY` environment variables.
 
+It may be necessary to contact the maintainers in order to obtain access to the Google Cloud and Zoom Apps.
+
 ### Running Local
 
 After installing prerequisites, installing dependencies, and setting environment variables, you should be able to run the app locally.

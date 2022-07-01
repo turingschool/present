@@ -44,5 +44,14 @@ RSpec.describe 'Student Update' do
     expect(page).to have_content(new_name)
   end
 
-  it 'wont save if changes are invalid' #student doesn't have any validates at the moment
+  it 'wont save if changes are invalid' do
+    student = create(:student)
+
+    visit edit_student_path(student)
+
+    fill_in :student_zoom_id, with: ''
+    click_button 'Save Changes'
+    expect(current_path).to eq(edit_student_path(student))
+    expect(page).to have_content('Zoom can\'t be blank')
+  end
 end
