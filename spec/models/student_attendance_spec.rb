@@ -143,5 +143,32 @@ RSpec.describe StudentAttendance, type: :model do
         expect(student_attendance.join_time).to_not eq(join_time)
       end
     end
+
+    describe '#visitng_student?' do
+      it 'returns true if they student has no associated module' do
+        mod = create(:turing_module)
+        student = create(:student, turing_module: nil)
+        attendance = create(:attendance, turing_module: mod)
+        student_attendance = create(:student_attendance, student: student, attendance: attendance)
+        expect(student_attendance.visiting_student?).to eq(true)
+      end
+
+      it 'returns true if they student has is associated with a different module' do
+        mod = create(:turing_module)
+        other_mod = create(:turing_module)
+        attendance = create(:attendance, turing_module: mod)
+        student = create(:student, turing_module: other_mod)
+        student_attendance = create(:student_attendance, student: student, attendance: attendance)
+        expect(student_attendance.visiting_student?).to eq(true)
+      end
+
+      it 'returns false if the student is associated with this module' do
+        mod = create(:turing_module)
+        student = create(:student, turing_module: mod)
+        attendance = create(:attendance, turing_module: mod)
+        student_attendance = create(:student_attendance, student: student, attendance: attendance)
+        expect(student_attendance.visiting_student?).to eq(false)
+      end
+    end
   end
 end

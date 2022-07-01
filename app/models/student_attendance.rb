@@ -11,7 +11,9 @@ class StudentAttendance < ApplicationRecord
   end
 
   def visiting_student?
-    !student.turing_module
+    return true if student.turing_module.nil?
+    return true if student.turing_module != self.attendance.turing_module
+    return false
   end
 
   def assign_status(join_time, meeting_time)
