@@ -25,9 +25,23 @@ RSpec.describe 'pairs index' do
     end
 
     it 'displays existing pairings column' do
+      pair = create(:pair)
+
       visit '/pairs'
 
       expect(page).to have_content('Existing Pairings')
+
+      within('.existing-pairs') do
+        expect(page).to have_link(pair.name)
+      end
+    end
+
+    it 'links to pair show page' do
+      pair = create(:pair)
+      visit '/pairs'
+
+      click_on(pair.name)
+      expect(current_path).to eq(pair_path(pair))
     end
 
     it 'displays create new pairing column' do

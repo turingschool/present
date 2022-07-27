@@ -1,5 +1,5 @@
-<h1>PAIRS</h1>
-<h2><%= @my_module.inning.name %> - Module <%= @my_module.module_number %></h2>
+<%= render partial: 'header' %>
+<h3>Existing Pairings</h3>
 <div class="existing-pairs">
   <% @pairs.each do |pair| %>
     <%= link_to pair.name, pair_path(pair) %>
