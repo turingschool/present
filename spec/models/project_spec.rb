@@ -11,14 +11,15 @@ RSpec.describe Project, type: :model do
   end
 
   describe 'instance methods' do
-    xdescribe '#generate_student_pairings' do
+    describe '#generate_student_groupings' do
       let(:turing_module) { create(:turing_module) }
       let(:students) { create_list(:student, 12, turing_module: turing_module) }
       let(:project) { create(:project, size: 3) }
-      let(:subject) { project.generate_student_pairings(students) }
+      let(:subject) { project.generate_student_groupings(students) }
 
-      it 'creates_pairs_of_the_correct_size' do
-        expect { subject }.to change { StudentPair.count }.by(12)
+      it 'creates_groups_of_the_correct_size' do
+        expect { subject }.to change { Group.count }.by(4)
+          .and change { StudentGroup.count }.by(12)
       end
     end
   end

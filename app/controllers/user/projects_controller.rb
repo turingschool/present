@@ -13,7 +13,7 @@ class User::ProjectsController < User::BaseController
     project = Project.new(project_params)
     students = current_user.my_module.students
     if project.save
-      project.generate_student_pairings(students)
+      project.generate_student_groupings(students)
       flash[:message] = 'Pairings created!'
       redirect_to projects_path
     else
