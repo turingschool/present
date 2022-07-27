@@ -1,19 +1,26 @@
 <%= render partial: 'header', locals: { inning_name: @my_module.inning.name, mod_num: @my_module.module_number } %>
-<h3>Existing Pairings</h3>
-<div class="existing-pairs">
-  <% @projects.each do |project| %>
-    <%= link_to project.name, project_path(project) %>
-  <% end %>
-</div>
+<div class="columns">
+  <div class="column col-padded">
+    <h3>Existing Pairings</h3>
+    <div class="existing-pairs">
+      <% @projects.each do |project| %>
+      <%= link_to project.name, project_path(project) %>
+      <% end %>
+    </div>
+  </div>
+  <div class="columntwo col-padded">
+    <div class="new-pair">
+      <h3>Create New Pairing</h3>
+      <div class="pair-form">
+        <%= form_with url: projects_path, local: true do |form| %>
+        <%= form.label :name %>
+        <%= form.text_field :name %>
+        <%= form.label :size %>
+        <%= form.number_field :size %>
 
-<div class="new-pair">
-  <h3>Create New Pairing</h3>
-  <%= form_with url: projects_path, local: true do |form| %>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-    <%= form.label :size %>
-    <%= form.number_field :size %>
-
-    <%= form.submit 'Create Pairs' %>
-  <% end %>
+        <%= form.submit 'Create Pairs' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
