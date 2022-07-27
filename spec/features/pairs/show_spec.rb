@@ -9,11 +9,10 @@ RSpec.describe 'pairs show' do
   end
 
   # these tests are dependent upon the existence of a Pair model
-  xit 'shows Pair groups with group members' do
-    @pair_1 = Pair.create(title: 'Some Project Pairing', group_size: 4)
+  it 'shows Pair groups with group members' do
+    @pair_1 = Pair.create(name: 'Some Project Pairing', size: 4)
     visit "/pairs/#{@pair_1.id}"
 
-    expect(page).to have_content(@pair_1.title)
-    expect(page).to have_content(@pair_1.group_size)
+    expect(page).to have_content(@pair_1.name)
   end
 end

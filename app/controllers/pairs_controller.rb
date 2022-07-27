@@ -1,6 +1,7 @@
 class PairsController < ApplicationController
   def index
     @my_module = current_user.my_module
+    @pairs = Pair.all
   end
 
   def show

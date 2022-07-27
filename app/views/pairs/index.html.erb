@@ -1,3 +1,9 @@
 <%= render partial: 'header' %>
 <h3>Existing Pairings</h3>
+<div class="existing-pairs">
+  <% @pairs.each do |pair| %>
+    <%= pair.name %>
+  <% end %>
+</div>
+
 <h3>Create New Pairing</h3>
