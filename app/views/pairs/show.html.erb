@@ -1,0 +1,11 @@
+<%= render partial: 'header' %>
+
+<h3><%= @pair.title %></h3>
+<h3><%= @pair.group_size %></h3>
+
+<% @pair.groups.each_with_index(1) do |group, index| %>
+  <h3>Group <%= index %></h3>
+  <% group.students.each do |student| %>
+    <p><%= student.name %></p>
+  <% end %>
+<% end %>
