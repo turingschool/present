@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   delete '/sessions', to: 'sessions#destroy'
   get '/help', to: 'welcome#help'
 
-  resources :pairs, only: [:index, :show]
+  resources :pairs, only: [:index, :show, :create]
 
   scope module: :user do
     resources :users, only: [:update]

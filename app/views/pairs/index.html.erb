@@ -1,4 +1,4 @@
-<%= render partial: 'header' %>
+<%= render partial: 'header', locals: { inning_name: @my_module.inning.name, mod_num: @my_module.module_number } %>
 <h3>Existing Pairings</h3>
 <div class="existing-pairs">
   <% @pairs.each do |pair| %>
@@ -6,4 +6,14 @@
   <% end %>
 </div>
 
-<h3>Create New Pairing</h3>
+<div class="new-pair">
+  <h3>Create New Pairing</h3>
+  <%= form_with url: pairs_path, local: true do |form| %>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+    <%= form.label :size %>
+    <%= form.number_field :size %>
+
+    <%= form.submit 'Create Pairs' %>
+  <% end %>
+</div>
