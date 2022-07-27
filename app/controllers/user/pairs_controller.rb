@@ -1,4 +1,4 @@
-class PairsController < ApplicationController
+class User::PairsController < User::BaseController
   def index
     @my_module = current_user.my_module
     @pairs = Pair.all
