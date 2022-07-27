@@ -16,7 +16,7 @@ class PairsController < ApplicationController
       redirect_to pairs_path
     else
       flash[:error] = "#{pair.errors.full_messages.to_sentence}"
-      render 'index'
+      redirect_to pairs_path
     end
   end
 

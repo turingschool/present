@@ -64,5 +64,14 @@ RSpec.describe 'pairs index' do
         expect(page).to have_content('Some New Pair Group')
       end
     end
+
+    it 'handles missing fields for new pair' do
+      visit '/pairs'
+
+      click_on 'Create Pairs'
+
+      expect(page).to have_content("Name can't be blank and Size can't be blank")
+      expect(current_path).to eq('/pairs')
+    end
   end
 end
