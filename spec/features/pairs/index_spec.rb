@@ -45,6 +45,7 @@ RSpec.describe 'pairs index' do
 
       expect(current_path).to eq('/pairs')
       expect(page).to have_content('Pairings created!')
+
       within '.existing-pairs' do
         expect(page).to have_content('Some New Pair Group')
       end
