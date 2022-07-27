@@ -1,6 +1,6 @@
 FactoryBot.define do
-  factory :project do
+  factory :group do
     name { Faker::Team.name }
-    size { rand(2..5) }
+    project
   end
 end

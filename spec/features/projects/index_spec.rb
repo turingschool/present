@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'pairs index' do
+RSpec.describe 'projects index' do
   before(:each) do
     @user = mock_login
     @current_inning = create(:inning, name:'2108', current: true)
@@ -15,49 +15,49 @@ RSpec.describe 'pairs index' do
       expect(page).to have_link('Pairs')
       click_on('Pairs')
 
-      expect(current_path).to eq('/pairs')
+      expect(current_path).to eq('/projects')
     end
 
     it 'displays the module name and inning' do
-      visit '/pairs'
+      visit '/projects'
 
       expect(page).to have_content("#{@user.turing_module.inning.name}")
     end
 
     it 'displays existing pairings column' do
-      pair = create(:pair)
+      project = create(:project)
 
-      visit '/pairs'
+      visit '/projects'
 
       expect(page).to have_content('Existing Pairings')
 
       within('.existing-pairs') do
-        expect(page).to have_link(pair.name)
+        expect(page).to have_link(project.name)
       end
     end
 
     it 'links to pair show page' do
-      pair = create(:pair)
-      visit '/pairs'
+      project = create(:project)
+      visit '/projects'
 
-      click_on(pair.name)
-      expect(current_path).to eq(pair_path(pair))
+      click_on(project.name)
+      expect(current_path).to eq(project_path(project))
     end
 
     it 'displays create new pairing column' do
-      visit '/pairs'
+      visit '/projects'
 
       expect(page).to have_content('Create New Pairing')
     end
 
     it 'can create a new pair' do
-      visit '/pairs'
+      visit '/projects'
 
       fill_in 'Name', with: 'Some New Pair Group'
       fill_in 'Size', with: 3
       click_on 'Create Pairs'
 
-      expect(current_path).to eq('/pairs')
+      expect(current_path).to eq('/projects')
       expect(page).to have_content('Pairings created!')
 
       within '.existing-pairs' do
@@ -66,12 +66,12 @@ RSpec.describe 'pairs index' do
     end
 
     it 'handles missing fields for new pair' do
-      visit '/pairs'
+      visit '/projects'
 
       click_on 'Create Pairs'
 
       expect(page).to have_content("Name can't be blank and Size can't be blank")
-      expect(current_path).to eq('/pairs')
+      expect(current_path).to eq('/projects')
     end
   end
 end
