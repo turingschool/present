@@ -12,7 +12,7 @@ RSpec.describe 'pairs index' do
     it 'can click button and take us to the index page' do
       visit root_path
 
-      expect(page).to have_button('Pairs')
+      expect(page).to have_link('Pairs')
       click_on('Pairs')
 
       expect(current_path).to eq('/pairs')

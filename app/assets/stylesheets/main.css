@@ -8,6 +8,7 @@ td {
   padding: 10px;
 }
 
+/* splits dashboard into two columns */
 .columns {
   display: flex;
   flex-direction: row;
@@ -19,10 +20,30 @@ td {
   flex: 50%;
 }
 
-/* styling to create pair button on dashboard */
+.columntwo {
+  flex: 50%;
+  text-align: center;
+  font-size: 24px;
+  padding-top: 25px;
+}
 
-/* .pair_button {
-  background-color: #008CBA;
-  /* font-size: 24px;
-  padding: 14px 40px; */
-} */
+/* styling to create pairs link on dashboard */
+.pair-button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: #4D4D4F;
+  border-radius: 7px;
+}
+
+/* visited pairs link */
+.pair-button:visited, .pair-button:link {
+  color: white;
+  text-decoration: none;
+}
