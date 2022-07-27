@@ -1,4 +1,15 @@
 <h1>PAIRS</h1>
 <h2><%= @my_module.inning.name %> - Module <%= @my_module.module_number %></h2>
 <h3>Existing Pairings</h3>
-<h3>Create New Pairing</h3>
+
+<div class="new-pair">
+  <h3>Create New Pairing</h3>
+  <%= form_with url: pairs_path, local: true do |form| %>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+    <%= form.label :size %>
+    <%= form.number_field :size %>
+
+    <%= form.submit 'Create Pairs' %>
+  <% end %>
+</div>
