@@ -1,3 +1,12 @@
 <%= render partial: 'header', locals: { inning_name: @my_module.inning.name, mod_num: @my_module.module_number } %>
 
 <h3><%= @project.name %></h3>
+
+<% @project.groups.each_with_index do |group, index| %>
+  <section class="group-<%= index %>">
+    <h4><%= group.name || 'Placeholder group name' %></h4>
+    <% group.students.each_with_index do |student, index| %>
+      <p class="student-<%= index %>"><%= student.name %></p>
+    <% end %>
+  </section>
+<% end %>
