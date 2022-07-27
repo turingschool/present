@@ -1,4 +1,4 @@
 class StudentPair < ApplicationRecord
   belongs_to :student
-  belongs_to :pair
+  belongs_to :project
 end

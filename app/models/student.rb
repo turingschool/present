@@ -3,7 +3,7 @@ class Student < ApplicationRecord
   has_many :student_attendances, dependent: :destroy
   has_many :attendances, through: :student_attendances
   has_many :student_pairs, dependent: :destroy
-  has_many :pairs, through: :student_pairs
+  has_many :projects, through: :student_pairs
 
   validates_presence_of :zoom_id
   validates_uniqueness_of :zoom_id

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_27_163400) do
+ActiveRecord::Schema.define(version: 2022_07_27_200757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2022_07_27_163400) do
     t.boolean "current", default: false
   end
 
-  create_table "pairs", force: :cascade do |t|
+  create_table "projects", force: :cascade do |t|
     t.string "name"
     t.integer "size"
     t.datetime "created_at", null: false
@@ -55,10 +55,10 @@ ActiveRecord::Schema.define(version: 2022_07_27_163400) do
   create_table "student_pairs", force: :cascade do |t|
     t.string "name"
     t.bigint "student_id"
-    t.bigint "pair_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pair_id"], name: "index_student_pairs_on_pair_id"
+    t.bigint "project_id"
+    t.index ["project_id"], name: "index_student_pairs_on_project_id"
     t.index ["student_id"], name: "index_student_pairs_on_student_id"
   end
 
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 2022_07_27_163400) do
   add_foreign_key "attendances", "users"
   add_foreign_key "student_attendances", "attendances"
   add_foreign_key "student_attendances", "students"
-  add_foreign_key "student_pairs", "pairs"
+  add_foreign_key "student_pairs", "projects"
   add_foreign_key "student_pairs", "students"
   add_foreign_key "students", "turing_modules"
   add_foreign_key "turing_modules", "innings"

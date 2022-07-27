@@ -11,7 +11,7 @@ RSpec.describe Student, type: :model do
     it {should have_many :student_attendances}
     it {should have_many(:attendances).through(:student_attendances)}
     it {should have_many :student_pairs}
-    it {should have_many(:pairs).through(:student_pairs)}
+    it {should have_many(:projects).through(:student_pairs)}
   end
 
   describe 'class methods' do

@@ -1,4 +1,4 @@
-class Pair < ApplicationRecord
+class Project < ApplicationRecord
   validates_presence_of :name
   validates_presence_of :size
 
@@ -15,7 +15,7 @@ class Pair < ApplicationRecord
   def create_student_pairs(groups)
     groups.each_with_index do |group, i|
       group.each do |student|
-        StudentPair.create(student: student, pair: self, name: "Group #{i+1}")
+        StudentPair.create(student: student, project: self, name: "Group #{i+1}")
       end
     end
   end
