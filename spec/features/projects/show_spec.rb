@@ -9,9 +9,17 @@ RSpec.describe 'pairs show' do
   end
 
   it 'shows Pair groups with group members' do
-    @project_1 = Project.create(name: 'Some Project Pairing', size: 4)
-    visit "/projects/#{@project_1.id}"
+    @project = create(:project, size: 3)
+    students = create_list(:student, 12, turing_module: @test_module)
+    @project.generate_student_groupings(students)
 
-    expect(page).to have_content(@project_1.name)
+    visit "/projects/#{@project.id}"
+
+    expect(page).to have_content(@project.name)
+    within('.group-0') do
+      within(first('.student-0')) do
+        expect(page).to have_content(Group.first.students.first.name)
+      end
+    end
   end
 end
