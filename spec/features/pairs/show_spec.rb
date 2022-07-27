@@ -8,7 +8,6 @@ RSpec.describe 'pairs show' do
     @user.update(turing_module: @test_module)
   end
 
-  # these tests are dependent upon the existence of a Pair model
   it 'shows Pair groups with group members' do
     @pair_1 = Pair.create(name: 'Some Project Pairing', size: 4)
     visit "/pairs/#{@pair_1.id}"

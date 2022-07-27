@@ -2,7 +2,7 @@
 <h3>Existing Pairings</h3>
 <div class="existing-pairs">
   <% @pairs.each do |pair| %>
-    <%= pair.name %>
+    <%= link_to pair.name, pair_path(pair) %>
   <% end %>
 </div>
 
