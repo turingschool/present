@@ -2,8 +2,7 @@ class Project < ApplicationRecord
   validates_presence_of :name
   validates_presence_of :size
 
-  has_many :student_pairs, dependent: :destroy
-  has_many :students, through: :student_pairs
+  has_many :groups
 
   def generate_student_pairings(students)
     groups = students.shuffle.each_slice(size).to_a

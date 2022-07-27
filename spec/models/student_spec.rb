@@ -10,8 +10,8 @@ RSpec.describe Student, type: :model do
     it {should belong_to(:turing_module).optional}
     it {should have_many :student_attendances}
     it {should have_many(:attendances).through(:student_attendances)}
-    it {should have_many :student_pairs}
-    it {should have_many(:projects).through(:student_pairs)}
+    it {should have_many :student_groups}
+    it {should have_many(:groups).through(:student_groups)}
   end
 
   describe 'class methods' do

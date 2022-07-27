@@ -2,8 +2,8 @@ class Student < ApplicationRecord
   belongs_to :turing_module, optional: true
   has_many :student_attendances, dependent: :destroy
   has_many :attendances, through: :student_attendances
-  has_many :student_pairs, dependent: :destroy
-  has_many :projects, through: :student_pairs
+  has_many :student_groups, dependent: :destroy
+  has_many :groups, through: :student_groups
 
   validates_presence_of :zoom_id
   validates_uniqueness_of :zoom_id

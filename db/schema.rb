@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_27_200757) do
+ActiveRecord::Schema.define(version: 2022_07_27_205023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,14 @@ ActiveRecord::Schema.define(version: 2022_07_27_200757) do
     t.datetime "meeting_time"
     t.index ["turing_module_id"], name: "index_attendances_on_turing_module_id"
     t.index ["user_id"], name: "index_attendances_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.bigint "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_groups_on_project_id"
   end
 
   create_table "innings", force: :cascade do |t|
@@ -52,14 +60,13 @@ ActiveRecord::Schema.define(version: 2022_07_27_200757) do
     t.index ["student_id"], name: "index_student_attendances_on_student_id"
   end
 
-  create_table "student_pairs", force: :cascade do |t|
-    t.string "name"
+  create_table "student_groups", force: :cascade do |t|
     t.bigint "student_id"
+    t.bigint "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "project_id"
-    t.index ["project_id"], name: "index_student_pairs_on_project_id"
-    t.index ["student_id"], name: "index_student_pairs_on_student_id"
+    t.index ["group_id"], name: "index_student_groups_on_group_id"
+    t.index ["student_id"], name: "index_student_groups_on_student_id"
   end
 
   create_table "students", force: :cascade do |t|
@@ -96,10 +103,11 @@ ActiveRecord::Schema.define(version: 2022_07_27_200757) do
 
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
+  add_foreign_key "groups", "projects"
   add_foreign_key "student_attendances", "attendances"
   add_foreign_key "student_attendances", "students"
-  add_foreign_key "student_pairs", "projects"
-  add_foreign_key "student_pairs", "students"
+  add_foreign_key "student_groups", "groups"
+  add_foreign_key "student_groups", "students"
   add_foreign_key "students", "turing_modules"
   add_foreign_key "turing_modules", "innings"
 end
