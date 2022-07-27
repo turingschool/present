@@ -10,4 +10,17 @@ RSpec.describe Pair, type: :model do
     it {should have_many :student_pairs}
     it {should have_many(:students).through(:student_pairs)}
   end
+
+  describe 'instance methods' do
+    describe '#generate_student_pairings' do
+      let(:turing_module) { create(:turing_module) }
+      let(:students) { create_list(:student, 12, turing_module: turing_module) }
+      let(:pair) { create(:pair, size: 3) }
+      let(:subject) { pair.generate_student_pairings(students) }
+
+      it 'creates_pairs_of_the_correct_size' do
+        expect { subject }.to change { StudentPair.count }.by(12)
+      end
+    end
+  end
 end

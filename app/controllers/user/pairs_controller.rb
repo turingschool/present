@@ -11,7 +11,9 @@ class User::PairsController < User::BaseController
 
   def create
     pair = Pair.new(pair_params)
+    students = current_user.my_module.students
     if pair.save
+      pair.generate_student_pairings(students)
       flash[:message] = 'Pairings created!'
       redirect_to pairs_path
     else
