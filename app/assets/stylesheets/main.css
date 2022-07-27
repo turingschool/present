@@ -7,3 +7,22 @@ td {
 #main-content {
   padding: 10px;
 }
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  flex: 50%;
+}
+
+/* styling to create pair button on dashboard */
+
+/* .pair_button {
+  background-color: #008CBA;
+  /* font-size: 24px;
+  padding: 14px 40px; */
+} */
