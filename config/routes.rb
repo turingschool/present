@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   get '/auth/google_oauth2/callback', to: 'sessions#create'
   delete '/sessions', to: 'sessions#destroy'
   get '/help', to: 'welcome#help'
-  
+
+  get '/pairs', to: 'pairs#index'
+
   scope module: :user do
     resources :users, only: [:update]
     resources :innings, only: [:show, :create, :index, :update]

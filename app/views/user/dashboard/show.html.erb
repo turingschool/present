@@ -10,3 +10,5 @@
 <% else %>
   <p>No Inning is set as the current inning. Visit the <%= link_to 'All Innings', innings_path %> page to set the current inning.</p>
 <% end %>
+
+<%= button_to 'Pairs', '/pairs', method: :get %>
