@@ -14,6 +14,6 @@ Rails.application.routes.draw do
       resources :attendances, only: [:new, :create, :show]
       resources :students
     end
-    resources :pairs, only: [:index, :show, :create]
+    resources :projects, only: [:index, :show, :create]
   end
 end

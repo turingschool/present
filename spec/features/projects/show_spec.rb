@@ -9,9 +9,9 @@ RSpec.describe 'pairs show' do
   end
 
   it 'shows Pair groups with group members' do
-    @pair_1 = Pair.create(name: 'Some Project Pairing', size: 4)
-    visit "/pairs/#{@pair_1.id}"
+    @project_1 = Project.create(name: 'Some Project Pairing', size: 4)
+    visit "/projects/#{@project_1.id}"
 
-    expect(page).to have_content(@pair_1.name)
+    expect(page).to have_content(@project_1.name)
   end
 end
