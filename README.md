@@ -44,17 +44,17 @@ ZOOM_API_SECRET: <YOUR_ZOOM_API_SECRET_HERE>
 ZOOM_API_KEY: <YOUR_ZOOM_API_KEY_HERE>
 ```
 
+*Note: It may be necessary to contact the maintainers in order to obtain access to the Google Cloud App.*
+
 To obtain the Google Cloud credentials, navigate to the Present Dashboard in the [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418). Under "Credentials" select one of the OAuth 2.0 Client IDs. Currently the only one is named `Present-OAuth-Client`. Copy the Client ID and Client Secret and paste into the appropriate fields in `config/application.yml`.
 
 Next you will need to obtain Zoom Credentials. Follow [these instructions](https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/#create-a-server-to-server-oauth-app) to create a Server to Server Oauth App with Zoom. You do not need to enable WebHooks. Select the appropriate scopes to get meeting details and meeting reports. Then, copy the API Key and the API Secret into the appropriate fields in `config/application.yml`.
 
 If you do not wish to use Figaro you will need to use another method to set the `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET`, `ZOOM_API_SECRET`, and `ZOOM_API_KEY` environment variables.
 
-It may be necessary to contact the maintainers in order to obtain access to the Google Cloud App.
-
 **PLEASE KEEP IN MIND THAT THESE ARE LIVE CREDENTIALS**
 
-Avoid making execessive API calls to Zoom or Google. If you write any new tests that trigger API calls, make sure that WebMock is intercepting these calls. WebMock should be enabled by default. **DO NOT DISABLE WEBMOCK IN YOUR TESTS**.
+Avoid making execessive API calls to Zoom or Google or you could hit rate limits. If you write any new tests that trigger API calls, make sure that WebMock is intercepting these calls. WebMock should be enabled by default. **DO NOT DISABLE WEBMOCK IN YOUR TESTS**.
 
 ### Running Local
 
