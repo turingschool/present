@@ -46,7 +46,7 @@ ZOOM_API_KEY: <YOUR_ZOOM_API_KEY_HERE>
 
 To obtain the Google Cloud credentials, navigate to the Present Dashboard in the [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418). Under "Credentials" select one of the OAuth 2.0 Client IDs. Currently the only one is named `Present-OAuth-Client`. Copy the Client ID and Client Secret and paste into the appropriate fields in `config/application.yml`.
 
-Next you will need to obtain Zoom Credentials. Navigate to the [Zoom Marketplace](https://marketplace.zoom.us/) and select `Develop` > `Build App` -> `Server-to-Server OAuth`. Enter any name for your App and select `Create`. This should take you to your application's page (in the future, you can navigate to this page by using the `Manage` link). Copy the API Key and the API Secret into the appropriate fields in `config/application.yml`.
+Next you will need to obtain Zoom Credentials. Follow [these instructions](https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/#create-a-server-to-server-oauth-app) to create a Server to Server Oauth App with Zoom. You do not need to enable WebHooks. Select the appropriate scopes to get meeting details and meeting reports. Then, copy the API Key and the API Secret into the appropriate fields in `config/application.yml`.
 
 If you do not wish to use Figaro you will need to use another method to set the `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET`, `ZOOM_API_SECRET`, and `ZOOM_API_KEY` environment variables.
 
