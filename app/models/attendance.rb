@@ -5,7 +5,7 @@ class Attendance < ApplicationRecord
   has_many :students, through: :student_attendances
 
   validates_presence_of :zoom_meeting_id
-  validates_uniqueness_of :zoom_meeting_id
+  # validates_uniqueness_of :zoom_meeting_id
 
   def am_or_pm
     meeting_time.in_time_zone('Mountain Time (US & Canada)').strftime('%p')
