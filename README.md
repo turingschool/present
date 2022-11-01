@@ -29,7 +29,7 @@ You should have all passing tests. If you do not, make sure you have met the pre
 
 ### Environment Variables
 
-To run locally you will need to set up some environment variables. This project includes [Figaro](https://github.com/laserlemon/figaro) in it's Bundler environment and can be used to set up environment variables:
+To run locally you will need to set up some environment variables. This project includes [Figaro](https://github.com/laserlemon/figaro) in its Bundler environment and can be used to set up environment variables:
 
 ```
 bundle exec figaro install
