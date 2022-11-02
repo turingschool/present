@@ -60,5 +60,3 @@ workflows:
           filters:
             branches:
               only:
-                - user_can_take_attendance
-                - main
