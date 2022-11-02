@@ -54,4 +54,25 @@ RSpec.describe 'attendance show page' do
     expect(student_b.name).to appear_before(student_c.name)
     expect(student_c.name).to appear_before(student_z.name)
   end
+
+  it 'applies css classes to all students based on status' do
+    test_attendance = create(:attendance)
+    create_list(:student_attendance, 4, attendance: test_attendance, status: :tardy)
+    create_list(:student_attendance, 3, attendance: test_attendance, status: :absent)
+    create_list(:student_attendance, 7, attendance: test_attendance, status: :present)
+
+    visit "/attendances/#{test_attendance.id}"
+
+    within '#student-attendances' do
+      tardy = all('.tardy').length
+      absent = all('.absent').length
+      present = all('.present').length
+
+      expect(tardy).to eq 4
+      expect(absent).to eq 3
+      expect(present).to eq 7
+    end
+  end
+
+  
 end
