@@ -8,7 +8,7 @@
     <th>Zoom Email</th>
     <th>Zoom ID</th>
   </tr>
-  <% @attendance.student_attendances.by_last_name.each do |student_attendance| %>
+  <% @attendance.student_attendances.by_attendance_status.each do |student_attendance| %>
     <tr id='student-attendance-<%= student_attendance.id %>'>
       <td><%= link_to student_attendance.student.name, student_path(student_attendance.student) %></td>
       <td><%= student_attendance.status %></td>
