@@ -54,6 +54,7 @@ RSpec.describe 'attendance show page' do
     expect(student_c.name).to appear_before(student_z.name)
   end
 
+
   it "students are listed first by Status (absent, tardy, then present), then Name" do
     test_module = create(:turing_module)
     student_a = test_module.students.create(zoom_id: "234s234n2l3kj4JkvvA", name: "Firstname Alastname", zoom_email: "Alastname")
@@ -74,4 +75,24 @@ RSpec.describe 'attendance show page' do
 
   
   end
+
+  it 'applies css classes to all students based on status' do
+    test_attendance = create(:attendance)
+    create_list(:student_attendance, 4, attendance: test_attendance, status: :tardy)
+    create_list(:student_attendance, 3, attendance: test_attendance, status: :absent)
+    create_list(:student_attendance, 7, attendance: test_attendance, status: :present)
+
+    visit "/attendances/#{test_attendance.id}"
+
+    within '#student-attendances' do
+      tardy = all('.tardy').length
+      absent = all('.absent').length
+      present = all('.present').length
+
+      expect(tardy).to eq 4
+      expect(absent).to eq 3
+      expect(present).to eq 7
+    end
+  end
+
 end
