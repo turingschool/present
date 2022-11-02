@@ -7,3 +7,9 @@ td {
 #main-content {
   padding: 10px;
 }
+.tardy {
+  background-color:#f4f186;
+}
+.absent {
+  background-color:#F47174;
+}
