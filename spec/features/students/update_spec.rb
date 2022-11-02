@@ -21,7 +21,6 @@ RSpec.describe 'Student Update' do
     visit edit_student_path(student)
 
     expect(find('#student_name').value).to eq(student.name)
-    expect(find('#student_zoom_email').value).to eq(student.zoom_email)
     expect(find('#student_zoom_id').value).to eq(student.zoom_id)
   end
 

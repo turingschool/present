@@ -21,7 +21,6 @@ RSpec.describe 'Student Show Page' do
     visit student_path(student)
 
     expect(page).to have_content(student.name)
-    expect(page).to have_content(student.zoom_email)
     expect(page).to have_content(student.zoom_id)
     expect(page).to have_content(student.turing_module.name)
   end

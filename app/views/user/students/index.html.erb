@@ -10,7 +10,6 @@
   <% @module.students.each do |student| %>
     <tr class='student' id='student-<%= student.id %>'>
       <td><%= link_to student.name, student_path(student) %></td>
-      <td><%= student.zoom_email %></td>
       <td><%= student.zoom_id %></td>
     </tr>
   <% end %>
