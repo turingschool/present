@@ -44,7 +44,7 @@ RSpec.describe 'Student Create' do
   # indicating that I am creating a new student.
   # And I see a form.
   # When I fill in this form with a student's
-  # name, zoom email, and zoom id,
+  # name and zoom id,
   # And I click a button "Add Student"
   # Then I am redirected back to the module's student index
   # And I see the new student I created.

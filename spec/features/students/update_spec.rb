@@ -27,13 +27,11 @@ RSpec.describe 'Student Update' do
   it 'can update the students info' do
     student = create(:student)
     new_name = 'Different Name'
-    new_zoom_email = 'diff.name@zoom.com'
     new_zoom_id = '<zoom_id_thats_different>'
 
     visit edit_student_path(student)
 
     fill_in :student_name, with: new_name
-    fill_in :student_zoom_email, with: new_zoom_email
     fill_in :student_zoom_id, with: new_zoom_id
 
     click_button 'Save Changes'
