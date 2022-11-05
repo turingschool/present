@@ -10,7 +10,6 @@ RSpec.describe 'attendance show page' do
     student_attendances = test_attendance.student_attendances
 
     visit "/attendances/#{test_attendance.id}"
-
     expect(page).to have_link(test_attendance.turing_module.name, href: turing_module_path(test_attendance.turing_module))
     expect(page).to have_content(test_attendance.meeting_title)
     expect(page).to have_content(test_attendance.pretty_time)
@@ -53,4 +52,46 @@ RSpec.describe 'attendance show page' do
     expect(student_b.name).to appear_before(student_c.name)
     expect(student_c.name).to appear_before(student_z.name)
   end
+
+
+  it "students are listed first by Status (absent, tardy, then present), then Name" do
+    test_module = create(:turing_module)
+    student_a = test_module.students.create(zoom_id: "234s234n2l3kj4JkvvA", name: "Firstname Alastname", zoom_email: "Alastname")
+    student_z = test_module.students.create(zoom_id: "234sdfsdfaefja;lsdkfjkvvA", name: "Firstname Zlastname", zoom_email: "Zlastname")
+    student_b = test_module.students.create(zoom_id: "234sdfsdf-lkrj2l34lkn", name: "Firstname Blastname", zoom_email: "Blastname")
+    student_c = test_module.students.create(zoom_id: "234sdfsdf-8u90ohvaldkfj", name: "Firstname Clastname", zoom_email: "Clastname")
+    attendance = test_module.attendances.create(user: @user, zoom_meeting_id: '<meeting_id>', meeting_time: Time.now)
+    attendance.student_attendances.create!(student: student_a, status: 'present')
+    attendance.student_attendances.create!(student: student_z, status: 'absent')
+    attendance.student_attendances.create!(student: student_b, status: 'tardy')
+    attendance.student_attendances.create!(student: student_c, status: 'absent')
+
+    visit attendance_path(attendance)
+
+    expect(student_c.name).to appear_before(student_z.name)
+    expect(student_z.name).to appear_before(student_b.name)
+    expect(student_b.name).to appear_before(student_a.name)
+
+  
+  end
+
+  it 'applies css classes to all students based on status' do
+    test_attendance = create(:attendance)
+    create_list(:student_attendance, 4, attendance: test_attendance, status: :tardy)
+    create_list(:student_attendance, 3, attendance: test_attendance, status: :absent)
+    create_list(:student_attendance, 7, attendance: test_attendance, status: :present)
+
+    visit "/attendances/#{test_attendance.id}"
+
+    within '#student-attendances' do
+      tardy = all('.tardy').length
+      absent = all('.absent').length
+      present = all('.present').length
+
+      expect(tardy).to eq 4
+      expect(absent).to eq 3
+      expect(present).to eq 7
+    end
+  end
+
 end

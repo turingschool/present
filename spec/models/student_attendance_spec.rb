@@ -29,6 +29,31 @@ RSpec.describe StudentAttendance, type: :model do
       expect(ordered_list.third.student).to eq(jamie)
       expect(ordered_list.fourth.student).to eq(ryan)
     end
+
+    it ".by_attendance_status" do
+      test_module = create(:turing_module)
+      attendance = create(:attendance)
+
+      kevin = Student.new(zoom_id: "E0WXCQAGkMsvF9rQgQA", name: "kevin", zoom_email: " ") # to test that students without last name present are still in returned list
+      ryan = Student.new(zoom_id: "E0WPTrXCQAGkMsvF9rQgQA", name: "Ryan Teske (He/Him)", zoom_email: "ryanteske@outlook.com")
+      dane = Student.new(zoom_id: "yCdFUkVWSZO2KN5rt1_Evw", name: "Dane Brophy (he/they)# BE", zoom_email: "dbrophy720@gmail.com")
+      jamie = Student.new(zoom_id: "Z-b5rLp9QmCAmx1rECjPUA", name: "Jamie Pace (she/her)# BE", zoom_email: "jamiejpace@gmail.com")
+
+      students = [ryan, dane, jamie, kevin]
+      attendance.student_attendances.create(student: kevin, status: :present)
+      attendance.student_attendances.create(student: ryan, status: :absent)
+      attendance.student_attendances.create(student: dane, status: :tardy)
+      attendance.student_attendances.create(student: jamie, status: :absent)
+      
+      test_module.students = students
+      attendance.students = students
+      
+      ordered_list = attendance.student_attendances.by_attendance_status
+      expect(ordered_list.first.student).to eq(jamie)
+      expect(ordered_list.second.student).to eq(ryan)
+      expect(ordered_list.third.student).to eq(dane)
+      expect(ordered_list.last.student).to eq(kevin)
+    end
   end
 
   describe 'instance methods' do

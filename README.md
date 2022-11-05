@@ -60,7 +60,6 @@ Avoid making execessive API calls to Zoom or Google or you could hit rate limits
 
 After installing prerequisites, installing dependencies, and setting environment variables, you should be able to run the app locally.
 
-
 ```
 rails db:seed
 rails s
