@@ -46,6 +46,6 @@ class User::StudentsController < User::BaseController
 
 private
   def student_params
-    params.require(:student).permit(:name, :zoom_email, :zoom_id, :turing_module_id)
+    params.require(:student).permit(:name, :zoom_id, :turing_module_id)
   end
 end

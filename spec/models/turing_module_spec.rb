@@ -62,7 +62,6 @@ RSpec.describe TuringModule, type: :model do
         all_participants_created = participants.all? do |participant|
           test_module.students.any? do |student|
             student.name == participant[:name] &&
-            student.zoom_email == participant[:user_email] &&
             student.zoom_id == participant[:id]
           end
         end
@@ -76,7 +75,6 @@ RSpec.describe TuringModule, type: :model do
           student.zoom_id == "16782336"
         end
         expect(no_name.name).to eq("")
-        expect(no_name.zoom_email).to eq("")
       end
 
       it 'will not create a duplicate student with the same Zoom id' do

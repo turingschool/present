@@ -29,7 +29,6 @@ RSpec.describe 'Student Index' do
       test_students.each do |student|
         within("#student-#{student.id}") do
           expect(page).to have_content(student.name)
-          expect(page).to have_content(student.zoom_email)
           expect(page).to have_content(student.zoom_id)
         end
       end

@@ -1,6 +1,5 @@
 <h1 class='s-h1'><%= @student.name %></h1>
 <h3 class='s-h3'><%= link_to @module.name, turing_module_path(@module) %></h3>
-<p class='s-p'>Zoom Email: <%= @student.zoom_email %></p>
 <p class='s-p'>Zoom ID: <%= @student.zoom_id %></p>
 <%= link_to 'Edit', edit_student_path(@student), class: 's-button' %>
 <%= button_to 'Delete', student_path(@student), method: :delete, data:

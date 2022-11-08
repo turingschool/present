@@ -15,13 +15,12 @@ RSpec.describe 'Student Show Page' do
     expect(current_path).to eq("/students/#{students.first.id}")
   end
 
-  it 'displays the students name, zoom email, and zoom id, and module name' do
+  it 'displays the students name, zoom id, and module name' do
     student = create(:student)
 
     visit student_path(student)
 
     expect(page).to have_content(student.name)
-    expect(page).to have_content(student.zoom_email)
     expect(page).to have_content(student.zoom_id)
     expect(page).to have_content(student.turing_module.name)
   end

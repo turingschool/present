@@ -18,7 +18,6 @@ RSpec.describe 'Student Create' do
     test_module = create(:fe3)
     test_name = 'Alan Turing'
     test_zoom_id = '1234'
-    test_zoom_email = 'alan@turing.edu'
 
     visit new_turing_module_student_path(test_module)
 
@@ -26,7 +25,6 @@ RSpec.describe 'Student Create' do
 
     fill_in :student_name, with: test_name
     fill_in :student_zoom_id, with: test_zoom_id
-    fill_in :student_zoom_email, with: test_zoom_email
 
     click_button 'Create Student'
 
@@ -35,7 +33,6 @@ RSpec.describe 'Student Create' do
     within("#student-#{new_student_id}") do
       expect(page).to have_content(test_name)
       expect(page).to have_content(test_zoom_id)
-      expect(page).to have_content(test_zoom_email)
     end
   end
 
@@ -47,7 +44,7 @@ RSpec.describe 'Student Create' do
   # indicating that I am creating a new student.
   # And I see a form.
   # When I fill in this form with a student's
-  # name, zoom email, and zoom id,
+  # name and zoom id,
   # And I click a button "Add Student"
   # Then I am redirected back to the module's student index
   # And I see the new student I created.

@@ -30,18 +30,16 @@ RSpec.describe Student, type: :model do
       end
 
       it 'finds the students if they exist' do
-        existing_student = Student.create(zoom_id: participant[:id], zoom_email: participant[:user_email], name: participant[:name])
+        existing_student = Student.create(zoom_id: participant[:id], name: participant[:name])
         found_student = Student.find_or_create_from_participant(participant)
         expect(found_student.id).to eq(existing_student.id)
         expect(found_student.name).to eq(existing_student.name)
-        expect(found_student.zoom_email).to eq(existing_student.zoom_email)
         expect(found_student.zoom_id).to eq(existing_student.zoom_id)
       end
 
       it 'creates the student with all their info if they do not exist' do
         found_student = Student.find_or_create_from_participant(participant)
         expect(found_student.name).to eq(participant[:name])
-        expect(found_student.zoom_email).to eq(participant[:user_email])
         expect(found_student.zoom_id).to eq(participant[:id])
       end
     end
