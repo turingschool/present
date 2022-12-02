@@ -1,4 +1,4 @@
 <h1><%= link_to @module.name, turing_module_path(@module) %></h1>
 <p class='s-p'><%= link_to "#{@module.inning.name} inning", inning_path(@module.inning) %> </p>
 <h3 class='s-h3'>Take Attendance for a Zoom Meeting</h3>
-<%= render partial: 'shared/take_attendance', locals: {attendance: @attendance, mod: @module} %>
+<%= render partial: 'shared/take_zoom_attendance', locals: {attendance: @attendance, mod: @module} %>
