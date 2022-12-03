@@ -1,0 +1,9 @@
+<h2>Import Members From Slack Channel</h2>
+
+<%= form_with url: turing_module_slack_channel_import_path(@module), local: true do |f| %>
+  <p class='s-p'>
+    <%= f.label :slack_channel_id, "Enter this cohort's channel id: " %>
+    <%= f.text_field :slack_channel_id %>
+  </p>
+  <%= f.submit 'Import Members From Channel', class: 's-button' %>
+<% end %>

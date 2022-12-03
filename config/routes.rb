@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     resources :users, only: [:update]
     resources :innings, only: [:show, :create, :index, :update]
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
+      get '/slack_channel_import', to: "slack#new"
+      post '/slack_channel_import', to: "slack#import_students"
       resources :attendances, only: [:new, :create, :show]
       resources :students
     end
