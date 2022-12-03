@@ -27,4 +27,8 @@ class TuringModule < ApplicationRecord
       end
     end
   end
+
+  def students_without_slack_ids?
+    !self.students.where(slack_id: nil).empty?
+  end 
 end
