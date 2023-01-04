@@ -17,7 +17,7 @@ class User::AttendancesController < User::BaseController
     slack_url = params[:slack_url]
     turing_module = TuringModule.find(params[:turing_module_id])
     attendance = CreateAttendanceFacade.take_slack_attendance(slack_url,turing_module,current_user)
-    
+    redirect_to attendance_path(attendance)
   end 
 
   def zoom_meeting_attendance
@@ -34,7 +34,8 @@ class User::AttendancesController < User::BaseController
 
   def show
     @attendance_parent = Attendance.find(params[:id])
-    @attendance = @attendance_parent.zoom_attendance
+    @attendance = @attendance_parent.zoom_attendance if @attendance_parent.zoom_attendance
+    @attendance = @attendance_parent.slack_attendance if @attendance_parent.slack_attendance
     @module = @attendance_parent.turing_module
   end
 

@@ -1,17 +1,25 @@
 <h2><%= link_to @module.name, turing_module_path(@module) %></h2>
-<h3><%= @attendance.meeting_title %> - <%= @attendance.pretty_time %></h3>
-<h3>Meeting ID: <%= @attendance.zoom_meeting_id %></h3>
+<% if @attendance.class == ZoomAttendance %>
+  <h3><%= @attendance.meeting_title %> - <%= @attendance.pretty_time %></h3>
+  <h3>Meeting ID: <%= @attendance.zoom_meeting_id %></h3>
+<% elsif @attendance.class == SlackAttendance %>
+  <h3>Slack Thread - <%= @attendance.pretty_time %></h3>
+  <h3>Channel ID: <%= @attendance.channel_id %></h3>
+  <h3>Timestamp ID: <%= @attendance.sent_timestamp %></h3>
+<% end %>
 <table id='student-attendances'>
   <tr>
     <th>Student</th>
     <th>Status</th>
     <th>Zoom ID</th>
+    <th>Slack ID</th>
   </tr>
   <% @attendance_parent.student_attendances.by_attendance_status.each do |student_attendance| %>
     <tr id='student-attendance-<%= student_attendance.id %>'>
       <td><%= link_to student_attendance.student.name, student_path(student_attendance.student) %></td>
       <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
       <td><%= student_attendance.student.zoom_id %></td>
+      <td><%= student_attendance.student.slack_id %></td>
       <% if student_attendance.visiting_student?  %>
         <td><%= button_to "Add New Student", student_path(student_attendance.student), params: {student: {turing_module_id: @module.id}}, method: :patch, class: 's-button s-button-primary' %></td> 
       <% end %>
