@@ -10,21 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_02_235628) do
+ActiveRecord::Schema.define(version: 2023_01_04_221411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "attendances", force: :cascade do |t|
     t.bigint "turing_module_id"
-    t.string "zoom_meeting_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
-    t.string "meeting_title"
-    t.datetime "meeting_time"
+    t.bigint "slack_attendance_id"
+    t.bigint "zoom_attendance_id"
+    t.index ["slack_attendance_id"], name: "index_attendances_on_slack_attendance_id"
     t.index ["turing_module_id"], name: "index_attendances_on_turing_module_id"
     t.index ["user_id"], name: "index_attendances_on_user_id"
+    t.index ["zoom_attendance_id"], name: "index_attendances_on_zoom_attendance_id"
   end
 
   create_table "innings", force: :cascade do |t|
@@ -32,6 +33,14 @@ ActiveRecord::Schema.define(version: 2022_12_02_235628) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "current", default: false
+  end
+
+  create_table "slack_attendances", force: :cascade do |t|
+    t.string "channel_id"
+    t.datetime "sent_timestamp"
+    t.datetime "attendance_start_time"
+    t.bigint "attendance_id"
+    t.index ["attendance_id"], name: "index_slack_attendances_on_attendance_id"
   end
 
   create_table "slack_members", force: :cascade do |t|
@@ -84,11 +93,23 @@ ActiveRecord::Schema.define(version: 2022_12_02_235628) do
     t.index ["turing_module_id"], name: "index_users_on_turing_module_id"
   end
 
+  create_table "zoom_attendances", force: :cascade do |t|
+    t.string "zoom_meeting_id"
+    t.string "meeting_title"
+    t.datetime "meeting_time"
+    t.bigint "attendance_id"
+    t.index ["attendance_id"], name: "index_zoom_attendances_on_attendance_id"
+  end
+
+  add_foreign_key "attendances", "slack_attendances"
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
+  add_foreign_key "attendances", "zoom_attendances"
+  add_foreign_key "slack_attendances", "attendances"
   add_foreign_key "slack_members", "turing_modules"
   add_foreign_key "student_attendances", "attendances"
   add_foreign_key "student_attendances", "students"
   add_foreign_key "students", "turing_modules"
   add_foreign_key "turing_modules", "innings"
+  add_foreign_key "zoom_attendances", "attendances"
 end

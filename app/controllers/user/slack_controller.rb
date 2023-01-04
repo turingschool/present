@@ -11,8 +11,4 @@ class User::SlackController < ApplicationController
         @module = TuringModule.find(params[:turing_module_id])
     end 
 
-    def add_slack_id_to_users 
-        require 'pry';binding.pry
-    end 
-
 end 
