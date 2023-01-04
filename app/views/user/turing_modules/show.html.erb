@@ -18,9 +18,9 @@
     </tr>
     <% @module.attendances.each do |attendance| %>
       <tr id='attendance-<%= attendance.id %>', class='attendance'>
-        <td><%= link_to attendance.meeting_title, attendance_path(attendance) %></td>
-        <td><%= attendance.meeting_time %></td>
-        <td><%= attendance.zoom_meeting_id %></td>
+        <td><%= link_to attendance.zoom_attendance.meeting_title, attendance_path(attendance) %></td>
+        <td><%= attendance.zoom_attendance.meeting_time %></td>
+        <td><%= attendance.zoom_attendance.zoom_meeting_id %></td>
       </tr>
     <% end %>
   </table>
