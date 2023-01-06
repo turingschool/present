@@ -17,7 +17,10 @@ RSpec.describe 'Modules show page' do
   it 'shows the past attendances for the module' do
     test_module = create(:turing_module)
 
-    attendances = create_list(:attendance, 3, turing_module: test_module)
+    attendances = create_list(:zoom_attendance, 3).map do |zoom_attendance|
+      zoom_attendance.attendance.update(turing_module: test_module)
+      zoom_attendance.attendance
+    end 
 
     visit "/modules/#{test_module.id}"
 
@@ -25,9 +28,9 @@ RSpec.describe 'Modules show page' do
       expect(page).to have_content('Past Attendances')
       attendances.each do |attendance|
         within("#attendance-#{attendance.id}") do
-          expect(page).to have_content(attendance.meeting_time)
-          expect(page).to have_content(attendance.meeting_title)
-          expect(page).to have_content(attendance.zoom_meeting_id)
+          expect(page).to have_content(attendance.zoom_attendance.meeting_time)
+          expect(page).to have_content(attendance.zoom_attendance.meeting_title)
+          expect(page).to have_content(attendance.zoom_attendance.zoom_meeting_id)
         end
       end
     end
@@ -35,14 +38,18 @@ RSpec.describe 'Modules show page' do
 
   it "has a link to each attendance's show page" do
     test_module = create(:turing_module)
-    attendances = create_list(:attendance, 3, turing_module: test_module)
+    attendances = create_list(:zoom_attendance, 3).map do |zoom_attendance|
+      zoom_attendance.attendance.update(turing_module: test_module)
+      zoom_attendance.attendance
+    end 
+
     test_attendance = attendances[1]
 
     visit "/modules/#{test_module.id}"
 
     within('#past-attendances') do
       within("#attendance-#{test_attendance.id}") do
-        click_link(test_attendance.meeting_title)
+        click_link(test_attendance.zoom_attendance.meeting_title)
         expect(current_path).to eq("/attendances/#{test_attendance.id}")
       end
     end
