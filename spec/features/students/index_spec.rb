@@ -15,25 +15,29 @@ RSpec.describe 'Student Index' do
 
     expect(current_path).to eq("/modules/#{test_module.id}/students")
   end
+  
+  context "without a slack channel imported" do
+    it 'shows the name of the module and all its students' do
+      test_module = create(:fe3)
+      test_students = create_list(:student, 11, turing_module: test_module)
 
-  it 'shows the name of the module and all its students' do
-    test_module = create(:fe3)
-    test_students = create_list(:student, 11, turing_module: test_module)
+      visit turing_module_students_path(test_module)
 
-    visit turing_module_students_path(test_module)
+      expect(page).to have_content(test_module.name)
+      expect(page).to have_content('Students')
 
-    expect(page).to have_content(test_module.name)
-    expect(page).to have_content('Students')
-    within('#students') do
-      expect(page).to have_css('.student', count: 11)
-      test_students.each do |student|
-        within("#student-#{student.id}") do
-          expect(page).to have_content(student.name)
-          expect(page).to have_content(student.zoom_id)
+      within('#students') do
+        expect(page).to have_css('.student', count: 11)
+        test_students.each do |student|
+          within("#student-#{student.id}") do
+            expect(page).to have_content(student.name)
+            expect(page).to have_content(student.zoom_id)
+            expect(page).to have_link('Import Slack Channel', href: turing_module_slack_channel_import_path(test_module))
+          end
         end
       end
     end
-  end
+  end 
 
   it 'links to the turing module page' do 
     test_module = create(:fe3)
@@ -43,5 +47,22 @@ RSpec.describe 'Student Index' do
     click_link(test_module.name)
 
     expect(current_path).to eq(turing_module_path(test_module))
+  end 
+
+  context "with a slack channel imported" do 
+    it 'has a column to assign slack members to current students' do 
+      test_module = create(:turing_module)
+
+      test_students = create_list(:student, 8, turing_module: test_module)
+      slack_members = create_list(:slack_member, 10, turing_module: test_module)
+
+      visit turing_module_students_path(test_module)
+      test_students.each do |student|
+        within("#student-#{student.id}") do
+          expect(page).to have_select("slack_id", :with_options => slack_members.map(&:name))
+          expect(page).to have_button("Connect")
+        end
+      end 
+    end 
   end 
 end
