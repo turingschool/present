@@ -14,7 +14,7 @@ RSpec.describe 'Modules show page' do
     expect(page).to have_content("#{test_module.inning.name} inning")
   end
 
-  it 'shows the past attendances for the module' do
+  it 'shows the past zoom attendances for the module' do
     test_module = create(:turing_module)
 
     attendances = create_list(:zoom_attendance, 3).map do |zoom_attendance|
@@ -31,6 +31,27 @@ RSpec.describe 'Modules show page' do
           expect(page).to have_content(attendance.zoom_attendance.meeting_time)
           expect(page).to have_content(attendance.zoom_attendance.meeting_title)
           expect(page).to have_content(attendance.zoom_attendance.zoom_meeting_id)
+        end
+      end
+    end
+  end
+
+  it 'shows the past slack attendances for the module' do
+    test_module = create(:turing_module)
+
+    attendances = create_list(:slack_attendance, 3).map do |slack_attendance|
+      slack_attendance.attendance.update(turing_module: test_module)
+      slack_attendance.attendance
+    end 
+
+    visit "/modules/#{test_module.id}"
+
+    within('#past-attendances') do
+      expect(page).to have_content('Past Attendances')
+      attendances.each do |attendance|
+        within("#attendance-#{attendance.id}") do
+          expect(page).to have_link(attendance.slack_attendance.pretty_time_date, href: attendance_path(attendance))
+          expect(page).to have_content(attendance.slack_attendance.attendance_start_time)
         end
       end
     end
