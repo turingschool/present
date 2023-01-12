@@ -51,4 +51,25 @@ RSpec.describe 'Student Update' do
     expect(current_path).to eq(edit_student_path(student))
     expect(page).to have_content('Zoom can\'t be blank')
   end
+
+  it 'can update slack id for that user' do 
+    test_module = create(:turing_module)
+    student = create(:student_with_slack_id, turing_module: test_module)
+
+    create_list(:slack_member, 10, turing_module: test_module)
+    slack_member = create(:slack_member, turing_module: test_module, slack_user_id:"new-slack-id")
+
+    visit edit_student_path(student)
+
+    select(slack_member.name)
+
+    click_button 'Save Changes'
+
+    student.reload
+
+    expect(current_path).to eq(student_path(student))
+    expect(page).to have_content("Your changes have been saved.")
+    expect(student.slack_id).to eq(slack_member.slack_user_id)
+    expect(page).to have_content(slack_member.slack_user_id)
+  end 
 end
