@@ -46,7 +46,7 @@ ZOOM_API_SECRET: <YOUR_ZOOM_API_SECRET_HERE>
 ZOOM_API_KEY: <YOUR_ZOOM_API_KEY_HERE>
 ```
 
-*Note: It may be necessary to contact the maintainers in order to obtain access to the Google Cloud App. Alternatively, you can create your own Google Cloud project with OAuth credentials. *
+**Note: It may be necessary to contact the maintainers in order to obtain access to the Google Cloud App. Alternatively, you can create your own Google Cloud project with OAuth credentials.**
 
 To obtain the Google Cloud credentials, navigate to the Present Dashboard in the [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418). Under "Credentials" select one of the OAuth 2.0 Client IDs. Currently the only one is named `Present-OAuth-Client`. Copy the Client ID and Client Secret and paste into the appropriate fields in `config/application.yml`.
 
