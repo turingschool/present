@@ -13,21 +13,22 @@ RSpec.describe 'Assign Slack Members To Existing Students' do
         slack_members = create_list(:slack_member, 10, turing_module: test_module)
         test_slack_member = slack_members.second
   
-        visit turing_module_students_path(test_module)
+        visit turing_module_slack_channel_import_path(test_module)
 
         within("#student-#{test_student.id}") do
             select(test_slack_member.name)
-            click_button "Connect"
         end
+
+        click_button "Connect Accounts"
 
         test_student.reload
 
         expect(current_path).to eq(turing_module_students_path(test_module))
+        expect(page).to have_content("Successfully connected Slack accounts.")
         expect(test_student.slack_id).to eq(test_slack_member.slack_user_id)
 
         within("#student-#{test_student.id}") do
             expect(page).to have_content(test_slack_member.slack_user_id)
-            expect(page).to_not have_select("slack_id")
         end
     end 
 end 

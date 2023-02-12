@@ -33,7 +33,7 @@ RSpec.describe 'Importing Slack Channel Members' do
             fill_in :slack_channel_id, with: @channel_id 
             click_button "Import Members From Channel"
             
-            expect(current_path).to eq(turing_module_path(@test_module))
+            expect(current_path).to eq(turing_module_slack_channel_import_path(@test_module))
             expect(page).to have_content("53 members from Cohort have been imported")
         end 
     end 
