@@ -1,9 +1,22 @@
 <h2>Import Members From Slack Channel</h2>
 
-<%= form_with url: turing_module_slack_channel_import_path(@module), local: true do |f| %>
-  <p class='s-p'>
-    <%= f.label :slack_channel_id, "Enter this cohort's channel id: " %>
-    <%= f.text_field :slack_channel_id %>
-  </p>
-  <%= f.submit 'Import Members From Channel', class: 's-button' %>
+<% if !@module.slack_members.empty? %>
+  <h4>Please match the students in this cohort to their appropriate Slack profile name, and then click "Connect Accounts"</h4>
+  <%= form_with url: turing_module_slack_channel_import_path(@module), method: :patch, local: true do |f| %>
+  <% @module.students.each do |student| %>
+    <p class ='s-p' id = "student-<%=student.id%>">
+      <%= f.label student.id, student.name %>
+      <%= f.select "students[#{student.id}]", options_for_select(slack_members(@module), find_closest_match(student)), {class: "select-field"} %>
+    </p>
+  <% end %>
+    <%= f.submit 'Connect Accounts', class: 's-button' %>
+  <% end %>
+<% else %>
+  <%= form_with url: turing_module_slack_channel_import_path(@module), local: true do |f| %>
+    <p class='s-p'>
+      <%= f.label :slack_channel_id, "Enter this cohort's channel id: " %>
+      <%= f.text_field :slack_channel_id %>
+    </p>
+    <%= f.submit 'Import Members From Channel', class: 's-button' %>
+  <% end %>
 <% end %>

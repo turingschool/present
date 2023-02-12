@@ -5,15 +5,22 @@ class User::SlackController < ApplicationController
         channel_members = SlackFacade.get_and_create_slack_members(slack_channel_id, turing_module)
         if channel_members
             flash[:success] = "#{turing_module.slack_members.count} members from Cohort have been imported"
-            redirect_to turing_module_path(turing_module)
         else
             flash[:error] = "Please provide a valid channel id."
-            redirect_to turing_module_slack_channel_import_path(turing_module)
         end
+        redirect_to turing_module_slack_channel_import_path(turing_module)
     end 
 
     def new 
         @module = TuringModule.find(params[:turing_module_id])
+    end 
+
+    def connect_accounts
+        params[:students].each do |student_id, slack_id| 
+            Student.update(student_id, :slack_id => slack_id)
+        end
+        flash[:success] = "Successfully connected Slack accounts."
+        redirect_to turing_module_students_path(params[:turing_module_id])
     end 
 
 end 
