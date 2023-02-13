@@ -97,4 +97,13 @@ RSpec.describe 'attendance show page' do
     end
   end
 
+  it 'prompts user to import a slack channel if no channel has been uploaded for that module yet' do 
+    zoom_attendance = create(:zoom_attendance_with_students)
+    
+    visit attendance_path(zoom_attendance.attendance.id)
+
+    expect(page).to have_content("Looks Like you have yet to import a slack channel. Please do that here")
+    expect(page).to have_link("here", href: turing_module_slack_channel_import_path(zoom_attendance.attendance.turing_module))
+  end 
+
 end
