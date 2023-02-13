@@ -50,13 +50,14 @@ workflows:
   build-test-deploy:
     jobs:
       - build-and-test
-      # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
-          # requires:
-          #   - build-and-test
-          # post-steps:
-          #   - run:
-          #       name: migrate
-          #       command: heroku run -a $HEROKU_APP_NAME rails db:migrate
-          # filters:
-          #   branches:
-          #     only:
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+          requires:
+            - build-and-test
+          post-steps:
+            - run:
+                name: migrate
+                command: heroku run -a $HEROKU_APP_NAME rails db:migrate
+          filters:
+            branches:
+              only:
+                - 
