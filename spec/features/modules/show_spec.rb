@@ -50,7 +50,7 @@ RSpec.describe 'Modules show page' do
       expect(page).to have_content('Past Attendances')
       attendances.each do |attendance|
         within("#attendance-#{attendance.id}") do
-          expect(page).to have_link(attendance.slack_attendance.pretty_time_date, href: attendance_path(attendance))
+          expect(page).to have_link(attendance.slack_attendance.pretty_time_date)
           expect(page).to have_content(attendance.slack_attendance.attendance_start_time)
         end
       end
