@@ -1,5 +1,7 @@
 # Present
 
+Manage Turing student attendances.
+
 ## Setup
 
 ### Prerequisites
@@ -44,7 +46,7 @@ ZOOM_API_SECRET: <YOUR_ZOOM_API_SECRET_HERE>
 ZOOM_API_KEY: <YOUR_ZOOM_API_KEY_HERE>
 ```
 
-*Note: It may be necessary to contact the maintainers in order to obtain access to the Google Cloud App.*
+**Note: It may be necessary to contact the maintainers in order to obtain access to the Google Cloud App. Alternatively, you can create your own Google Cloud project with OAuth credentials.**
 
 To obtain the Google Cloud credentials, navigate to the Present Dashboard in the [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418). Under "Credentials" select one of the OAuth 2.0 Client IDs. Currently the only one is named `Present-OAuth-Client`. Copy the Client ID and Client Secret and paste into the appropriate fields in `config/application.yml`.
 
@@ -89,5 +91,3 @@ Keep in mind that the app will make real HTTP calls to the Zoom API and Google O
 * [Saville Style System](https://savile.turing.edu/)
 * [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418)
 * [Zoom Marketplace](https://marketplace.zoom.us/)
-* [Original Planning Doc ](https://docs.google.com/document/d/1ugcAJbxE2dGzrFV5TtKsSu4ChoKkfs8bOQYno9aojXY/edit?usp=sharing)
-* [DTR](https://docs.google.com/document/d/147gKRaigfph0sqzxPbEvch_m2d4EJpE_SV2RSU9aAts/edit?usp=sharing)
