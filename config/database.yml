@@ -23,7 +23,7 @@ default: &default
 
 development:
   <<: *default
-  database: attendance_tracker_hackathon_development
+  database: present_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -57,7 +57,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: attendance_tracker_hackathon_test
+  database: present_test
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -80,6 +80,12 @@ test:
 #
 production:
   <<: *default
-  database: attendance_tracker_hackathon_production
-  username: attendance_tracker_hackathon
-  password: <%= ENV['ATTENDANCE_TRACKER_HACKATHON_DATABASE_PASSWORD'] %>
+  database: present_production
+  username: present
+  password: <%= ENV['PRESENT_DATABASE_PASSWORD'] %>
+
+staging:
+  <<: *default
+  database: present_staging
+  username: present
+  password: <%= ENV['PRESENT_DATABASE_PASSWORD'] %>
