@@ -27,9 +27,9 @@ RSpec.describe "Dashboard" do
     it 'user can take attendance for their mod' do
       visit '/'
 
-      expect(page).to have_content('Take Attendance for my mod:')
-      expect(page.find('form#take-attendance')['method']).to eq('post')
-      expect(page.find('form#take-attendance')['action']).to eq(turing_module_attendances_path(@my_mod))
+      expect(page).to have_content('Take Attendance for a Zoom Meeting')
+      expect(page.find('form#take-zoom-attendance')['method']).to eq('post')
+      expect(page.find('form#take-zoom-attendance')['action']).to eq(turing_module_attendances_path(@my_mod))
     end
 
     it 'does not show current inning info' do

@@ -15,15 +15,24 @@ RSpec.describe 'Student Show Page' do
     expect(current_path).to eq("/students/#{students.first.id}")
   end
 
-  it 'displays the students name, zoom id, and module name' do
-    student = create(:student)
+  it 'displays the students name, zoom id, slack id, and module name' do
+    student = create(:student_with_slack_id)
 
     visit student_path(student)
 
     expect(page).to have_content(student.name)
     expect(page).to have_content(student.zoom_id)
+    expect(page).to have_content(student.slack_id)
     expect(page).to have_content(student.turing_module.name)
   end
+
+  it 'shows that a slack id hasnt been assigned if there is no slack id' do 
+    student = create(:student)
+    
+    visit student_path(student)
+
+    expect(page).to have_content("Not Yet Assigned")
+  end 
 
   it 'the module name is a link' do
     student = create(:student)
