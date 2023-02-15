@@ -1,0 +1,7 @@
+<%= form_with url: turing_module_attendances_path(mod), local: true, id: 'take-slack-attendance' do |f| %>
+  <p class='s-p'>
+    <%= f.label :slack_url, "Enter the Slack Message URL" %>
+    <%= f.text_field :slack_url %>
+  </p>
+  <%= f.submit 'Take Slack Attendance', class: 's-button' %>
+<% end %>

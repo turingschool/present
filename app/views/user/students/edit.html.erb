@@ -7,5 +7,10 @@
     <%= f.label 'Zoom ID: ' %>
     <%= f.text_field :zoom_id %>
   </p>
+  </p>
+    <p class='s-p'>
+    <%= f.label 'Slack Account: ' %>
+    <%= f.select :slack_id, options_for_select(slack_members(@student.turing_module), @student.slack_id.to_s), {class: "select-field"}%>
+  </p>
   <%= f.submit 'Save Changes', class: 's-button', data: {confirm: 'Are you sure you want to update this student?'} %>
 <% end %>

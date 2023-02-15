@@ -6,6 +6,9 @@
     <tr>
       <th>Name</th>
       <th>Zoom ID</th>
+      <th>Name</th>
+      <th>Zoom ID</th>
+      <th>Slack Id</th>
       <th>Populi ID</th>
     </tr>
   </thead>
@@ -14,8 +17,11 @@
       <tr class='student' id='student-<%= student.id %>'>
         <td><%= link_to student.name, student_path(student) %></td>
         <td><%= student.zoom_id %></td>
+        <% if student.slack_id %>
+        <td><%= student.slack_id %></td>
+        <% end %>
         <td class='populi_id'><%= student.populi_id %></td>
       </tr>
-    <% end %>
+    <% end %>  
   </tbody>
 </table>
