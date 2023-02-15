@@ -2,14 +2,20 @@
 <h3 class='s-h3'>Students</h3>
 <%= link_to 'Add a Student', new_turing_module_student_path(@module), class: 's-button'%>
 <table id='students'>
-  <tr>
-    <th>Name</th>
-    <th>Zoom ID</th>
-  </tr>
-  <% @module.students.each do |student| %>
-    <tr class='student' id='student-<%= student.id %>'>
-      <td><%= link_to student.name, student_path(student) %></td>
-      <td><%= student.zoom_id %></td>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Zoom ID</th>
+      <th>Populi ID</th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @module.students.each do |student| %>
+      <tr class='student' id='student-<%= student.id %>'>
+        <td><%= link_to student.name, student_path(student) %></td>
+        <td><%= student.zoom_id %></td>
+        <td class='populi_id'><%= student.populi_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>

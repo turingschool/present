@@ -1,3 +1,4 @@
+
 <h1><%= @module.name %></h1>
 <% if current_user.is_this_my_mod?(@module) %>
   <p>(Set to My Module)</p>
@@ -6,6 +7,7 @@
 <% end %>
 <p><%= link_to "#{@module.inning.name} inning", inning_path(@module.inning), class: 's-link' %></p>
 <p><%= link_to "Students (#{@module.students.length})", turing_module_students_path(@module), class: 's-link' %></p>
+<p><%= link_to "Integrate with Populi", new_turing_module_populi_path(@module), class: 's-link' %></p>
 <p><%= link_to 'Take Attendance', new_turing_module_attendance_path(@module), class: 's-link' %></p>
 <section id='past-attendances'>
   <h3 class='s-h3'>Past Attendances</h3>

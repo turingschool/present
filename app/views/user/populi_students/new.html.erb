@@ -1,0 +1,12 @@
+<%= form_with url: "/modules/#{@module.id}/populi_students" do |f| %>
+  <% @module.students.each do |student| %>
+    <section id='student-<%= student.id %>'>
+      <p>
+        <%= student.name %>
+        <%= f.select("populi_students[#{student.id}]", options_for_select(@populi_students, 24490130)) %>
+      </p>
+    </section>
+  <% end %>
+
+  <%= f.submit 'Submit' %>
+<% end %>

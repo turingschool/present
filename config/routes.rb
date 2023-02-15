@@ -5,13 +5,15 @@ Rails.application.routes.draw do
   get '/auth/google_oauth2/callback', to: 'sessions#create'
   delete '/sessions', to: 'sessions#destroy'
   get '/help', to: 'welcome#help'
-  
+
   scope module: :user do
     resources :users, only: [:update]
     resources :innings, only: [:show, :create, :index, :update]
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
       resources :attendances, only: [:new, :create, :show]
       resources :students
+      resources :populi, only: [:new, :create]
+      resources :populi_students, only: [:new, :create]    
     end
   end
 end
