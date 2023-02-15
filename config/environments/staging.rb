@@ -1,4 +1,7 @@
 Rails.application.configure do
+  # Display full errors and stack traces rather than generic "Something Went Wrong"
+  config.action_dispatch.show_exceptions = true
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
