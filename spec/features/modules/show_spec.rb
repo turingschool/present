@@ -68,4 +68,12 @@ RSpec.describe 'Modules show page' do
     expect(page).to have_content('(Set to My Module)')
     expect(@user.is_this_my_mod?(mod)).to eq(true)
   end
+
+  it 'links to the new Populi Integration page from the mod show page' do
+    mod = create(:turing_module)
+
+    visit turing_module_path(mod)
+    
+    expect(page).to have_link('Integrate with Populi', href: new_turing_module_populi_path(mod))
+  end
 end

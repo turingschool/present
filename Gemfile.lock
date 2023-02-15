@@ -1,6 +1,20 @@
+GIT
+  remote: https://github.com/turingschool/populi_api.git
+  revision: dd07e62c8086db9b02fcac54255ce66c3ca922e3
+  branch: main
+  specs:
+    populi_api (0.8.0)
+      activesupport (>= 5.2, < 7.0)
+      faraday (>= 1.0, <= 2.0)
+      faraday_middleware (~> 1.0)
+      multi_xml (~> 0.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
+    RubyInline (3.13.0)
+      ZenTest (~> 4.3)
+    ZenTest (4.12.1)
     actioncable (5.2.6.2)
       actionpack (= 5.2.6.2)
       nio4r (~> 2.0)
@@ -109,9 +123,13 @@ GEM
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
+    faraday_middleware (1.2.0)
+      faraday (~> 1.0)
     ffi (1.15.5)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
+    fuzzy-string-match (1.0.1)
+      RubyInline (>= 3.8.6)
     globalid (1.0.0)
       activesupport (>= 5.0)
     hashdiff (1.0.1)
@@ -308,6 +326,7 @@ DEPENDENCIES
   faker
   faraday
   figaro
+  fuzzy-string-match
   jbuilder (~> 2.5)
   jwt
   launchy
@@ -315,6 +334,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   orderly
   pg (>= 0.18, < 2.0)
+  populi_api!
   pry
   puma (~> 3.11)
   rails (~> 5.2.6)

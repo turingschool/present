@@ -38,6 +38,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'faraday'
 gem 'omniauth-google-oauth2'
 gem 'jwt'
+gem 'populi_api', git: 'https://github.com/turingschool/populi_api.git', branch: 'main'
+gem 'fuzzy-string-match'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

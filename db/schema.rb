@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_02_203510) do
+ActiveRecord::Schema.define(version: 2023_02_15_010045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2022_11_02_203510) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "turing_module_id"
+    t.string "populi_id"
     t.index ["turing_module_id"], name: "index_students_on_turing_module_id"
   end
 

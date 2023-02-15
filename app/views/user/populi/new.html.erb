@@ -1,0 +1,3 @@
+<% @courses.each do |course| %>
+    <%= button_to "#{course[:abbrv]} - #{course[:name]}", turing_module_populi_index_path(@module), params: {course_instance_id: course[:instanceid]}, method: :get %>
+<% end %>
