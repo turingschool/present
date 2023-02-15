@@ -12,8 +12,7 @@ Rails.application.routes.draw do
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
       resources :attendances, only: [:new, :create, :show]
       resources :students
-      resources :populi, only: [:new, :create]
-      resources :populi_students, only: [:new, :create]    
+      resources :populi, only: [:new, :create, :index]    
     end
   end
 end

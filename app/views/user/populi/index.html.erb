@@ -1,4 +1,4 @@
-<%= form_with url: "/modules/#{@module.id}/populi_students" do |f| %>
+<%= form_with url: "/modules/#{@module.id}/populi" do |f| %>
   <% @module.students.each do |student| %>
     <section id='student-<%= student.id %>'>
       <p>
