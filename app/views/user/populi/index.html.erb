@@ -3,7 +3,7 @@
     <section id='student-<%= student.id %>'>
       <p>
         <%= student.name %>
-        <%= f.select("populi_students[#{student.id}]", options_for_select(@populi_students, 24490130)) %>
+        <%= f.select("populi_students[#{student.id}]", options_for_select(@populi_students, find_jarow_match(student, @populi_students))) %>
       </p>
     </section>
   <% end %>
