@@ -1,7 +1,7 @@
 class PopuliStudent
   attr_reader :name, :personid
 
-  def initialize(name, personid)
+  def initialize(name, personid = nil)
     @name = name
     @personid = personid
   end
