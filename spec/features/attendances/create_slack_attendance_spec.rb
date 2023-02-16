@@ -13,7 +13,7 @@ RSpec.describe 'Creating an Attendance' do
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
       .to_return(body: File.read('spec/fixtures/slack_channel_members_report.json'))
 
-      stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
+      stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
       .to_return(body: File.read('spec/fixtures/slack_message_replies_response.json'))
 
       @test_module = create(:turing_module)
@@ -43,7 +43,6 @@ RSpec.describe 'Creating an Attendance' do
       slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
       
       @test_module.students = expected_students
-      # binding.pry
       absent_student = @test_module.students.create(zoom_id: "234sdfsdf-A8zjQjKq9mogfJkvvA", name: "AN ABSENT STUDENT", slack_id:"UO2l3kfjsldk3")
 
       visit turing_module_path(@test_module)

@@ -20,12 +20,8 @@ ActiveRecord::Schema.define(version: 2023_01_04_221411) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
-    t.bigint "slack_attendance_id"
-    t.bigint "zoom_attendance_id"
-    t.index ["slack_attendance_id"], name: "index_attendances_on_slack_attendance_id"
     t.index ["turing_module_id"], name: "index_attendances_on_turing_module_id"
     t.index ["user_id"], name: "index_attendances_on_user_id"
-    t.index ["zoom_attendance_id"], name: "index_attendances_on_zoom_attendance_id"
   end
 
   create_table "innings", force: :cascade do |t|
@@ -101,10 +97,8 @@ ActiveRecord::Schema.define(version: 2023_01_04_221411) do
     t.index ["attendance_id"], name: "index_zoom_attendances_on_attendance_id"
   end
 
-  add_foreign_key "attendances", "slack_attendances"
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
-  add_foreign_key "attendances", "zoom_attendances"
   add_foreign_key "slack_attendances", "attendances"
   add_foreign_key "slack_members", "turing_modules"
   add_foreign_key "student_attendances", "attendances"
