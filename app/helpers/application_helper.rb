@@ -1,13 +1,5 @@
 module ApplicationHelper
 
-  def find_jarow_match(student, student_list)
-      jarow = FuzzyStringMatch::JaroWinkler.create(:pure)
-      match = student_list.max_by do |name, id|
-        jarow.getDistance(student.name, name)
-      end
-      return match[1]
-  end
-
   def slack_members(turing_module)
     a = turing_module.slack_members.sort_by {|x| x.name}.map do |slack_member|
         [slack_member.name,slack_member.slack_user_id]
