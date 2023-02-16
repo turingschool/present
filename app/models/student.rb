@@ -1,4 +1,6 @@
 class Student < ApplicationRecord
+  include StringMatcher
+  
   belongs_to :turing_module, optional: true
   has_many :student_attendances, dependent: :destroy
   has_many :attendances, through: :student_attendances
@@ -10,5 +12,12 @@ class Student < ApplicationRecord
     student = Student.find_by(zoom_id: participant[:id])
     return student if student
     Student.create(zoom_id: participant[:id], name: participant[:name])
+  end
+
+  def best_match(populi_students)
+    match_name = find_jarow_match(self.name, populi_students.map {|student| student.name} )
+    populi_students.find do |student|
+      student.name == match_name
+    end
   end
 end
