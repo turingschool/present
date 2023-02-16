@@ -141,7 +141,6 @@ RSpec.describe 'Populi Integration' do
             expect(page).to have_content(24490123)
           end
         end
-        save_and_open_page
       end
     
       it 'pre-selects the closest matching name' do
