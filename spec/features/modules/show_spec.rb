@@ -102,6 +102,6 @@ RSpec.describe 'Modules show page' do
 
     visit turing_module_path(mod)
     
-    expect(page).to have_link('Integrate with Populi', href: new_turing_module_populi_path(mod))
+    expect(page).to have_link('Integrate with Populi', href: turing_module_populi_integration_path(mod))
   end
 end

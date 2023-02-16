@@ -31,7 +31,7 @@ RSpec.describe 'Populi Integration' do
     end
 
     xit 'user sess buttons to select their mod from a list of populi courses' do
-      visit new_turing_module_populi_path(@mod)
+      visit turing_module_populi_integration_path(@mod)
 
       expect(page).to have_button('BE Mod 0 Classic - Back End Prerequisite Classic 2303')
       expect(page).to have_button('BE Mod 0 Intensive - Back End Prerequisite Intensive 2303')
@@ -48,7 +48,7 @@ RSpec.describe 'Populi Integration' do
     end
 
     it 'suggests the best match of module from the list of populi courses' do
-      visit new_turing_module_populi_path(@mod)
+      visit turing_module_populi_integration_path(@mod)
 
       within '#best-match' do
         expect(page).to have_content('BE Mod 2 - Web Application Development')
@@ -56,18 +56,19 @@ RSpec.describe 'Populi Integration' do
     end
 
     it 'user can confirm if the best match is correct and see the students from that course' do
-     visit new_turing_module_populi_path(@mod)
+     visit turing_module_populi_integration_path(@mod)
 
       within '#best-match' do
         click_button 'Yes'
       end
 
-      expect(current_path).to eq("/modules/#{@mod.id}/populi")
+      expect(current_path).to eq("/modules/#{@mod.id}/populi/courses/10547831")
     end
 
     context 'user confirms their best match' do
       it 'allows the user to match the correct populi students to their module students' do
-        visit new_turing_module_populi_path(@mod)
+        visit turing_module_populi_integration_path(@mod)
+
 
         click_button('Yes')
 
@@ -144,7 +145,7 @@ RSpec.describe 'Populi Integration' do
       end
     
       it 'pre-selects the closest matching name' do
-        visit new_turing_module_populi_path(@mod)
+        visit turing_module_populi_integration_path(@mod)
 
         click_button('Yes')
 
