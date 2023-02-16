@@ -7,9 +7,6 @@
   <h3>Channel ID: <%= @attendance.channel_id %></h3>
   <h3>Timestamp ID: <%= @attendance.sent_timestamp %></h3>
 <% end %>
-<% if @module.slack_members.empty? %>
-  <h2>Looks Like you have yet to import a slack channel. Please do that <%=link_to "here", turing_module_slack_channel_import_path(@module)%></h2>
-<% end %>
 <table id='student-attendances' class="sortable">
   <thead>
     <tr>
