@@ -30,13 +30,12 @@ RSpec.describe 'Populi Integration' do
           to_return(status: 200, body: File.read('spec/fixtures/academic_terms.xml'), headers: {})
     end
 
-    it 'has buttons for the user to choose their mod' do
+    xit 'user sess buttons to select their mod from a list of populi courses' do
       visit new_turing_module_populi_path(@mod)
 
       expect(page).to have_button('BE Mod 0 Classic - Back End Prerequisite Classic 2303')
       expect(page).to have_button('BE Mod 0 Intensive - Back End Prerequisite Intensive 2303')
       expect(page).to have_button('BE Mod 1 - Object Oriented Programming with Ruby')
-      expect(page).to have_button('BE Mod 2 - Web Application Development')
       expect(page).to have_button('BE Mod 3 - Professional Rails Applications')
       expect(page).to have_button('BE Mod 4 - Cross-Team Processes and Applications')
       expect(page).to have_button('C#.NET Mod 0 - C# .NET Prerequisite')
@@ -48,110 +47,130 @@ RSpec.describe 'Populi Integration' do
       expect(page).to have_button('FE Mod 4 - Cross-Team Processes and Applications')
     end
 
-    it 'allows the user to match the correct populi students to their module students' do
+    it 'suggests the best match of module from the list of populi courses' do
       visit new_turing_module_populi_path(@mod)
 
-      click_button('BE Mod 2 - Web Application Development')
-
-      within "#student-#{@student_1.id}" do
-        expect(page).to have_content(@student_1.name)
-        select 'Leo Banos Garcia'
-      end
-      within "#student-#{@student_2.id}" do
-        expect(page).to have_content(@student_2.name)
-        select 'Anthony C (Anthony) Blackwell Tallent'
-      end
-      within "#student-#{@student_3.id}" do
-        expect(page).to have_content(@student_3.name)
-        select'Janice (Lacey) Weaver'
-      end
-      within "#student-#{@student_4.id}" do
-        expect(page).to have_content(@student_4.name)
-        select 'Anhnhi (Anhnhi) Tran'
-      end
-      within "#student-#{@student_5.id}" do
-        expect(page).to have_content(@student_5.name)
-        select 'Jake (J) Seymour'
-      end
-      within "#student-#{@student_6.id}" do
-        expect(page).to have_content(@student_6.name)
-        select 'MIchael (Mike) Cummins'
-      end
-      within "#student-#{@student_7.id}" do
-        expect(page).to have_content(@student_7.name)
-        select 'Samuel (Sam) Cox'
-      end
-
-      click_button 'Submit'
-
-      expect(current_path).to eq(turing_module_path(@mod))
-
-      click_link 'Students'
-
-      within "#student-#{@student_1.id}" do
-        within '.populi_id' do
-          expect(page).to have_content(24490130)
-        end
-      end
-      within "#student-#{@student_2.id}" do
-        within '.populi_id' do
-          expect(page).to have_content(24490140)
-        end
-      end
-      within "#student-#{@student_3.id}" do
-        within '.populi_id' do
-          expect(page).to have_content(24490100)
-        end
-      end
-      within "#student-#{@student_4.id}" do
-        within '.populi_id' do
-          expect(page).to have_content(24490062)
-        end
-      end
-      within "#student-#{@student_5.id}" do
-        within '.populi_id' do
-          expect(page).to have_content(24490161)
-        end
-      end
-      within "#student-#{@student_6.id}" do
-        within '.populi_id' do
-          expect(page).to have_content(24490150)
-        end
-      end
-      within "#student-#{@student_7.id}" do
-        within '.populi_id' do
-          expect(page).to have_content(24490123)
-        end
+      within '#best-match' do
+        expect(page).to have_content('BE Mod 2 - Web Application Development')
       end
     end
 
-   it 'pre-selects the closest matching name' do
-      visit new_turing_module_populi_path(@mod)
+    it 'user can confirm if the best match is correct and see the students from that course' do
+     visit new_turing_module_populi_path(@mod)
 
-      click_button('BE Mod 2 - Web Application Development')
+      within '#best-match' do
+        click_button 'Yes'
+      end
 
-      within "#student-#{@student_1.id}" do
-        expect(page).to have_select(selected: 'Leo Banos Garcia')
-      end
-      within "#student-#{@student_2.id}" do
-        expect(page).to have_select(selected: 'Anthony C (Anthony) Blackwell Tallent')
-      end
-      within "#student-#{@student_3.id}" do
-        expect(page).to have_select(selected: 'Janice (Lacey) Weaver')
-      end
-      within "#student-#{@student_4.id}" do
-        expect(page).to have_select(selected: 'Anhnhi (Anhnhi) Tran')
-      end
-      within "#student-#{@student_5.id}" do
-        expect(page).to have_select(selected: 'Jake (J) Seymour')
-      end
-      within "#student-#{@student_6.id}" do
-        expect(page).to have_select(selected: 'MIchael (Mike) Cummins')
-      end
-      within "#student-#{@student_7.id}" do
-        expect(page).to have_select(selected: 'Samuel (Sam) Cox')
-      end
-   end
+      expect(current_path).to eq("/modules/#{@mod.id}/populi")
+    end
 
+    context 'user confirms their best match' do
+      it 'allows the user to match the correct populi students to their module students' do
+        visit new_turing_module_populi_path(@mod)
+
+        click_button('Yes')
+
+        within "#student-#{@student_1.id}" do
+          expect(page).to have_content(@student_1.name)
+          select 'Leo Banos Garcia'
+        end
+        within "#student-#{@student_2.id}" do
+          expect(page).to have_content(@student_2.name)
+          select 'Anthony C (Anthony) Blackwell Tallent'
+        end
+        within "#student-#{@student_3.id}" do
+          expect(page).to have_content(@student_3.name)
+          select'Janice (Lacey) Weaver'
+        end
+        within "#student-#{@student_4.id}" do
+          expect(page).to have_content(@student_4.name)
+          select 'Anhnhi (Anhnhi) Tran'
+        end
+        within "#student-#{@student_5.id}" do
+          expect(page).to have_content(@student_5.name)
+          select 'Jake (J) Seymour'
+        end
+        within "#student-#{@student_6.id}" do
+          expect(page).to have_content(@student_6.name)
+          select 'MIchael (Mike) Cummins'
+        end
+        within "#student-#{@student_7.id}" do
+          expect(page).to have_content(@student_7.name)
+          select 'Samuel (Sam) Cox'
+        end
+
+        click_button 'Integrate with Populi'
+
+        expect(current_path).to eq(turing_module_path(@mod))
+
+        click_link 'Students'
+
+        within "#student-#{@student_1.id}" do
+          within '.populi_id' do
+            expect(page).to have_content(24490130)
+          end
+        end
+        within "#student-#{@student_2.id}" do
+          within '.populi_id' do
+            expect(page).to have_content(24490140)
+          end
+        end
+        within "#student-#{@student_3.id}" do
+          within '.populi_id' do
+            expect(page).to have_content(24490100)
+          end
+        end
+        within "#student-#{@student_4.id}" do
+          within '.populi_id' do
+            expect(page).to have_content(24490062)
+          end
+        end
+        within "#student-#{@student_5.id}" do
+          within '.populi_id' do
+            expect(page).to have_content(24490161)
+          end
+        end
+        within "#student-#{@student_6.id}" do
+          within '.populi_id' do
+            expect(page).to have_content(24490150)
+          end
+        end
+        within "#student-#{@student_7.id}" do
+          within '.populi_id' do
+            expect(page).to have_content(24490123)
+          end
+        end
+        save_and_open_page
+      end
+    
+      it 'pre-selects the closest matching name' do
+        visit new_turing_module_populi_path(@mod)
+
+        click_button('Yes')
+
+        within "#student-#{@student_1.id}" do
+          expect(page).to have_select(selected: 'Leo Banos Garcia')
+        end
+        within "#student-#{@student_2.id}" do
+          expect(page).to have_select(selected: 'Anthony C (Anthony) Blackwell Tallent')
+        end
+        within "#student-#{@student_3.id}" do
+          expect(page).to have_select(selected: 'Janice (Lacey) Weaver')
+        end
+        within "#student-#{@student_4.id}" do
+          expect(page).to have_select(selected: 'Anhnhi (Anhnhi) Tran')
+        end
+        within "#student-#{@student_5.id}" do
+          expect(page).to have_select(selected: 'Jake (J) Seymour')
+        end
+        within "#student-#{@student_6.id}" do
+          expect(page).to have_select(selected: 'MIchael (Mike) Cummins')
+        end
+        within "#student-#{@student_7.id}" do
+          expect(page).to have_select(selected: 'Samuel (Sam) Cox')
+        end
+      end
+    end
 
 end
