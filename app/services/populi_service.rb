@@ -25,4 +25,8 @@ class PopuliService
     def get_terms
       PopuliAPI.get_academic_terms
     end
+
+    def get_term_courses(term_id)
+      PopuliAPI.get_term_course_instances(term_id: term_id)
+    end
 end

@@ -10,13 +10,16 @@ Rails.application.routes.draw do
     resources :users, only: [:update]
     resources :innings, only: [:show, :create, :index, :update]
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
+      resources :attendances, only: [:new, :create, :show]
+      resources :students
+
       get '/slack_channel_import', to: "slack#new"
       post '/slack_channel_import', to: "slack#import_students"
       patch '/slack_channel_import', to: "slack#connect_accounts"
-      resources :attendances, only: [:new, :create, :show]
-      resources :students
-      resources :populi, only: [:new, :create, :index]    
-      resources :students 
+
+      get '/populi/new', to: 'populi#new', as: :populi_integration
+      get '/populi/courses/:course_id', to: 'populi#match_students', as: :populi_match_students
+      post '/populi', to: 'populi#create'
     end
   end
 end
