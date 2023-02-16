@@ -1,3 +1,16 @@
+<h2>Select your Course from Populi</h2>
+<p>Is this your Populi Course?
+<strong><%="#{@top_choice[:abbrv]} - #{@top_choice[:name]}"%></strong>
+<%= button_to "Yes", turing_module_populi_index_path(@module), params: {course_instance_id: @top_choice[:instanceid]}, method: :get, class: 's-button' %>
+<br>
+<%= button_to "No", turing_module_populi_index_path(@module), params: {course_instance_id: @top_choice[:instanceid]}, method: :get, class: 's-button' %>
+</p>
+<p>We also found these modules for the current inning:</p>
 <% @courses.each do |course| %>
     <%= button_to "#{course[:abbrv]} - #{course[:name]}", turing_module_populi_index_path(@module), params: {course_instance_id: course[:instanceid]}, method: :get %>
+<% end %>
+<p>Don't see your module in this list? Please select which inning you're looking for:</p>
+<%= form_with url: "/courses", method: :post do |f| %>
+  <%= f.select(:term_id, @terms) %>
+  <%= f.submit %>
 <% end %>

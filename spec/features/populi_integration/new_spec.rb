@@ -24,6 +24,10 @@ RSpec.describe 'Populi Integration' do
         stub_request(:post, ENV['POPULI_API_URL']).
           with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
           to_return(status: 200, body: File.read('spec/fixtures/students_for_be2_2211.xml'), headers: {})
+        
+        stub_request(:post, ENV['POPULI_API_URL']).
+          with(body: {"task"=>"getAcademicTerms"}).
+          to_return(status: 200, body: File.read('spec/fixtures/academic_terms.xml'), headers: {})
     end
 
     it 'has buttons for the user to choose their mod' do
