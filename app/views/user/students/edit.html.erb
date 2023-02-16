@@ -1,4 +1,4 @@
-<%= form_with model: @student do |f| %>
+<%= form_with model: @student, local: true do |f| %>
   <p class='s-p'>
     <%= f.label :name, 'Name: ' %>
     <%= f.text_field :name %>
