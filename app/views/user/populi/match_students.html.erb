@@ -1,5 +1,5 @@
 <strong>Please make sure each Student matches the Populi Student in the drop down</strong>
-<%= form_with url: "/modules/#{@module.id}/populi", local: true do |f| %>
+<%= form_with url: "/modules/#{facade.module.id}/populi", local: true do |f| %>
   <table>
     <thead>
       <tr>
@@ -20,7 +20,7 @@
 <% end %>
 
 <p>Select a different term instead</p>
-<%= form_with url: "/modules/#{@module.id}/term_courses", method: :post, local: true do |f| %>
+<%= form_with url: "/modules/#{facade.module.id}/term_courses", method: :post, local: true do |f| %>
   <%= f.select(:term_id, @terms) %>
   <%= f.submit %>
 <% end %>

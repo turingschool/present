@@ -1,17 +1,12 @@
 class User::PopuliController < User::BaseController
-  before_action :set_module
-
-  def set_module
-    @module = TuringModule.find(params[:turing_module_id])
-  end
-
   def new
     render locals: {
-      facade: PopuliFacade.new(@module)
+      facade: PopuliFacade.new(current_module)
     }
   end  
 
   def create
+    @module = TuringModule.find(params[:turing_module_id])
     params[:populi_students].each do |student_id, populi_id|
       Student.update(student_id, {populi_id: populi_id})
     end
@@ -24,7 +19,12 @@ class User::PopuliController < User::BaseController
     end
 
     render locals: {
-      facade: PopuliFacade.new(@module, params[:course_id])
+      facade: PopuliFacade.new(current_module, params[:course_id])
     }
   end
+
+  private
+    def current_module
+      TuringModule.find(params[:turing_module_id])
+    end
 end
