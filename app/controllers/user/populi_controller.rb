@@ -1,6 +1,4 @@
 class User::PopuliController < User::BaseController
-  include StringMatcher
-
   before_action :set_module
 
   def set_module
@@ -8,15 +6,9 @@ class User::PopuliController < User::BaseController
   end
 
   def new
-    service = PopuliService.new
-    current_term_id = service.get_current_academic_term[:response][:termid]
-    @courses = service.get_courses(current_term_id)[:response][:course_instance]
-    course_names = @courses.map {|course| course[:abbrv]}
-    match = find_jarow_match(@module.name, course_names)
-    @top_choice = @courses.find do |course|
-      course[:abbrv] == match
-    end
-    @courses -= [@top_choice]
+    render locals: {
+      facade: PopuliFacade.new(@module)
+    }
   end  
 
   def create

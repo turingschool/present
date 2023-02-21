@@ -9,10 +9,10 @@
       </tr>
     </thead>
     <tbody>
-      <% @module.students.each do |student| %>
+      <% facade.students.each do |student| %>
         <tr id='student-<%= student.id %>'>
           <td><%= student.name %></td>
-          <td><%= f.select "populi_students[#{student.id}]", @populi_student_options, selected: student.best_match(@populi_students).personid %></td>
+          <td><%= f.select "populi_students[#{student.id}]", facade.student_options, selected: facade.best_matching_id(student)  #@populi_student_options, selected: student.best_match(@populi_students).personid %></td>
         </tr>
       <% end %>
       </tbody>

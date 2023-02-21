@@ -1,9 +1,8 @@
 <h2>Select your Course from Populi</h2>
 <section id='best-match'>
   <p>Is this your Populi Course?
-  <strong><%="#{@top_choice[:abbrv]} - #{@top_choice[:name]}"%></strong>
-  <%= button_to "Yes", turing_module_populi_match_students_path(@module, @top_choice[:instanceid]), method: :get, class: 's-button' %>
+  <strong><%= facade.top_choice.name %></strong>
+  <%= button_to "Yes", turing_module_populi_match_students_path(facade.module, facade.top_choice.id), method: :get, class: 's-button' %>
   <br>
-
   </p>
 </section>
