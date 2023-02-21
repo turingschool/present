@@ -13,11 +13,4 @@ class Student < ApplicationRecord
     return student if student
     Student.create(zoom_id: participant[:id], name: participant[:name])
   end
-
-  def best_match(populi_students)
-    match_name = find_jarow_match(self.name, populi_students.map {|student| student.name} )
-    populi_students.find do |student|
-      student.name == match_name
-    end
-  end
 end

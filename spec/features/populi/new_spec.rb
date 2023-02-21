@@ -168,6 +168,15 @@ RSpec.describe 'Populi Integration' do
           expect(page).to have_select(selected: 'Samuel (Sam) Cox')
         end
       end
+
+      it 'Will make a best guess if no name matches' do
+        Student.destroy_all
+        student = create(:student, turing_module: @mod, name: 'Penny Lane')
+        refresh
+        within "#student-#{student.id}" do
+          expect(page).to have_select(selected: 'Janice (Lacey) Weaver')
+        end
+      end
     end
 
 end
