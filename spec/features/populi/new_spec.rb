@@ -2,32 +2,32 @@ require 'rails_helper'
 
 RSpec.describe 'Populi Integration' do
     before(:each) do
-        @user = mock_login
-        @mod = create(:turing_module, module_number: 2, program: :BE)
-        @student_1 = create(:student, turing_module: @mod, name: 'Leo BG# BE')
-        @student_2 = create(:student, turing_module: @mod, name: 'Anthony B. (He/Him) BE 2210')
-        @student_3 = create(:student, turing_module: @mod, name: 'Lacey W (she/her)')
-        @student_4 = create(:student, turing_module: @mod, name: 'Anhnhi T# BE')
-        @student_5 = create(:student, turing_module: @mod, name: 'J Seymour (he/they) BE')
-        @student_6 = create(:student, turing_module: @mod, name: 'Mike C. (he/him) BE')
-        @student_7 = create(:student, turing_module: @mod, name: 'Samuel C (He/Him) BE')
-        @students = [@student_1, @student_2, @student_3, @student_4, @student_5, @student_6, @student_7]
+      @user = mock_login
+      @mod = create(:turing_module, module_number: 2, program: :BE)
+      @student_1 = create(:student, turing_module: @mod, name: 'Leo BG# BE')
+      @student_2 = create(:student, turing_module: @mod, name: 'Anthony B. (He/Him) BE 2210')
+      @student_3 = create(:student, turing_module: @mod, name: 'Lacey W (she/her)')
+      @student_4 = create(:student, turing_module: @mod, name: 'Anhnhi T# BE')
+      @student_5 = create(:student, turing_module: @mod, name: 'J Seymour (he/they) BE')
+      @student_6 = create(:student, turing_module: @mod, name: 'Mike C. (he/him) BE')
+      @student_7 = create(:student, turing_module: @mod, name: 'Samuel C (He/Him) BE')
+      @students = [@student_1, @student_2, @student_3, @student_4, @student_5, @student_6, @student_7]
 
-        stub_request(:post, ENV['POPULI_API_URL']).
-          with(body: {"task"=>"getCurrentAcademicTerm"}).
-          to_return(status: 200, body: File.read('spec/fixtures/current_academic_term.xml'), headers: {})
-        
-        stub_request(:post, ENV['POPULI_API_URL']).
-          with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
-          to_return(status: 200, body: File.read('spec/fixtures/courses_for_2211.xml'), headers: {})
-        
-        stub_request(:post, ENV['POPULI_API_URL']).
-          with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
-          to_return(status: 200, body: File.read('spec/fixtures/students_for_be2_2211.xml'), headers: {})
-        
-        stub_request(:post, ENV['POPULI_API_URL']).
-          with(body: {"task"=>"getAcademicTerms"}).
-          to_return(status: 200, body: File.read('spec/fixtures/academic_terms.xml'), headers: {})
+      stub_request(:post, ENV['POPULI_API_URL']).
+        with(body: {"task"=>"getCurrentAcademicTerm"}).
+        to_return(status: 200, body: File.read('spec/fixtures/current_academic_term.xml'), headers: {})
+      
+      stub_request(:post, ENV['POPULI_API_URL']).
+        with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
+        to_return(status: 200, body: File.read('spec/fixtures/courses_for_2211.xml'), headers: {})
+      
+      stub_request(:post, ENV['POPULI_API_URL']).
+        with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
+        to_return(status: 200, body: File.read('spec/fixtures/students_for_be2_2211.xml'), headers: {})
+      
+      stub_request(:post, ENV['POPULI_API_URL']).
+        with(body: {"task"=>"getAcademicTerms"}).
+        to_return(status: 200, body: File.read('spec/fixtures/academic_terms.xml'), headers: {})
     end
 
     xit 'user sess buttons to select their mod from a list of populi courses' do
@@ -66,12 +66,13 @@ RSpec.describe 'Populi Integration' do
     end
 
     context 'user confirms their best match' do
-      it 'allows the user to match the correct populi students to their module students' do
+      before :each do
         visit turing_module_populi_integration_path(@mod)
 
-
         click_button('Yes')
+      end
 
+      it 'matches students and assigns populi ids' do
         within "#student-#{@student_1.id}" do
           expect(page).to have_content(@student_1.name)
           select 'Leo Banos Garcia'
@@ -82,7 +83,7 @@ RSpec.describe 'Populi Integration' do
         end
         within "#student-#{@student_3.id}" do
           expect(page).to have_content(@student_3.name)
-          select'Janice (Lacey) Weaver'
+          select 'Janice (Lacey) Weaver'
         end
         within "#student-#{@student_4.id}" do
           expect(page).to have_content(@student_4.name)
@@ -145,10 +146,6 @@ RSpec.describe 'Populi Integration' do
       end
     
       it 'pre-selects the closest matching name' do
-        visit turing_module_populi_integration_path(@mod)
-
-        click_button('Yes')
-
         within "#student-#{@student_1.id}" do
           expect(page).to have_select(selected: 'Leo Banos Garcia')
         end

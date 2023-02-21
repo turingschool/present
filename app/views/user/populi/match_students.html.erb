@@ -1,6 +1,5 @@
-<% if @populi_students %>  
-  <strong>Please make sure each Student matches the Populi Student in the drop down</strong>
-  <%= form_with url: "/modules/#{@module.id}/populi", local: true do |f| %>
+<strong>Please make sure each Student matches the Populi Student in the drop down</strong>
+<%= form_with url: "/modules/#{@module.id}/populi", local: true do |f| %>
   <table>
     <thead>
       <tr>
@@ -9,20 +8,19 @@
       </tr>
     </thead>
     <tbody>
-      <% facade.students.each do |student| %>
+      <% facade.module.students.each do |student| %>
         <tr id='student-<%= student.id %>'>
           <td><%= student.name %></td>
-          <td><%= f.select "populi_students[#{student.id}]", facade.student_options, selected: facade.best_matching_id(student)  #@populi_student_options, selected: student.best_match(@populi_students).personid %></td>
+          <td><%= f.select "populi_students[#{student.id}]", facade.student_options, selected: facade.best_matching_id(student) %></td>
         </tr>
       <% end %>
-      </tbody>
-    </table>
-    <%= f.submit 'Integrate with Populi' %>
-  <% end %>
-<% else %>
-  <p>Sorry, we couldn't find any students for that module. Try a different inning?</p>
-  <%= form_with url: "/modules/#{@module.id}/term_courses", method: :post, local: true do |f| %>
-    <%= f.select(:term_id, @terms) %>
-    <%= f.submit %>
-  <% end %>
+    </tbody>
+  </table>  
+  <%= f.submit 'Integrate with Populi' %>
+<% end %>
+
+<p>Select a different term instead</p>
+<%= form_with url: "/modules/#{@module.id}/term_courses", method: :post, local: true do |f| %>
+  <%= f.select(:term_id, @terms) %>
+  <%= f.submit %>
 <% end %>

@@ -19,19 +19,12 @@ class User::PopuliController < User::BaseController
   end
 
   def match_students
-    begin
-      @populi_students = PopuliService.new.get_students(params[:course_id])[:response][:courseinstance_student].map do |student|
-        PopuliStudent.from_populi(student)
-      end
-      @populi_student_options = @populi_students.map do |student|
-        [student.name, student.personid]
-      end
-    rescue NoMethodError => error
-      @populi_students = nil
-      service = PopuliService.new
-      @terms = service.get_terms[:response][:academic_term].map do |term|
-        [term[:name], term[:termid]]
-      end
+    @terms = PopuliService.new.get_terms[:response][:academic_term].map do |term|
+      [term[:name], term[:termid]]
     end
+
+    render locals: {
+      facade: PopuliFacade.new(@module, params[:course_id])
+    }
   end
 end
