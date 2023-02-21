@@ -8,11 +8,11 @@ class PopuliFacade
     @course_id = course_id
   end
 
-  def top_choice
-    @top_choice ||= find_top_choice
+  def matching_module
+    @matching_module ||= find_matching_module
   end
 
-  def find_top_choice
+  def find_matching_module
     current_term_id = service.get_current_academic_term[:response][:termid]
     courses = service.get_courses(current_term_id)[:response][:course_instance]
     course_names = courses.map {|course| course[:abbrv]}
