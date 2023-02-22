@@ -43,10 +43,10 @@ class PopuliFacade
     end.personid
   end 
 
-  private
-    def service
-      @service ||= PopuliService.new
-    end
-    
-    attr_reader :course_id
+private
+  def service
+    @service ||= PopuliService.new
+  end
+  
+  attr_reader :course_id
 end
