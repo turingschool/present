@@ -13,8 +13,8 @@ Rails.application.routes.draw do
       resources :attendances, only: [:new, :create, :show]
       resources :students
 
-      get '/slack_channel_import', to: "slack#new"
-      post '/slack_channel_import', to: "slack#import_students"
+      get '/slack/new', to: 'slack#new', as: :slack_integration
+      post '/slack', to: 'slack#create'
       patch '/slack_channel_import', to: "slack#connect_accounts"
 
       get '/populi/new', to: 'populi#new', as: :populi_integration
