@@ -7,9 +7,7 @@ class User::PopuliController < User::BaseController
 
   def create
     @module = TuringModule.find(params[:turing_module_id])
-    params[:populi_students].each do |student_id, populi_id|
-      Student.update(student_id, {populi_id: populi_id})
-    end
+    assign_populi_ids(params[:populi_students])
     redirect_to turing_module_path(@module)
   end
 
@@ -23,8 +21,14 @@ class User::PopuliController < User::BaseController
     }
   end
 
-  private
-    def current_module
-      TuringModule.find(params[:turing_module_id])
+private
+  def current_module
+    TuringModule.find(params[:turing_module_id])
+  end
+
+  def assign_populi_ids(populi_students)
+    populi_students.each do |student_id, populi_id|
+      Student.update(student_id, {populi_id: populi_id})
     end
+  end
 end
