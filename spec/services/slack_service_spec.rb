@@ -8,7 +8,7 @@ RSpec.describe SlackService do
         stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack_channel_members_report.json'))
   
-        stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
+        stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
         .to_return(body: File.read('spec/fixtures/slack_message_replies_response.json'))
   
         @test_module = create(:turing_module)
@@ -35,10 +35,6 @@ RSpec.describe SlackService do
     expect(response).to have_key(:attendance_start_time)
     expect(response[:data]).to be_a(Array)
     response[:data].each do |student_reply|
-        expect(student_reply).to have_key(:first_name)
-        expect(student_reply).to have_key(:last_name)
-        expect(student_reply).to have_key(:full_name)
-        expect(student_reply).to have_key(:email)
         expect(student_reply).to have_key(:slack_id)
         expect(student_reply).to have_key(:status)
         expect(student_reply).to have_key(:reply_timestamp)
