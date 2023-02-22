@@ -63,3 +63,4 @@ workflows:
               only:
                 - populi_automation
                 - user_can_take_attendance_with_slack
+                - module_setup
