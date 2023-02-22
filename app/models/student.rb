@@ -1,6 +1,4 @@
 class Student < ApplicationRecord
-  include StringMatcher
-  
   belongs_to :turing_module, optional: true
   has_many :student_attendances, dependent: :destroy
   has_many :attendances, through: :student_attendances
