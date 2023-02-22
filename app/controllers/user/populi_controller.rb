@@ -6,9 +6,8 @@ class User::PopuliController < User::BaseController
   end  
 
   def create
-    @module = TuringModule.find(params[:turing_module_id])
     assign_populi_ids(params[:populi_students])
-    redirect_to turing_module_path(@module)
+    redirect_to turing_module_path(current_module)
   end
 
   def match_students
@@ -23,7 +22,7 @@ class User::PopuliController < User::BaseController
 
 private
   def current_module
-    TuringModule.find(params[:turing_module_id])
+    @current_module ||= TuringModule.find(params[:turing_module_id])
   end
 
   def assign_populi_ids(populi_students)
