@@ -12,6 +12,23 @@ class PopuliFacade
     @matching_module ||= find_matching_module
   end
 
+  def student_options
+    populi_students.map do |student|
+      [student.name, student.personid]
+    end
+  end
+
+  def best_matching_id(student)
+    student_names = populi_students.map {|student| student.name} 
+    match_name = find_jarow_match(student.name, student_names)
+    populi_students.find do |student|
+      student.name == match_name
+    end.personid
+  end 
+
+private
+  attr_reader :course_id
+
   def find_matching_module
     current_term_id = service.get_current_academic_term[:response][:termid]
     courses = service.get_courses(current_term_id)[:response][:course_instance]
@@ -29,24 +46,7 @@ class PopuliFacade
     end
   end
 
-  def student_options
-    populi_students.map do |student|
-      [student.name, student.personid]
-    end
-  end
-
-  def best_matching_id(student)
-    student_names = populi_students.map {|student| student.name} 
-    match_name = find_jarow_match(student.name, student_names)
-    populi_students.find do |student|
-      student.name == match_name
-    end.personid
-  end 
-
-private
   def service
     @service ||= PopuliService.new
-  end
-  
-  attr_reader :course_id
+  end  
 end
