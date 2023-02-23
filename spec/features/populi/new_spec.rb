@@ -30,23 +30,6 @@ RSpec.describe 'Populi Integration' do
         to_return(status: 200, body: File.read('spec/fixtures/academic_terms.xml'), headers: {})
     end
 
-    xit 'user sess buttons to select their mod from a list of populi courses' do
-      visit turing_module_populi_integration_path(@mod)
-
-      expect(page).to have_button('BE Mod 0 Classic - Back End Prerequisite Classic 2303')
-      expect(page).to have_button('BE Mod 0 Intensive - Back End Prerequisite Intensive 2303')
-      expect(page).to have_button('BE Mod 1 - Object Oriented Programming with Ruby')
-      expect(page).to have_button('BE Mod 3 - Professional Rails Applications')
-      expect(page).to have_button('BE Mod 4 - Cross-Team Processes and Applications')
-      expect(page).to have_button('C#.NET Mod 0 - C# .NET Prerequisite')
-      expect(page).to have_button('FE Mod 0 Classic - Front End Prerequisite Classic 2303')
-      expect(page).to have_button('FE Mod 0 Intensive - Front End Prerequisite Intensive 2303')
-      expect(page).to have_button('FE Mod 1 - Fundamental Web Technologies')
-      expect(page).to have_button('FE Mod 2 - Web Development with JavaScript')
-      expect(page).to have_button('FE Mod 3 - Professional Client Side Development')
-      expect(page).to have_button('FE Mod 4 - Cross-Team Processes and Applications')
-    end
-
     it 'suggests the best match of module from the list of populi courses' do
       visit turing_module_populi_integration_path(@mod)
 
@@ -54,8 +37,30 @@ RSpec.describe 'Populi Integration' do
         expect(page).to have_content('BE Mod 2 - Web Application Development')
       end
     end
+    
+    context 'user confirms best match' do
+      before :each do
+        visit turing_module_populi_integration_path(@mod)
 
-    it 'user can confirm if the best match is correct and see the students from that course' do
+        within '#best-match' do
+          click_button 'Yes'
+        end
+      end
+
+      it 'redirects to slack/new' do
+        expect(current_path).to eq("/modules/#{@mod.id}/slack/new")
+      end
+
+      it 'populates the mod with students' do
+        expect(@mod.students.length).to eq(7)
+        expect(@mod.students.first.name).to eq('Leo Banos Garcia')
+        expect(@mod.students.first.populi_id).to eq(24490130)
+        expect(@mod.students.first.name).to eq('Anthony C (Anthony) Blackwell Tallent')
+        expect(@mod.students.first.populi_id).to eq(24490140)
+      end
+    end
+    
+    xit 'user can confirm if the best match is correct and see the students from that course' do
      visit turing_module_populi_integration_path(@mod)
 
       within '#best-match' do
