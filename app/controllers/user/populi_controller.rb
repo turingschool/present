@@ -11,10 +11,6 @@ class User::PopuliController < User::BaseController
   end
 
   def match_students
-    @terms = PopuliService.new.get_terms[:response][:academic_term].map do |term|
-      [term[:name], term[:termid]]
-    end
-
     render locals: {
       facade: PopuliFacade.new(current_module, params[:course_id])
     }

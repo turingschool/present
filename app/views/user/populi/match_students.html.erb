@@ -18,9 +18,3 @@
   </table>  
   <%= f.submit 'Integrate with Populi' %>
 <% end %>
-
-<p>Select a different term instead</p>
-<%= form_with url: "/modules/#{facade.module.id}/term_courses", method: :post, local: true do |f| %>
-  <%= f.select(:term_id, @terms) %>
-  <%= f.submit %>
-<% end %>
