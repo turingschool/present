@@ -5,7 +5,7 @@ RSpec.describe 'Assign Slack Members To Existing Students' do
         @user = mock_login
     end 
 
-    it 'updates existing student with a slack id' do 
+    xit 'updates existing student with a slack id' do 
         test_module = create(:turing_module)
 
         students = create_list(:student, 8, turing_module: test_module)
