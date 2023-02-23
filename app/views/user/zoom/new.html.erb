@@ -1,6 +1,6 @@
 <h2>Import Zoom Accounts From Zoom Meeting</h2>
 
-<%= form_with url: turing_module_zoom_path(@module), local: true do |f| %>
+<%= form_with url: turing_module_account_match_path(@module), method: :get, local: true do |f| %>
     <p class='s-p'>
         <%= f.label :zoom_meeting_id, "Enter a Zoom Meeting ID: " %>
         <%= f.text_field :zoom_meeting_id %>
