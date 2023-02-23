@@ -2,7 +2,7 @@
 <section id='best-match'>
   <p>Is this your Populi Course?
   <strong><%= facade.matching_module.name %></strong>
-  <%= button_to "Yes", turing_module_populi_match_students_path(facade.module, facade.matching_module.id), method: :get, class: 's-button' %>
+  <%= button_to "Yes", turing_module_populi_path(facade.module), params: {course_id: facade.matching_module.id}, class: 's-button' %>
   <br>
   </p>
 </section>

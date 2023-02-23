@@ -26,6 +26,12 @@ class PopuliFacade
     end.personid
   end 
 
+  def import_students
+    populi_students.each do |student|
+      self.module.students.create!(name: student.name, populi_id: student.personid)
+    end
+  end
+
 private
   attr_reader :course_id
 

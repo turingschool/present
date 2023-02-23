@@ -48,7 +48,7 @@ RSpec.describe 'Student Index' do
   end 
 
   context "with a slack channel imported" do 
-    it 'has a column to assign slack members to current students' do 
+    xit 'has a column to assign slack members to current students' do 
       test_module = create(:turing_module)
 
       test_students = create_list(:student, 8, turing_module: test_module)

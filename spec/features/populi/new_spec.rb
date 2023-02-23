@@ -4,14 +4,14 @@ RSpec.describe 'Populi Integration' do
     before(:each) do
       @user = mock_login
       @mod = create(:turing_module, module_number: 2, program: :BE)
-      @student_1 = create(:student, turing_module: @mod, name: 'Leo BG# BE')
-      @student_2 = create(:student, turing_module: @mod, name: 'Anthony B. (He/Him) BE 2210')
-      @student_3 = create(:student, turing_module: @mod, name: 'Lacey W (she/her)')
-      @student_4 = create(:student, turing_module: @mod, name: 'Anhnhi T# BE')
-      @student_5 = create(:student, turing_module: @mod, name: 'J Seymour (he/they) BE')
-      @student_6 = create(:student, turing_module: @mod, name: 'Mike C. (he/him) BE')
-      @student_7 = create(:student, turing_module: @mod, name: 'Samuel C (He/Him) BE')
-      @students = [@student_1, @student_2, @student_3, @student_4, @student_5, @student_6, @student_7]
+      # @student_1 = create(:student, turing_module: @mod, name: 'Leo BG# BE')
+      # @student_2 = create(:student, turing_module: @mod, name: 'Anthony B. (He/Him) BE 2210')
+      # @student_3 = create(:student, turing_module: @mod, name: 'Lacey W (she/her)')
+      # @student_4 = create(:student, turing_module: @mod, name: 'Anhnhi T# BE')
+      # @student_5 = create(:student, turing_module: @mod, name: 'J Seymour (he/they) BE')
+      # @student_6 = create(:student, turing_module: @mod, name: 'Mike C. (he/him) BE')
+      # @student_7 = create(:student, turing_module: @mod, name: 'Samuel C (He/Him) BE')
+      # @students = [@student_1, @student_2, @student_3, @student_4, @student_5, @student_6, @student_7]
 
       stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"task"=>"getCurrentAcademicTerm"}).
@@ -30,23 +30,6 @@ RSpec.describe 'Populi Integration' do
         to_return(status: 200, body: File.read('spec/fixtures/academic_terms.xml'), headers: {})
     end
 
-    xit 'user sess buttons to select their mod from a list of populi courses' do
-      visit turing_module_populi_integration_path(@mod)
-
-      expect(page).to have_button('BE Mod 0 Classic - Back End Prerequisite Classic 2303')
-      expect(page).to have_button('BE Mod 0 Intensive - Back End Prerequisite Intensive 2303')
-      expect(page).to have_button('BE Mod 1 - Object Oriented Programming with Ruby')
-      expect(page).to have_button('BE Mod 3 - Professional Rails Applications')
-      expect(page).to have_button('BE Mod 4 - Cross-Team Processes and Applications')
-      expect(page).to have_button('C#.NET Mod 0 - C# .NET Prerequisite')
-      expect(page).to have_button('FE Mod 0 Classic - Front End Prerequisite Classic 2303')
-      expect(page).to have_button('FE Mod 0 Intensive - Front End Prerequisite Intensive 2303')
-      expect(page).to have_button('FE Mod 1 - Fundamental Web Technologies')
-      expect(page).to have_button('FE Mod 2 - Web Development with JavaScript')
-      expect(page).to have_button('FE Mod 3 - Professional Client Side Development')
-      expect(page).to have_button('FE Mod 4 - Cross-Team Processes and Applications')
-    end
-
     it 'suggests the best match of module from the list of populi courses' do
       visit turing_module_populi_integration_path(@mod)
 
@@ -54,8 +37,31 @@ RSpec.describe 'Populi Integration' do
         expect(page).to have_content('BE Mod 2 - Web Application Development')
       end
     end
+    
+    context 'user confirms best match' do
+      before :each do
+        visit turing_module_populi_integration_path(@mod)
 
-    it 'user can confirm if the best match is correct and see the students from that course' do
+        within '#best-match' do
+          click_button 'Yes'
+        end
+      end
+
+      it 'redirects to slack/new' do
+        expect(current_path).to eq("/modules/#{@mod.id}/slack/new")
+      end
+
+      it 'populates the mod with students' do
+        expect(@mod.students.length).to eq(7)
+        students = @mod.students.sort_by(&:name)
+        expect(@mod.students.second.name).to eq('Anthony C (Anthony) Blackwell Tallent')
+        expect(@mod.students.second.populi_id).to eq('24490140')
+        expect(@mod.students.fifth.name).to eq('Jake (J) Seymour')
+        expect(@mod.students.fifth.populi_id).to eq('24490161')
+      end
+    end
+    
+    xit 'user can confirm if the best match is correct and see the students from that course' do
      visit turing_module_populi_integration_path(@mod)
 
       within '#best-match' do
@@ -65,7 +71,7 @@ RSpec.describe 'Populi Integration' do
       expect(current_path).to eq("/modules/#{@mod.id}/populi/courses/10547831")
     end
 
-    context 'user confirms their best match' do
+    xcontext 'user confirms their best match' do
       before :each do
         visit turing_module_populi_integration_path(@mod)
 

@@ -7,7 +7,7 @@
 <% end %>
 <p><%= link_to "#{@module.inning.name} inning", inning_path(@module.inning), class: 's-link' %></p>
 <p><%= link_to "Students (#{@module.students.length})", turing_module_students_path(@module), class: 's-link' %></p>
-<p><%= link_to "Integrate with Populi", turing_module_populi_integration_path(@module), class: 's-link' %></p>
+<p><%= link_to "Setup Module", turing_module_populi_integration_path(@module), class: 's-button' %></p>
 <% if @module.slack_members.empty? %>
   <p><%= link_to "Import Slack Accounts", turing_module_slack_channel_import_path(@module), class: 's-link' %></p>
 <% end %>
