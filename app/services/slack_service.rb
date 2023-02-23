@@ -5,7 +5,7 @@ class SlackService
     end
 
     def self.replies_from_message(channel_id,timestamp)
-        response = conn.get("/api/v0/attendance?channel_id=#{channel_id}&timestamp=#{timestamp}")
+        response = conn.get("/api/v1/attendance?channel_id=#{channel_id}&timestamp=#{timestamp}")
         parse_response(response)
     end 
     
