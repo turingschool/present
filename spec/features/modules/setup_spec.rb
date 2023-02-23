@@ -112,7 +112,7 @@ RSpec.describe "Module Setup" do
             expect(current_path).to eq(turing_module_account_match_path(@mod))
           end 
 
-          xit 'has all Populi students listed' do
+          it 'has all Populi students listed' do
             @mod.students.each do |student|
               within "#student-#{student.id}" do
                 expect(page).to have_content(student.name)
