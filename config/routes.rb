@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       patch '/slack_channel_import', to: "slack#connect_accounts"
 
       get '/zoom/new', to: 'zoom#new', as: :zoom_integration
+      post '/zoom', to: 'zoom#create'
 
       get '/populi/new', to: 'populi#new', as: :populi_integration
       get '/populi/courses/:course_id', to: 'populi#match_students', as: :populi_match_students
