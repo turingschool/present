@@ -1,1 +1,17 @@
 <h2>Match Accounts </h2>
+<table class='s-table'>
+  <thead>
+    <tr>
+      <th>Student</th>
+      <th>Slack Name</th>
+      <th>Zoom Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @students.each do |student| %>
+      <tr id='student-<%= student.id %>'>
+        <td><%= student.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

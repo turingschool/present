@@ -102,7 +102,13 @@ RSpec.describe "Module Setup" do
         
         context 'when a valid Zoom meeting id is given' do
           before :each do
-            @zoom_meeting_id = "ABC123"
+            @zoom_meeting_id = 96428502996
+
+            stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
+            .to_return(body: File.read('spec/fixtures/participant_report_for_populi.json'))
+
+            stub_request(:get, "https://api.zoom.us/v2/meetings/#{@zoom_meeting_id}") \
+            .to_return(body: File.read('spec/fixtures/meeting_details_for_populi.json'))
 
             fill_in :zoom_meeting_id, with: @zoom_meeting_id
             click_button "Import Zoom Accounts From Meeting"

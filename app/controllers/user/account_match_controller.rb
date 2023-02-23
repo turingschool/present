@@ -1,8 +1,11 @@
 class User::AccountMatchController < ApplicationController
-    def new 
-      
-      report = ZoomService.participant_report(params[:zoom_meeting_id])
-      binding.pry
+  def new 
+    meeting = ZoomMeeting.new(params[:zoom_meeting_id])
+    @students = current_module.students
+  end 
 
-    end 
+private
+  def current_module
+    @current_module ||= TuringModule.find(params[:turing_module_id])
+  end
 end 
