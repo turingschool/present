@@ -19,7 +19,6 @@ class User::StudentsController < User::BaseController
   end
 
   def update
-
     student = Student.find(params[:id])
     if params[:slack_id]
       student.update(slack_id: params[:slack_id])

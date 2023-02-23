@@ -6,8 +6,9 @@ class User::PopuliController < User::BaseController
   end  
 
   def create
-    assign_populi_ids(params[:populi_students])
-    redirect_to turing_module_path(current_module)
+    # assign_populi_ids(params[:populi_students])
+    PopuliFacade.new(current_module, params[:course_id]).import_students
+    redirect_to turing_module_slack_integration_path(current_module)
   end
 
   def match_students
