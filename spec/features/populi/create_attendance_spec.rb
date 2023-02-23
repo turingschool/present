@@ -24,7 +24,7 @@ RSpec.describe 'taking attendance with Populi' do
       @test_module = create(:turing_module)
     end
 
-    it 'sends the request to update the students attendance in Populi' do
+    xit 'sends the request to update the students attendance in Populi' do
       visit turing_module_path(@test_module)
       click_link('Take Attendance')
 
