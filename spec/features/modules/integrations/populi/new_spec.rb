@@ -54,9 +54,9 @@ RSpec.describe 'Populi Integration' do
       it 'populates the mod with students' do
         expect(@mod.students.length).to eq(7)
         students = @mod.students.sort_by(&:name)
-        expect(@mod.students.second.name).to eq('Anthony C (Anthony) Blackwell Tallent')
+        expect(@mod.students.second.name).to eq('Anthony Blackwell Tallent')
         expect(@mod.students.second.populi_id).to eq('24490140')
-        expect(@mod.students.fifth.name).to eq('Jake (J) Seymour')
+        expect(@mod.students.fifth.name).to eq('J Seymour')
         expect(@mod.students.fifth.populi_id).to eq('24490161')
       end
     end

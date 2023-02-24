@@ -51,9 +51,9 @@ RSpec.describe "Module Setup" do
       it 'populates the mod with students' do
         expect(@mod.students.length).to eq(7)
         students = @mod.students.sort_by(&:name)
-        expect(@mod.students.second.name).to eq('Anthony C (Anthony) Blackwell Tallent')
+        expect(@mod.students.second.name).to eq('Anthony Blackwell Tallent')
         expect(@mod.students.second.populi_id).to eq('24490140')
-        expect(@mod.students.fifth.name).to eq('Jake (J) Seymour')
+        expect(@mod.students.fifth.name).to eq('J Seymour')
         expect(@mod.students.fifth.populi_id).to eq('24490161')
       end
 
@@ -169,7 +169,7 @@ RSpec.describe "Module Setup" do
           end
 
           it 'user can select the correct student if the closest match was wrong' do
-            student = @mod.students.find_by(name: "Anthony C (Anthony) Blackwell Tallent")
+            student = @mod.students.find_by(name: "Anthony Blackwell Tallent")
             within "#student-#{student.id}" do
               within '.zoom-select' do 
                 select "Anthony B. (He/Him) BE 2210"
@@ -186,7 +186,7 @@ RSpec.describe "Module Setup" do
 
           context 'when the user matches students' do
             before :each do
-              anthony_b = @mod.students.find_by(name: "Anthony C (Anthony) Blackwell Tallent")
+              anthony_b = @mod.students.find_by(name: "Anthony Blackwell Tallent")
               within "#student-#{anthony_b.id}" do
                 within '.zoom-select' do 
                   select "Anthony B. (He/Him) BE 2210"
