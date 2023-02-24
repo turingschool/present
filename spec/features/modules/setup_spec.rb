@@ -74,9 +74,6 @@ RSpec.describe "Module Setup" do
       context 'when a valid slack channel id is given' do 
         before(:each) do
           @channel_id = "C02HRH7MF5K"
-    
-          stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
-          .to_return(body: File.read('spec/fixtures/slack_channel_members_report.json'))
 
           visit turing_module_slack_integration_path(@mod)
 
@@ -110,6 +107,9 @@ RSpec.describe "Module Setup" do
             stub_request(:get, "https://api.zoom.us/v2/meetings/#{@zoom_meeting_id}") \
             .to_return(body: File.read('spec/fixtures/meeting_details_for_populi.json'))
 
+            stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
+            .to_return(body: File.read('spec/fixtures/slack_channel_members_for_module_setup.json'))
+
             fill_in :zoom_meeting_id, with: @zoom_meeting_id
             click_button "Import Zoom Accounts From Meeting"
           end
@@ -121,10 +121,33 @@ RSpec.describe "Module Setup" do
           it 'has all Populi students listed' do
             @mod.students.each do |student|
               within "#student-#{student.id}" do
-                expect(page).to have_content(student.name)
+                within '.student-name' do 
+                  expect(page).to have_content(student.name)
+                end
               end
             end
           end
+
+          it 'has a select field with the closest matching name from slack' do
+            expected = [
+              "Leo Banos Garcia",
+              "Anthony Blackwell Tallent",
+              "Samuel Cox",
+              "Mike Cummins",
+              "J Seymour",
+              "Anhnhi Tran",
+              "Lacey Weaver"
+            ]
+            @mod.students.each_with_index do |student, index|
+              within "#student-#{student.id}" do
+                within '.slack-name' do 
+                  expect(page).to have_select(selected: expected[index])
+                end
+              end
+            end
+          end
+
+          it 'has a select field with the closest matching name from Zoom'
         end
       end 
 

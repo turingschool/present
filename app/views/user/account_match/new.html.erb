@@ -1,17 +1,23 @@
 <h2>Match Accounts </h2>
-<table class='s-table'>
-  <thead>
-    <tr>
-      <th>Student</th>
-      <th>Slack Name</th>
-      <th>Zoom Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @students.each do |student| %>
-      <tr id='student-<%= student.id %>'>
-        <td><%= student.name %></td>
+<%= form_with url: "/modules/#{facade.module.id}/populi", local: true do |f| %>
+  <table class='s-table'>
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Slack Name</th>
+        <th>Zoom Name</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% facade.module.students.each do |student| %>
+        <tr id='student-<%= student.id %>'>
+          <td class='student-name'><%= student.name %></td>
+          <td class='slack-name'>
+            <%= f.select "student[#{student.id}][slack_id]", facade.slack_options, selected: facade.best_matching_slacker(student) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>  
+<% end %>
+  
