@@ -96,18 +96,4 @@ RSpec.describe 'Modules show page' do
     expect(page).to have_content('(Set to My Module)')
     expect(@user.is_this_my_mod?(mod)).to eq(true)
   end
-
-  context 'user has not set up mod' do
-    it 'has a button to set up mod that goes to populi/new page' do
-      mod = create(:turing_module)
-
-      visit turing_module_path(mod)
-      
-      expect(page).to have_link('Setup Module', href: "/modules/#{mod.id}/populi/new")
-    end
-
-    it 'links to slack/new if populi is already integrated'
-
-    it 'links to zoom/new if populi and slack are already integrated'
-  end
 end

@@ -14,9 +14,9 @@
     <% @module.students.each do |student| %>
       <tr class='student' id='student-<%= student.id %>'>
         <td><%= link_to student.name, student_path(student) %></td>
-        <td><%= student.zoom_id %></td>
-        <td><%= student.slack_id %></td>
-        <td class='populi_id'><%= student.populi_id %></td>
+        <td class='zoom-id'><%= student.zoom_id %></td>
+        <td class='slack-id'><%= student.slack_id %></td>
+        <td class='populi-id'><%= student.populi_id %></td>
       </tr>
     <% end %>  
   </tbody>

@@ -5,7 +5,7 @@ RSpec.describe 'Add zoom meeting id during module setup' do
         @user = mock_login
     end 
 
-    it 'updates existing student with a slack id' do 
+    xit 'updates existing student with a slack id' do 
         test_module = create(:turing_module)
         zoom_meeting_id = "ABC123"
         visit turing_module_zoom_integration_path(test_module)

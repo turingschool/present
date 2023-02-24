@@ -1,6 +1,6 @@
 class CreateAttendanceFacade
   def self.take_attendance(zoom_meeting, turing_module, user, populate_students = false)
-    turing_module.create_students_from_participants(zoom_meeting.participant_report) if populate_students
+    turing_module.create_students_from_participants(zoom_meeting.participants) if populate_students
     attendance = turing_module.attendances.create(user: user)
     ZoomAttendance.create(meeting_time:zoom_meeting.start_time, meeting_title: zoom_meeting.title, zoom_meeting_id: zoom_meeting.id, attendance: attendance)
     take_participant_attendance(attendance, zoom_meeting)
@@ -38,10 +38,10 @@ private
   end
 
   def self.take_participant_attendance(attendance, zoom_meeting)
-    zoom_meeting.participant_report.each do |participant|
+    zoom_meeting.participants.each do |participant|
       student = Student.find_or_create_from_participant(participant)
       student_attendance = attendance.student_attendances.find_or_create_by(student: student)
-      student_attendance.assign_status(Time.parse(participant[:join_time]), Time.parse(zoom_meeting.start_time))
+      student_attendance.assign_status(Time.parse(participant.join_time), Time.parse(zoom_meeting.start_time))
     end
   end
 end

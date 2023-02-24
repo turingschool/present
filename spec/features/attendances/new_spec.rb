@@ -24,10 +24,31 @@ RSpec.describe 'taking attendance' do
       @student_5 = create(:student, turing_module: @mod, name: 'J Seymour (he/they) BE', populi_id: 24490161)
       @student_6 = create(:student, turing_module: @mod, name: 'Mike C. (he/him) BE', populi_id: 24490150)
       @student_7 = create(:student, turing_module: @mod, name: 'Samuel C (He/Him) BE', populi_id: 24490123)
+
+      @test_zoom_meeting_id = 95490216907
+
+      stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
+      .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
+
+      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
+      .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+
+      @test_module = create(:turing_module)
     end
 
-    it 'sends the request to update the students attendance in Populi' do
+    xit 'sends the request to update the students attendance in Populi' do
+      visit turing_module_path(@test_module)
+      click_link('Take Attendance')
 
+      fill_in :attendance_zoom_meeting_id, with: @test_zoom_meeting_id
+
+      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with(24490130, :present)
+      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with(24490140, :present)
+      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with(24490100, :present)
+      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with(24490062, :present)
+      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with(24490161, :tardy)
+      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with(24490150, :absent)
+      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with(24490123, :present)
     end
   end
 end

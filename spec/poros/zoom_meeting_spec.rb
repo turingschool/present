@@ -26,21 +26,20 @@ RSpec.describe ZoomMeeting do
 
   it 'has the meeting participant report' do
     zoom_meeting = ZoomMeeting.new(@test_meeting_id)
-
-    expect(zoom_meeting.participant_report).to be_an(Array)
-    expect(zoom_meeting.participant_report.first).to have_key(:id)
-    expect(zoom_meeting.participant_report.first).to have_key(:name)
-    expect(zoom_meeting.participant_report.first).to have_key(:join_time)
+    expect(zoom_meeting.participants).to be_an(Array)
+    expect(zoom_meeting.participants.first).to be_a(ZoomParticipant)
+    expect(zoom_meeting.participants.first.name).to eq("Ryan Teske (He/Him)")
+    expect(zoom_meeting.participants.first.id).to eq("E0WPTrXCQAGkMsvF9rQgQA")
   end
 
   it 'memoizes the api calls' do
     zoom_meeting = ZoomMeeting.new(@test_meeting_id)
     zoom_meeting.meeting_details
-    zoom_meeting.participant_report
+    zoom_meeting.participants
     zoom_meeting.meeting_details
-    zoom_meeting.participant_report
+    zoom_meeting.participants
     zoom_meeting.meeting_details
-    zoom_meeting.participant_report
+    zoom_meeting.participants
     expect(@details_stub).to have_been_requested.times(1)
     expect(@report_stub).to have_been_requested.times(1)
   end

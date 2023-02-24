@@ -12,7 +12,8 @@ class PopuliStudent
   end
 
   def self.full_name(first, last, preferred)
-    "#{first} #{"(#{preferred}) " if preferred}#{last}"
+    first = preferred if preferred
+    "#{first} #{last}"
   end
 end
 

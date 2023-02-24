@@ -14,22 +14,11 @@ RSpec.describe Student, type: :model do
   describe 'class methods' do
     describe '::find_or_create_from_participant' do
       let(:participant) do
-        {
-          "id": "E0WPTrXCQAGkMsvF9rQgQA",
-          "user_id": "16778240",
-          "name": "Ryan Teske (He/Him)",
-          "user_email": "ryanteske@outlook.com",
-          "join_time": "2021-12-17T15:48:18Z",
-          "leave_time": "2021-12-17T16:21:59Z",
-          "duration": 2021,
-          "attentiveness_score": "",
-          "failover": false,
-          "customer_key": ""
-        }
+        ZoomParticipant.new("Ryan Teske (He/Him)", "E0WPTrXCQAGkMsvF9rQgQA", "2021-12-17T15:48:18Z")
       end
 
       it 'finds the students if they exist' do
-        existing_student = Student.create(zoom_id: participant[:id], name: participant[:name])
+        existing_student = Student.create(zoom_id: participant.id, name: participant.name)
         expect(Student.count).to eq(1)
         found_student = Student.find_or_create_from_participant(participant)
         expect(found_student.id).to eq(existing_student.id)
@@ -41,8 +30,8 @@ RSpec.describe Student, type: :model do
       it 'creates the student with all their info if they do not exist' do
         expect(Student.count).to eq(0)
         found_student = Student.find_or_create_from_participant(participant)
-        expect(found_student.name).to eq(participant[:name])
-        expect(found_student.zoom_id).to eq(participant[:id])
+        expect(found_student.name).to eq(participant.name)
+        expect(found_student.zoom_id).to eq(participant.id)
         expect(Student.count).to eq(1)
       end
     end

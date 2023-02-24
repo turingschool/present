@@ -1,1 +1,27 @@
 <h2>Match Accounts </h2>
+<%= form_with local: true do |f| %>
+  <table class='s-table'>
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Slack Name</th>
+        <th>Zoom Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% facade.module.students.each do |student| %>
+        <tr id='student-<%= student.id %>'>
+          <td class='student-name'><%= student.name %></td>
+          <td class='slack-select'>
+            <%= f.select "student[#{student.id}][slack_id]", facade.slack_options, selected: facade.best_matching_slacker(student) %>
+          </td>
+
+          <td class='zoom-select'>
+            <%= f.select "student[#{student.id}][zoom_id]", facade.zoom_options, selected: facade.best_matching_zoomer(student) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>  
+  <%= f.submit 'Match' %>
+<% end %>
