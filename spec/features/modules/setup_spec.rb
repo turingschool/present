@@ -140,14 +140,98 @@ RSpec.describe "Module Setup" do
             ]
             @mod.students.each_with_index do |student, index|
               within "#student-#{student.id}" do
-                within '.slack-name' do 
+                within '.slack-select' do 
                   expect(page).to have_select(selected: expected[index])
                 end
               end
             end
           end
 
-          it 'has a select field with the closest matching name from Zoom'
+          it 'has a select field with the closest matching name from Zoom' do
+            expected = [
+              "Leo BG# BE",
+              "Anthony B. (He/Him) BE 2210",
+              "Samuel C (He/Him) BE",
+              "Mike C",
+              "J Seymour (he/they) BE",
+              "Anhnhi T# BE",
+              "Lacey W (she/her)"
+            ]
+            
+            @mod.students.each_with_index do |student, index|
+              within "#student-#{student.id}" do
+                within '.zoom-select' do 
+                  skip if index == 1
+                  expect(page).to have_select(selected: expected[index])
+                end
+              end
+            end
+          end
+
+          it 'user can select the correct student if the closest match was wrong' do
+            student = @mod.students.find_by(name: "Anthony C (Anthony) Blackwell Tallent")
+            within "#student-#{student.id}" do
+              within '.zoom-select' do 
+                select "Anthony B. (He/Him) BE 2210"
+              end
+            end
+          end
+
+          it 'only includes one option for each uniq zoom name' do
+            options = page.first('.zoom-select').all('option').map do |option|
+              option.text
+            end
+            expect(options.uniq.length).to eq(options.length)
+          end
+
+          context 'when the user matches students' do
+            before :each do
+              anthony_b = @mod.students.find_by(name: "Anthony C (Anthony) Blackwell Tallent")
+              within "#student-#{anthony_b.id}" do
+                within '.zoom-select' do 
+                  select "Anthony B. (He/Him) BE 2210"
+                end
+              end
+              click_button 'Match'
+            end
+
+            it 'redirects to the mod show page' do
+              expect(current_path).to eq(turing_module_path(@mod))
+            end
+
+            it 'matches all ids for all students' do
+              visit turing_module_students_path(@mod)
+              expected_zoom_ids = [
+                "JeeCl38JQ9aKoGcukftsqA",
+                "79rFGPQZTZyOW9VLTrbQJw",
+                "nVbUQ8DrR5WFVjxEjwhJEg",
+                "kSgJoZqXTjSb5tPdWS3t9g",
+                "W7NlFRvdQF2lC8KGoYA28A",
+                "wxO7hYNnQPWaiOxm8kplXw",
+                "K67iqvCfTKG0YnK2EsPxDg"
+              ]
+              expected_slack_ids = [
+                'U013Y0T89V1',
+                'U035BQEGZ',
+                'U01CBJGFXRC',
+                'U020KMWBP9R',
+                'U02199TD8SC',
+                'U022NF3D4SV',
+                'U0255B3MMB4'
+              ]
+              @mod.students.each_with_index do |student, index|
+                within "#student-#{student.id}" do
+                  within '.zoom-id' do
+                    expect(page).to have_content(expected_zoom_ids[index])
+                  end
+                  
+                  within '.slack-id' do
+                    expect(page).to have_content(expected_slack_ids[index])
+                  end
+                end
+              end
+            end
+          end
         end
       end 
 

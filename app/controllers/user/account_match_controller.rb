@@ -7,6 +7,13 @@ class User::AccountMatchController < ApplicationController
     }
   end 
 
+  def create
+    params[:student].each do |student_id, ids|
+      Student.update(student_id, {slack_id: ids[:slack_id], zoom_id: ids[:zoom_id]})
+    end
+    redirect_to current_module
+  end
+
 private
   def current_module
     @current_module ||= TuringModule.find(params[:turing_module_id])
