@@ -192,6 +192,7 @@ RSpec.describe "Module Setup" do
                   select "Anthony B. (He/Him) BE 2210"
                 end
               end
+
               click_button 'Match'
             end
 
@@ -219,6 +220,7 @@ RSpec.describe "Module Setup" do
                 'U022NF3D4SV',
                 'U0255B3MMB4'
               ]
+              
               @mod.students.each_with_index do |student, index|
                 within "#student-#{student.id}" do
                   within '.zoom-id' do

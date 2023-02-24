@@ -5,7 +5,8 @@ class AccountMatchFacade
 
   def initialize(turing_module, zoom_meeting_id)
     @module = turing_module
-    @participant_report = ZoomMeeting.new(zoom_meeting_id).participant_report
+    @participants = ZoomMeeting.new(zoom_meeting_id).participants
+    @participants = clean_participant_data
   end
 
   def slack_options
@@ -27,13 +28,8 @@ class AccountMatchFacade
   end
 
   def zoom_options
-    x1=@participants ||= participant_report.reject do |participant|
-      participant[:id].empty?
-    end
-    x1.uniq do |participant|
-      [participant[:name], participant[:id]]
-    end.map do |participant|
-      [participant[:name], participant[:id]]
+    @zoom_options ||= participants.map do |participant|
+      [participant.name, participant.id]
     end
   end
 
@@ -46,5 +42,15 @@ class AccountMatchFacade
   end
 
 private
-  attr_reader :participant_report
+  attr_reader :participants
+
+  def clean_participant_data
+    participants.reject do |participant|
+      participant.id.empty?
+    end.uniq do |participant|
+      participant.name
+    end.sort_by do |participant|
+      participant.name
+    end
+  end
 end

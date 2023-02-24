@@ -27,31 +27,11 @@ RSpec.describe TuringModule, type: :model do
 
       let(:participants){
         [
-          {
-            :id=>"16778240",
-            :name=>"Ryan Teske (He/Him)",
-            :user_email=>"ryanteske@outlook.com",
-          },
-          {
-            :id=>"16779264",
-            :name=>"Isika P (she/her# BE)",
-            :user_email=>"",
-          },
-          {
-            :id=>"16780288",
-            :name=>"Natalia ZV (she/her)# FE",
-            :user_email=>"nzamboniv@gmail.com",
-          },
-          {
-            :id=>"16781312",
-            :name=>"Jamie P (she/her)# BE",
-            :user_email=>"jamiejpace@gmail.com",
-          },
-          {
-            :id=>"16782336",
-            :name=>"",
-            :user_email=>"",
-          }
+          ZoomParticipant.new("Ryan Teske (He/Him)","16778240"),
+          ZoomParticipant.new("Isika P (she/her# BE)","16779264"),
+          ZoomParticipant.new("Natalia ZV (she/her)# FE","16780288"),
+          ZoomParticipant.new("Jamie P (she/her)# BE","16781312"),
+          ZoomParticipant.new("","16782336")
         ]
       }
 
@@ -61,8 +41,8 @@ RSpec.describe TuringModule, type: :model do
         expect(test_module.students.length).to eq(participants.length)
         all_participants_created = participants.all? do |participant|
           test_module.students.any? do |student|
-            student.name == participant[:name] &&
-            student.zoom_id == participant[:id]
+            student.name == participant.name &&
+            student.zoom_id == participant.id
           end
         end
         expect(all_participants_created).to eq(true)
@@ -85,7 +65,7 @@ RSpec.describe TuringModule, type: :model do
         test_module.reload
         expect(test_module.students.length).to eq(participants.length - 1)
         num_duplicates = test_module.students.count do |student|
-          student.zoom_id == duplicate_participant[:id]
+          student.zoom_id == duplicate_participant.id
         end
         expect(num_duplicates).to eq(1)
       end
