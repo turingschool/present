@@ -195,53 +195,59 @@ RSpec.describe "Module Setup" do
             expect(options.uniq.length).to eq(options.length)
           end
 
-          context 'when the user matches students' do
-            before :each do
-              anthony_b = @mod.students.find_by(name: "Anthony Blackwell Tallent")
-              within "#student-#{anthony_b.id}" do
-                within '.zoom-select' do 
-                  select "Anthony B. (He/Him) BE 2210"
-                end
+          it 'matches the ids for the students' do
+            anthony_b = @mod.students.find_by(name: "Anthony Blackwell Tallent")
+            j = @mod.students.find_by(name: "J Seymour")
+
+            within "#student-#{anthony_b.id}" do
+              within '.zoom-select' do 
+                select "Anthony B. (He/Him) BE 2210"
               end
-
-              click_button 'Match'
+              within '.slack-select' do 
+                select "Anthony Blackwell Tallent"
+              end
+            end
+            
+            within "#student-#{j.id}" do
+              within '.zoom-select' do 
+                select "J Seymour (he/they) BE"
+              end
+              within '.slack-select' do 
+                select "J Seymour"
+              end
             end
 
-            it 'redirects to the mod show page' do
-              expect(current_path).to eq(turing_module_path(@mod))
-            end
+            click_button 'Match'
+            
+            expect(current_path).to eq(turing_module_path(@mod))
 
-            it 'matches all ids for all students' do
-              visit turing_module_students_path(@mod)
-              expected_zoom_ids = [
-                "JeeCl38JQ9aKoGcukftsqA",
-                "79rFGPQZTZyOW9VLTrbQJw",
-                "nVbUQ8DrR5WFVjxEjwhJEg",
-                "kSgJoZqXTjSb5tPdWS3t9g",
-                "W7NlFRvdQF2lC8KGoYA28A",
-                "wxO7hYNnQPWaiOxm8kplXw",
-                "K67iqvCfTKG0YnK2EsPxDg"
-              ]
-              expected_slack_ids = [
-                'U013Y0T89V1',
-                'U035BQEGZ',
-                'U01CBJGFXRC',
-                'U020KMWBP9R',
-                'U02199TD8SC',
-                'U022NF3D4SV',
-                'U0255B3MMB4'
-              ]
+            visit turing_module_students_path(@mod)
+
+            within "#student-#{anthony_b.id}" do
+              within '.zoom-id' do
+                expect(page).to have_content('79rFGPQZTZyOW9VLTrbQJw')
+              end
               
-              @mod.students.each_with_index do |student, index|
-                within "#student-#{student.id}" do
-                  within '.zoom-id' do
-                    expect(page).to have_content(expected_zoom_ids[index])
-                  end
-                  
-                  within '.slack-id' do
-                    expect(page).to have_content(expected_slack_ids[index])
-                  end
-                end
+              within '.slack-id' do
+                expect(page).to have_content('U035BQEGZ')
+              end
+              
+              within '.populi-id' do
+                expect(page).to have_content('24490140')
+              end
+            end
+            
+            within "#student-#{j.id}" do
+              within '.zoom-id' do
+                expect(page).to have_content('W7NlFRvdQF2lC8KGoYA28A')
+              end
+              
+              within '.slack-id' do
+                expect(page).to have_content('U02199TD8SC')
+              end
+              
+              within '.populi-id' do
+                expect(page).to have_content('24490161')
               end
             end
           end
