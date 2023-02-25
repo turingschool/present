@@ -27,6 +27,7 @@ class PopuliFacade
   end 
 
   def import_students
+    self.module.students.destroy_all
     populi_students.each do |student|
       self.module.students.create!(name: student.name, populi_id: student.personid)
     end
