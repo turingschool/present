@@ -29,7 +29,7 @@ RSpec.describe 'Creating an Attendance' do
       expect(current_path).to eq("/modules/#{@test_module.id}/attendances/new")
       expect(page).to have_content(@test_module.name)
       expect(page).to have_content(@test_module.inning.name)
-      expect(page).to have_content('Take Attendance for a Slack Meeting')
+      expect(page).to have_content('Take Attendance for a Slack Thread')
 
       fill_in :slack_url, with: slack_url
       click_button 'Take Slack Attendance'
