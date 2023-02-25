@@ -188,6 +188,34 @@ RSpec.describe "Module Setup" do
             end
           end
 
+          it 'user can select Not Present if the student wasnt in the zoom meeting' do
+            student = @mod.students.find_by(name: "Anthony Blackwell Tallent")
+            within "#student-#{student.id}" do
+              within '.zoom-select' do 
+                select "Not Present"
+              end
+            end
+            click_button "Match"
+
+            student.reload 
+
+            expect(student.zoom_id).to be_empty
+          end
+
+          it 'user can select Not In Channel if the student isnt in the slack channel yet' do
+            student = @mod.students.find_by(name: "Anthony Blackwell Tallent")
+            within "#student-#{student.id}" do
+              within '.slack-select' do 
+                select "Not In Channel"
+              end
+            end
+            click_button "Match"
+
+            student.reload 
+
+            expect(student.slack_id).to be_empty
+          end
+
           it 'only includes one option for each uniq zoom name' do
             options = page.first('.zoom-select').all('option').map do |option|
               option.text
