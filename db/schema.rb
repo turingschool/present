@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_22_235623) do
+ActiveRecord::Schema.define(version: 2023_02_25_231042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,13 +37,6 @@ ActiveRecord::Schema.define(version: 2023_02_22_235623) do
     t.datetime "attendance_start_time"
     t.bigint "attendance_id"
     t.index ["attendance_id"], name: "index_slack_attendances_on_attendance_id"
-  end
-
-  create_table "slack_members", force: :cascade do |t|
-    t.string "slack_user_id"
-    t.string "name"
-    t.bigint "turing_module_id"
-    t.index ["turing_module_id"], name: "index_slack_members_on_turing_module_id"
   end
 
   create_table "student_attendances", force: :cascade do |t|
@@ -102,7 +95,6 @@ ActiveRecord::Schema.define(version: 2023_02_22_235623) do
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
   add_foreign_key "slack_attendances", "attendances"
-  add_foreign_key "slack_members", "turing_modules"
   add_foreign_key "student_attendances", "attendances"
   add_foreign_key "student_attendances", "students"
   add_foreign_key "students", "turing_modules"
