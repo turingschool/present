@@ -33,26 +33,6 @@ RSpec.describe 'Importing Slack Channel Members' do
             expect(page).to have_content("Import Slack Channel")
         end 
     end  
-    context 'with a valid slack channel id' do 
-        before(:each) do
-            @channel_id = "C02HRH7MF5K"
-      
-            stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
-            .to_return(body: File.read('spec/fixtures/slack_channel_members_report.json'))
-      
-            @test_module = create(:turing_module)
-          end
-
-        xit 'creates slack members for that turing module' do 
-            visit turing_module_slack_channel_import_path(@test_module)
-
-            fill_in :slack_channel_id, with: @channel_id 
-            click_button "Import Members From Channel"
-            
-            expect(current_path).to eq(turing_module_slack_channel_import_path(@test_module))
-            expect(page).to have_content("53 members from Cohort have been imported")
-        end 
-    end 
 
     context 'with an invalid slack channel id' do 
         before(:each) do

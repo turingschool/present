@@ -47,20 +47,4 @@ RSpec.describe 'Student Index' do
     expect(current_path).to eq(turing_module_path(test_module))
   end 
 
-  context "with a slack channel imported" do 
-    xit 'has a column to assign slack members to current students' do 
-      test_module = create(:turing_module)
-
-      test_students = create_list(:student, 8, turing_module: test_module)
-      slack_members = create_list(:slack_member, 10, turing_module: test_module)
-
-      visit turing_module_slack_channel_import_path(test_module)
-
-      test_students.each do |student|
-        within("#student-#{student.id}") do
-          expect(page).to have_select("students[#{student.id}]", :with_options => slack_members.map(&:name))
-        end
-      end 
-    end 
-  end 
 end
