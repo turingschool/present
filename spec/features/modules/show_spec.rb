@@ -7,6 +7,7 @@ RSpec.describe 'Modules show page' do
 
   it 'shows the modules attributes' do
     test_module = create(:turing_module)
+    create_list(:student, 5, turing_module: test_module)
 
     visit "/modules/#{test_module.id}"
 
@@ -16,6 +17,7 @@ RSpec.describe 'Modules show page' do
 
   it 'shows the past zoom attendances for the module' do
     test_module = create(:turing_module)
+    create_list(:student, 5, turing_module: test_module)
 
     attendances = create_list(:zoom_attendance, 3).map do |zoom_attendance|
       zoom_attendance.attendance.update(turing_module: test_module)
@@ -38,6 +40,7 @@ RSpec.describe 'Modules show page' do
 
   it 'shows the past slack attendances for the module' do
     test_module = create(:turing_module)
+    create_list(:student, 5, turing_module: test_module)
 
     attendances = create_list(:slack_attendance, 3).map do |slack_attendance|
       slack_attendance.attendance.update(turing_module: test_module)
@@ -59,6 +62,8 @@ RSpec.describe 'Modules show page' do
 
   it "has a link to each attendance's show page" do
     test_module = create(:turing_module)
+    create_list(:student, 5, turing_module: test_module)
+
     attendances = create_list(:zoom_attendance, 3).map do |zoom_attendance|
       zoom_attendance.attendance.update(turing_module: test_module)
       zoom_attendance.attendance
