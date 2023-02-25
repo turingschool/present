@@ -10,4 +10,12 @@ class Student < ApplicationRecord
     return student if student
     Student.create(zoom_id: participant.id, name: participant.name)
   end
+
+  def self.have_slack_ids 
+    !Student.where.not(slack_id: nil).empty?
+  end 
+
+  def self.have_zoom_ids 
+    !Student.where.not(zoom_id: nil).empty?
+  end 
 end

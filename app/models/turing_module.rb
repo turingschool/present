@@ -28,4 +28,9 @@ class TuringModule < ApplicationRecord
     end
   end
 
+  def account_match_complete 
+    self.students.have_slack_ids && self.students.have_zoom_ids
+    # checking to make sure some students have slack ids and some have zoom ids. 
+    # if some students have both slack/zoom ids, that tells us that a user went through the match process
+  end 
 end

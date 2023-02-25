@@ -70,5 +70,29 @@ RSpec.describe TuringModule, type: :model do
         expect(num_duplicates).to eq(1)
       end
     end
+
+    describe '#account_match_complete' do 
+
+      it 'returns true if some students in a mod have slack ids, and some have zoom ids' do 
+        test_module = create(:fe1)
+        students = create_list(:student, 5, turing_module: test_module)
+
+        expect(test_module.account_match_complete).to eq true 
+      end 
+      it 'returns false if some students in a mod have slack ids but none have zoom ids' do 
+        test_module = create(:fe1)
+        create_list(:student, 3, zoom_id: nil, turing_module: test_module)
+        create_list(:student, 2, slack_id: nil, zoom_id: nil, turing_module: test_module)
+        
+        expect(test_module.account_match_complete).to eq false 
+      end 
+
+      it 'returns false if no students have slack or zoom ids' do 
+        test_module = create(:fe1)
+        students = create_list(:student, 5, slack_id: nil, zoom_id: nil, turing_module: test_module)
+
+        expect(test_module.account_match_complete).to eq false 
+      end 
+    end 
   end
 end

@@ -267,6 +267,95 @@ RSpec.describe "Module Setup" do
         end 
       end 
     end
+
+    context 'when setup isnt fully complete' do 
+      before(:each) do 
+        @zoom_meeting_id = 96428502996
+        @channel_id = "C02HRH7MF5K"
+
+        stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
+        .to_return(body: File.read('spec/fixtures/participant_report_for_populi.json'))
+
+        stub_request(:get, "https://api.zoom.us/v2/meetings/#{@zoom_meeting_id}") \
+        .to_return(body: File.read('spec/fixtures/meeting_details_for_populi.json'))
+
+        stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
+        .to_return(body: File.read('spec/fixtures/slack_channel_members_for_module_setup.json'))
+
+      end 
+      it 'mod show page still prompts for setup if only populi sync complete' do 
+        visit turing_module_populi_integration_path(@mod)
+
+        within '#best-match' do
+          click_button 'Yes'
+        end
+
+        visit turing_module_path(@mod)
+
+        expect(page).to have_link("Setup Module")
+        expect(page).to_not have_link("Take Attendance")
+      end 
+
+      it 'mod show page still prompts for setup if only populi and slack sync complete' do 
+        visit turing_module_populi_integration_path(@mod)
+
+        within '#best-match' do
+          click_button 'Yes'
+        end
+
+        fill_in :slack_channel_id, with: @channel_id
+        click_button "Import Channel"
+
+        visit turing_module_path(@mod)
+
+        expect(page).to have_link("Setup Module")
+        expect(page).to_not have_link("Take Attendance")
+      end 
+
+      it 'mod show page still prompts for setup if populi, slack, and zoom syncs complete, but match not done' do 
+        visit turing_module_populi_integration_path(@mod)
+
+        within '#best-match' do
+          click_button 'Yes'
+        end
+
+        fill_in :slack_channel_id, with: @channel_id
+        click_button "Import Channel"
+
+        fill_in :zoom_meeting_id, with: @zoom_meeting_id
+        
+        click_button "Import Zoom Accounts From Meeting"
+
+        visit turing_module_path(@mod)
+
+        expect(page).to have_link("Setup Module")
+        expect(page).to_not have_link("Take Attendance")
+      end 
+
+      it 'mod show page shows link for students and taking attendance once match is done' do 
+        visit turing_module_populi_integration_path(@mod)
+
+        within '#best-match' do
+          click_button 'Yes'
+        end
+
+        fill_in :slack_channel_id, with: @channel_id
+        click_button "Import Channel"
+
+        fill_in :zoom_meeting_id, with: @zoom_meeting_id
+        
+        click_button "Import Zoom Accounts From Meeting"
+
+        click_button "Match"
+
+        visit turing_module_path(@mod)
+
+        expect(page).to_not have_link("Setup Module")
+        expect(page).to have_link("Take Attendance")
+        expect(page).to have_link("Students (7)")
+      end 
+      
+    end 
   end
 
   context 'user has set up populi but not slack' do
