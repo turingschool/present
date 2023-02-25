@@ -16,7 +16,7 @@ RSpec.describe 'Student Show Page' do
   end
 
   it 'displays the students name, zoom id, slack id, and module name' do
-    student = create(:student_with_slack_id)
+    student = create(:student)
 
     visit student_path(student)
 
@@ -27,11 +27,11 @@ RSpec.describe 'Student Show Page' do
   end
 
   it 'shows that a slack id hasnt been assigned if there is no slack id' do 
-    student = create(:student)
+    student = create(:student, slack_id: nil)
     
     visit student_path(student)
 
-    expect(page).to have_content("Not Yet Assigned")
+    expect(page).to have_content("Slack ID: Not Yet Assigned")
   end 
 
   it 'the module name is a link' do
