@@ -57,6 +57,17 @@ RSpec.describe "Module Setup" do
         expect(@mod.students.fifth.populi_id).to eq('24490161')
       end
 
+      context 'and then tries to confirm populi module again' do 
+        it 'does not duplicate students in the mod, but rather, replace them' do 
+          visit turing_module_populi_integration_path(@mod)
+
+          within '#best-match' do
+            click_button 'Yes'
+          end
+          expect(@mod.students.length).to eq(7)
+        end 
+      end 
+
       context 'when a slack channel isnt given' do 
         it 'user is redirected and told to provide a channel id' do 
           mod = create(:turing_module)
