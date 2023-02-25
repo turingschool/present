@@ -35,5 +35,35 @@ RSpec.describe Student, type: :model do
         expect(Student.count).to eq(1)
       end
     end
+
+    describe '::have_slack_ids' do 
+      it 'returns true if some students have slack ids' do 
+        create_list(:student, 3)
+        create_list(:student, 2, slack_id: nil)
+        
+        expect(Student.have_slack_ids).to eq true
+      end 
+      
+      it 'returns false if no students have slack ids' do 
+        create_list(:student, 5, slack_id: nil)
+        
+        expect(Student.have_slack_ids).to eq false
+      end 
+    end 
+
+    describe '::have_zoom_ids' do 
+      it 'returns true if some students have zoom ids' do 
+        create_list(:student, 3)
+        create_list(:student, 2, zoom_id: nil)
+        
+        expect(Student.have_zoom_ids).to eq true
+      end 
+      
+      it 'returns false if no students have zoom ids' do 
+        create_list(:student, 5, zoom_id: nil)
+        
+        expect(Student.have_zoom_ids).to eq false
+      end 
+    end 
   end
 end

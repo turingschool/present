@@ -17,6 +17,7 @@ RSpec.describe 'Creating an Attendance' do
       .to_return(body: File.read('spec/fixtures/slack_message_replies_response.json'))
 
       @test_module = create(:turing_module)
+      create_list(:student, expected_students.length, turing_module: @test_module )
     end
 
     it 'creates a new attendance by providing a slack message link' do
