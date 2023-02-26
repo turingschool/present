@@ -4,14 +4,6 @@ class User::SlackController < ApplicationController
         @module = TuringModule.find(params[:turing_module_id])
     end 
 
-    def connect_accounts
-        params[:students].each do |student_id, slack_id| 
-            Student.update(student_id, :slack_id => slack_id)
-        end
-        flash[:success] = "Successfully connected Slack accounts."
-        redirect_to turing_module_students_path(params[:turing_module_id])
-    end 
-
     def create 
         @module = TuringModule.find(params[:turing_module_id])
         if !params[:slack_channel_id].empty?

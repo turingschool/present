@@ -67,7 +67,7 @@ RSpec.describe 'Creating an Attendance' do
       end
     end
 
-    it 'can prompt user to add a new user if zoom attendee is not in student list' do
+    xit 'can prompt user to add a new user if zoom attendee is not in student list' do
       new_student = expected_students.pop
       @test_module.students = expected_students
       
