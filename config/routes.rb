@@ -15,7 +15,6 @@ Rails.application.routes.draw do
 
       get '/slack/new', to: 'slack#new', as: :slack_integration
       post '/slack', to: 'slack#create'
-      patch '/slack_channel_import', to: "slack#connect_accounts"
 
       get '/zoom/new', to: 'zoom#new', as: :zoom_integration
 

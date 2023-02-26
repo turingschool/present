@@ -20,19 +20,12 @@ class User::StudentsController < User::BaseController
 
   def update
     student = Student.find(params[:id])
-    if params[:slack_id]
-      student.update(slack_id: params[:slack_id])
-      redirect_to turing_module_students_path(student.turing_module)
-    elsif student.update(student_params)
+    if student.update(student_params)
       flash[:success] = 'Your changes have been saved.'
-      if request.referer.include? 'attendances'
-        redirect_to request.referer
-      else
         redirect_to student_path(student)
-      end
     else
       flash[:error] = student.errors.full_messages.to_sentence
-      redirect_to request.referer
+      redirect_to edit_student_path(student)
     end
   end
 
