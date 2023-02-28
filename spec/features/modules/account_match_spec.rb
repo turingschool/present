@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Module Setup" do
+RSpec.describe "Module Setup Account Matching" do
   context 'user imports students from populi, imports a slack channel, and imports participants from a zoom meeting' do
     before :each do
       @user = mock_login
