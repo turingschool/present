@@ -17,7 +17,7 @@
           </td>
 
           <td class='zoom-select'>
-            <%= f.select "student[#{student.id}][zoom_id]", facade.zoom_options, selected: facade.best_matching_zoomer(student) %>
+            <%= f.select "student[#{student.id}][zoom_id]", facade.zoom_options(student), selected: facade.best_matching_zoomer(student) %>
           </td>
         </tr>
       <% end %>
