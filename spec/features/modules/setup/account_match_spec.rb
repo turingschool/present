@@ -23,9 +23,6 @@ RSpec.describe "Module Setup Account Matching" do
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/participant_report_for_populi.json'))
 
-      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@zoom_meeting_id}") \
-        .to_return(body: File.read('spec/fixtures/meeting_details_for_populi.json'))
-
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack_channel_members_for_module_setup.json'))
 

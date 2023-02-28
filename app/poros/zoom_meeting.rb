@@ -3,13 +3,20 @@ class ZoomMeeting
 
   def initialize(meeting_id)
     @id = meeting_id
-    @title = meeting_details[:topic]
-    @start_time = meeting_details[:start_time]
   end
 
   def participants
     @participants ||= participant_report.map {|participant| ZoomParticipant.from_meeting(participant)}
   end
+
+  def title
+    meeting_details[:topic]
+  end
+
+  def start_time
+    meeting_details[:start_time]
+  end
+
 
   def meeting_details
     @meeting_details ||= ZoomService.meeting_details(@id)
