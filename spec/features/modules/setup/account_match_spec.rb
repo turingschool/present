@@ -64,7 +64,7 @@ RSpec.describe "Module Setup Account Matching" do
       end
     end
 
-    it 'has a select field with the closest matching name from slack' do
+    it 'has a select field with the closest matching names from slack ordered by match' do
       expected = [
         "Leo Banos Garcia",
         "Anthony Blackwell Tallent",
@@ -74,11 +74,24 @@ RSpec.describe "Module Setup Account Matching" do
         "Anhnhi Tran",
         "Lacey Weaver"
       ]
-      @mod.students.each_with_index do |student, index|
-        within "#student-#{student.id}" do
-          within '.slack-select' do 
-            expect(page).to have_select(selected: expected[index])
-          end
+
+      within "#student-#{@anthony_b.id}" do
+        within '.slack-select' do 
+          expect(page).to have_select(selected: "Anthony Blackwell Tallent")
+          options = page.all('option')
+          expect(options.first.text).to eq("Anthony Blackwell Tallent")
+          expect(options[1].text).to eq("Anthony Ongaro")
+          expect(options[2].text).to eq("Lucas Colwell")
+        end
+      end
+    
+      within "#student-#{@leo.id}" do
+        within '.slack-select' do 
+          expect(page).to have_select(selected: "Leo Banos Garcia")
+          options = page.all('option')
+          expect(options.first.text).to eq("Leo Banos Garcia")
+          expect(options[1].text).to eq("Mostafa Sakr")
+          expect(options[2].text).to eq("Alex Mora BE")
         end
       end
     end

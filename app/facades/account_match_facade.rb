@@ -9,22 +9,14 @@ class AccountMatchFacade
     @participants = clean_participant_data
   end
 
-  def slack_options
-    @slack_options ||= slack_channel_members.map do |member|
-      [member[:attributes][:name], member[:attributes][:slack_user_id]]
+  def slack_options(student)
+    slack_members_by_match(student).map do |member|
+      [member.name, member.id]
     end.push(["Not In Channel", nil])
   end
 
   def best_matching_slacker(student)
-    slack_member_names = slack_channel_members.map {|member| member[:attributes][:name]}
-    match = find_jarow_match(student.name, slack_member_names)
-    slack_options.find do |slack_name, _|
-      slack_name == match
-    end.last
-  end
-
-  def slack_channel_members
-    @slack_channel_members ||= SlackService.get_channel_members(self.module.slack_channel_id)[:data]
+    slack_members_by_match(student).first.id
   end
 
   def zoom_options
@@ -52,5 +44,17 @@ private
     end.sort_by do |participant|
       participant.name
     end
+  end
+
+  def slack_channel_members
+    @slack_channel_members ||= SlackService.get_channel_members(self.module.slack_channel_id)[:data].map do |slack_member_data|
+      Slacker.from_channel(slack_member_data)
+    end
+  end
+
+  def slack_members_by_match(student)
+    slack_channel_members.sort_by do |member|
+      string_distance(student.name, member.name)
+    end.reverse
   end
 end
