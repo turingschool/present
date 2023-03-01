@@ -52,8 +52,9 @@ RSpec.describe "Module Setup Populi Workflow" do
       expect(@mod.students.fifth.populi_id).to eq('24490161')
     end
 
-    xit 'saves the populi course id to the module' do
-      expect(@mod.populi_course_id).to eq()
+    it 'saves the populi course id to the module' do
+      @mod.reload
+      expect(@mod.populi_course_id).to eq('10547831')
     end
 
     context 'and then tries to confirm populi module again' do 

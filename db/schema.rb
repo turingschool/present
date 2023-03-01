@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_25_231042) do
+ActiveRecord::Schema.define(version: 2023_03_01_002018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2023_02_25_231042) do
     t.integer "module_number"
     t.boolean "calendar_integration", default: false
     t.string "slack_channel_id"
+    t.string "populi_course_id"
     t.index ["inning_id"], name: "index_turing_modules_on_inning_id"
   end
 
