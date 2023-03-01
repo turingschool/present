@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CreateAttendanceFacade do
   let(:roster){
-    #Matches students in the participant report spec/fixtures/zoom_meeting_participant_report.json
+    #Matches students in the participant report spec/fixtures/zoom/participant_report.json
     [
       Student.new(zoom_id: "E0WPTrXCQAGkMsvF9rQgQA", name: "Ryan Teske (He/Him)"),
       Student.new(zoom_id: "lJjq3OXDSKiG5McSVavgpA", name: "Isika P (she/her# BE)"),
@@ -54,10 +54,10 @@ RSpec.describe CreateAttendanceFacade do
     @test_zoom_meeting_id = "95490216907"
 
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
-    .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+    .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
-    .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
+    .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
     @zoom_meeting = ZoomMeeting.new(@test_zoom_meeting_id)
     @test_module = create(:turing_module)
@@ -74,8 +74,8 @@ RSpec.describe CreateAttendanceFacade do
 
       expect(new_attendance).to be_an_instance_of(Attendance)
       expect(new_attendance.zoom_attendance.zoom_meeting_id).to eq(@test_zoom_meeting_id)
-      expect(new_attendance.zoom_attendance.meeting_title).to eq('Cohort Standup') #from spec/fixtures/zoom_meeting_details.json
-      expect(new_attendance.zoom_attendance.meeting_time).to eq("2021-12-17T16:00:00Z") #from spec/fixtures/zoom_meeting_details.json
+      expect(new_attendance.zoom_attendance.meeting_title).to eq('Cohort Standup') #from spec/fixtures/zoom/meeting_details.json
+      expect(new_attendance.zoom_attendance.meeting_time).to eq("2021-12-17T16:00:00Z") #from spec/fixtures/zoom/meeting_details.json
       expect(new_attendance).to be_valid
     end
 

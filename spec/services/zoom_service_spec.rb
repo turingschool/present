@@ -5,10 +5,10 @@ RSpec.describe ZoomService do
     @test_meeting_id = '95490216907'
 
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_meeting_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_meeting_id}/participants?page_size=300") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
   end
 
   it 'can get meeting details' do

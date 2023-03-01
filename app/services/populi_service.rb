@@ -29,4 +29,17 @@ class PopuliService
   def get_term_courses(term_id)
     PopuliAPI.get_term_course_instances(term_id: term_id)
   end
+
+  def update_attendance(attendance)
+    attendance.student_attendances.each do |sa|
+      # require 'pry';binding.pry
+      # PopuliAPI.update_student_attendance(instance_id: ,meeting_id:, person_id:sa.student.populi_id, status: sa.status)
+
+#       instanceID	The numeric ID of the course instance you're interested in.	
+        # meetingID	The numeric ID of the meeting.	
+        # personID	The numeric ID of the person whose attendance will be updated.	
+        # status	PRESENT, ABSENT, TARDY, or EXCUSED	
+
+    end
+  end
 end

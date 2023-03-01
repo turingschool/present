@@ -5,7 +5,26 @@ class CreateAttendanceFacade
     ZoomAttendance.create(meeting_time:zoom_meeting.start_time, meeting_title: zoom_meeting.title, zoom_meeting_id: zoom_meeting.id, attendance: attendance)
     take_participant_attendance(attendance, zoom_meeting)
     take_absentee_attendance(attendance, zoom_meeting, turing_module)
+    PopuliService.new.update_attendance(attendance)
     return attendance
+  end
+
+private
+  def self.take_absentee_attendance(attendance, zoom_meeting, turing_module)
+    turing_module.students.each do |student|
+      unless attendance.student_attendances.find_by(student: student)
+        student_attendance = attendance.student_attendances.create(student: student)
+        student_attendance.assign_status(nil, Time.parse(zoom_meeting.start_time))
+      end
+    end
+  end
+
+  def self.take_participant_attendance(attendance, zoom_meeting)
+    zoom_meeting.participants.each do |participant|
+      student = Student.find_or_create_from_participant(participant)
+      student_attendance = attendance.student_attendances.find_or_create_by(student: student)
+      student_attendance.assign_status(Time.parse(participant.join_time), Time.parse(zoom_meeting.start_time))
+    end
   end
 
   def self.take_slack_attendance(slack_url, turing_module, user)
@@ -26,22 +45,4 @@ class CreateAttendanceFacade
     end 
     return attendance
   end 
-
-private
-  def self.take_absentee_attendance(attendance, zoom_meeting, turing_module)
-    turing_module.students.each do |student|
-      unless attendance.student_attendances.find_by(student: student)
-        student_attendance = attendance.student_attendances.create(student: student)
-        student_attendance.assign_status(nil, Time.parse(zoom_meeting.start_time))
-      end
-    end
-  end
-
-  def self.take_participant_attendance(attendance, zoom_meeting)
-    zoom_meeting.participants.each do |participant|
-      student = Student.find_or_create_from_participant(participant)
-      student_attendance = attendance.student_attendances.find_or_create_by(student: student)
-      student_attendance.assign_status(Time.parse(participant.join_time), Time.parse(zoom_meeting.start_time))
-    end
-  end
 end

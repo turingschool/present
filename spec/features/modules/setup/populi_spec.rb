@@ -7,15 +7,15 @@ RSpec.describe "Module Setup Populi Workflow" do
 
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCurrentAcademicTerm"}).
-      to_return(status: 200, body: File.read('spec/fixtures/current_academic_term.xml'), headers: {})
+      to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.xml'), headers: {})
     
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
-      to_return(status: 200, body: File.read('spec/fixtures/courses_for_2211.xml'), headers: {})
+      to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
     
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
-      to_return(status: 200, body: File.read('spec/fixtures/students_for_be2_2211.xml'), headers: {})
+      to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
   end
 
   it 'suggests the best match of module from the list of populi courses' do
@@ -50,6 +50,10 @@ RSpec.describe "Module Setup Populi Workflow" do
       expect(@mod.students.second.populi_id).to eq('24490140')
       expect(@mod.students.fifth.name).to eq('J Seymour')
       expect(@mod.students.fifth.populi_id).to eq('24490161')
+    end
+
+    xit 'saves the populi course id to the module' do
+      expect(@mod.populi_course_id).to eq()
     end
 
     context 'and then tries to confirm populi module again' do 

@@ -5,10 +5,10 @@ RSpec.describe ZoomMeeting do
     @test_meeting_id = '95490216907'
 
     @details_stub = stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_meeting_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
     @report_stub = stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_meeting_id}/participants?page_size=300") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
   end
 
   it 'exists' do
@@ -20,8 +20,8 @@ RSpec.describe ZoomMeeting do
     zoom_meeting = ZoomMeeting.new(@test_meeting_id)
 
     expect(zoom_meeting.id).to eq(@test_meeting_id)
-    expect(zoom_meeting.title).to eq('Cohort Standup') #from spec/fixtures/zoom_meeting_details.json
-    expect(zoom_meeting.start_time).to eq("2021-12-17T16:00:00Z") #from spec/fixtures/zoom_meeting_details.json
+    expect(zoom_meeting.title).to eq('Cohort Standup') #from spec/fixtures/zoom/meeting_details.json
+    expect(zoom_meeting.start_time).to eq("2021-12-17T16:00:00Z") #from spec/fixtures/zoom/meeting_details.json
   end
 
   it 'has the meeting participant report' do
@@ -54,7 +54,7 @@ RSpec.describe ZoomMeeting do
     it 'returns false if the meeting id is invalid' do
       invalid_zoom_id = 'InvalidID'
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{invalid_zoom_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_details_invalid.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
 
       zoom_meeting = ZoomMeeting.new(invalid_zoom_id)
 

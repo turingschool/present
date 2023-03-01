@@ -18,10 +18,10 @@ RSpec.describe 'Creating an Attendance' do
       @test_zoom_meeting_id = 95490216907
 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
       @test_module = create(:turing_module)
     end
@@ -131,10 +131,10 @@ RSpec.describe 'Creating an Attendance' do
       @test_zoom_meeting_id = 95490216907
 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_participant_report.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_details.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
       visit turing_module_path(@test_module)
       click_link('Take Attendance')
@@ -156,7 +156,7 @@ RSpec.describe 'Creating an Attendance' do
     it 'shows a message if an invalid meeting id is entered' do
       invalid_zoom_id = 'InvalidID'
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{invalid_zoom_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom_meeting_details_invalid.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
 
       test_module = create(:turing_module)
       visit new_turing_module_attendance_path(test_module)
