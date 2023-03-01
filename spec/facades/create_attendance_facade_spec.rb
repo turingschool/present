@@ -73,9 +73,9 @@ RSpec.describe CreateAttendanceFacade do
       new_attendance = CreateAttendanceFacade.take_attendance(@zoom_meeting, @test_module, @user)
 
       expect(new_attendance).to be_an_instance_of(Attendance)
-      expect(new_attendance.zoom_meeting_id).to eq(@test_zoom_meeting_id)
-      expect(new_attendance.meeting_title).to eq('Cohort Standup') #from spec/fixtures/zoom_meeting_details.json
-      expect(new_attendance.meeting_time).to eq("2021-12-17T16:00:00Z") #from spec/fixtures/zoom_meeting_details.json
+      expect(new_attendance.zoom_attendance.zoom_meeting_id).to eq(@test_zoom_meeting_id)
+      expect(new_attendance.zoom_attendance.meeting_title).to eq('Cohort Standup') #from spec/fixtures/zoom_meeting_details.json
+      expect(new_attendance.zoom_attendance.meeting_time).to eq("2021-12-17T16:00:00Z") #from spec/fixtures/zoom_meeting_details.json
       expect(new_attendance).to be_valid
     end
 

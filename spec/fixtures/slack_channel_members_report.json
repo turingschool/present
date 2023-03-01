@@ -1,0 +1,428 @@
+{
+    "data": [
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U02Q25H6V",
+                "name": "Mike Dao"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U035BQEGZ",
+                "name": "DJ Greenfield"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U046S1HSC",
+                "name": "Jason Noble (Mentor)"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U0C6CG4RL",
+                "name": "Allison Reu Singer (she/her)"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U1C9WHFFS",
+                "name": "Erin Neill Williams"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U1K6QHSGY",
+                "name": "Erin Pintozzi"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U5D34JCEP",
+                "name": "Amy Holt"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U8YRD3KS4",
+                "name": "Jamison Ordway"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "UAR7HEPTR",
+                "name": "Kathleen Brandt"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "UBJS832JG",
+                "name": "Meg Stang"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "USW7S0AKV",
+                "name": "Dani Coleman"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "UUG4STQV7",
+                "name": "Curtis Bartell"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U013Y0T89V1",
+                "name": "Travis McKinstry"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U019UFVMSUU",
+                "name": "Zapier"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U01CBJGFXRC",
+                "name": "Leigh Cepriano Pulzone"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U020KMWBP9R",
+                "name": "Chloe Price"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U02199TD8SC",
+                "name": "Devin Pilé"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U022NF3D4SV",
+                "name": "Michael Marchand"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U0255B3MMB4",
+                "name": "Kaitlyn Van Gorkom"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U02ACB9A0B1",
+                "name": "Alex Mora BE"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U02DH0ZTASV",
+                "name": "Austin Moore"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U02KBBD5FA9",
+                "name": "Chris Simmons"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U02KTLG8WBZ",
+                "name": "Kevin Ta"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U02RZ2UGGQZ",
+                "name": "Karen Ravago-Ballaret"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U02SS907SAH",
+                "name": "Lucas Colwell"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U02V1UU109Z",
+                "name": "Sage Skaff"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U032U2RA5LZ",
+                "name": "Aether Elektra Kerstens"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U0376KHBE78",
+                "name": "Madeline Mauser"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U037FJLQEJ0",
+                "name": "Chantal Goethals"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03BEFP058X",
+                "name": "Abdul Redd"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03BM5HCCRY",
+                "name": "Ashley Turner"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03E70Z4F39",
+                "name": "Astrid Hecht"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03EJM4UU13",
+                "name": "Sergio Azcona"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03EMGP53EW",
+                "name": "Kristen Nestler"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03EMJ8TK8S",
+                "name": "Shawn Lee"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03KQFD5WJK",
+                "name": "William Wang"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03KQFESGAK",
+                "name": "Bryan Keener"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03KYFF1E0N",
+                "name": "Emily Port"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03L266HAUV",
+                "name": "Joseph Hilby"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03L53VSC1Y",
+                "name": "Mostafa Sakr"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03L53W3Q1Y",
+                "name": "Eli Fuchsman"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03L6BK4ABH",
+                "name": "Ryan Loughry"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03L6BK5PAB",
+                "name": "Naomi Yocum"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03L7FKNX0C",
+                "name": "Darby Smith"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03LEBHFZBQ",
+                "name": "Yuji Kosakowski"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03LJ24QEPP",
+                "name": "Rich Kaht"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03LJ24VC0M",
+                "name": "Sean Culliton"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03LLTKBYUB",
+                "name": "James White"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03LLV9AMNE",
+                "name": "Max MacGillivray"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03LLV9J8DQ",
+                "name": "Kenz Leng"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03LPBPDR44",
+                "name": "Gabe Nuñez"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03LUS2DCRE",
+                "name": "Amanda Ross"
+            }
+        },
+        {
+            "id": null,
+            "type": "channel_member",
+            "attributes": {
+                "slack_user_id": "U03MAN29L9W",
+                "name": "Annie Pulzone"
+            }
+        }
+    ]
+}

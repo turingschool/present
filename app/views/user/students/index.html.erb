@@ -5,11 +5,23 @@
   <tr>
     <th>Name</th>
     <th>Zoom ID</th>
+    <th>Slack Id</th>
   </tr>
   <% @module.students.each do |student| %>
     <tr class='student' id='student-<%= student.id %>'>
       <td><%= link_to student.name, student_path(student) %></td>
       <td><%= student.zoom_id %></td>
+      <% if student.slack_id %>
+       <td><%= student.slack_id %></td>
+      <%# < % elsif !@module.slack_members.empty? % > %>
+        <%# <td> %>
+          <%# < %= form_tag(student_path(student.id), method: "patch") do % > %>
+            <%# < %= select_tag(:slack_id, options_for_select(slack_members(@module), find_closest_match(student)), {class: "select-field"}) % > %>
+            <%# <%= submit_tag('Connect', class: "button") %> 
+          <%# < % end % > %>
+        <%# </td> %>
+      <% end %>
+
     </tr>
   <% end %>
 </table>

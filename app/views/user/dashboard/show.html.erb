@@ -1,8 +1,10 @@
 <h1>Welcome <%= current_user.email %>!</h1>
 <% if @my_module %>
   <h2>My Module: <%= link_to @my_module.name, turing_module_path(@my_module) %></h2>
-  <h3>Take Attendance for my mod:</h3>
-  <%= render partial: 'shared/take_attendance', locals: {attendance: Attendance.new, mod: @my_module} %>
+  <h3>Take Attendance for a Zoom Meeting</h3>
+  <%= render partial: 'shared/take_zoom_attendance', locals: {attendance: Attendance.new, mod: @my_module} %>
+  <h3>Take Attendance for a Slack Meeting</h3>
+<%= render partial: 'shared/take_slack_attendance', locals: {mod: @my_module} %>
 <% elsif current_inning %>
   <p>My Module is not set. To set My Module visit a module page.</p>
   <h2>Current Inning: <%= current_inning.name %></h2>

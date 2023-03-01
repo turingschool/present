@@ -6,18 +6,21 @@ RSpec.describe 'attendance show page' do
   end
 
   it 'links to the module and shows attendance date, time, and Zoom id' do
-    test_attendance = create(:attendance_with_students)
+    test_zoom_attendance = create(:zoom_attendance_with_students)
+    test_attendance = test_zoom_attendance.attendance
+
     student_attendances = test_attendance.student_attendances
 
     visit "/attendances/#{test_attendance.id}"
     expect(page).to have_link(test_attendance.turing_module.name, href: turing_module_path(test_attendance.turing_module))
-    expect(page).to have_content(test_attendance.meeting_title)
-    expect(page).to have_content(test_attendance.pretty_time)
-    expect(page).to have_content(test_attendance.zoom_meeting_id)
+    expect(page).to have_content(test_zoom_attendance.meeting_title)
+    expect(page).to have_content(test_zoom_attendance.pretty_time)
+    expect(page).to have_content(test_zoom_attendance.zoom_meeting_id)
   end
 
   it "shows each students name, id, and attendance status" do
-    test_attendance = create(:attendance_with_students)
+    test_zoom_attendance = create(:zoom_attendance_with_students)
+    test_attendance = test_zoom_attendance.attendance
     student_attendances = test_attendance.student_attendances
 
     visit "/attendances/#{test_attendance.id}"
@@ -40,7 +43,7 @@ RSpec.describe 'attendance show page' do
     student_b = test_module.students.create(zoom_id: "234sdfsdf-lkrj2l34lkn", name: "Firstname Blastname")
     student_c = test_module.students.create(zoom_id: "234sdfsdf-8u90ohvaldkfj", name: "Firstname Clastname")
 
-    attendance = test_module.attendances.create(user: @user, zoom_meeting_id: '<meeting_id>', meeting_time: Time.now)
+    attendance = test_module.attendances.create(user: @user)
     attendance.student_attendances.create!(student: student_a, status: 'present')
     attendance.student_attendances.create!(student: student_z, status: 'present')
     attendance.student_attendances.create!(student: student_b, status: 'present')
@@ -60,7 +63,7 @@ RSpec.describe 'attendance show page' do
     student_z = test_module.students.create(zoom_id: "234sdfsdfaefja;lsdkfjkvvA", name: "Firstname Zlastname")
     student_b = test_module.students.create(zoom_id: "234sdfsdf-lkrj2l34lkn", name: "Firstname Blastname")
     student_c = test_module.students.create(zoom_id: "234sdfsdf-8u90ohvaldkfj", name: "Firstname Clastname")
-    attendance = test_module.attendances.create(user: @user, zoom_meeting_id: '<meeting_id>', meeting_time: Time.now)
+    attendance = test_module.attendances.create(user: @user)
     attendance.student_attendances.create!(student: student_a, status: 'present')
     attendance.student_attendances.create!(student: student_z, status: 'absent')
     attendance.student_attendances.create!(student: student_b, status: 'tardy')

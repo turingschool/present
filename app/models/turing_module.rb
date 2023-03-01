@@ -2,6 +2,7 @@ class TuringModule < ApplicationRecord
   belongs_to :inning
   has_many :attendances, dependent: :destroy
   has_many :students, dependent: :destroy
+  has_many :slack_members, dependent: :destroy
 
   validates_numericality_of :module_number, {
     greater_than_or_equal_to: 1,
@@ -26,4 +27,5 @@ class TuringModule < ApplicationRecord
       end
     end
   end
+
 end
