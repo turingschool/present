@@ -14,7 +14,7 @@ class ZoomMeeting
   end
 
   def start_time
-    meeting_details[:start_time]
+    Time.parse(meeting_details[:start_time])
   end
 
 

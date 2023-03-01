@@ -30,18 +30,22 @@ class PopuliService
     PopuliAPI.get_term_course_instances(term_id: term_id)
   end
 
-  def update_attendance(attendance)
-    attendance.student_attendances.each do |sa|
-      # getCourseInstanceMeetings endpoint could be promising
+  def update_student_attendance(instance_id, meeting_id, person_id, status)
 
+      # instance_id = student_attendance.attendance.turing_module.populi_course_id
+
+      # # REFACTOR: probably need to cache this, and somewhere outside of this service
+      # populi_meeting = PopuliAPI.get_course_instance_meetings(instance_id: attendance.turing_module.populi_course_id)[:response][:meeting].min_by do |data|
+      #   meeting_time = Time.parse(data[:start])
+      #   attendance_time = attendance.zoom_attendance.meeting_time
+      #   (attendance_time - meeting_time).abs
+      # end
+      # meeting_id = populi_meeting[:meetingid]
       # require 'pry';binding.pry
-      # PopuliAPI.update_student_attendance(instance_id: ,meeting_id:, person_id:sa.student.populi_id, status: sa.status)
+      PopuliAPI.update_student_attendance(instance_id: instance_id, meeting_id: meeting_id, person_id: person_id, status: status)
+  end
 
-#       instanceID	The numeric ID of the course instance you're interested in.	
-        # meetingID	The numeric ID of the meeting.	
-        # personID	The numeric ID of the person whose attendance will be updated.	
-        # status	PRESENT, ABSENT, TARDY, or EXCUSED	
-
-    end
+  def course_meetings(course_id)
+    PopuliAPI.get_course_instance_meetings(instance_id: course_id)
   end
 end
