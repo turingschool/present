@@ -128,16 +128,9 @@ RSpec.describe 'Creating an Attendance' do
       expect(page).to_not have_link(new_student.name)
     end
 
-    xit 'creates students attendances' do
+    it 'creates students attendances' do
       @test_module.students = expected_students
       absent_student = @test_module.students.create(zoom_id: "234sdfsdf-A8zjQjKq9mogfJkvvA", name: "AN ABSENT STUDENT")
-      @test_zoom_meeting_id = 95490216907
-
-      stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
-      .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
-
-      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
       visit turing_module_path(@test_module)
       click_link('Take Attendance')
