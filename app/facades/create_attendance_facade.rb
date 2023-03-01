@@ -9,10 +9,14 @@ class CreateAttendanceFacade
 
   def run
     ZoomAttendance.create(meeting_time: meeting.start_time, meeting_title: meeting.title, zoom_meeting_id: meeting.id, attendance: attendance)
-    take_participant_attendance(attendance, meeting)
-    take_absentee_attendance(attendance, meeting, self.module)
-    update_populi(attendance)
+    take_participant_attendance
+    take_absentee_attendance
+    update_populi
     return attendance
+  end
+
+  def take_slack
+    update_populi
   end
 
   def self.take_attendance(zoom_meeting, turing_module, user)
@@ -40,26 +44,25 @@ private
     PopuliMeeting.new(data)
   end
 
-  def update_populi(attendance)
+  def update_populi
     course_id = attendance.turing_module.populi_course_id
     attendance.turing_module.students.each do |student|
-      # require 'pry';binding.pry
       status = attendance.find_status_for_student(student)
       populi_service.update_student_attendance(course_id, populi_meeting.id, student.populi_id, status)
     end
   end
 
-  def take_absentee_attendance(attendance, zoom_meeting, turing_module)
-    turing_module.students.each do |student|
+  def take_absentee_attendance
+    self.module.students.each do |student|
       unless attendance.student_attendances.find_by(student: student)
         student_attendance = attendance.student_attendances.create(student: student)
-        student_attendance.assign_status(nil, zoom_meeting.start_time)
+        student_attendance.assign_status(nil, populi_meeting.start)
       end
     end
   end
 
-  def take_participant_attendance(attendance, zoom_meeting)
-    zoom_meeting.participants.each do |participant|
+  def take_participant_attendance
+    meeting.participants.each do |participant|
       student = Student.find_or_create_from_participant(participant)
       student_attendance = attendance.student_attendances.find_or_create_by(student: student)
       student_attendance.assign_status(Time.parse(participant.join_time), populi_meeting.start)# REPLACE THIS WITH POPULI ATTENDANCE TIMETime.parse(zoom_meeting.start_time))
@@ -82,6 +85,8 @@ private
     absent_students.each do |student|
       attendance.student_attendances.create(student: student, attendance: attendance, join_time: nil, status: "absent")
     end 
+    new(Meeting.new(slack_url, attendance_start_time), turing_module, user).take_slack
+    
     return attendance
   end 
 end
