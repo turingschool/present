@@ -101,7 +101,7 @@ RSpec.describe 'Creating an Attendance' do
       expect(page).to_not have_button("Add New Student")
     end
 
-    xit 'can add students to the module even if they are associated with another module' do
+    it 'can add students to the module even if they are associated with another module' do
       new_student = expected_students.pop
       other_mod = create(:turing_module)
       new_student.update(turing_module: other_mod)
