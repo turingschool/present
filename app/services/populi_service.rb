@@ -32,6 +32,8 @@ class PopuliService
 
   def update_attendance(attendance)
     attendance.student_attendances.each do |sa|
+      # getCourseInstanceMeetings endpoint could be promising
+
       # require 'pry';binding.pry
       # PopuliAPI.update_student_attendance(instance_id: ,meeting_id:, person_id:sa.student.populi_id, status: sa.status)
 
