@@ -14,7 +14,9 @@ RSpec.describe 'taking attendance with Populi' do
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details_for_module_setup.json'))
       
+      
       # intercept each call to update student attendance
+      # This stub needs to Be the first populi stub since it will override any existing populi stubs
       stub_request(:post, "https://turing-validation.populi.co/api/").to_return(status: 200, body: "", headers: {})
      
       stub_request(:post, ENV['POPULI_API_URL']).

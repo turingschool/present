@@ -1,10 +1,10 @@
 class CreateAttendanceFacade
   attr_reader :meeting, :module, :attendance
 
-  def initialize(meeting, turing_module)
+  def initialize(meeting, turing_module, user)
     @meeting = meeting
     @module = turing_module
-    @attendance = self.module.attendances.create
+    @attendance = self.module.attendances.create(user: user)
   end
 
   def run
@@ -15,8 +15,8 @@ class CreateAttendanceFacade
     return attendance
   end
 
-  def self.take_attendance(zoom_meeting, turing_module)
-    new(zoom_meeting, turing_module).run  
+  def self.take_attendance(zoom_meeting, turing_module, user)
+    new(zoom_meeting, turing_module, user).run  
   end
 
 private

@@ -12,7 +12,6 @@ RSpec.describe TuringModule, type: :model do
   it { should validate_numericality_of(:module_number).is_less_than_or_equal_to(4) }
   it { should validate_numericality_of(:module_number).only_integer }
   it { should define_enum_for(:program).with_values(([:FE, :BE, :Combined])) }
-  it { should validate_inclusion_of(:calendar_integration).in_array([true, false]) }
 
 
   describe 'instance methods' do

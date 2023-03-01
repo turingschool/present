@@ -18,7 +18,7 @@ class User::AttendancesController < User::BaseController
   def slack_meeting_attendance
     slack_url = params[:slack_url]
     turing_module = TuringModule.find(params[:turing_module_id])
-    attendance = CreateAttendanceFacade.take_slack_attendance(slack_url,turing_module,current_user)
+    attendance = CreateAttendanceFacade.take_slack_attendance(slack_url, turing_module, current_user)
     redirect_to attendance_path(attendance)
   end 
 
@@ -26,7 +26,7 @@ class User::AttendancesController < User::BaseController
     turing_module = TuringModule.find(params[:turing_module_id])
     zoom_meeting = ZoomMeeting.new(params[:attendance][:zoom_meeting_id])
     if zoom_meeting.valid_id?
-      attendance = CreateAttendanceFacade.take_attendance(zoom_meeting, turing_module)
+      attendance = CreateAttendanceFacade.take_attendance(zoom_meeting, turing_module, current_user)
       redirect_to attendance_path(attendance)
     else
       flash[:error] = "It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again."

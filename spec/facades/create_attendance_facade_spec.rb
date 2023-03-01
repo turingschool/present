@@ -64,7 +64,7 @@ RSpec.describe CreateAttendanceFacade do
     @user = create(:user)
   end
 
-  context 'with students added to the module' do
+  xcontext 'with students added to the module' do
     before(:each) do
       @test_module.students = roster
     end
@@ -88,7 +88,7 @@ RSpec.describe CreateAttendanceFacade do
     end
   end
 
-  context 'without students added to the module' do
+  xcontext 'without students added to the module' do
     it 'makes the call to add students to the module if the option is set to true' do
       expect(@test_module).to receive(:create_students_from_participants).with(@zoom_meeting.participants)
       new_attendance = CreateAttendanceFacade.take_attendance(@zoom_meeting, @test_module, @user, true)

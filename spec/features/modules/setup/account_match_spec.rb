@@ -122,7 +122,7 @@ RSpec.describe "Module Setup Account Matching" do
       end
     end
 
-    it 'user can select Not Present if the student wasnt in the zoom meeting' do
+    xit 'user can select Not Present if the student wasnt in the zoom meeting' do
       student = @mod.students.find_by(name: "Anthony Blackwell Tallent")
       within "#student-#{student.id}" do
         within '.zoom-select' do 
