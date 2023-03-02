@@ -1,6 +1,6 @@
 class Meeting
   # Abstract Class
-  def new
+  def self.new(*args)
     raise 'Abstract class Meeting cannot be instantiated'
   end
 
