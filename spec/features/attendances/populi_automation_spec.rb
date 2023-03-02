@@ -29,7 +29,7 @@ RSpec.describe 'taking attendance with Populi' do
 
       click_link('Take Attendance')
 
-      fill_in :attendance_zoom_meeting_id, with: @test_zoom_meeting_id
+      fill_in :attendance_meeting_id, with: @test_zoom_meeting_id
 
       expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with("10547831", "1962", "24490140", "present")
       expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with("10547831", "1962", "24490130", "present")
@@ -38,7 +38,7 @@ RSpec.describe 'taking attendance with Populi' do
       expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with("10547831", "1962", "24490161", "tardy")
       expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with("10547831", "1962", "24490123", "tardy")
 
-      click_button 'Take Zoom Attendance'
+      click_button 'Take Attendance'
     end
   end
 end

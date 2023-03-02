@@ -5,8 +5,9 @@ class CreateAttendanceFacade
     new(meeting, turing_module, user).run  
   end
 
-  def initialize(meeting, turing_module, user)
-    @meeting = meeting
+  def initialize(meeting_id, turing_module, user)
+    @meeting = Meeting.from_id(meeting_id)
+    raise meeting.invalid_message unless meeting.valid?
     @module = turing_module
     @attendance = self.module.attendances.create(user: user)
   end

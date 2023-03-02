@@ -6,14 +6,22 @@ class Meeting
     raise 'Abstract class Meeting cannot be instantiated' if self.class == Meeting
     @id = id  
     @start_time = start_time  
+  end 
+
+  def self.from_id(id)
+    if id.include? 'slack'
+      SlackThread.from_message_link(id)
+    else
+      ZoomMeeting.from_meeting_details(id)
+    end
   end
 
 # Interfaces
-  def create_child_attendance_record
-    raise NoMethodError.new("#{self.class} does not implement required method: create_child_attendance_record")
-  end
-
-  def participants
-    raise NoMethodError.new("#{self.class} does not implement required method: participants")
+  @@interfaces = :create_child_attendance_record, :participants, :valid?, :invalid_message
+  
+  @@interfaces.each do |interface|
+    define_method(interface) do
+      raise NoMethodError.new("#{self.class} does not implement required method: #{interface}")
+    end
   end
 end

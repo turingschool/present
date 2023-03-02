@@ -28,6 +28,10 @@ class ZoomMeeting < Meeting
     @status == :valid
   end
 
+  def invalid_message
+    "It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again."
+  end
+
   def create_child_attendance_record(attendance)
     ZoomAttendance.create!(meeting_time: self.start_time, meeting_title: self.title, zoom_meeting_id: self.id, attendance: attendance)
   end
