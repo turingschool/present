@@ -72,9 +72,9 @@ private
   def self.take_slack_attendance(thread, turing_module, user)
     attendance = turing_module.attendances.create(user: user)
     SlackAttendance.create(channel_id: thread.id, sent_timestamp: thread.message_timestamp, attendance_start_time: thread.start_time , attendance: attendance)
-    present_students = thread.replies.map do |reply_info|
-      student = Student.find_by(slack_id: reply_info[:slack_id])
-      attendance.student_attendances.create(student: student, attendance: attendance, join_time: reply_info[:reply_timestamp], status: reply_info[:status])
+    present_students = thread.participants.map do |participant|
+      student = Student.find_by(slack_id: participant.slack_id)
+      attendance.student_attendances.create(student: student, attendance: attendance, join_time: participant.join_time, status: participant.status)
       student
     end 
     absent_students = turing_module.students - present_students
