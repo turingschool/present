@@ -20,7 +20,7 @@ class Meeting
   @@interfaces = :create_child_attendance_record, :participants, :valid?, :invalid_message
   
   @@interfaces.each do |interface|
-    define_method(interface) do
+    define_method(interface) do |*args|
       raise NoMethodError.new("#{self.class} does not implement required method: #{interface}")
     end
   end
