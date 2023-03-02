@@ -46,7 +46,7 @@ private
   end
 
   def retrieve_participant_data
-    participants = ZoomMeeting.new(@zoom_meeting_id).participants
+    participants = ZoomMeeting.from_meeting_details(@zoom_meeting_id).participants
     participants.reject do |participant|
       participant.id.empty?
     end.uniq do |participant|
