@@ -39,6 +39,16 @@ ActiveRecord::Schema.define(version: 2023_03_01_002018) do
     t.index ["attendance_id"], name: "index_slack_attendances_on_attendance_id"
   end
 
+
+  create_table "zoom_attendances", force: :cascade do |t|
+    t.string "zoom_meeting_id"
+    t.string "meeting_title"
+    t.datetime "meeting_time"
+    t.bigint "attendance_id"
+    t.index ["attendance_id"], name: "index_zoom_attendances_on_attendance_id"
+  end
+
+
   create_table "student_attendances", force: :cascade do |t|
     t.integer "status"
     t.bigint "student_id"
@@ -83,14 +93,6 @@ ActiveRecord::Schema.define(version: 2023_03_01_002018) do
     t.bigint "turing_module_id"
     t.string "organization_domain"
     t.index ["turing_module_id"], name: "index_users_on_turing_module_id"
-  end
-
-  create_table "zoom_attendances", force: :cascade do |t|
-    t.string "zoom_meeting_id"
-    t.string "meeting_title"
-    t.datetime "meeting_time"
-    t.bigint "attendance_id"
-    t.index ["attendance_id"], name: "index_zoom_attendances_on_attendance_id"
   end
 
   add_foreign_key "attendances", "turing_modules"

@@ -19,13 +19,14 @@ class User::AttendancesController < User::BaseController
     slack_url = params[:slack_url]
     turing_module = TuringModule.find(params[:turing_module_id])
     attendance = CreateAttendanceFacade.take_slack_attendance(slack_url, turing_module, current_user)
+    # SlackThread.from_message_link(slack_url)
     redirect_to attendance_path(attendance)
   end 
 
   def zoom_meeting_attendance
     turing_module = TuringModule.find(params[:turing_module_id])
-    zoom_meeting = ZoomMeeting.new(params[:attendance][:zoom_meeting_id])
-    if zoom_meeting.valid_id?
+    zoom_meeting = ZoomMeeting.from_meeting_details(params[:attendance][:zoom_meeting_id])
+    if zoom_meeting.valid?
       attendance = CreateAttendanceFacade.take_attendance(zoom_meeting, turing_module, current_user)
       redirect_to attendance_path(attendance)
     else

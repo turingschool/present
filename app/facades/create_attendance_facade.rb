@@ -39,7 +39,7 @@ private
   def retrieve_populi_meeting
     # REFACTOR: cache these meetings? update: memozing for now
     data = populi_service.course_meetings(course_id)[:response][:meeting].min_by do |data|
-      (meeting.start_time - Time.parse(data[:start])).abs
+      (meeting.start_time.to_i - data[:start].to_datetime.to_i).abs
     end
     PopuliMeeting.new(data)
   end
@@ -47,7 +47,7 @@ private
   def update_populi
     course_id = attendance.turing_module.populi_course_id
     attendance.turing_module.students.each do |student|
-      status = attendance.find_status_for_student(student)
+      status = attendance.student_attendances.find_by(student: student).status
       populi_service.update_student_attendance(course_id, populi_meeting.id, student.populi_id, status)
     end
   end
@@ -85,7 +85,7 @@ private
     absent_students.each do |student|
       attendance.student_attendances.create(student: student, attendance: attendance, join_time: nil, status: "absent")
     end 
-    new(Meeting.new(slack_url, attendance_start_time), turing_module, user).take_slack
+    # new(Meeting.new(slack_url, attendance_start_time), turing_module, user).take_slack
     
     return attendance
   end 
