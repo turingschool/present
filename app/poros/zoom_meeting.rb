@@ -28,6 +28,10 @@ class ZoomMeeting < Meeting
     @status == :valid
   end
 
+  def create_child_attendance_record(attendance)
+    ZoomAttendance.create!(meeting_time: self.start_time, meeting_title: self.title, zoom_meeting_id: self.id, attendance: attendance)
+  end
+
 private
   def participant_report
     @participant_report ||= ZoomService.participant_report(self.id)[:participants]
