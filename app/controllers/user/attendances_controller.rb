@@ -18,8 +18,8 @@ class User::AttendancesController < User::BaseController
   def slack_meeting_attendance
     slack_url = params[:slack_url]
     turing_module = TuringModule.find(params[:turing_module_id])
-    attendance = CreateAttendanceFacade.take_slack_attendance(slack_url, turing_module, current_user)
-    # SlackThread.from_message_link(slack_url)
+    thread = SlackThread.from_message_link(slack_url)
+    attendance = CreateAttendanceFacade.take_slack_attendance(thread, turing_module, current_user)
     redirect_to attendance_path(attendance)
   end 
 

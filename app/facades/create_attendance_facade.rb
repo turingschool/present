@@ -69,14 +69,10 @@ private
     end
   end
 
-  def self.take_slack_attendance(slack_url, turing_module, user)
-    channel_id = slack_url.split("/")[-2]
-    timestamp = slack_url.split("/").last[1..-1]
-    slack_replies_report = SlackService.replies_from_message(channel_id,timestamp)
-    attendance_start_time = slack_replies_report[:attendance_start_time].to_datetime
+  def self.take_slack_attendance(thread, turing_module, user)
     attendance = turing_module.attendances.create(user: user)
-    SlackAttendance.create(channel_id: channel_id, sent_timestamp: Time.at((timestamp.to_i/1000000)).to_datetime, attendance_start_time: attendance_start_time , attendance: attendance)
-    present_students = slack_replies_report[:data].map do |reply_info|
+    SlackAttendance.create(channel_id: thread.id, sent_timestamp: thread.message_timestamp, attendance_start_time: thread.start_time , attendance: attendance)
+    present_students = thread.replies.map do |reply_info|
       student = Student.find_by(slack_id: reply_info[:slack_id])
       attendance.student_attendances.create(student: student, attendance: attendance, join_time: reply_info[:reply_timestamp], status: reply_info[:status])
       student

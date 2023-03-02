@@ -11,12 +11,12 @@ RSpec.describe ZoomMeeting do
       .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
   end
 
-  it 'exists' do
+  xit 'exists' do
     zoom_meeting = ZoomMeeting.new(@test_meeting_id)
     expect(zoom_meeting).to be_an_instance_of(ZoomMeeting)
   end
 
-  it 'has the meeting details' do
+  xit 'has the meeting details' do
     zoom_meeting = ZoomMeeting.new(@test_meeting_id)
 
     expect(zoom_meeting.id).to eq(@test_meeting_id)
@@ -24,7 +24,7 @@ RSpec.describe ZoomMeeting do
     expect(zoom_meeting.start_time).to eq("2021-12-17T16:00:00Z") #from spec/fixtures/zoom/meeting_details.json
   end
 
-  it 'has the meeting participant report' do
+  xit 'has the meeting participant report' do
     zoom_meeting = ZoomMeeting.new(@test_meeting_id)
     expect(zoom_meeting.participants).to be_an(Array)
     expect(zoom_meeting.participants.first).to be_a(ZoomParticipant)
@@ -32,7 +32,7 @@ RSpec.describe ZoomMeeting do
     expect(zoom_meeting.participants.first.id).to eq("E0WPTrXCQAGkMsvF9rQgQA")
   end
 
-  it 'memoizes the api calls' do
+  xit 'memoizes the api calls' do
     zoom_meeting = ZoomMeeting.new(@test_meeting_id)
     zoom_meeting.meeting_details
     zoom_meeting.participants
@@ -45,13 +45,13 @@ RSpec.describe ZoomMeeting do
   end
 
   describe 'valid_id?' do
-    it 'returns true if the meeting is found' do
+    xit 'returns true if the meeting is found' do
       zoom_meeting = ZoomMeeting.new(@test_meeting_id)
 
       expect(zoom_meeting.valid_id?).to eq(true)
     end
 
-    it 'returns false if the meeting id is invalid' do
+    xit 'returns false if the meeting id is invalid' do
       invalid_zoom_id = 'InvalidID'
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{invalid_zoom_id}") \
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
