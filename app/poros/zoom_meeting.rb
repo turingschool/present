@@ -16,8 +16,7 @@ class ZoomMeeting < Meeting
       status = :valid
       start_time = meeting_details[:start_time].to_datetime
     end
-
-  new(meeting_id, start_time, meeting_details[:topic], status)
+    new(meeting_id, start_time, meeting_details[:topic], status)
   end
 
   def participants

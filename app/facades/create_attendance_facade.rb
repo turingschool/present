@@ -40,7 +40,6 @@ private
   end
 
   def update_populi
-    course_id = attendance.turing_module.populi_course_id
     attendance.turing_module.students.each do |student|
       status = attendance.student_attendances.find_by(student: student).status
       populi_service.update_student_attendance(course_id, populi_meeting.id, student.populi_id, status)
@@ -61,9 +60,17 @@ private
 
   def retrieve_populi_meeting
     # REFACTOR: cache these meetings? update: memozing for now
+    # require 'pry';binding.pry
+
     data = populi_service.course_meetings(course_id)[:response][:meeting].min_by do |data|
       (meeting.start_time.to_i - data[:start].to_datetime.to_i).abs
     end
-    PopuliMeeting.new(data)
+    # Not working... doesn't seem to create a meeting like I would expect to see in the populi ui
+    # if data[:meetingid].nil?
+    #   require 'pry';binding.pry
+    #   data[:meetingid] = populi_service.create_meeting(data[:start].to_datetime, course_id)[:response][:meetingid] 
+    # end
+    
+    meeting = PopuliMeeting.new(data)
   end
 end

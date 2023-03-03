@@ -31,21 +31,26 @@ class PopuliService
   end
 
   def update_student_attendance(instance_id, meeting_id, person_id, status)
-
-      # instance_id = student_attendance.attendance.turing_module.populi_course_id
-
-      # # REFACTOR: probably need to cache this, and somewhere outside of this service
-      # populi_meeting = PopuliAPI.get_course_instance_meetings(instance_id: attendance.turing_module.populi_course_id)[:response][:meeting].min_by do |data|
-      #   meeting_time = Time.parse(data[:start])
-      #   attendance_time = attendance.zoom_attendance.meeting_time
-      #   (attendance_time - meeting_time).abs
-      # end
-      # meeting_id = populi_meeting[:meetingid]
-      # require 'pry';binding.pry
-      PopuliAPI.update_student_attendance(instance_id: instance_id, meeting_id: meeting_id, person_id: person_id, status: status)
+    PopuliAPI.update_student_attendance(instanceID: instance_id, meetingID: meeting_id, personID: person_id, status: status.upcase)
   end
 
   def course_meetings(course_id)
-    PopuliAPI.get_course_instance_meetings(instance_id: course_id)
+    PopuliAPI.get_course_instance_meetings(instanceID: course_id)
+  end
+
+  def create_meeting(start_time, course_id)
+    PopuliAPI.create_course_instance_meeting(
+      instanceID: course_id,
+      startMonth: start_time.strftime("%-m"),
+      startDay: start_time.strftime("%-d"),
+      startYear: start_time.strftime("%-m"),
+      startHour: start_time.strftime("%-H"),
+      startMinute: 0,
+      endMonth: start_time.strftime("%-m"),
+      endDay: start_time.strftime("%-d"),
+      endYear: start_time.strftime("%-m"),
+      endHour: start_time.strftime("%-H"),
+      endMinute: 0
+    )
   end
 end
