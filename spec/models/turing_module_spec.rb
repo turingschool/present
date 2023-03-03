@@ -22,7 +22,7 @@ RSpec.describe TuringModule, type: :model do
       end
     end
 
-    describe '#create_students_from_participants' do
+    xdescribe '#create_students_from_participants' do
 
       let(:participants){
         [

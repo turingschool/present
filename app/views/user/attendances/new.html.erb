@@ -1,10 +1,4 @@
 <h1><%= link_to @module.name, turing_module_path(@module) %></h1>
 <p class='s-p'><%= link_to "#{@module.inning.name} inning", inning_path(@module.inning) %> </p>
 <h3 class='s-h3'>Take Attendance for a Slack Thread or Zoom Meeting</h3>
-<%= form_with model: [@module, @attendance], local: true, id: 'take-attendance' do |f| %>
-  <p class='s-p'>
-    <%= f.label :meeting_id, "Enter the Zoom or Slack Link" %>
-    <%= f.text_field :meeting_id %>
-  </p>
-  <%= f.submit 'Take Attendance', class: 's-button' %>
-<% end %>
+<%= render partial: 'shared/take_attendance', locals: {attendance: @attendance, mod: @module} %>

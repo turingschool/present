@@ -7,6 +7,9 @@ RSpec.describe 'Creating an Attendance' do
   
   context 'with valid slack url' do
     before(:each) do
+      @test_module = create(:turing_module)
+      create_list(:student, expected_students.length, turing_module: @test_module )
+      
       @channel_id = "C02HRH7MF5K"
       @timestamp = "1672861516089859"
 
@@ -16,8 +19,13 @@ RSpec.describe 'Creating an Attendance' do
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
       .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
 
-      @test_module = create(:turing_module)
-      create_list(:student, expected_students.length, turing_module: @test_module )
+      # intercept each call to update student attendance
+      # This stub needs to Be the first populi stub since it will override any existing populi stubs
+      stub_request(:post, "https://turing-validation.populi.co/api/").to_return(status: 200, body: "", headers: {})
+
+      stub_request(:post, ENV['POPULI_API_URL']).
+        with(body: {"task"=>"getCourseInstanceMeetings", "instance_id"=>@test_module.populi_course_id}).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
     end
 
     it 'creates a new attendance by providing a slack message link' do
@@ -65,6 +73,8 @@ RSpec.describe 'Creating an Attendance' do
       expect(find("#student-attendances")).to have_table_row("Student" => absent_student.name, "Status" => 'absent', "Zoom ID" => absent_student.zoom_id, "Slack ID" => absent_student.slack_id)
     end
   end
+
+  it 'sad path'
   
   let(:expected_students){
     [
