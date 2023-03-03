@@ -13,11 +13,11 @@
         <tr id='student-<%= student.id %>'>
           <td class='student-name'><%= student.name %></td>
           <td class='slack-select'>
-            <%= f.select "student[#{student.id}][slack_id]", facade.slack_options, selected: facade.best_matching_slacker(student) %>
+            <%= f.select "student[#{student.id}][slack_id]", facade.slack_options(student), selected: facade.best_matching_slacker(student) %>
           </td>
 
           <td class='zoom-select'>
-            <%= f.select "student[#{student.id}][zoom_id]", facade.zoom_options, selected: facade.best_matching_zoomer(student) %>
+            <%= f.select "student[#{student.id}][zoom_id]", facade.zoom_options(student), selected: facade.best_matching_zoomer(student) %>
           </td>
         </tr>
       <% end %>

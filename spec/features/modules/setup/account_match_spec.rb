@@ -23,9 +23,6 @@ RSpec.describe "Module Setup Account Matching" do
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/participant_report_for_populi.json'))
 
-      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@zoom_meeting_id}") \
-        .to_return(body: File.read('spec/fixtures/meeting_details_for_populi.json'))
-
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack_channel_members_for_module_setup.json'))
 
@@ -67,42 +64,47 @@ RSpec.describe "Module Setup Account Matching" do
       end
     end
 
-    it 'has a select field with the closest matching name from slack' do
-      expected = [
-        "Leo Banos Garcia",
-        "Anthony Blackwell Tallent",
-        "Samuel Cox",
-        "Mike Cummins",
-        "J Seymour",
-        "Anhnhi Tran",
-        "Lacey Weaver"
-      ]
-      @mod.students.each_with_index do |student, index|
-        within "#student-#{student.id}" do
-          within '.slack-select' do 
-            expect(page).to have_select(selected: expected[index])
-          end
+    it 'has a select field with the closest matching names from slack ordered by match' do
+      within "#student-#{@anthony_b.id}" do
+        within '.slack-select' do 
+          expect(page).to have_select(selected: "Anthony Blackwell Tallent")
+          options = page.all('option')
+          expect(options.first.text).to eq("Anthony Blackwell Tallent")
+          expect(options[1].text).to eq("Anthony Ongaro")
+          expect(options[2].text).to eq("Lucas Colwell")
+        end
+      end
+    
+      within "#student-#{@leo.id}" do
+        within '.slack-select' do 
+          expect(page).to have_select(selected: "Leo Banos Garcia")
+          options = page.all('option')
+          expect(options.first.text).to eq("Leo Banos Garcia")
+          expect(options[1].text).to eq("Mostafa Sakr")
+          expect(options[2].text).to eq("Alex Mora BE")
         end
       end
     end
 
     it 'has a select field with the closest matching name from Zoom' do
-      expected = [
-        "Leo BG# BE",
-        "Anthony B. (He/Him) BE 2210",
-        "Samuel C (He/Him) BE",
-        "Mike C",
-        "J Seymour (he/they) BE",
-        "Anhnhi T# BE",
-        "Lacey W (she/her)"
-      ]
-      
-      @mod.students.each_with_index do |student, index|
-        within "#student-#{student.id}" do
-          within '.zoom-select' do 
-            skip if index == 1
-            expect(page).to have_select(selected: expected[index])
-          end
+
+      within "#student-#{@anthony_b.id}" do
+        within '.zoom-select' do 
+          expect(page).to have_select(selected: "Anthony O. BE")
+          options = page.all('option')
+          expect(options.first.text).to eq("Anthony O. BE")
+          expect(options[1].text).to eq("Anhnhi T# BE")
+          expect(options[2].text).to eq("Anthony B. (He/Him) BE 2210")
+        end
+      end
+    
+      within "#student-#{@leo.id}" do
+        within '.zoom-select' do 
+          expect(page).to have_select(selected: "Leo BG# BE")
+          options = page.all('option')
+          expect(options.first.text).to eq("Leo BG# BE")
+          expect(options[1].text).to eq("Lacey W (she/her)")
+          expect(options[2].text).to eq("Anthony B. (He/Him) BE 2210")
         end
       end
     end
