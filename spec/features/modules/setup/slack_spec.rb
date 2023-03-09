@@ -8,18 +8,18 @@ RSpec.describe "Module Setup Slack Workflow" do
 
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCurrentAcademicTerm"}).
-      to_return(status: 200, body: File.read('spec/fixtures/current_academic_term.xml'), headers: {})
+      to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.xml'), headers: {})
     
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
-      to_return(status: 200, body: File.read('spec/fixtures/courses_for_2211.xml'), headers: {})
+      to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
     
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
-      to_return(status: 200, body: File.read('spec/fixtures/students_for_be2_2211.xml'), headers: {})
+      to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
 
     stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
-      .to_return(body: File.read('spec/fixtures/slack_channel_members_for_module_setup.json'))  
+      .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))  
   end
 
   context 'user imports Populi students' do

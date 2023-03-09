@@ -14,6 +14,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       access_type: 'offline'
     }
   else
+    
     provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
     {
       redirect_uri: 'http://localhost:3000/auth/google_oauth2/callback',
@@ -22,3 +23,4 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   end
 end
 OmniAuth.config.allowed_request_methods = %i[get post]
+OmniAuth.config.silence_get_warning = true 

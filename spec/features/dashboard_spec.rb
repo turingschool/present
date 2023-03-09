@@ -28,8 +28,7 @@ RSpec.describe "Dashboard" do
       visit '/'
 
       expect(page).to have_link("Setup Module")
-      expect(page).to_not have_content('Take Attendance for a Zoom Meeting')
-      expect(page).to_not have_content('Take Attendance for a Slack Thread')
+      expect(page).to_not have_content('Take Attendance for a Slack or Zoom Meeting')
     end
 
     it 'user can take attendance for their mod if account match is complete' do
@@ -39,12 +38,11 @@ RSpec.describe "Dashboard" do
       visit '/'
 
       expect(page).to_not have_link("Setup Module")
-      expect(page).to have_content('Take Attendance for a Zoom Meeting')
-      expect(page).to have_content('Take Attendance for a Slack Thread')
-      expect(page.find('form#take-zoom-attendance')['method']).to eq('post')
-      expect(page.find('form#take-zoom-attendance')['action']).to eq(turing_module_attendances_path(@my_mod))
-      expect(page.find('form#take-slack-attendance')['method']).to eq('post')
-      expect(page.find('form#take-slack-attendance')['action']).to eq(turing_module_attendances_path(@my_mod))
+      expect(page).to have_content('Take Attendance for a Slack or Zoom Meeting')
+      expect(page.find('form#take-attendance')['method']).to eq('post')
+      expect(page.find('form#take-attendance')['action']).to eq(turing_module_attendances_path(@my_mod))
+      expect(page.find('form#take-attendance')['method']).to eq('post')
+      expect(page.find('form#take-attendance')['action']).to eq(turing_module_attendances_path(@my_mod))
     end
 
     it 'does not show current inning info' do

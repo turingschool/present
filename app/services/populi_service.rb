@@ -29,4 +29,28 @@ class PopuliService
   def get_term_courses(term_id)
     PopuliAPI.get_term_course_instances(term_id: term_id)
   end
+
+  def update_student_attendance(instance_id, meeting_id, person_id, status)
+    PopuliAPI.update_student_attendance(instanceID: instance_id, meetingID: meeting_id, personID: person_id, status: status.upcase)
+  end
+
+  def course_meetings(course_id)
+    PopuliAPI.get_course_instance_meetings(instanceID: course_id)
+  end
+
+  def create_meeting(start_time, course_id)
+    PopuliAPI.create_course_instance_meeting(
+      instanceID: course_id,
+      startMonth: start_time.strftime("%-m"),
+      startDay: start_time.strftime("%-d"),
+      startYear: start_time.strftime("%-m"),
+      startHour: start_time.strftime("%-H"),
+      startMinute: 0,
+      endMonth: start_time.strftime("%-m"),
+      endDay: start_time.strftime("%-d"),
+      endYear: start_time.strftime("%-m"),
+      endHour: start_time.strftime("%-H"),
+      endMinute: 0
+    )
+  end
 end
