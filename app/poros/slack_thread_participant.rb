@@ -1,5 +1,5 @@
 class SlackThreadParticipant < Participant
-  def id_column_name
-    :slack_id
+  def find_student
+    Student.find_by(slack_id: self.id)
   end
 end
