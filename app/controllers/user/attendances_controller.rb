@@ -9,6 +9,7 @@ class User::AttendancesController < User::BaseController
     begin
       attendance = CreateAttendanceFacade.take_attendance(params[:attendance][:meeting_id], turing_module, current_user)
       redirect_to attendance_path(attendance)
+      # REFACTOR: I'm a little nervous about catching all runtime errors here. Maybe make a custom error object?
     rescue RuntimeError => error
       flash[:error] = error.message
       redirect_to new_turing_module_attendance_path(turing_module)

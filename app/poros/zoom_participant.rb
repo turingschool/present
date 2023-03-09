@@ -5,5 +5,7 @@ class ZoomParticipant < Participant
     new(meeting_participant[:name], meeting_participant[:join_time])
   end
 
-  
+  def find_student
+    Student.find_by(zoom_id: self.id)
+  end
 end

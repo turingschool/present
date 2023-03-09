@@ -13,15 +13,29 @@ RSpec.describe 'taking attendance with Populi' do
 
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details_for_module_setup.json'))
-      
-      
-      # intercept each call to update student attendance
-      # This stub needs to Be the first populi stub since it will override any existing populi stubs
-      stub_request(:post, "https://turing-validation.populi.co/api/").to_return(status: 200, body: "", headers: {})
      
       stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getCourseInstanceMeetings", "instance_id"=>@mod.populi_course_id}).
+        with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+
+      @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL']).         
+        with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490140", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
+        to_return(status: 200, body: '') 
+      @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL']).         
+        with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490130", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
+        to_return(status: 200, body: '') 
+      @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL']).         
+        with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490100", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
+        to_return(status: 200, body: '') 
+      @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
+        with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
+        to_return(status: 200, body: '') 
+      @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL']).         
+        with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490161", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
+        to_return(status: 200, body: '') 
+      @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL']).         
+        with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490123", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
+        to_return(status: 200, body: '') 
     end
 
     it 'sends the request to update the students attendance in Populi' do
@@ -30,15 +44,15 @@ RSpec.describe 'taking attendance with Populi' do
       click_link('Take Attendance')
 
       fill_in :attendance_meeting_id, with: @test_zoom_meeting_id
-
-      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with("10547831", "1962", "24490140", "present")
-      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with("10547831", "1962", "24490130", "present")
-      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with("10547831", "1962", "24490100", "absent")
-      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with("10547831", "1962", "24490062", "present")
-      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with("10547831", "1962", "24490161", "tardy")
-      expect_any_instance_of(PopuliService).to receive(:update_student_attendance).with("10547831", "1962", "24490123", "tardy")
-
+                  
       click_button 'Take Attendance'
+
+      expect(@update_attendance_stub1).to have_been_requested
+      expect(@update_attendance_stub2).to have_been_requested
+      expect(@update_attendance_stub3).to have_been_requested
+      expect(@update_attendance_stub4).to have_been_requested
+      expect(@update_attendance_stub5).to have_been_requested
+      expect(@update_attendance_stub6).to have_been_requested
     end
   end
 end

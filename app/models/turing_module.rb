@@ -18,15 +18,6 @@ class TuringModule < ApplicationRecord
     "#{self.program} Mod #{self.module_number}"
   end
 
-  # def create_students_from_participants(participants)
-  #   participants.each do |participant|
-  #     student = Student.find_or_create_from_participant(participant)
-  #     if !students.exists?(student.id) #in the case that a student joins more than once
-  #       students << student
-  #     end
-  #   end
-  # end
-
   def account_match_complete 
     self.students.have_slack_ids && self.students.joins(:zoom_aliases).any?
     # checking to make sure some students have slack ids and some have zoom ids. 

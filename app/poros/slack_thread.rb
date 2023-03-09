@@ -14,7 +14,6 @@ class SlackThread < Meeting
     replies_report = SlackService.replies_from_message(channel_id, message_timestamp)
     attendance_start_time = replies_report[:attendance_start_time].to_datetime
     replies = replies_report[:data].map do |reply_info|
-      # SlackThreadParticipant.new(reply_info[:reply_timestamp], reply_info[:status], reply_info[:slack_id])
       SlackThreadParticipant.new(reply_info[:slack_id], reply_info[:reply_timestamp])
     end
     new(message_url, attendance_start_time, channel_id, message_timestamp, replies)

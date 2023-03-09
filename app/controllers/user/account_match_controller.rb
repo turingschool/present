@@ -7,7 +7,6 @@ class User::AccountMatchController < ApplicationController
     }
   end 
 
-  
   def create
     params[:student].each do |student_id, ids|
       Student.update(student_id, {slack_id: ids[:slack_id]})
