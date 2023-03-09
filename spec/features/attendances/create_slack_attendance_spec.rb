@@ -7,7 +7,7 @@ RSpec.describe 'Creating an Attendance' do
   
   context 'with valid slack url' do
     before(:each) do
-      @test_module = create(:turing_module)
+      @test_module = create(:setup_module)
       create_list(:student, expected_students.length, turing_module: @test_module )
       
       @channel_id = "C02HRH7MF5K"
@@ -21,10 +21,10 @@ RSpec.describe 'Creating an Attendance' do
 
       # intercept each call to update student attendance
       # This stub needs to Be the first populi stub since it will override any existing populi stubs
-      stub_request(:post, "https://turing-validation.populi.co/api/").to_return(status: 200, body: "", headers: {})
+      # stub_request(:post, "https://turing-validation.populi.co/api/").to_return(status: 200, body: "", headers: {})
 
       stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getCourseInstanceMeetings", "instance_id"=>@test_module.populi_course_id}).
+        with(body: {"instanceID"=>@test_module.populi_course_id, "task"=>"getCourseInstanceMeetings"}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
     end
 
