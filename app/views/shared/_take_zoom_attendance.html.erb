@@ -1,7 +1,0 @@
-<%= form_with model: [mod, attendance], local: true, id: 'take-zoom-attendance' do |f| %>
-  <p class='s-p'>
-    <%= f.label :zoom_meeting_id, "Enter the Zoom Meeting ID" %>
-    <%= f.text_field :zoom_meeting_id %>
-  </p>
-  <%= f.submit 'Take Zoom Attendance', class: 's-button' %>
-<% end %>
