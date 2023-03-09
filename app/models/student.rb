@@ -4,8 +4,6 @@ class Student < ApplicationRecord
   has_many :attendances, through: :student_attendances
   has_many :zoom_aliases
 
-  validates_uniqueness_of :zoom_id, allow_blank: true
-  
   def self.have_slack_ids 
     !Student.where.not(slack_id: nil).empty?
   end 
