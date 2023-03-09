@@ -20,6 +20,7 @@ class ZoomMeeting < Meeting
   end
 
   def participants
+    # TODO Would like participants to be uniq by name
     @participants ||= participant_report.map {|participant| ZoomParticipant.from_meeting(participant)}
   end
 

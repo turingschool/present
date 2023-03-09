@@ -20,7 +20,7 @@ class AccountMatchFacade
 
   def zoom_options(student)
     participants_by_match(student).map do |participant|
-      [participant.name, participant.id]
+      participant.id
     end.push(["Not Present", nil])
   end
 
@@ -42,23 +42,20 @@ private
   end
 
   def participants
-    @participants = retrieve_participant_data
+    @participants ||= retrieve_participant_data
   end
 
   def retrieve_participant_data
+    # REFACTOR Move this code in to Zoom meeting so that all meetings have uniq particiants
     participants = ZoomMeeting.from_meeting_details(@zoom_meeting_id).participants
-    participants.reject do |participant|
-      participant.id.empty?
-    end.uniq do |participant|
-      participant.name
-    end.sort_by do |participant|
-      participant.name
+    participants.uniq do |participant|
+      participant.id
     end
   end
 
   def participants_by_match(student)
     participants.sort_by do |participant|
-      string_distance(student.name, participant.name)
+      string_distance(student.name, participant.id)
     end.reverse
   end
 end

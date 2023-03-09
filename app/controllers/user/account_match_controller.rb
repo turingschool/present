@@ -10,7 +10,8 @@ class User::AccountMatchController < ApplicationController
   
   def create
     params[:student].each do |student_id, ids|
-      Student.update(student_id, {slack_id: ids[:slack_id], zoom_id: ids[:zoom_id]})
+      Student.update(student_id, {slack_id: ids[:slack_id]})
+      ZoomAlias.create(name: ids[:zoom_id], student_id: student_id)
     end
     redirect_to current_module
   end
