@@ -51,7 +51,7 @@ RSpec.describe 'Creating an Attendance' do
     it 'creates students attendances' do
       slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
       
-      absent_student = create(:student, turing_module: @test_module)
+      absent_student = create(:setup_student, turing_module: @test_module)
 
       visit turing_module_path(@test_module)
       click_link('Take Attendance')
@@ -65,10 +65,9 @@ RSpec.describe 'Creating an Attendance' do
 
       Attendance.last.student_attendances.each do |student_attendance|
         student = student_attendance.student
-
-        expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom ID" => student.zoom_id, "Slack ID" => student.slack_id)
+        expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom Name" => student.zoom_name, "Slack ID" => student.slack_id)
       end
-      expect(find("#student-attendances")).to have_table_row("Student" => absent_student.name, "Status" => 'absent', "Zoom ID" => absent_student.zoom_id, "Slack ID" => absent_student.slack_id)
+      expect(find("#student-attendances")).to have_table_row("Student" => absent_student.name, "Status" => 'absent', "Zoom Name" => absent_student.zoom_name, "Slack ID" => absent_student.slack_id)
     end
   end
 

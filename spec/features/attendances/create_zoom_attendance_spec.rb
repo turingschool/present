@@ -6,7 +6,7 @@ RSpec.describe 'Creating a Zoom Attendance' do
   end
 
   it 'links back to module and inning' do
-    mod = create(:turing_module)
+    mod = create(:setup_module)
     inning = mod.inning
     visit new_turing_module_attendance_path(mod)
     expect(page).to have_link(mod.name, href: turing_module_path(mod))
@@ -51,7 +51,7 @@ RSpec.describe 'Creating a Zoom Attendance' do
     end
 
     it 'creates students attendances' do
-      absent_student = create(:student, turing_module: @test_module)
+      absent_student = create(:setup_student, turing_module: @test_module)
 
       visit turing_module_path(@test_module)
       click_link('Take Attendance')
@@ -65,9 +65,10 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
       Attendance.last.student_attendances.each do |student_attendance|
         student = student_attendance.student
-        expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom ID" => student.zoom_id)
+
+        expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom Name" => student.zoom_name)
       end
-      expect(find("#student-attendances")).to have_table_row("Student" => absent_student.name, "Status" => 'absent', "Zoom ID" => absent_student.zoom_id)
+      expect(find("#student-attendances")).to have_table_row("Student" => absent_student.name, "Status" => 'absent', "Zoom Name" => absent_student.zoom_name)
     end
 
     it 'shows a message if an invalid meeting id is entered' do

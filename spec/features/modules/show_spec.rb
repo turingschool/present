@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Modules show page' do
   before(:each) do
     @user = mock_login
-    @test_module = create(:turing_module)
+    @test_module = create(:setup_module)
   end
 
   it 'shows the modules attributes' do
@@ -101,23 +101,33 @@ RSpec.describe 'Modules show page' do
   end
 
 
-   context 'user has not set up mod' do
+
+  
+  it 'mod show page shows link for students and taking attendance once match is done' do 
+      @test_module.students.create!(name: 'blah', populi_id: 'some_id', slack_id: 'some_id')
+      @test_module.update(slack_channel_id: 'some_id')
+
+      visit turing_module_path(@test_module)
+
+      expect(page).to_not have_link("Setup Module")
+      expect(page).to have_link("Take Attendance")
+    end 
+
+  context 'when setup isnt fully complete' do 
+    before(:each) do 
+      @test_module = create(:turing_module)
+      @channel_id = "C02HRH7MF5K"
+    end 
+
     it 'has a button to set up mod that goes to populi/new page' do
       visit turing_module_path(@test_module)
 
       have_link('Setup Module', href: turing_module_populi_integration_path(@test_module))
     end
-  end
-
-
-  context 'when setup isnt fully complete' do 
-    before(:each) do 
-      @zoom_meeting_id = 96428502996
-      @channel_id = "C02HRH7MF5K"
-    end 
 
     it 'mod show page still prompts for setup if only populi sync complete' do 
-      @test_module.students.create(name: 'blah', populi_id: 'some_id')
+      create(:student, turing_module: @test_module, populi_id: 'some id')
+
       visit turing_module_path(@test_module)
 
       expect(page).to have_link("Setup Module")
@@ -125,6 +135,8 @@ RSpec.describe 'Modules show page' do
     end 
 
     it 'mod show page still prompts for setup if only populi and slack sync complete' do 
+      student = create(:setup_student, turing_module: @test_module, slack_id: nil)
+
       @test_module.students.create(name: 'blah', populi_id: 'some_id')
       @test_module.update(slack_channel_id: 'some_id')
 
@@ -148,16 +160,6 @@ RSpec.describe 'Modules show page' do
 
       expect(page).to have_link("Setup Module")
       expect(page).to_not have_link("Take Attendance")
-    end 
-
-    it 'mod show page shows link for students and taking attendance once match is done' do 
-      @test_module.students.create!(name: 'blah', populi_id: 'some_id', slack_id: 'some_id', zoom_id: 'some_id')
-      @test_module.update(slack_channel_id: 'some_id')
-
-      visit turing_module_path(@test_module)
-
-      expect(page).to_not have_link("Setup Module")
-      expect(page).to have_link("Take Attendance")
-    end 
+    end     
   end  
 end
