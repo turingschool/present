@@ -21,11 +21,10 @@ class CreateAttendanceFacade
   end
 
 private
-  
   def take_participant_attendance
     meeting.participants.each do |participant|
-      # student = participant.find_student
       student = attendance.find_student(participant)
+      next if student.nil?
       student_attendance = attendance.student_attendances.find_or_create_by(student: student)
       student_attendance.assign_status(participant.join_time, populi_meeting.start)
     end
@@ -41,9 +40,8 @@ private
   end
 
   def update_populi
-    self.module.students.each do |student|
-      status = attendance.student_attendances.find_by(student: student).status
-      populi_service.update_student_attendance(course_id, populi_meeting.id, student.populi_id, status)
+    attendance.student_attendances.each do |student_attendance|
+      populi_service.update_student_attendance(course_id, populi_meeting.id, student_attendance.student.populi_id, student_attendance.status)
     end
   end
 
