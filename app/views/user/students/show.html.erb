@@ -1,6 +1,6 @@
 <h1 class='s-h1'><%= @student.name %></h1>
 <h3 class='s-h3'><%= link_to @module.name, turing_module_path(@module) %></h3>
-<p class='s-p'>Zoom ID: <%= @student.zoom_id %></p>
+<p class='s-p'>Zoom Name: <%= @student.zoom_name %></p>
 <% if @student.slack_id %>
     <p class='s-p'>Slack ID: <%= @student.slack_id %></p>
 <% else %>
