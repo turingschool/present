@@ -148,7 +148,7 @@ RSpec.describe 'Modules show page' do
 
     it 'mod show page still prompts for setup if populi, slack, and zoom syncs complete, but match not done' do 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
-        .to_return(body: File.read('spec/fixtures/zoom/participant_report_for_module_setup.json'))
+        .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
       visit turing_module_zoom_integration_path(@test_module)
 

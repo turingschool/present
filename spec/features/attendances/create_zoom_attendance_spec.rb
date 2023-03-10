@@ -22,7 +22,7 @@ RSpec.describe 'Creating a Zoom Attendance' do
         .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
-        .to_return(body: File.read('spec/fixtures/zoom/meeting_details_for_module_setup.json'))
+        .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
       # Stub any request to update a student's attendance
       stub_request(:post, ENV['POPULI_API_URL']).         

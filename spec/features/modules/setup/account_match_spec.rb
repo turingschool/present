@@ -21,10 +21,10 @@ RSpec.describe "Module Setup Account Matching" do
         to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
-        .to_return(body: File.read('spec/fixtures/zoom/participant_report_for_module_setup.json'))
+        .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@zoom_meeting_id}") \
-        .to_return(body: File.read('spec/fixtures/zoom/meeting_details_for_module_setup.json'))  
+        .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))  
 
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))
@@ -104,8 +104,8 @@ RSpec.describe "Module Setup Account Matching" do
           expect(page).to have_select(selected: "Leo BG# BE")
           options = page.all('option')
           expect(options.first.text).to eq("Leo BG# BE")
-          expect(options[1].text).to eq("Lacey W (she/her)")
-          expect(options[2].text).to eq("Anthony B. (He/Him) BE 2210")
+          expect(options[1].text).to eq("Anthony B. (He/Him) BE 2210")
+          expect(options[2].text).to eq("Max M (she/her) be")
         end
       end
     end
