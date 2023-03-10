@@ -17,12 +17,11 @@ class User::AttendancesController < User::BaseController
   end
 
   def show
-    
     @attendance_parent = Attendance.find(params[:id])
     if @attendance_parent.zoom_attendance
       @attendance = @attendance_parent.zoom_attendance 
       # REFACTOR figure out where to put the code for account matching now that we need it in two places
-      @unclaimed_aliases = @attendance.zoom_aliases.where(student: nil).map(&:name)
+      @unclaimed_aliases = @attendance.zoom_aliases.where(student: nil).order(:name).map(&:name)
       @temp_facade = AccountMatchFacade.new(@module, @attendance.zoom_meeting_id)
     elsif @attendance_parent.slack_attendance
       @attendance = @attendance_parent.slack_attendance 
