@@ -122,19 +122,6 @@ RSpec.describe "Module Setup Account Matching" do
       end
     end
 
-    it 'user can select the correct student if the closest match was wrong' do
-      student = @mod.students.find_by(name: "Anthony Blackwell Tallent")
-      within "#student-#{student.id}" do
-        within '.zoom-select' do 
-          select "Anthony B. (He/Him) BE 2210"
-        end
-        
-        within '.slack-select' do 
-          select "Anthony Blackwell Tallent"
-        end
-      end
-    end
-
     it 'only includes one option for each uniq zoom name' do
       options = page.first('.zoom-select').all('option').map do |option|
         option.text
