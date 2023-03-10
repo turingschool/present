@@ -55,6 +55,7 @@ private
 
   def participants_by_match(student)
     participants.sort_by do |participant|
+      # REFACTOR don't like that we have to call participant.id to get their name. Not very semantic
       string_distance(student.name, participant.id)
     end.reverse
   end
