@@ -4,11 +4,27 @@ class Student < ApplicationRecord
   has_many :attendances, through: :student_attendances
   has_many :zoom_aliases
 
+  validates_presence_of :name
+
   def self.have_slack_ids 
+    # REFACTOR
     !Student.where.not(slack_id: nil).empty?
   end 
+  
+  def self.have_zoom_aliases?
+    joins(:zoom_aliases).any?
+  end
 
   def latest_zoom_alias
-    zoom_aliases.order(created_at: :DESC).first
+    zoom_aliases.order(created_at: :DESC).limit(1).first
+  end
+
+  def zoom_name
+    latest_zoom_alias.name if latest_zoom_alias
+  end
+
+  def add_zoom_alias(name)
+    return true if name.blank?
+    self.zoom_aliases.create(name: name)
   end
 end
