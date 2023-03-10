@@ -19,7 +19,7 @@
   </thead>
   <tbody>
     <% @attendance_parent.student_attendances.by_attendance_status.each do |student_attendance| %>
-      <tr id='student-attendance-<%= student_attendance.id %>'>
+      <tr id='student-attendance-<%= student_attendance.id %>' class='student-attendance'>
         <td><%= link_to student_attendance.student.name, student_path(student_attendance.student) %></td>
         <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
         <td><%= student_attendance.student.zoom_name %></td>

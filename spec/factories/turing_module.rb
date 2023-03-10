@@ -10,12 +10,12 @@ FactoryBot.define do
       populi_course_id {10547831}
 
       after(:create) do |mod|
-        student1 = create(:setup_student, turing_module: mod, name: 'Leo BG# BE', populi_id: 24490130, slack_id: "U013Y0T89V1")
-        student2 = create(:setup_student, turing_module: mod, name: 'Anthony B. (He/Him) BE 2210', populi_id: 24490140, slack_id: "U035BQEGZ")
-        student3 = create(:setup_student, turing_module: mod, name: 'Lacey W (she/her)', populi_id: 24490100, slack_id: "U0255B3MMB4")
-        student4 = create(:setup_student, turing_module: mod, name: 'Anhnhi T# BE', populi_id: 24490062, slack_id: "U022NF3D4SV")
-        student5 = create(:setup_student, turing_module: mod, name: 'J Seymour (he/they) BE', populi_id: 24490161, slack_id: "U02199TD8SC")
-        student6 = create(:setup_student, turing_module: mod, name: 'Samuel C (He/Him) BE', populi_id: 24490123, slack_id: "U01CBJGFXRC")
+        student1 = create(:setup_student, turing_module: mod, name: 'Leo Banos Garcia', populi_id: 24490130, slack_id: "U013Y0T89V1")
+        student2 = create(:setup_student, turing_module: mod, name: 'Anthony Blackwell Tallent', populi_id: 24490140, slack_id: "U035BQEGZ")
+        student3 = create(:setup_student, turing_module: mod, name: 'Lacey Weaver', populi_id: 24490100, slack_id: "U0255B3MMB4")
+        student4 = create(:setup_student, turing_module: mod, name: 'Anhnhi Tran', populi_id: 24490062, slack_id: "U022NF3D4SV")
+        student5 = create(:setup_student, turing_module: mod, name: 'J Seymour', populi_id: 24490161, slack_id: "U02199TD8SC")
+        student6 = create(:setup_student, turing_module: mod, name: 'Samuel Cox', populi_id: 24490123, slack_id: "U01CBJGFXRC")
         
         create(:zoom_alias, student: student1, name: 'Leo BG# BE')
         create(:zoom_alias, student: student2, name: "Anthony B. (He/Him) BE 2210")

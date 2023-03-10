@@ -19,10 +19,10 @@ RSpec.describe 'Creating a Zoom Attendance' do
       @test_module = create(:setup_module)
 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
-      .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
+        .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
+        .to_return(body: File.read('spec/fixtures/zoom/meeting_details_for_module_setup.json'))
 
       # Stub any request to update a student's attendance
       stub_request(:post, ENV['POPULI_API_URL']).         
@@ -51,24 +51,25 @@ RSpec.describe 'Creating a Zoom Attendance' do
     end
 
     it 'creates students attendances' do
-      absent_student = create(:setup_student, turing_module: @test_module)
-
+      absent = create(:setup_student, turing_module: @test_module)
+      absent_due_to_tardiness = @test_module.students.find_by(name: 'Anhnhi Tran')
+      tardy = @test_module.students.find_by(name: 'J Seymour')
+      present = @test_module.students.find_by(name: 'Leo Banos Garcia')
+      
       visit turing_module_path(@test_module)
       click_link('Take Attendance')
 
       fill_in :attendance_meeting_id, with: @test_zoom_meeting_id
       click_button 'Take Attendance'
 
-      visit "/attendances/#{Attendance.last.id}"
+      expect(current_path).to eq(attendance_path(Attendance.last))
 
-      expect(Attendance.last.student_attendances.count).to eq(@test_module.students.count)
+      expect(page).to have_css('.student-attendance', count: @test_module.students.count)
 
-      Attendance.last.student_attendances.each do |student_attendance|
-        student = student_attendance.student
-
-        expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom Name" => student.zoom_name)
-      end
-      expect(find("#student-attendances")).to have_table_row("Student" => absent_student.name, "Status" => 'absent', "Zoom Name" => absent_student.zoom_name)
+      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Zoom Name" => absent.zoom_name)
+      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent', "Zoom Name" => absent_due_to_tardiness.zoom_name)
+      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Zoom Name" => tardy.zoom_name)
+      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Zoom Name" => present.zoom_name)
     end
 
     it 'shows a message if an invalid meeting id is entered' do
