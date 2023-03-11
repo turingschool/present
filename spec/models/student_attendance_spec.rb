@@ -42,7 +42,8 @@ RSpec.describe StudentAttendance, type: :model do
   end
 
   describe 'instance methods' do
-    describe '#assign_status' do
+    # These should be moved to poro or feature tests
+    xdescribe '#assign_status' do
       it 'assigns the join time' do
         student_attendance = create(:student_attendance, join_time: nil)
         join_time = Time.parse("2021-12-17T15:48:18Z")

@@ -150,6 +150,9 @@ RSpec.describe 'Modules show page' do
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
+      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
+        .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))  
+
       visit turing_module_zoom_integration_path(@test_module)
 
       fill_in :zoom_meeting_id, with: @zoom_meeting_id
