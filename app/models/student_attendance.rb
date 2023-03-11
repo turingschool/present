@@ -21,18 +21,4 @@ class StudentAttendance < ApplicationRecord
     return true if student.turing_module != self.attendance.turing_module
     return false
   end
-
-  def assign_status(join_time, meeting_time)
-    if self.join_time.nil? || self.join_time > join_time
-      self.update(status: convert_status(join_time, meeting_time), join_time: join_time)
-    end
-  end
-
-  def convert_status(join_time, meeting_start_time)
-    return 'absent' if join_time == nil
-    minutes_passed_start_time = (join_time - meeting_start_time)/60.0
-    return 'absent' if minutes_passed_start_time > 30
-    return 'tardy' if minutes_passed_start_time > 1
-    return 'present'
-  end
 end

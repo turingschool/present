@@ -1,8 +1,10 @@
 class Participant
-  attr_reader :id, :join_time, :status
+  attr_reader :id, :name, :join_time, :status
 
-  def initialize(id, join_time)
+  def initialize(id, name, join_time, status)
     @id = id
-    @join_time = Time.parse(join_time)
+    @name = name
+    @join_time = join_time
+    @status = status
   end
 end

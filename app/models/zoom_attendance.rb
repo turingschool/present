@@ -11,14 +11,13 @@ class ZoomAttendance < ApplicationRecord
     meeting_time.in_time_zone('Mountain Time (US & Canada)').strftime('%l:%M %p').strip
   end
 
-  def find_student_from_zoom_participant(participant)
-    #  = zoom_aliases.where(name: participant.id)
-    aliases = ZoomAlias.joins(:student).where(zoom_aliases: {name: participant.id}).where(students: {turing_module_id: attendance.turing_module.id})
+  def find_or_create_zoom_alias(name)
+    aliases = turing_module.zoom_aliases.where(name: name)
     if aliases.empty?
-      ZoomAlias.create!(name: participant.id, zoom_attendance: self)
+      ZoomAlias.create!(name: name, zoom_attendance: self)
       return nil
     else
-      return aliases.first.student
+      return aliases.first
     end
   end
 end 

@@ -11,16 +11,13 @@ class SlackThread < Meeting
   def self.from_message_link(message_url)
     channel_id = message_url.split("/")[-2]
     message_timestamp = message_url.split("/").last[1..-1]
+    # TODO Any errors we can raise here based on the replies report?
     replies_report = SlackService.replies_from_message(channel_id, message_timestamp)
     attendance_start_time = replies_report[:attendance_start_time].to_datetime
     replies = replies_report[:data].map do |reply_info|
-      SlackThreadParticipant.new(reply_info[:slack_id], reply_info[:reply_timestamp])
+      SlackThreadParticipant.new(reply_info[:slack_id], nil, reply_info[:reply_timestamp], reply_info[:status])
     end
     new(message_url, attendance_start_time, channel_id, message_timestamp, replies)
-  end
-
-  def valid?
-    start_time.present?
   end
 
   def invalid_message

@@ -6,39 +6,28 @@ class CreateAttendanceFacade
   end
 
   def initialize(meeting_id, turing_module, user)
-    @meeting = Meeting.from_id(meeting_id)
-    raise meeting.invalid_message unless meeting.valid?
     @module = turing_module
     @attendance = self.module.attendances.create(user: user)
+    create_meeting(meeting_id)
+  end
+
+  def create_meeting(meeting_id)
+    if meeting_id.downcase.include? 'slack'
+      @meeting = SlackThread.from_message_link(meeting_id)
+    else
+      
+      @meeting = ZoomMeeting.from_meeting_details(meeting_id)
+      @meeting.attendance_time = populi_meeting.start
+    end
   end
 
   def run
-    meeting.create_child_attendance_record(attendance)
-    take_participant_attendance
-    take_absentee_attendance
+    attendance.record(meeting, populi_meeting.start)
     update_populi
     return attendance
   end
 
 private
-  def take_participant_attendance
-    meeting.participants.each do |participant|
-      student = attendance.find_student(participant)
-      next if student.nil?
-      student_attendance = attendance.student_attendances.find_or_create_by(student: student)
-      student_attendance.assign_status(participant.join_time, populi_meeting.start)
-    end
-  end
-
-  def take_absentee_attendance
-    self.module.students.each do |student|
-      unless attendance.student_attendances.find_by(student: student)
-        student_attendance = attendance.student_attendances.create(student: student)
-        student_attendance.assign_status(nil, populi_meeting.start)
-      end
-    end
-  end
-
   def update_populi
     attendance.student_attendances.each do |student_attendance|
       populi_service.update_student_attendance(course_id, populi_meeting.id, student_attendance.student.populi_id, student_attendance.status)
