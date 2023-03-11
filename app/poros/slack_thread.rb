@@ -20,6 +20,11 @@ class SlackThread < Meeting
     new(message_url, attendance_start_time, channel_id, message_timestamp, replies)
   end
 
+  def assign_participant_statuses(attendance_time)
+    # TODO we probably need the slack thread to assign statuses using the populi attendance time
+    return
+  end
+
   def invalid_message
     "Slack Message Link not valid"
   end

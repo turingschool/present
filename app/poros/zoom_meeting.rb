@@ -11,10 +11,6 @@ class ZoomMeeting < Meeting
     @attendance_time = nil
   end
 
-  def participants
-    @participants ||= synthesize_participant_report
-  end
-
   def self.from_meeting_details(meeting_id)
     meeting_details = ZoomService.meeting_details(meeting_id)    
     raise invalid_error if meeting_details[:code] == 3001
@@ -29,13 +25,27 @@ class ZoomMeeting < Meeting
     ZoomAttendance.create!(meeting_time: self.start_time, meeting_title: self.title, zoom_meeting_id: self.id, attendance: attendance)
   end
 
+  def participants
+    @participants ||= synthesize_participant_report
+  end
+
   def participants_by_match(student)
     participants.sort_by do |participant|
       string_distance(student.name, participant.name)
     end.reverse
   end
 
+  def assign_participant_statuses(attendance_time)
+    participants.each do |participant|
+      participant.assign_status(attendance_time)
+    end
+  end
+
 private
+  def participant_report
+    @report ||= ZoomService.participant_report(self.id)[:participants]
+  end
+
   def synthesize_participant_report
     participants = create_participant_objects
     uniq_participants_best_time(participants)
@@ -43,7 +53,7 @@ private
 
   def create_participant_objects
     participant_report.map do |participant| 
-      ZoomParticipant.from_meeting(participant, self.attendance_time)
+      ZoomParticipant.from_meeting(participant)
     end
   end
 
@@ -53,18 +63,4 @@ private
       participant_records.min_by(&:join_time)
     end
   end
-
-  def participant_report
-    @report ||= ZoomService.participant_report(self.id)[:participants]
-  end
-
-  # def attendance_time
-  #   distance_to_top = start_time - start_time.end_of_hour
-  #   distance_to_bottom = start_time - start_time.beginning_of_hour
-  #   if distance_to_top < distance_to_bottom
-  #     return start_time.end_of_hour
-  #   else
-  #     return start_time.beginning_of_hour
-  #   end
-  # end
 end
