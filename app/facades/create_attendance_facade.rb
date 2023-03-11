@@ -15,7 +15,6 @@ class CreateAttendanceFacade
     if meeting_id.downcase.include? 'slack'
       @meeting = SlackThread.from_message_link(meeting_id)
     else
-      
       @meeting = ZoomMeeting.from_meeting_details(meeting_id)
       @meeting.attendance_time = populi_meeting.start
     end
