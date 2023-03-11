@@ -49,9 +49,12 @@ RSpec.describe 'Creating an Attendance' do
     end
 
     it 'creates students attendances' do
+      absent = @test_module.students.find_by(name: 'Leo Banos Garcia')
+      tardy = @test_module.students.find_by(name: "Lacey Weaver")
+      absent_due_to_tardiness = @test_module.students.find_by(name: 'J Seymour')
+      present = @test_module.students.find_by(name: 'Anhnhi Tran')
+
       slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
-      
-      absent_student = create(:setup_student, turing_module: @test_module)
 
       visit turing_module_path(@test_module)
       click_link('Take Attendance')
@@ -59,15 +62,13 @@ RSpec.describe 'Creating an Attendance' do
       fill_in :attendance_meeting_id, with: slack_url
       click_button 'Take Attendance'
 
-      visit "/attendances/#{Attendance.last.id}"
+      expect(current_path).to eq(attendance_path(Attendance.last))
+      expect(page).to have_css('.student-attendance', count: @test_module.students.count)
 
-      expect(Attendance.last.student_attendances.count).to eq(@test_module.students.count)
-
-      Attendance.last.student_attendances.each do |student_attendance|
-        student = student_attendance.student
-        expect(find("#student-attendances")).to have_table_row("Student" => student.name, "Status" => student_attendance.status, "Zoom Name" => student.zoom_name, "Slack ID" => student.slack_id)
-      end
-      expect(find("#student-attendances")).to have_table_row("Student" => absent_student.name, "Status" => 'absent', "Zoom Name" => absent_student.zoom_name, "Slack ID" => absent_student.slack_id)
+      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Slack ID" => absent.slack_id)
+      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent', "Slack ID" => absent_due_to_tardiness.slack_id)
+      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Slack ID" => tardy.slack_id)
+      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Slack ID" => present.slack_id)
     end
   end
 

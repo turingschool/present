@@ -51,7 +51,7 @@ RSpec.describe 'Creating a Zoom Attendance' do
     end
 
     it 'creates students attendances' do
-      absent = create(:setup_student, turing_module: @test_module)
+      absent = @test_module.students.find_by(name: 'Lacey Weaver')
       absent_due_to_tardiness = @test_module.students.find_by(name: 'Anhnhi Tran')
       tardy = @test_module.students.find_by(name: 'J Seymour')
       present = @test_module.students.find_by(name: 'Leo Banos Garcia')
@@ -63,9 +63,7 @@ RSpec.describe 'Creating a Zoom Attendance' do
       click_button 'Take Attendance'
 
       expect(current_path).to eq(attendance_path(Attendance.last))
-
       expect(page).to have_css('.student-attendance', count: @test_module.students.count)
-
       expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Zoom Name" => absent.zoom_name)
       expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent', "Zoom Name" => absent_due_to_tardiness.zoom_name)
       expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Zoom Name" => tardy.zoom_name)
