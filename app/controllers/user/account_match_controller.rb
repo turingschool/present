@@ -8,6 +8,7 @@ class User::AccountMatchController < ApplicationController
   end 
 
   def create
+    current_module.attendances.destroy_all #if this is a redo
     params[:student].each do |student_id, ids|
       Student.update(student_id, {slack_id: ids[:slack_id]})
       ZoomAlias.create(name: ids[:zoom_id], student_id: student_id)
