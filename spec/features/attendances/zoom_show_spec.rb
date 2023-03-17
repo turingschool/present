@@ -26,7 +26,8 @@ RSpec.describe 'attendance show page' do
 
     click_link('Take Attendance')
 
-    fill_in :attendance_meeting_id, with: @test_zoom_meeting_id
+    fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
+
     click_button 'Take Attendance'
 
     @attendance = Attendance.last
