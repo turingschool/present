@@ -11,7 +11,7 @@ class AccountMatchFacade
   def slack_options(student)
     slack_members_by_match(student).map do |member|
       [member.name, member.id]
-    end.push(["Not In Channel", nil])
+    end.unshift(["Not In Channel", nil])
   end
 
   def best_matching_slacker(student)
@@ -21,7 +21,7 @@ class AccountMatchFacade
   def zoom_options(student)
     @zoom_meeting.participants_by_match(student).map do |participant|
       participant.name
-    end.push(["Not Present", nil])
+    end.unshift(["Not Present", nil])
   end
 
   def best_matching_zoomer(student)

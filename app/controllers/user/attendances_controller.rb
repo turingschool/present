@@ -16,16 +16,9 @@ class User::AttendancesController < User::BaseController
   end
 
   def show
-    @attendance_parent = Attendance.find(params[:id])
-    if @attendance_parent.zoom_attendance
-      @attendance = @attendance_parent.zoom_attendance 
-      # REFACTOR figure out where to put the code for account matching now that we need it in two places
-      # @unclaimed_aliases = @attendance.zoom_aliases.where(student: nil).order(:name).map(&:name)
-      @facade = AttendanceShowFacade.new(@attendance)
-    elsif @attendance_parent.slack_attendance
-      @attendance = @attendance_parent.slack_attendance 
-    end
-    @module = @attendance_parent.turing_module
+    @attendance = Attendance.find(params[:id])
+    @facade = AttendanceShowFacade.new(@attendance.child)
+    @module = @attendance.turing_module
   end
 
   def update
@@ -33,11 +26,8 @@ class User::AttendancesController < User::BaseController
     student = Student.find(params[:id])
     zoom_alias = ZoomAlias.find(params[:student][:zoom_alias])
     zoom_alias.update(student: student)
-      require 'pry';binding.pry
 
-    attendance.retake
-    # if params[:student][:zoom_alias]
-    #   ZoomAlias.update(params[:student][:zoom_alias], student: student)
-    # end
+    attendance.retake_zoom_attendance
+    redirect_to attendance_path(attendance)
   end
 end

@@ -41,30 +41,42 @@ RSpec.describe 'attendance show page' do
     anhnhi = @test_module.students.find_by(name: 'Anhnhi Tran')
     # tardy = @test_module.students.find_by(name: 'J Seymour')
     # present = @test_module.students.find_by(name: 'Leo Banos Garcia')
-
-    x = first('#student_zoom_alias').all('option').map do |option|
-      option.text
-    end
-
     within "#absent-student-#{lacey.id}" do
-      expect(page).to have_field(:student_zoom_alias)
-    end
-    
-    within "#absent-student-#{anhnhi.id}" do
-      expect(page).to have_field(:student_zoom_alias)
-      select("Anhnhi T BE she/her/hers")
+      expect(first('option').text).to eq("Lacey W (BE, she/her)")
+      select("Lacey W (BE, she/her)")
       click_button "Save Zoom Alias"
     end
 
     expect(current_path).to eq(attendance_path(@attendance))
+    
+    within "#absent-student-#{anhnhi.id}" do
+      expect(first('option').text).to eq("Anhnhi T BE she/her/hers")
+      select("Anhnhi T BE she/her/hers")
+      click_button "Save Zoom Alias"
+    end
 
-    expect(page).to_not have_css("#absent-student-#{anhnhi.id}")
+    expect(page).to_not have_css("#absent-student-#{lacey.id}")
+    # Anhnhi is still absent because she joined after 30 mintutes
+    expect(page).to have_css("#absent-student-#{anhnhi.id}")
+    
+    visit turing_module_students_path(@test_module)
 
+    within "#student-#{anhnhi.id}" do
+      within ".zoom-name" do
+        expect(page).to have_content("Anhnhi T BE she/her/hers")
+      end
+    end
+    
+    within "#student-#{lacey.id}" do
+      within ".zoom-name" do
+        expect(page).to have_content("Lacey W (BE, she/her)")
+      end
+    end
   end
 
 # Then I do not see columns for slack id and zoom name,
 
-# and next to all absent students I see a drop down of all unclaimed zoom aliases from that meeting,
+
 # and I see the aliases are unique,
 # and I see that the aliases are ordered by most likely match,
 # and I see that no alias is pre-selected.

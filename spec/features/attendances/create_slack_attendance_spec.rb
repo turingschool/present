@@ -46,6 +46,7 @@ RSpec.describe 'Creating an Attendance' do
       expect(current_path).to eq(attendance_path(new_attendance))
       expect(page).to have_content("Slack Thread - #{new_attendance.slack_attendance.pretty_time}")
       # expect(page).to have_content("Slack Message URL - #{slack_url}) future idea to have this on this page
+      expect(page).to have_content("Attendance Time: 1:00pm - Nov 30, 2022")
     end
 
     it 'creates students attendances' do
@@ -65,10 +66,10 @@ RSpec.describe 'Creating an Attendance' do
       expect(current_path).to eq(attendance_path(Attendance.last))
       expect(page).to have_css('.student-attendance', count: @test_module.students.count)
 
-      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Slack ID" => absent.slack_id)
-      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent', "Slack ID" => absent_due_to_tardiness.slack_id)
-      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Slack ID" => tardy.slack_id)
-      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Slack ID" => present.slack_id)
+      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent')
+      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent')
+      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy')
+      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present')
     end
   end
 

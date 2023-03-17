@@ -48,6 +48,7 @@ RSpec.describe 'Creating a Zoom Attendance' do
       new_attendance = Attendance.last
       expect(current_path).to eq(attendance_path(new_attendance))
       expect(page).to have_content(@test_zoom_meeting_id)
+      expect(page).to have_content("Attendance Time: 9:00am - Jan 10, 2023")
     end
 
     it 'creates students attendances' do
@@ -64,10 +65,10 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
       expect(current_path).to eq(attendance_path(Attendance.last))
       expect(page).to have_css('.student-attendance', count: @test_module.students.count)
-      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Zoom Name" => absent.zoom_name)
-      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent', "Zoom Name" => absent_due_to_tardiness.zoom_name)
-      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Zoom Name" => tardy.zoom_name)
-      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Zoom Name" => present.zoom_name)
+      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent')
+      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent')
+      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy')
+      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present')
     end
 
     it 'shows a message if an invalid meeting id is entered' do

@@ -7,11 +7,27 @@ class Attendance < ApplicationRecord
   has_many :student_attendances, dependent: :destroy
   has_many :students, through: :student_attendances
 
-  def record(meeting, attendance_time)
+  validates_presence_of :attendance_time
+
+  def child
+    return slack_attendance if slack_attendance
+    return zoom_attendance if zoom_attendance
+  end
+
+  def record(meeting)
     self.transaction do
-      meeting.create_child_attendance_record(self)
+      create_child_attendance_record(meeting)
+      meeting.assign_participant_statuses(attendance_time)
       student_attendances = take_participant_attendance(meeting.participants)
       take_absentee_attendance
+    end
+  end
+  
+  def create_child_attendance_record(meeting)
+    if meeting.respond_to? :message_timestamp
+      SlackAttendance.create(channel_id: meeting.channel_id, sent_timestamp: meeting.message_timestamp, attendance_start_time: attendance_time, attendance: self)
+    elsif meeting.respond_to? :title
+      ZoomAttendance.create!(meeting_time: meeting.start_time, meeting_title: meeting.title, zoom_meeting_id: meeting.id, attendance: self)
     end
   end
 
@@ -38,5 +54,15 @@ class Attendance < ApplicationRecord
     elsif participant.class == SlackThreadParticipant
       Student.find_by(slack_id: participant.id)
     end
+  end
+
+  def retake_zoom_attendance
+    self.student_attendances.destroy_all
+    meeting = ZoomMeeting.from_meeting_details(zoom_attendance.zoom_meeting_id)
+    self.record(meeting)
+  end
+
+  def pretty_attendance_time
+    attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%l:%M%P - %b %e, %Y")
   end
 end

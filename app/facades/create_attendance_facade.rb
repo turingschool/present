@@ -3,9 +3,8 @@ class CreateAttendanceFacade
     course_id = turing_module.populi_course_id
     meeting = create_meeting(meeting_id)
     populi_meeting = retrieve_populi_meeting(course_id, meeting.start_time)
-    meeting.assign_participant_statuses(populi_meeting.start)
-    attendance = turing_module.attendances.create(user: user)
-    attendance.record(meeting, populi_meeting.start)
+    attendance = turing_module.attendances.create(user: user, attendance_time: populi_meeting.start)
+    attendance.record(meeting)
     update_populi(attendance, course_id, populi_meeting.id)
     return attendance
   end
