@@ -1,7 +1,7 @@
 class ZoomAttendance < ApplicationRecord 
   belongs_to :attendance
   has_one :turing_module, through: :attendance
-  has_many :zoom_aliases
+  has_many :zoom_aliases, dependent: :destroy
 
   def am_or_pm
     meeting_time.in_time_zone('Mountain Time (US & Canada)').strftime('%p')
