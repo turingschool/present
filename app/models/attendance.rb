@@ -35,7 +35,16 @@ class Attendance < ApplicationRecord
     participants.each do |participant|
       student = find_student_from_participant(participant)
       next if student.nil?
-      student_attendances.create(student: student, status: participant.status)
+      create_participant_attendance(student, participant)
+    end
+  end
+
+  def create_participant_attendance(student, participant)
+    student_attendance = student_attendances.find_or_create_by(student: student)
+    if student_attendance.tardy? && participant.status == "present"
+      student_attendance.update(status: "present")
+    elsif student_attendance.absent? || student_attendance.status.nil?
+      student_attendance.update(status: participant.status) 
     end
   end
 
