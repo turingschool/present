@@ -7,7 +7,7 @@ class User::AttendancesController < User::BaseController
   def create
     turing_module = TuringModule.find(params[:turing_module_id])
     begin
-      attendance = CreateAttendanceFacade.take_attendance(params[:attendance][:meeting_id], turing_module, current_user)
+      attendance = CreateAttendanceFacade.take_attendance(params[:attendance][:meeting_url], turing_module, current_user)
       redirect_to attendance_path(attendance)
       # REFACTOR: I'm a little nervous about catching all runtime errors here. Maybe make a custom error object?
     rescue InvalidMeetingError => error
