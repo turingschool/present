@@ -24,7 +24,7 @@
         <% if student_attendance.absent? && @attendance.zoom_attendance  %>
           <td id='absent-student-<%= student_attendance.student.id %>'>
             <%= form_with  model: [@attendance, student_attendance.student] do |f| %>
-              <%= f.select :zoom_alias, @facade.unclaimed_aliases_for(student_attendance.student) %>
+              <%= f.select :zoom_alias, @facade.alias_options_for(student_attendance.student) %>
               <%= f.submit "Save Zoom Alias" %>
             <% end %>
           </td>

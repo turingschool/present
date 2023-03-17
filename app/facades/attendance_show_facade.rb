@@ -4,12 +4,11 @@ class AttendanceShowFacade
   def initialize(attendance)
     @attendance = attendance
   end
-
-  def unclaimed_aliases_for(student)
-    unclaimed_aliases = @attendance.zoom_aliases.where(student: nil).sort_by do |zoom_alias|
-      string_distance(student.name, zoom_alias.name)
-    end.reverse
-    unclaimed_aliases.map do |zoom_alias|
+  
+  def alias_options_for(student)
+    @attendance.unclaimed_aliases.sort_by do |zoom_alias|
+      -1 * string_distance(student.name, zoom_alias.name)
+    end.map do |zoom_alias|
       [zoom_alias.name, zoom_alias.id]
     end
   end
