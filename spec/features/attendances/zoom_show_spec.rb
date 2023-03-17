@@ -72,14 +72,7 @@ RSpec.describe 'attendance show page' do
     end
   end
 
-# Then I do not see columns for slack id and zoom name,
+  it 'can select multiple zoom aliases for a student' do
 
-
-# and I see the aliases are unique,
-# and I see that the aliases are ordered by most likely match,
-# and I see that no alias is pre-selected.
-# When I select one of the aliases and click the "Save Zoom Alias",
-# Then I am redirected to the attendance show page,
-# And I see that student's attendance status has been updated.
-
+  end
 end
