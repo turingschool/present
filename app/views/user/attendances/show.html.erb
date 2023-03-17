@@ -3,7 +3,7 @@
 <% if @attendance.zoom_attendance %>
   <h3><%= @attendance.child.meeting_title %> - <%= @attendance.child.pretty_time %></h3>
   <h3>Meeting ID: <%= @attendance.child.zoom_meeting_id %></h3>
-  <p>Use the Drop Downs next to absent students to confirm a Zoom Alias for that student</p>
+  <p>Use the zoom alias fields to correct student attendances</p>
 <% elsif @attendance.slack_attendance %>
   <h3>Slack Thread - <%= @attendance.child.pretty_time %></h3>
   <h3>Channel ID: <%= @attendance.child.channel_id %></h3>
@@ -15,6 +15,7 @@
     <tr>
       <th>Student</th>
       <th>Status</th>
+      <th>Zoom Alias</th>
     </tr>
   </thead>
   <tbody>

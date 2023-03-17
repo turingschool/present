@@ -31,8 +31,6 @@ RSpec.describe 'attendance show page' do
     click_button 'Take Attendance'
 
     @attendance = Attendance.last
-    # @zoom_alias1 = @attendance.zoom_attendance.zoom_aliases.create!(name: "Lacey W (BE, she/her)")
-    # @zoom_alias2 = @attendance.zoom_attendance.zoom_aliases.create!(name: "Anhnhi T BE she/her/hers")
   end
 
   it 'has a dropdown next to absent students' do
@@ -40,8 +38,7 @@ RSpec.describe 'attendance show page' do
 
     lacey = @test_module.students.find_by(name: 'Lacey Weaver')
     anhnhi = @test_module.students.find_by(name: 'Anhnhi Tran')
-    # tardy = @test_module.students.find_by(name: 'J Seymour')
-    # present = @test_module.students.find_by(name: 'Leo Banos Garcia')
+
     within "#absent-student-#{lacey.id}" do
       expect(first('option').text).to eq("Lacey W (BE, she/her)")
       select("Lacey W (BE, she/her)")
