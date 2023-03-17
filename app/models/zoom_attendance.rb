@@ -20,4 +20,8 @@ class ZoomAttendance < ApplicationRecord
       return aliases.first
     end
   end
+
+  def unclaimed_aliases
+    self.zoom_aliases.where(student: nil)
+  end
 end 

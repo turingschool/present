@@ -71,9 +71,10 @@ RSpec.describe "Module Setup Account Matching" do
         within '.slack-select' do 
           expect(page).to have_select(selected: "Anthony Blackwell Tallent")
           options = page.all('option')
-          expect(options.first.text).to eq("Anthony Blackwell Tallent")
-          expect(options[1].text).to eq("Anthony Ongaro")
-          expect(options[2].text).to eq("Lucas Colwell")
+          expect(options[0].text).to eq("Not In Channel")
+          expect(options[1].text).to eq("Anthony Blackwell Tallent")
+          expect(options[2].text).to eq("Anthony Ongaro")
+          expect(options[3].text).to eq("Lucas Colwell")
         end
       end
     
@@ -81,9 +82,10 @@ RSpec.describe "Module Setup Account Matching" do
         within '.slack-select' do 
           expect(page).to have_select(selected: "Leo Banos Garcia")
           options = page.all('option')
-          expect(options.first.text).to eq("Leo Banos Garcia")
-          expect(options[1].text).to eq("Mostafa Sakr")
-          expect(options[2].text).to eq("Alex Mora BE")
+          expect(options[0].text).to eq("Not In Channel")
+          expect(options[1].text).to eq("Leo Banos Garcia")
+          expect(options[2].text).to eq("Mostafa Sakr")
+          expect(options[3].text).to eq("Alex Mora BE")
         end
       end
     end
@@ -93,9 +95,9 @@ RSpec.describe "Module Setup Account Matching" do
         within '.zoom-select' do 
           expect(page).to have_select(selected: "Anthony O. BE")
           options = page.all('option')
-          expect(options.first.text).to eq("Anthony O. BE")
-          expect(options[1].text).to eq("Anhnhi T# BE")
-          expect(options[2].text).to eq("Anthony B. (He/Him) BE 2210")
+          expect(options[1].text).to eq("Anthony O. BE")
+          expect(options[2].text).to eq("Anhnhi T# BE")
+          expect(options[3].text).to eq("Anthony B. (He/Him) BE 2210")
         end
       end
     
@@ -103,9 +105,9 @@ RSpec.describe "Module Setup Account Matching" do
         within '.zoom-select' do 
           expect(page).to have_select(selected: "Leo BG# BE")
           options = page.all('option')
-          expect(options.first.text).to eq("Leo BG# BE")
-          expect(options[1].text).to eq("Anthony B. (He/Him) BE 2210")
-          expect(options[2].text).to eq("Max M (she/her) be")
+          expect(options[1].text).to eq("Leo BG# BE")
+          expect(options[2].text).to eq("Anthony B. (He/Him) BE 2210")
+          expect(options[3].text).to eq("Max M (she/her) be")
         end
       end
     end

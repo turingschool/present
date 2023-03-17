@@ -28,8 +28,4 @@ class SlackThread < Meeting
   def invalid_message
     "Slack Message Link not valid"
   end
-
-  def create_child_attendance_record(attendance)
-    SlackAttendance.create(channel_id: channel_id, sent_timestamp: message_timestamp, attendance_start_time: start_time , attendance: attendance)
-  end
 end
