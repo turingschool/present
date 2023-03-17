@@ -5,7 +5,7 @@ class AccountMatchFacade
 
   def initialize(turing_module, zoom_meeting_id)
     @module = turing_module
-    @zoom_meeting_id = zoom_meeting_id
+    @zoom_meeting = ZoomMeeting.from_meeting_details(zoom_meeting_id)
   end
 
   def slack_options(student)
@@ -19,13 +19,13 @@ class AccountMatchFacade
   end
 
   def zoom_options(student)
-    participants_by_match(student).map do |participant|
-      [participant.name, participant.id]
+    @zoom_meeting.participants_by_match(student).map do |participant|
+      participant.name
     end.push(["Not Present", nil])
   end
 
   def best_matching_zoomer(student)
-    participants_by_match(student).first.id
+    @zoom_meeting.participants_by_match(student).first.name
   end
 
 private
@@ -42,23 +42,6 @@ private
   end
 
   def participants
-    @participants = retrieve_participant_data
-  end
-
-  def retrieve_participant_data
-    participants = ZoomMeeting.from_meeting_details(@zoom_meeting_id).participants
-    participants.reject do |participant|
-      participant.id.empty?
-    end.uniq do |participant|
-      participant.name
-    end.sort_by do |participant|
-      participant.name
-    end
-  end
-
-  def participants_by_match(student)
-    participants.sort_by do |participant|
-      string_distance(student.name, participant.name)
-    end.reverse
+    @participants ||= retrieve_participant_data
   end
 end

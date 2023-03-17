@@ -123,9 +123,14 @@
             "reply_timestamp": "2022-11-30T20:01:01.456+00:00"
         },
         {
-            "slack_id": "U02ACB9A0B1",
-            "status": "present",
+            "slack_id": "U0255B3MMB4",
+            "status": "tardy",
             "reply_timestamp": "2022-11-30T20:01:20.196+00:00"
+        },
+        {
+            "slack_id": "U02199TD8SC",
+            "status": "absent",
+            "reply_timestamp": "2022-11-30T20:07:20.196+00:00"
         }
     ]
 }

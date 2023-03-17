@@ -21,10 +21,10 @@ RSpec.describe "Module Setup Account Matching" do
         to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
-        .to_return(body: File.read('spec/fixtures/zoom/participant_report_for_module_setup.json'))
+        .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@zoom_meeting_id}") \
-        .to_return(body: File.read('spec/fixtures/zoom/meeting_details_for_module_setup.json'))  
+        .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))  
 
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))
@@ -56,7 +56,6 @@ RSpec.describe "Module Setup Account Matching" do
           expect(page).to have_content(@anthony_b.name)
         end
       end
-
 
       @mod.students.each do |student|
         within "#student-#{student.id}" do
@@ -90,7 +89,6 @@ RSpec.describe "Module Setup Account Matching" do
     end
 
     it 'has a select field with the closest matching name from Zoom' do
-
       within "#student-#{@anthony_b.id}" do
         within '.zoom-select' do 
           expect(page).to have_select(selected: "Anthony O. BE")
@@ -106,51 +104,22 @@ RSpec.describe "Module Setup Account Matching" do
           expect(page).to have_select(selected: "Leo BG# BE")
           options = page.all('option')
           expect(options.first.text).to eq("Leo BG# BE")
-          expect(options[1].text).to eq("Lacey W (she/her)")
-          expect(options[2].text).to eq("Anthony B. (He/Him) BE 2210")
+          expect(options[1].text).to eq("Anthony B. (He/Him) BE 2210")
+          expect(options[2].text).to eq("Max M (she/her) be")
         end
       end
     end
 
-    it 'user can select the correct student if the closest match was wrong' do
-      student = @mod.students.find_by(name: "Anthony Blackwell Tallent")
-      within "#student-#{student.id}" do
+    xit 'has a select field with the closest matching name from Zoom that is more accurate' do
+      within "#student-#{@anthony_b.id}" do
         within '.zoom-select' do 
-          select "Anthony B. (He/Him) BE 2210"
-        end
-        
-        within '.slack-select' do 
-          select "Anthony Blackwell Tallent"
-        end
-      end
-    end
-
-    it 'user can select Not Present if the student wasnt in the zoom meeting' do
-      student = @mod.students.find_by(name: "Anthony Blackwell Tallent")
-      within "#student-#{student.id}" do
-        within '.zoom-select' do 
-          select "Not Present"
+          expect(page).to have_select(selected: "Anthony B. (He/Him) BE 2210")
+          options = page.all('option')
+          expect(options[0].text).to eq("Anthony B. (He/Him) BE 2210")
+          expect(options[1].text).to eq("Anthony O. BE")
+          expect(options[2].text).to eq("Anhnhi T# BE")
         end
       end
-      click_button "Match"
-
-      student.reload 
-
-      expect(student.zoom_id).to be_empty
-    end
-
-    it 'user can select Not In Channel if the student isnt in the slack channel yet' do
-      student = @mod.students.find_by(name: "Anthony Blackwell Tallent")
-      within "#student-#{student.id}" do
-        within '.slack-select' do 
-          select "Not In Channel"
-        end
-      end
-      click_button "Match"
-
-      student.reload 
-
-      expect(student.slack_id).to be_empty
     end
 
     it 'only includes one option for each uniq zoom name' do
@@ -160,7 +129,7 @@ RSpec.describe "Module Setup Account Matching" do
       expect(options.uniq.length).to eq(options.length)
     end
 
-    it 'matches the ids for the students' do
+    it 'user can make selections and complete account matching' do
       within "#student-#{@anthony_b.id}" do
         within '.zoom-select' do 
           select "Anthony B. (He/Him) BE 2210"
@@ -195,8 +164,8 @@ RSpec.describe "Module Setup Account Matching" do
       visit turing_module_students_path(@mod)
 
       within "#student-#{@anthony_b.id}" do
-        within '.zoom-id' do
-          expect(page).to have_content('79rFGPQZTZyOW9VLTrbQJw')
+        within '.zoom-name' do
+          expect(page).to have_content("Anthony B. (He/Him) BE 2210")
         end
         
         within '.slack-id' do
@@ -209,8 +178,8 @@ RSpec.describe "Module Setup Account Matching" do
       end
       
       within "#student-#{@j.id}" do
-        within '.zoom-id' do
-          expect(page).to have_content('W7NlFRvdQF2lC8KGoYA28A')
+        within '.zoom-name' do
+          expect(page).to have_content("J Seymour (he/they) BE")
         end
         
         within '.slack-id' do
@@ -223,7 +192,7 @@ RSpec.describe "Module Setup Account Matching" do
       end
       
       within "#student-#{@leo.id}" do
-        expect(page.find('.zoom-id').text).to eq('')
+        expect(page.find('.zoom-name').text).to eq('')
         expect(page.find('.slack-id').text).to eq('')
       end
     end

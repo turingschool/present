@@ -1,7 +1,7 @@
 FactoryBot.define do
     factory :zoom_attendance do
         attendance
-        sequence(:zoom_meeting_id) { |n| "<zoom_meeting_#{n}>" }
+        zoom_meeting_id { Faker::Internet.uuid }
         meeting_title { 'Test Title'}
         meeting_time { '2021-12-10 23:10:49 UTC' }
 

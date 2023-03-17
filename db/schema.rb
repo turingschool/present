@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_01_002018) do
+ActiveRecord::Schema.define(version: 2023_03_08_045710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,16 +39,6 @@ ActiveRecord::Schema.define(version: 2023_03_01_002018) do
     t.index ["attendance_id"], name: "index_slack_attendances_on_attendance_id"
   end
 
-
-  create_table "zoom_attendances", force: :cascade do |t|
-    t.string "zoom_meeting_id"
-    t.string "meeting_title"
-    t.datetime "meeting_time"
-    t.bigint "attendance_id"
-    t.index ["attendance_id"], name: "index_zoom_attendances_on_attendance_id"
-  end
-
-
   create_table "student_attendances", force: :cascade do |t|
     t.integer "status"
     t.bigint "student_id"
@@ -61,7 +51,6 @@ ActiveRecord::Schema.define(version: 2023_03_01_002018) do
   end
 
   create_table "students", force: :cascade do |t|
-    t.string "zoom_id"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -95,6 +84,24 @@ ActiveRecord::Schema.define(version: 2023_03_01_002018) do
     t.index ["turing_module_id"], name: "index_users_on_turing_module_id"
   end
 
+  create_table "zoom_aliases", force: :cascade do |t|
+    t.string "name"
+    t.bigint "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "zoom_attendance_id"
+    t.index ["student_id"], name: "index_zoom_aliases_on_student_id"
+    t.index ["zoom_attendance_id"], name: "index_zoom_aliases_on_zoom_attendance_id"
+  end
+
+  create_table "zoom_attendances", force: :cascade do |t|
+    t.string "zoom_meeting_id"
+    t.string "meeting_title"
+    t.datetime "meeting_time"
+    t.bigint "attendance_id"
+    t.index ["attendance_id"], name: "index_zoom_attendances_on_attendance_id"
+  end
+
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
   add_foreign_key "slack_attendances", "attendances"
@@ -102,5 +109,6 @@ ActiveRecord::Schema.define(version: 2023_03_01_002018) do
   add_foreign_key "student_attendances", "students"
   add_foreign_key "students", "turing_modules"
   add_foreign_key "turing_modules", "innings"
+  add_foreign_key "zoom_aliases", "zoom_attendances"
   add_foreign_key "zoom_attendances", "attendances"
 end

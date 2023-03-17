@@ -9,10 +9,10 @@ RSpec.describe 'taking attendance with Populi' do
       @test_zoom_meeting_id = 96428502996
 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
-      .to_return(body: File.read('spec/fixtures/zoom/participant_report_for_populi_automation.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom/meeting_details_for_module_setup.json'))
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
      
       stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
@@ -24,11 +24,13 @@ RSpec.describe 'taking attendance with Populi' do
       @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL']).         
         with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490130", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
         to_return(status: 200, body: '') 
+      # Absent
       @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL']).         
         with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490100", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
         to_return(status: 200, body: '') 
+      # Absent due to tardiness
       @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
-        with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
+        with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
         to_return(status: 200, body: '') 
       @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL']).         
         with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490161", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
