@@ -1,7 +1,7 @@
 class CreateAttendanceFacade
-  def self.take_attendance(meeting_id, turing_module, user)
+  def self.take_attendance(meeting_url, turing_module, user)
     course_id = turing_module.populi_course_id
-    meeting = create_meeting(meeting_id)
+    meeting = create_meeting(meeting_url)
     populi_meeting = retrieve_populi_meeting(course_id, meeting.start_time)
     meeting.assign_participant_statuses(populi_meeting.start)
     attendance = turing_module.attendances.create(user: user)
@@ -10,11 +10,11 @@ class CreateAttendanceFacade
     return attendance
   end
 
-  def self.create_meeting(meeting_id)
-    if meeting_id.downcase.include? 'slack'
-      @meeting = SlackThread.from_message_link(meeting_id)
+  def self.create_meeting(meeting_url)
+    if meeting_url.downcase.include? 'slack'
+      @meeting = SlackThread.from_message_link(meeting_url)
     else
-      @meeting = ZoomMeeting.from_meeting_details(meeting_id)
+      @meeting = ZoomMeeting.from_meeting_details(meeting_url)
     end
   end
 

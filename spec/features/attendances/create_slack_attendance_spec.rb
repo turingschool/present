@@ -39,7 +39,7 @@ RSpec.describe 'Creating an Attendance' do
       expect(page).to have_content(@test_module.inning.name)
       expect(page).to have_content('Take Attendance for a Slack Thread')
 
-      fill_in :attendance_meeting_id, with: slack_url
+      fill_in :attendance_meeting_url, with: slack_url
       click_button 'Take Attendance'
 
       new_attendance = Attendance.last
@@ -59,7 +59,7 @@ RSpec.describe 'Creating an Attendance' do
       visit turing_module_path(@test_module)
       click_link('Take Attendance')
 
-      fill_in :attendance_meeting_id, with: slack_url
+      fill_in :attendance_meeting_url, with: slack_url
       click_button 'Take Attendance'
 
       expect(current_path).to eq(attendance_path(Attendance.last))

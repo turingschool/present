@@ -11,7 +11,8 @@ class ZoomMeeting < Meeting
     @attendance_time = nil
   end
 
-  def self.from_meeting_details(meeting_id)
+  def self.from_meeting_details(meeting_url)
+    meeting_id = meeting_url.split("/").last
     meeting_details = ZoomService.meeting_details(meeting_id)    
     raise invalid_error if meeting_details[:code] == 3001
     new(meeting_id, meeting_details[:start_time].to_datetime, meeting_details[:topic])
