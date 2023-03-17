@@ -34,12 +34,12 @@ RSpec.describe 'attendance show page' do
   end
 
   it 'has a dropdown next to absent students' do
-    visit attendance_path(@attendance)
-
     lacey = @test_module.students.find_by(name: 'Lacey Weaver')
     anhnhi = @test_module.students.find_by(name: 'Anhnhi Tran')
 
-    within "#absent-student-#{lacey.id}" do
+    visit attendance_path(@attendance)
+
+    within "#student-aliases-#{lacey.id}" do
       expect(first('option').text).to eq("Lacey W (BE, she/her)")
       select("Lacey W (BE, she/her)")
       click_button "Save Zoom Alias"
@@ -47,15 +47,15 @@ RSpec.describe 'attendance show page' do
 
     expect(current_path).to eq(attendance_path(@attendance))
     
-    within "#absent-student-#{anhnhi.id}" do
+    within "#student-aliases-#{anhnhi.id}" do
       expect(first('option').text).to eq("Anhnhi T BE she/her/hers")
       select("Anhnhi T BE she/her/hers")
       click_button "Save Zoom Alias"
     end
 
-    expect(page).to_not have_css("#absent-student-#{lacey.id}")
+    expect(page).to_not have_css("#student-aliases-#{lacey.id}")
     # Anhnhi is still absent because she joined after 30 mintutes
-    expect(page).to have_css("#absent-student-#{anhnhi.id}")
+    expect(page).to have_css("#student-aliases-#{anhnhi.id}")
     
     visit turing_module_students_path(@test_module)
 
@@ -72,7 +72,27 @@ RSpec.describe 'attendance show page' do
     end
   end
 
-  it 'can select multiple zoom aliases for a student' do
+  it 'can select zoom aliases for tardy students' do
+    j = @test_module.students.find_by(name: 'J Seymour')
 
+    visit attendance_path(@attendance)
+
+    within "#student-aliases-#{j.id}" do
+      select("J Seymour")
+      click_button "Save Zoom Alias"
+    end
+
+    within "#student-#{j.id}" do
+      expect(page).to have_content("tardy")
+    end
+
+    within "#student-aliases-#{j.id}" do
+      select("J (he/they) BE")
+      click_button "Save Zoom Alias"
+    end
+
+    within "#student-#{j.id}" do
+      expect(page).to have_content("present")
+    end
   end
 end

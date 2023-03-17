@@ -12,4 +12,8 @@ class AttendanceShowFacade
       [zoom_alias.name, zoom_alias.id]
     end
   end
+
+  def show_aliases?(student_attendance)
+    !student_attendance.present? && @attendance.respond_to?(:zoom_meeting_id)
+  end
 end

@@ -21,16 +21,18 @@
   <tbody>
     <% @attendance.student_attendances.by_attendance_status.each do |student_attendance| %>
       <tr id='student-attendance-<%= student_attendance.id %>' class='student-attendance'>
-        <td><%= link_to student_attendance.student.name, student_path(student_attendance.student) %></td>
-        <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
-        <% if student_attendance.absent? && @attendance.zoom_attendance  %>
-          <td id='absent-student-<%= student_attendance.student.id %>'>
-            <%= form_with  model: [@attendance, student_attendance.student] do |f| %>
-              <%= f.select :zoom_alias, @facade.alias_options_for(student_attendance.student) %>
-              <%= f.submit "Save Zoom Alias" %>
-            <% end %>
-          </td>
-        <% end %>
+        <section id='student-<%= student_attendance.student.id %>'>
+          <td><%= link_to student_attendance.student.name, student_path(student_attendance.student) %></td>
+          <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
+          <% if @facade.show_aliases?(student_attendance) %>
+            <td id='student-aliases-<%= student_attendance.student.id %>'>
+              <%= form_with  model: [@attendance, student_attendance.student] do |f| %>
+                <%= f.select :zoom_alias, @facade.alias_options_for(student_attendance.student) %>
+                <%= f.submit "Save Zoom Alias" %>
+              <% end %>
+            </td>
+          <% end %>
+        </section>
       </tr>
     <% end %>
   </tbody>
