@@ -65,12 +65,6 @@ class Attendance < ApplicationRecord
     end
   end
 
-  def retake_zoom_attendance
-    self.student_attendances.destroy_all
-    meeting = ZoomMeeting.from_meeting_details(zoom_attendance.zoom_meeting_id)
-    self.record(meeting)
-  end
-
   def pretty_attendance_time
     attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%l:%M%P - %b %e, %Y")
   end
