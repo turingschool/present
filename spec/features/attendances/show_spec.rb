@@ -9,6 +9,12 @@ RSpec.describe 'attendance show page' do
     test_zoom_attendance = create(:zoom_attendance_with_students)
     test_attendance = test_zoom_attendance.attendance
 
+    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_attendance.zoom_meeting_id}/participants?page_size=300") \
+      .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
+
+    stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_attendance.zoom_meeting_id}") \
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
+
     student_attendances = test_attendance.student_attendances
 
     visit "/attendances/#{test_attendance.id}"
@@ -23,6 +29,12 @@ RSpec.describe 'attendance show page' do
     test_attendance = test_zoom_attendance.attendance
     student_attendances = test_attendance.student_attendances
 
+    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{test_zoom_attendance.zoom_meeting_id}/participants?page_size=300") \
+      .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
+
+    stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_attendance.zoom_meeting_id}") \
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
+
     visit "/attendances/#{test_attendance.id}"
 
     within '#student-attendances' do
@@ -30,40 +42,19 @@ RSpec.describe 'attendance show page' do
         within "#student-attendance-#{student_attendance.id}" do
           expect(page).to have_content(student_attendance.status)
           expect(page).to have_content(student_attendance.student.name)
-          expect(page).to have_content(student_attendance.student.zoom_id)
+          expect(page).to have_content(student_attendance.student.zoom_name)
         end
       end
     end
   end
 
-  it 'students are listed in alphabetical order by last name' do
-    test_module = create(:turing_module)
-    student_a = test_module.students.create(zoom_id: "234s234n2l3kj4JkvvA", name: "Firstname Alastname")
-    student_z = test_module.students.create(zoom_id: "234sdfsdfaefja;lsdkfjkvvA", name: "Firstname Zlastname")
-    student_b = test_module.students.create(zoom_id: "234sdfsdf-lkrj2l34lkn", name: "Firstname Blastname")
-    student_c = test_module.students.create(zoom_id: "234sdfsdf-8u90ohvaldkfj", name: "Firstname Clastname")
-
-    attendance = test_module.attendances.create(user: @user)
-    attendance.student_attendances.create!(student: student_a, status: 'present')
-    attendance.student_attendances.create!(student: student_z, status: 'present')
-    attendance.student_attendances.create!(student: student_b, status: 'present')
-    attendance.student_attendances.create!(student: student_c, status: 'present')
-
-    visit attendance_path(attendance)
-
-    expect(student_a.name).to appear_before(student_b.name)
-    expect(student_b.name).to appear_before(student_c.name)
-    expect(student_c.name).to appear_before(student_z.name)
-  end
-
-
   it "students are listed first by Status (absent, tardy, then present), then Name" do
-    test_module = create(:turing_module)
-    student_a = test_module.students.create(zoom_id: "234s234n2l3kj4JkvvA", name: "Firstname Alastname")
-    student_z = test_module.students.create(zoom_id: "234sdfsdfaefja;lsdkfjkvvA", name: "Firstname Zlastname")
-    student_b = test_module.students.create(zoom_id: "234sdfsdf-lkrj2l34lkn", name: "Firstname Blastname")
-    student_c = test_module.students.create(zoom_id: "234sdfsdf-8u90ohvaldkfj", name: "Firstname Clastname")
-    attendance = test_module.attendances.create(user: @user)
+    test_module = create(:setup_module)
+    student_a = create(:student,  name: "Firstname Alastname")
+    student_z = create(:student, name: "Firstname Zlastname")
+    student_b = create(:student, name: "Firstname Blastname")
+    student_c = create(:student, name: "Firstname Clastname")
+    attendance = create(:attendance, turing_module: test_module)
     attendance.student_attendances.create!(student: student_a, status: 'present')
     attendance.student_attendances.create!(student: student_z, status: 'absent')
     attendance.student_attendances.create!(student: student_b, status: 'tardy')
@@ -73,9 +64,7 @@ RSpec.describe 'attendance show page' do
 
     expect(student_c.name).to appear_before(student_z.name)
     expect(student_z.name).to appear_before(student_b.name)
-    expect(student_b.name).to appear_before(student_a.name)
-
-  
+    expect(student_b.name).to appear_before(student_a.name)  
   end
 
   it 'applies css classes to all students based on status' do

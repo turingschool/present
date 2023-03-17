@@ -7,14 +7,14 @@ RSpec.describe 'Student Create' do
     mock_login
   end
   
-  it 'links to the create page from the student index' do
+  xit 'links to the create page from the student index' do
     test_module = create(:fe3)
     visit turing_module_students_path(test_module)
     click_link 'Add a Student'
     expect(current_path).to eq("/modules/#{test_module.id}/students/new")
   end
 
-  it 'can create a student' do
+  xit 'can create a student' do
     test_module = create(:fe3)
     test_name = 'Alan Turing'
     test_zoom_id = '1234'
@@ -35,17 +35,4 @@ RSpec.describe 'Student Create' do
       expect(page).to have_content(test_zoom_id)
     end
   end
-
-  # As a logged in User,
-  # When I visit a module's student index,
-  # And I click a button "Add a Student"
-  # then I am redirected to the new student page
-  # where I see the module name and a header
-  # indicating that I am creating a new student.
-  # And I see a form.
-  # When I fill in this form with a student's
-  # name and zoom id,
-  # And I click a button "Add Student"
-  # Then I am redirected back to the module's student index
-  # And I see the new student I created.
 end

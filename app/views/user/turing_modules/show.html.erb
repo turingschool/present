@@ -1,34 +1,37 @@
+
 <h1><%= @module.name %></h1>
 <% if current_user.is_this_my_mod?(@module) %>
   <p>(Set to My Module)</p>
 <% else %>
   <p><%= button_to 'Set as My Module', user_path(current_user), method: :patch, params: {turing_module_id: @module.id}, class: 's-button' %></p>
 <% end %>
-<p><%= link_to "#{@module.inning.name} inning", inning_path(@module.inning), class: 's-link' %></p>
-<p><%= link_to "Students (#{@module.students.length})", turing_module_students_path(@module), class: 's-link' %></p>
-<% if @module.slack_members.empty? %>
-  <p><%= link_to "Import Slack Accounts", turing_module_slack_channel_import_path(@module), class: 's-link' %></p>
-<% end %>
-<p><%= link_to 'Take Attendance', new_turing_module_attendance_path(@module), class: 's-link' %></p>
-<section id='past-attendances'>
-  <h3 class='s-h3'>Past Attendances</h3>
-  <table>
-    <tr>
-      <th>Meeting Title</th>
-      <th>Start Time</th>
-      <th>Zoom Meeting ID</th>
-    </tr>
-    <% @module.attendances.each do |attendance| %>
-      <tr id='attendance-<%= attendance.id %>', class='attendance'>
-        <% if attendance.zoom_attendance %>
-          <td><%= link_to attendance.zoom_attendance.meeting_title, attendance_path(attendance) %></td>
-          <td><%= attendance.zoom_attendance.meeting_time %></td>
-          <td><%= attendance.zoom_attendance.zoom_meeting_id %></td>
-        <% elsif attendance.slack_attendance %>
-          <td><%= link_to attendance.slack_attendance.pretty_time_date, attendance_path(attendance) %></td>
-          <td><%= attendance.slack_attendance.attendance_start_time %></td>
-        <% end %>
+<% if !@module.account_match_complete %>
+  <p><%= link_to "Setup Module", turing_module_populi_integration_path(@module), class: 's-button' %></p>
+<% else %>
+  <p><%= link_to "#{@module.inning.name} inning", inning_path(@module.inning), class: 's-link' %></p>
+  <p><%= link_to "Redo Module Setup", turing_module_populi_integration_path(@module), class: 's-link' %></p>
+  <p><%= link_to "Students (#{@module.students.length})", turing_module_students_path(@module), class: 's-link' %></p>
+  <p><%= link_to 'Take Attendance', new_turing_module_attendance_path(@module), class: 's-link' %></p>
+  <section id='past-attendances'>
+    <h3 class='s-h3'>Past Attendances</h3>
+    <table>
+      <tr>
+        <th>Meeting Title</th>
+        <th>Start Time</th>
+        <th>Zoom Meeting ID</th>
       </tr>
-    <% end %>
-  </table>
-</section>
+      <% @module.attendances.each do |attendance| %>
+        <tr id='attendance-<%= attendance.id %>', class='attendance'>
+          <% if attendance.zoom_attendance %>
+            <td><%= link_to attendance.zoom_attendance.meeting_title, attendance_path(attendance) %></td>
+            <td><%= attendance.zoom_attendance.meeting_time %></td>
+            <td><%= attendance.zoom_attendance.zoom_meeting_id %></td>
+          <% elsif attendance.slack_attendance %>
+            <td><%= link_to attendance.slack_attendance.pretty_time_date, attendance_path(attendance) %></td>
+            <td><%= attendance.slack_attendance.attendance_start_time %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+  </section>
+<% end %>

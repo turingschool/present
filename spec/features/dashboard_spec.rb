@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "Dashboard" do
   before(:each) do
     @user = mock_login
+    @my_mod = create(:turing_module)
   end
 
   it 'shows a welcome message' do
@@ -13,7 +14,6 @@ RSpec.describe "Dashboard" do
 
   context 'if my_module is set' do
     before(:each) do
-      @my_mod = create(:turing_module)
       @user.update(turing_module: @my_mod)
     end
 
@@ -24,14 +24,6 @@ RSpec.describe "Dashboard" do
       expect(page).to have_link(@my_mod.name, href: turing_module_path(@my_mod))
     end
 
-    it 'user can take attendance for their mod' do
-      visit '/'
-
-      expect(page).to have_content('Take Attendance for a Zoom Meeting')
-      expect(page.find('form#take-zoom-attendance')['method']).to eq('post')
-      expect(page.find('form#take-zoom-attendance')['action']).to eq(turing_module_attendances_path(@my_mod))
-    end
-
     it 'does not show current inning info' do
       current_inning = create(:inning, current: true)
 
@@ -39,26 +31,45 @@ RSpec.describe "Dashboard" do
 
       expect(page).to_not have_content("Current Inning:")
     end
+    
+    it 'user cant take attendance for their mod if account match isnt complete' do
+      visit '/'
+
+      expect(page).to have_link("Setup Module")
+      expect(page).to_not have_content('Take Attendance for a Slack or Zoom Meeting')
+    end
+    
+    context 'if account match is complete' do
+      before(:each) do
+        @my_mod = create(:setup_module)
+        @user.update(turing_module: @my_mod)
+      end
+
+      it 'user can take attendance for their mod if account match is complete' do
+        create_list(:student, 10, turing_module: @my_mod)
+        @my_mod.reload
+
+        visit '/'
+
+        expect(page).to_not have_link("Setup Module")
+        expect(page).to have_content('Take Attendance for a Slack or Zoom Meeting')
+        expect(page.find('form#take-attendance')['method']).to eq('post')
+        expect(page.find('form#take-attendance')['action']).to eq(turing_module_attendances_path(@my_mod))
+        expect(page.find('form#take-attendance')['method']).to eq('post')
+        expect(page.find('form#take-attendance')['action']).to eq(turing_module_attendances_path(@my_mod))
+      end
+    end
   end
+    
 
   context 'if my_module is not set and there is a current inning' do
     before(:each) do
-      @current_inning = create(:inning, current: true)
-      @current_modules = create_list(:turing_module, 3, inning: @current_inning)
+      @my_mod.inning.update(current: true)
     end
 
     it 'User sees a message about my_module' do
       visit '/'
       expect(page).to have_content("My Module is not set. To set My Module visit a module page.")
-    end
-
-    it 'shows the current inning and its modules' do
-      visit '/'
-
-      expect(page).to have_content("Current Inning: #{@current_inning.name}")
-      @current_modules.each do |mod|
-        expect(page).to have_link(mod.name, href: turing_module_path(mod))
-      end
     end
   end
 
@@ -72,6 +83,4 @@ RSpec.describe "Dashboard" do
       end
     end
   end
-
-
 end

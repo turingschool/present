@@ -1,0 +1,2 @@
+class SlackThreadParticipant < Participant
+end

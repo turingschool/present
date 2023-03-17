@@ -1,4 +1,7 @@
 Rails.application.configure do
+  # Display full errors and stack traces rather than generic "Something Went Wrong"
+  config.action_dispatch.show_exceptions = true
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -10,8 +13,8 @@ Rails.application.configure do
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
 
-  # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  # Full error reports are enabled and caching is turned on.
+  config.consider_all_requests_local       = true
   config.action_controller.perform_caching = true
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]

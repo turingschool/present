@@ -19,21 +19,13 @@ class User::StudentsController < User::BaseController
   end
 
   def update
-
     student = Student.find(params[:id])
-    if params[:slack_id]
-      student.update(slack_id: params[:slack_id])
-      redirect_to turing_module_students_path(student.turing_module)
-    elsif student.update(student_params)
+    if student.update(student_params) && student.add_zoom_alias(params[:student][:zoom_name])
       flash[:success] = 'Your changes have been saved.'
-      if request.referer.include? 'attendances'
-        redirect_to request.referer
-      else
-        redirect_to student_path(student)
-      end
+      redirect_to student_path(student)
     else
       flash[:error] = student.errors.full_messages.to_sentence
-      redirect_to request.referer
+      redirect_to edit_student_path(student)
     end
   end
 
@@ -50,6 +42,6 @@ class User::StudentsController < User::BaseController
 
 private
   def student_params
-    params.require(:student).permit(:name, :zoom_id, :turing_module_id, :slack_id)
+    params.require(:student).permit(:name, :turing_module_id, :slack_id)
   end
 end

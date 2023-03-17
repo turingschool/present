@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_04_221411) do
+ActiveRecord::Schema.define(version: 2023_03_17_185253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,12 +20,9 @@ ActiveRecord::Schema.define(version: 2023_01_04_221411) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
-    t.bigint "slack_attendance_id"
-    t.bigint "zoom_attendance_id"
-    t.index ["slack_attendance_id"], name: "index_attendances_on_slack_attendance_id"
+    t.datetime "attendance_time"
     t.index ["turing_module_id"], name: "index_attendances_on_turing_module_id"
     t.index ["user_id"], name: "index_attendances_on_user_id"
-    t.index ["zoom_attendance_id"], name: "index_attendances_on_zoom_attendance_id"
   end
 
   create_table "innings", force: :cascade do |t|
@@ -43,13 +40,6 @@ ActiveRecord::Schema.define(version: 2023_01_04_221411) do
     t.index ["attendance_id"], name: "index_slack_attendances_on_attendance_id"
   end
 
-  create_table "slack_members", force: :cascade do |t|
-    t.string "slack_user_id"
-    t.string "name"
-    t.bigint "turing_module_id"
-    t.index ["turing_module_id"], name: "index_slack_members_on_turing_module_id"
-  end
-
   create_table "student_attendances", force: :cascade do |t|
     t.integer "status"
     t.bigint "student_id"
@@ -62,12 +52,12 @@ ActiveRecord::Schema.define(version: 2023_01_04_221411) do
   end
 
   create_table "students", force: :cascade do |t|
-    t.string "zoom_id"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "turing_module_id"
     t.string "slack_id"
+    t.string "populi_id"
     t.index ["turing_module_id"], name: "index_students_on_turing_module_id"
   end
 
@@ -78,6 +68,8 @@ ActiveRecord::Schema.define(version: 2023_01_04_221411) do
     t.integer "program"
     t.integer "module_number"
     t.boolean "calendar_integration", default: false
+    t.string "slack_channel_id"
+    t.string "populi_course_id"
     t.index ["inning_id"], name: "index_turing_modules_on_inning_id"
   end
 
@@ -93,6 +85,16 @@ ActiveRecord::Schema.define(version: 2023_01_04_221411) do
     t.index ["turing_module_id"], name: "index_users_on_turing_module_id"
   end
 
+  create_table "zoom_aliases", force: :cascade do |t|
+    t.string "name"
+    t.bigint "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "zoom_attendance_id"
+    t.index ["student_id"], name: "index_zoom_aliases_on_student_id"
+    t.index ["zoom_attendance_id"], name: "index_zoom_aliases_on_zoom_attendance_id"
+  end
+
   create_table "zoom_attendances", force: :cascade do |t|
     t.string "zoom_meeting_id"
     t.string "meeting_title"
@@ -101,15 +103,13 @@ ActiveRecord::Schema.define(version: 2023_01_04_221411) do
     t.index ["attendance_id"], name: "index_zoom_attendances_on_attendance_id"
   end
 
-  add_foreign_key "attendances", "slack_attendances"
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
-  add_foreign_key "attendances", "zoom_attendances"
   add_foreign_key "slack_attendances", "attendances"
-  add_foreign_key "slack_members", "turing_modules"
   add_foreign_key "student_attendances", "attendances"
   add_foreign_key "student_attendances", "students"
   add_foreign_key "students", "turing_modules"
   add_foreign_key "turing_modules", "innings"
+  add_foreign_key "zoom_aliases", "zoom_attendances"
   add_foreign_key "zoom_attendances", "attendances"
 end

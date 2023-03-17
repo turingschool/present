@@ -1,6 +1,6 @@
 <h1 class='s-h1'>Create a new student for <%= @module.name %></h1>
 
-<%= form_with model: [@module, @student] do |f| %>
+<%= form_with model: [@module, @student], local: true do |f| %>
   <p class='s-p'>
     <%= f.label 'Student Name' %>
     <%= f.text_field :name %>
