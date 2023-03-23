@@ -2,7 +2,6 @@
 <% if @attendance.zoom_attendance %>
   <h3><%= @attendance.child.meeting_title %> - <%= @attendance.child.pretty_time %></h3>
   <h3>Meeting ID: <%= @attendance.child.zoom_meeting_id %></h3>
-  <p>Use the zoom alias fields to correct student attendances</p>
 <% elsif @attendance.slack_attendance %>
   <h3>Slack Thread - <%= @attendance.child.pretty_time %></h3>
   <h3>Channel ID: <%= @attendance.child.channel_id %></h3>
@@ -11,6 +10,6 @@
 
 <%= form_with model: @attendance, local: true do |f| %>
   <%= f.label "Attendance Time:" %>
-  <%= f.time_field :attendance_time %>
+  <%= f.time_field :attendance_time, include_seconds: false, value: @attendance.attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%H:%M") %>
   <%= f.submit "Update Attendance Time" %>
 <% end %>

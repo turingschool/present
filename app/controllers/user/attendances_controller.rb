@@ -27,7 +27,7 @@ class User::AttendancesController < User::BaseController
 
   def update
     @attendance = Attendance.find(params[:id])
-    @attendance.update(attendance_params)
+    @attendance.update_time(params[:attendance][:attendance_time])
     CreateAttendanceFacade.retake_attendance(@attendance)
     redirect_to attendance_path(@attendance)
   end
@@ -46,10 +46,5 @@ class User::AttendancesController < User::BaseController
     zoom_link = attendance.zoom_attendance.zoom_meeting_id
     attendance.student_attendances.destroy_all
     CreateAttendanceFacade.take_attendance(zoom_link, turing_module, current_user)
-  end
-
-private
-  def attendance_params
-    params.require(:attendance).permit(:attendance_time)
   end
 end

@@ -55,7 +55,7 @@ RSpec.describe 'Attendance Update' do
 
     visit edit_attendance_path(@attendance)
 
-    fill_in :attendance_attendance_time, with: @attendance.attendance_time + 30.minutes
+    fill_in :attendance_attendance_time, with: "9:30"
 
     click_button 'Update Attendance Time'
 
