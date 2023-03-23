@@ -21,7 +21,18 @@ class User::AttendancesController < User::BaseController
     @module = @attendance.turing_module
   end
 
+  def edit
+    @attendance = Attendance.find(params[:id])
+  end
+
   def update
+    @attendance = Attendance.find(params[:id])
+    @attendance.update(attendance_params)
+    CreateAttendanceFacade.retake_attendance(@attendance)
+    redirect_to attendance_path(@attendance)
+  end
+
+  def save_zoom_alias
     student = Student.find(params[:id])
     zoom_alias = ZoomAlias.find(params[:student][:zoom_alias])
     zoom_alias.update(student: student)
@@ -35,5 +46,10 @@ class User::AttendancesController < User::BaseController
     zoom_link = attendance.zoom_attendance.zoom_meeting_id
     attendance.student_attendances.destroy_all
     CreateAttendanceFacade.take_attendance(zoom_link, turing_module, current_user)
+  end
+
+private
+  def attendance_params
+    params.require(:attendance).permit(:attendance_time)
   end
 end
