@@ -42,7 +42,7 @@ jobs: # a collection of steps
           command: bin/rails db:{create,migrate} --trace
       - run:
           name: Run rspec in parallel
-          command: bundle exec rspec -fd -p
+          command: bundle exec rspec
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: test_results

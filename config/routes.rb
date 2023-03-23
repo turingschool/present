@@ -9,9 +9,9 @@ Rails.application.routes.draw do
   scope module: :user do
     resources :users, only: [:update]
     resources :innings, only: [:show, :create, :index, :update]
-    patch 'attendances/:attendance_id/students/:id', to: 'attendances#update', as: :attendance_student
+    patch 'attendances/:attendance_id/students/:id', to: 'attendances#save_zoom_alias', as: :attendance_student
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
-      resources :attendances, only: [:new, :create, :show]
+      resources :attendances, only: [:new, :create, :show, :edit, :update]
       resources :students
 
       get '/slack/new', to: 'slack#new', as: :slack_integration

@@ -45,7 +45,7 @@ RSpec.describe 'attendance show page' do
       click_button "Save Zoom Alias"
     end
 
-    expect(current_path).to eq(attendance_path(@attendance))
+    expect(current_path).to eq(attendance_path(Attendance.last))
     
     within "#student-aliases-#{anhnhi.id}" do
       expect(first('option').text).to eq("Anhnhi T BE she/her/hers")
