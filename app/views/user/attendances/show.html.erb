@@ -1,5 +1,5 @@
 <h2><%= link_to @module.name, turing_module_path(@module) %></h2>
-<h3>Attendance Time: <%= @attendance.pretty_attendance_time %></h3>
+<h3>Attendance Time: <%= @attendance.pretty_attendance_time %> <%= link_to "Update Attendance Time", edit_attendance_path(@attendance) %></h3>
 <% if @attendance.zoom_attendance %>
   <h3><%= @attendance.child.meeting_title %> - <%= @attendance.child.pretty_time %></h3>
   <h3>Meeting ID: <%= @attendance.child.zoom_meeting_id %></h3>
