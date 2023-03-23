@@ -60,10 +60,29 @@ RSpec.describe 'Attendance Update' do
     click_button 'Update Attendance Time'
 
     expect(current_path).to eq(attendance_path(@attendance))
-
     expect(find("#student-attendances")).to have_table_row("Student" => lacey.name, "Status" => 'absent')
     expect(find("#student-attendances")).to have_table_row("Student" => anhnhi.name, "Status" => 'tardy')
     expect(find("#student-attendances")).to have_table_row("Student" => leo.name, "Status" => 'present')
     expect(find("#student-attendances")).to have_table_row("Student" => j.name, "Status" => 'present')
+  end
+
+  it 'can move attendance backward in time' do
+    sam = @test_module.students.find_by(name: 'Samuel Cox')
+    anthony = @test_module.students.find_by(name: 'Anthony Blackwell Tallent')
+
+    visit attendance_path(@attendance)
+
+    expect(find("#student-attendances")).to have_table_row("Student" => sam.name, "Status" => 'present')
+    expect(find("#student-attendances")).to have_table_row("Student" => anthony.name, "Status" => 'tardy')
+
+    visit edit_attendance_path(@attendance)
+
+    
+    fill_in :attendance_attendance_time, with: "8:55"
+
+    click_button 'Update Attendance Time'
+
+    expect(find("#student-attendances")).to have_table_row("Student" => sam.name, "Status" => 'tardy')
+    expect(find("#student-attendances")).to have_table_row("Student" => anthony.name, "Status" => 'absent')
   end
 end

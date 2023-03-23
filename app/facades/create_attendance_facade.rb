@@ -10,6 +10,7 @@ class CreateAttendanceFacade
   end
 
   def self.retake_attendance(attendance)
+    attendance.student_attendances.destroy_all
     meeting = create_meeting(attendance.zoom_attendance.zoom_meeting_id)
     attendance.record(meeting)
     # update_populi(attendance, course_id, populi_meeting.id)
