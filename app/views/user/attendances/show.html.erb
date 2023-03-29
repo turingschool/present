@@ -1,39 +1,10 @@
 <h2><%= link_to @module.name, turing_module_path(@module) %></h2>
-<h3>Attendance Time: <%= @attendance.pretty_attendance_time %> <%= link_to "Update Attendance Time", edit_attendance_path(@attendance) %></h3>
+<h3><%= @attendance.title %></h3>
+<h3>Date: <%= @attendance.pretty_date %></h3>
+<h3>Attendance Time: <%= @attendance.pretty_time %> <%= link_to "Update Attendance Time", edit_attendance_path(@attendance) %></h3>
 <% if @attendance.zoom_attendance %>
-  <h3><%= @attendance.child.meeting_title %> - <%= @attendance.child.pretty_time %></h3>
-  <h3>Meeting ID: <%= @attendance.child.zoom_meeting_id %></h3>
-  <p>Use the zoom alias fields to correct student attendances</p>
-<% elsif @attendance.slack_attendance %>
-  <h3>Slack Thread - <%= @attendance.child.pretty_time %></h3>
-  <h3>Channel ID: <%= @attendance.child.channel_id %></h3>
-  <h3>Timestamp ID: <%= @attendance.child.sent_timestamp %></h3>
+  <%= render partial: "shared/zoom_attendance_table", locals: {facade: AttendanceShowFacade.new(@attendance)} %>  
+<% else %>
+  <%= render partial: "shared/slack_attendance_table", locals: {attendance: @attendance} %>  
 <% end %>
 
-<table id='student-attendances' class="sortable">
-  <thead>
-    <tr>
-      <th>Student</th>
-      <th>Status</th>
-      <th>Zoom Alias</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @attendance.student_attendances.by_attendance_status.each do |student_attendance| %>
-      <tr id='student-attendance-<%= student_attendance.id %>' class='student-attendance'>
-        <section id='student-<%= student_attendance.student.id %>'>
-          <td><%= link_to student_attendance.student.name, student_path(student_attendance.student) %></td>
-          <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
-          <% if @facade.show_aliases?(student_attendance) %>
-            <td id='student-aliases-<%= student_attendance.student.id %>'>
-              <%= form_with  model: [@attendance, student_attendance.student] do |f| %>
-                <%= f.select :zoom_alias, @facade.alias_options_for(student_attendance.student) %>
-                <%= f.submit "Save Zoom Alias" %>
-              <% end %>
-            </td>
-          <% end %>
-        </section>
-      </tr>
-    <% end %>
-  </tbody>
-</table>

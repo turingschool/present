@@ -3,13 +3,13 @@ class ZoomAttendance < ApplicationRecord
   has_one :turing_module, through: :attendance
   has_many :zoom_aliases, dependent: :destroy
 
-  def am_or_pm
-    meeting_time.in_time_zone('Mountain Time (US & Canada)').strftime('%p')
-  end
+  # def am_or_pm
+  #   meeting_time.in_time_zone('Mountain Time (US & Canada)').strftime('%p')
+  # end
 
-  def pretty_time
-    meeting_time.in_time_zone('Mountain Time (US & Canada)').strftime('%l:%M %p').strip
-  end
+  # def pretty_time
+  #   meeting_time.in_time_zone('Mountain Time (US & Canada)').strftime('%l:%M %p').strip
+  # end
 
   def find_or_create_zoom_alias(name)
     aliases = turing_module.zoom_aliases.where(name: name)

@@ -17,7 +17,6 @@ class User::AttendancesController < User::BaseController
 
   def show
     @attendance = Attendance.find(params[:id])
-    @facade = AttendanceShowFacade.new(@attendance.child)
     @module = @attendance.turing_module
   end
 

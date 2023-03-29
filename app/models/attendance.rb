@@ -27,7 +27,7 @@ class Attendance < ApplicationRecord
     if meeting.respond_to? :message_timestamp
       SlackAttendance.create(channel_id: meeting.channel_id, sent_timestamp: meeting.message_timestamp, attendance_start_time: attendance_time, attendance: self)
     elsif meeting.respond_to? :title
-      ZoomAttendance.create!(meeting_time: meeting.start_time, meeting_title: meeting.title, zoom_meeting_id: meeting.id, attendance: self)
+      ZoomAttendance.create!(meeting_time: meeting.start_time, title: meeting.title, zoom_meeting_id: meeting.id, attendance: self)
     end
   end
 
@@ -65,14 +65,26 @@ class Attendance < ApplicationRecord
     end
   end
 
-  def pretty_attendance_time
-    attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%l:%M%P - %b %e, %Y")
-  end
+  # def pretty_attendance_time
+  #   attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%l:%M%P - %b %e, %Y")
+  # end
 
   def update_time(time)
     hour = time.split(":").first
     minutes = time.split(":").last
     new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
     self.update!(attendance_time: new_time)
+  end
+  
+  def pretty_date
+    attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%A %b %e, %Y")
+  end
+
+  def pretty_time 
+    attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime('%l:%M %p').strip
+  end 
+
+  def title
+
   end
 end

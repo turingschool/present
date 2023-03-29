@@ -23,7 +23,7 @@
       <% @module.attendances.each do |attendance| %>
         <tr id='attendance-<%= attendance.id %>', class='attendance'>
           <% if attendance.zoom_attendance %>
-            <td><%= link_to attendance.zoom_attendance.meeting_title, attendance_path(attendance) %></td>
+            <td><%= link_to attendance.zoom_attendance.title, attendance_path(attendance) %></td>
             <td><%= attendance.zoom_attendance.meeting_time %></td>
             <td><%= attendance.zoom_attendance.zoom_meeting_id %></td>
           <% elsif attendance.slack_attendance %>
