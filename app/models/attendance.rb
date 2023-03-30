@@ -39,7 +39,6 @@ class Attendance < ApplicationRecord
     end
   end
 
-
   def update_time(time)
     hour = time.split(":").first
     minutes = time.split(":").last
