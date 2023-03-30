@@ -61,11 +61,6 @@ RSpec.describe 'attendance show page' do
 
     visit attendance_path(@attendance)
 
-    within "#student-aliases-#{j.id}" do
-      select("J Seymour")
-      click_button "Save Zoom Alias"
-    end
-
     within "#student-#{j.id}" do
       expect(page).to have_content("tardy")
     end
