@@ -1,8 +1,8 @@
 class SlackThreadParticipant
   attr_reader :slack_id
 
-  TARDY_GRACE_PERIOD_IN_MINUTES = 5
-  ABSENT_GRACE_PERIOD_IN_MINUTES = 30
+  SLACK_TARDY_GRACE_PERIOD_IN_MINUTES = 5
+  SLACK_ABSENT_GRACE_PERIOD_IN_MINUTES = 30
 
   def initialize(reply_info)
     @slack_id = reply_info[:slack_id]
@@ -15,9 +15,9 @@ class SlackThreadParticipant
 
   def attendance_status(attendance_time)
     minutes_passed_start_time = (@reply_time - attendance_time)/60.0
-    if minutes_passed_start_time > ABSENT_GRACE_PERIOD_IN_MINUTES
+    if minutes_passed_start_time > SLACK_ABSENT_GRACE_PERIOD_IN_MINUTES
       return 'absent' 
-    elsif minutes_passed_start_time > TARDY_GRACE_PERIOD_IN_MINUTES
+    elsif minutes_passed_start_time > SLACK_TARDY_GRACE_PERIOD_IN_MINUTES
       return 'tardy'
     else
       return 'present' 

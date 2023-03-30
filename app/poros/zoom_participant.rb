@@ -1,4 +1,6 @@
 class ZoomParticipant < Participant
+  ZOOM_TARDY_GRACE_PERIOD_IN_MINUTES = 1
+  ZOOM_ABSENT_GRACE_PERIOD_IN_MINUTES = 30
 
   def initialize(participant_data)
     @join_time = Time.parse(participant_data[:join_time])
@@ -7,9 +9,9 @@ class ZoomParticipant < Participant
 
   def attendance_status(attendance_time)
     minutes_passed_start_time = (join_time - attendance_time)/60.0
-    if minutes_passed_start_time > 30
+    if minutes_passed_start_time > ZOOM_ABSENT_GRACE_PERIOD_IN_MINUTES
       @status = 'absent' 
-    elsif minutes_passed_start_time > 1
+    elsif minutes_passed_start_time > ZOOM_TARDY_GRACE_PERIOD_IN_MINUTES
       @status = 'tardy'
     else
       @status = 'present' 
