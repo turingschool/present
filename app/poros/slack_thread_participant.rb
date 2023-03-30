@@ -1,8 +1,8 @@
 class SlackThreadParticipant
   attr_reader :slack_id
 
-  TARDY_GRACE_PERIOD_IN_MINUTES = 1
-  ABSENT_GRACE_PERIOD_IN_MINUTES = 5
+  TARDY_GRACE_PERIOD_IN_MINUTES = 5
+  ABSENT_GRACE_PERIOD_IN_MINUTES = 30
 
   def initialize(reply_info)
     @slack_id = reply_info[:slack_id]
