@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_30_145308) do
+ActiveRecord::Schema.define(version: 2023_03_30_152937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2023_03_30_145308) do
 
   create_table "slack_threads", force: :cascade do |t|
     t.string "channel_id"
-    t.datetime "sent_timestamp"
+    t.string "sent_timestamp"
     t.datetime "start_time"
   end
 
