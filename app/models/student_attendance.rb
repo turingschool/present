@@ -16,9 +16,11 @@ class StudentAttendance < ApplicationRecord
       .order("status DESC, last_name ASC")
   end
 
-  def visiting_student?
-    return true if student.turing_module.nil?
-    return true if student.turing_module != self.attendance.turing_module
-    return false
+  def assign_status(status)
+    if self.tardy? && status == "present"
+      self.update(status: "present")
+    elsif self.absent? || self.status.nil?
+      self.update(status: status) 
+    end
   end
 end

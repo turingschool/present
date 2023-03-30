@@ -23,19 +23,11 @@ class Attendance < ApplicationRecord
 
   def take_participant_attendance
     meeting.participants.each do |participant|
-      # student = find_student_from_participant(participant)
-      next if participant.student.nil?
-      create_participant_attendance(participant)
-    end
-  end
-
-  def create_participant_attendance(participant)
-    student_attendance = student_attendances.find_or_create_by(student: participant.student)
-    status = participant.attendance_status(attendance_time)
-    if student_attendance.tardy? && status == "present"
-      student_attendance.update(status: "present")
-    elsif student_attendance.absent? || student_attendance.status.nil?
-      student_attendance.update(status: status) 
+      student = meeting.find_student_from_participant(participant)
+      next if student.nil?
+      student_attendance = student_attendances.find_or_create_by(student: student)
+      status = participant.attendance_status(attendance_time)
+      student_attendance.assign_status(status)
     end
   end
 
