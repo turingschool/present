@@ -1,12 +1,7 @@
 <h2><%= link_to @attendance.turing_module.name, turing_module_path(@attendance.turing_module) %></h2>
-<% if @attendance.zoom_attendance %>
-  <h3><%= @attendance.child.title %> - <%= @attendance.child.pretty_time %></h3>
-  <h3>Meeting ID: <%= @attendance.child.zoom_meeting_id %></h3>
-<% elsif @attendance.slack_attendance %>
-  <h3>Slack Thread - <%= @attendance.child.pretty_time %></h3>
-  <h3>Channel ID: <%= @attendance.child.channel_id %></h3>
-  <h3>Timestamp ID: <%= @attendance.child.sent_timestamp %></h3>
-<% end %>
+<h3><%= @attendance.meeting.title %></h3>
+<h3>Date: <%= @attendance.pretty_date %></h3>
+<h3>Attendance Time: <%= @attendance.pretty_time %></h3>
 
 <%= form_with model: @attendance, local: true do |f| %>
   <%= f.label "Attendance Time:" %>
