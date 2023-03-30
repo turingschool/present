@@ -8,8 +8,7 @@ RSpec.describe Attendance, type: :model do
   describe 'relationships' do
     it {should belong_to :turing_module}
     it {should belong_to :user}
-    it {should have_one(:slack_attendance).optional} 
-    it {should have_one(:zoom_attendance).optional}
+    it {should belong_to(:meeting)} 
     it {should have_many :student_attendances}
     it {should have_many(:students).through(:student_attendances)}
   end
