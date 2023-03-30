@@ -25,10 +25,10 @@ class User::AttendancesController < User::BaseController
   end
 
   def update
-    @attendance = Attendance.find(params[:id])
-    @attendance.update_time(params[:attendance][:attendance_time])
-    @attendance.rerecord
-    redirect_to attendance_path(@attendance)
+    attendance = Attendance.find(params[:id])
+    attendance.update_time(params[:attendance][:attendance_time])
+    attendance.rerecord
+    redirect_to attendance_path(attendance)
   end
 
   def save_zoom_alias
@@ -36,7 +36,7 @@ class User::AttendancesController < User::BaseController
     zoom_alias = ZoomAlias.find(params[:student][:zoom_alias])
     zoom_alias.update(student: student)
     attendance = Attendance.find(params[:attendance_id])
-    @attendance.rerecord
+    attendance.rerecord
     redirect_to attendance_path(attendance)
   end
 end
