@@ -19,7 +19,7 @@ class SlackThread < ApplicationRecord
   end
 
   def find_student_from_participant(participant)
-    Student.find_by(slack_id: participant.id)
+    Student.find_by(slack_id: participant.slack_id)
   end
 
   def create_participant_attendance(student, participant)
