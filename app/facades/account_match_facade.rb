@@ -19,13 +19,13 @@ class AccountMatchFacade
   end
 
   def zoom_options(student)
-    @zoom_meeting.participants_by_match(student).map do |participant|
+   zoom_participants_by_match(student).map do |participant|
       participant.name
     end.unshift(["Not Present", nil])
   end
 
   def best_matching_zoomer(student)
-    @zoom_meeting.participants_by_match(student).first.name
+    zoom_participants_by_match(student).first.name
   end
 
 private
@@ -41,7 +41,9 @@ private
     end.reverse
   end
 
-  def participants
-    @participants ||= retrieve_participant_data
+  def zoom_participants_by_match(student)
+    @zoom_meeting.participants.sort_by do |participant|
+      string_distance(student.name, participant.name)
+    end.reverse
   end
 end
