@@ -31,7 +31,7 @@ RSpec.describe StudentAttendance, type: :model do
   end
 
   describe 'instance methods' do
-    describe '#record_status_from_participant' do
+    describe '#record_status_for_participant' do
       before :each do
         @join_time = "2021-12-17T15:48:18Z"
         @different_join_time = "2021-11-11T11:11:18Z"
@@ -39,27 +39,27 @@ RSpec.describe StudentAttendance, type: :model do
       end
 
       it 'assigns a present status' do
-        participant = ZoomParticipant.new({join_time: @join_time, status: "present"})  
+        participant = ZoomParticipant.new({join_time: @join_time, attendance_status: "present"})  
 
-        @student_attendance.record_status_from_participant(participant)
+        @student_attendance.record_status_for_participant(participant)
 
         expect(@student_attendance.status).to eq("present")
         expect(@student_attendance.join_time).to eq(@join_time)
       end
       
       it 'assigns a tardy status' do
-        participant = ZoomParticipant.new({join_time: @join_time, status: "tardy"})  
+        participant = ZoomParticipant.new({join_time: @join_time, attendance_status: "tardy"})  
 
-        @student_attendance.record_status_from_participant(participant)
+        @student_attendance.record_status_for_participant(participant)
 
         expect(@student_attendance.status).to eq("tardy")
         expect(@student_attendance.join_time).to eq(@join_time)
       end
       
       it 'assigns an absent status' do
-        participant = ZoomParticipant.new({join_time: @join_time, status: "absent"})  
+        participant = ZoomParticipant.new({join_time: @join_time, attendance_status: "absent"})  
 
-        @student_attendance.record_status_from_participant(participant)
+        @student_attendance.record_status_for_participant(participant)
 
         expect(@student_attendance.status).to eq("absent")
         expect(@student_attendance.join_time).to eq(@join_time)
@@ -67,12 +67,12 @@ RSpec.describe StudentAttendance, type: :model do
 
       it 'overwrites an absent status with a tardy' do
         @student_attendance.update(status: :absent)
-        participant = ZoomParticipant.new({join_time: @join_time, status: "tardy"})  
+        participant = ZoomParticipant.new({join_time: @join_time, attendance_status: "tardy"})  
 
         expect(@student_attendance.status).to eq('absent')
         expect(@student_attendance.join_time).to_not eq(@join_time)
 
-        @student_attendance.record_status_from_participant(participant)
+        @student_attendance.record_status_for_participant(participant)
 
         expect(@student_attendance.status).to eq('tardy')
         expect(@student_attendance.join_time).to eq(@join_time)
@@ -80,12 +80,12 @@ RSpec.describe StudentAttendance, type: :model do
 
       it 'overwrites an absent status with a present' do
         @student_attendance.update(status: :absent)
-        participant = ZoomParticipant.new({join_time: @join_time, status: "present"})  
+        participant = ZoomParticipant.new({join_time: @join_time, attendance_status: "present"})  
 
         expect(@student_attendance.status).to eq('absent')
         expect(@student_attendance.join_time).to_not eq(@join_time)
 
-        @student_attendance.record_status_from_participant(participant)
+        @student_attendance.record_status_for_participant(participant)
         
         expect(@student_attendance.status).to eq('present')
         expect(@student_attendance.join_time).to eq(@join_time)
@@ -93,12 +93,12 @@ RSpec.describe StudentAttendance, type: :model do
 
       it 'overwrites a tardy status with a present' do
         @student_attendance.update(status: :tardy)
-        participant = ZoomParticipant.new({join_time: @join_time, status: "present"})  
+        participant = ZoomParticipant.new({join_time: @join_time, attendance_status: "present"})  
 
         expect(@student_attendance.status).to eq('tardy')
         expect(@student_attendance.join_time).to_not eq(@join_time)
 
-        @student_attendance.record_status_from_participant(participant)
+        @student_attendance.record_status_for_participant(participant)
         
         expect(@student_attendance.status).to eq('present')
         expect(@student_attendance.join_time).to eq(@join_time)
@@ -106,12 +106,12 @@ RSpec.describe StudentAttendance, type: :model do
 
       it 'does not overwrite a present status with a tardy' do
         @student_attendance.update(status: :present, join_time: @join_time)
-        participant = ZoomParticipant.new({join_time: @different_join_time, status: "tardy"})  
+        participant = ZoomParticipant.new({join_time: @different_join_time, attendance_status: "tardy"})  
 
         expect(@student_attendance.status).to eq('present')
         expect(@student_attendance.join_time).to eq(@join_time)
 
-        @student_attendance.record_status_from_participant(participant)
+        @student_attendance.record_status_for_participant(participant)
         
         expect(@student_attendance.status).to eq('present')
         expect(@student_attendance.join_time).to eq(@join_time)
@@ -119,12 +119,12 @@ RSpec.describe StudentAttendance, type: :model do
 
       it 'does not overwrite a present status with an absent' do
         @student_attendance.update(status: :present, join_time: @join_time)
-        participant = ZoomParticipant.new({join_time: @different_join_time, status: "absent"})  
+        participant = ZoomParticipant.new({join_time: @different_join_time, attendance_status: "absent"})  
 
         expect(@student_attendance.status).to eq('present')
         expect(@student_attendance.join_time).to eq(@join_time)
 
-        @student_attendance.record_status_from_participant(participant)
+        @student_attendance.record_status_for_participant(participant)
         
         expect(@student_attendance.status).to eq('present')
         expect(@student_attendance.join_time).to eq(@join_time)
@@ -132,12 +132,12 @@ RSpec.describe StudentAttendance, type: :model do
 
       it 'does not overwrite a tardy status with an absent' do
         @student_attendance.update(status: :tardy, join_time: @join_time)
-        participant = ZoomParticipant.new({join_time: @different_join_time, status: "absent"})  
+        participant = ZoomParticipant.new({join_time: @different_join_time, attendance_status: "absent"})  
 
         expect(@student_attendance.status).to eq('tardy')
         expect(@student_attendance.join_time).to eq(@join_time)
 
-        @student_attendance.record_status_from_participant(participant)
+        @student_attendance.record_status_for_participant(participant)
         
         expect(@student_attendance.status).to eq('tardy')
         expect(@student_attendance.join_time).to eq(@join_time)

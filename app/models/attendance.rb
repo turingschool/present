@@ -32,8 +32,8 @@ class Attendance < ApplicationRecord
       next if student.nil?
       student_attendance = student_attendances.find_or_create_by(student: student)
       # REFACTOR: Should the participant determine its status? Or the meeting?
-      status = participant.attendance_status(attendance_time)
-      student_attendance.assign_status(status, participant.join_time)
+      participant.assign_status!(attendance_time)
+      student_attendance.record_status_for_participant(participant)
     end
   end
 
