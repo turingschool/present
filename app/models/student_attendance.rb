@@ -10,11 +10,9 @@ class StudentAttendance < ApplicationRecord
       .order("status DESC, last_name ASC")
   end
 
-  def assign_status(status, join_time)
-    if self.tardy? && status == "present"
-      self.update(status: "present", join_time: join_time)
-    elsif self.absent? || self.status.nil?
-      self.update(status: status, join_time: join_time) 
+  def record_status_from_participant(participant)
+    if self.absent? || self.status.nil? || (self.tardy? && participant.status == "present")
+      self.update(status: participant.status, join_time: participant.join_time) 
     end
   end
 end
