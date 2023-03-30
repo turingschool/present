@@ -21,6 +21,11 @@ class Attendance < ApplicationRecord
     end
   end
 
+  def rerecord
+    student_attendances.destroy_all
+    record
+  end
+
   def take_participant_attendance
     meeting.participants.each do |participant|
       student = meeting.find_student_from_participant(participant)
