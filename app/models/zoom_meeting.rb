@@ -14,12 +14,32 @@ class ZoomMeeting < ApplicationRecord
     )
   end
 
-  def self.invalid_error
-    InvalidMeetingError.new("It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again.")
-  end
-
   def participants
     @participants ||= synthesize_participant_report
+  end
+
+  def unclaimed_aliases
+    self.zoom_aliases.where(student: nil)
+  end
+
+  def find_student_from_participant(participant)
+    zoom_alias = find_or_create_zoom_alias(participant.name)
+    return zoom_alias.student if zoom_alias
+  end
+
+  def find_or_create_zoom_alias(name)
+    aliases = turing_module.zoom_aliases.where(name: name)
+    if aliases.empty?
+      self.zoom_aliases.create!(name: name)
+      return nil
+    else
+      return aliases.first
+    end
+  end  
+
+private
+  def self.invalid_error
+    InvalidMeetingError.new("It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again.")
   end
 
   def participant_report
@@ -41,25 +61,6 @@ class ZoomMeeting < ApplicationRecord
     grouped_by_name = participants.group_by(&:name)
     participants_best_time = grouped_by_name.map do |name, participant_records|
       participant_records.min_by(&:join_time)
-    end
-  end
-
-  def unclaimed_aliases
-    self.zoom_aliases.where(student: nil)
-  end
-
-  def find_student_from_participant(participant)
-    zoom_alias = find_or_create_zoom_alias(participant.name)
-    return zoom_alias.student if zoom_alias
-  end
-
-  def find_or_create_zoom_alias(name)
-    aliases = turing_module.zoom_aliases.where(name: name)
-    if aliases.empty?
-      self.zoom_aliases.create!(name: name)
-      return nil
-    else
-      return aliases.first
     end
   end
 end
