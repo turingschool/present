@@ -42,7 +42,7 @@ class User::AttendancesController < User::BaseController
 
   def retake_zoom_attendance(attendance)
     turing_module = attendance.turing_module
-    zoom_link = attendance.zoom_attendance.zoom_meeting_id
+    zoom_link = attendance.meeting.meeting_id
     attendance.student_attendances.destroy_all
     CreateAttendanceFacade.take_attendance(zoom_link, turing_module, current_user)
   end
