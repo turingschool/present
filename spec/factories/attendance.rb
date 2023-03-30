@@ -13,5 +13,14 @@ FactoryBot.define do
         end
       end
     end
+   
+    factory :slack_attendance do
+      meeting {create(:slack_thread_with_details)}
+      after(:create) do |attendance|
+        5.times do 
+          create(:student_attendance, attendance: attendance, student: create(:setup_student))
+        end
+      end
+    end
   end
 end
