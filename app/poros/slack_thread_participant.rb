@@ -1,4 +1,6 @@
 class SlackThreadParticipant
+  attr_reader :slack_id
+
   TARDY_GRACE_PERIOD_IN_MINUTES = 1
   ABSENT_GRACE_PERIOD_IN_MINUTES = 5
 
@@ -8,7 +10,7 @@ class SlackThreadParticipant
   end
 
   def student
-    Student.find_by(slack_id: @slack_id)
+    Student.find_by(slack_id: slack_id)
   end
 
   def attendance_status(attendance_time)
