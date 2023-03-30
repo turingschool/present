@@ -13,7 +13,7 @@ class Attendance < ApplicationRecord
     return zoom_attendance if zoom_attendance
   end
 
-  def record(meeting)
+  def record
     self.transaction do
       # meeting.assign_participant_statuses(attendance_time)
       take_participant_attendance

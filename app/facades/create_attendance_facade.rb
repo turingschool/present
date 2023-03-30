@@ -4,7 +4,7 @@ class CreateAttendanceFacade
     meeting = create_meeting(meeting_url)
     populi_meeting = retrieve_populi_meeting(course_id, meeting.start_time)
     attendance = turing_module.attendances.find_or_create_by(user: user, attendance_time: populi_meeting.start, meeting: meeting)
-    attendance.record(meeting)
+    attendance.record
     # update_populi(attendance, course_id, populi_meeting.id)
     return attendance
   end

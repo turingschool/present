@@ -36,7 +36,9 @@ class User::AttendancesController < User::BaseController
     zoom_alias = ZoomAlias.find(params[:student][:zoom_alias])
     zoom_alias.update(student: student)
     attendance = Attendance.find(params[:attendance_id])
-    retake_zoom_attendance(attendance)
+    # retake_zoom_attendance(attendance)
+    attendance.student_attendances.destroy_all
+    attendance.record
     redirect_to attendance_path(attendance)
   end
 
