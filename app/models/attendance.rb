@@ -15,7 +15,6 @@ class Attendance < ApplicationRecord
 
   def record
     self.transaction do
-      # meeting.assign_participant_statuses(attendance_time)
       take_participant_attendance
       take_absentee_attendance
     end
@@ -31,7 +30,6 @@ class Attendance < ApplicationRecord
       student = meeting.find_student_from_participant(participant)
       next if student.nil?
       student_attendance = student_attendances.find_or_create_by(student: student)
-      # REFACTOR: Should the participant determine its status? Or the meeting?
       participant.assign_status!(attendance_time)
       student_attendance.record_status_for_participant(participant)
     end
