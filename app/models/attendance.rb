@@ -2,7 +2,6 @@ class Attendance < ApplicationRecord
   belongs_to :turing_module
   belongs_to :user
   belongs_to :meeting, polymorphic: true
-  has_many :zoom_aliases, through: :zoom_attendance
   has_many :student_attendances, dependent: :destroy
   has_many :students, through: :student_attendances
 
