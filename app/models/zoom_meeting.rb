@@ -19,7 +19,9 @@ class ZoomMeeting < ApplicationRecord
   end
 
   def unclaimed_aliases
-    self.zoom_aliases.where(student: nil)
+    # We don't necessarily care which zoom alias is picked for each name, 
+    # so just get the one with the minimum id
+    self.zoom_aliases.where(student: nil).group(:name).minimum(:id)
   end
 
   def find_student_from_participant(participant)
