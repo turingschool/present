@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Modules show page' do
+  include ApplicationHelper
+  
   before(:each) do
     @user = mock_login
     @test_module = create(:setup_module)
