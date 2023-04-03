@@ -47,7 +47,7 @@ RSpec.describe 'Creating an Attendance' do
       expect(page).to have_content("Slack Thread")
       # expect(page).to have_content("Slack Message URL - #{slack_url}) future idea to have this on this page
       expect(page).to have_content("1:00 PM")
-      expect(page).to have_content("Nov 30, 2022")
+      expect(page).to have_content("November 30th, 2022")
     end
 
     it 'creates students attendances' do

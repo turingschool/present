@@ -50,7 +50,7 @@ class Attendance < ApplicationRecord
   end
   
   def pretty_date
-    attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%A %b #{attendance_time.day.ordinalize}, %Y")
+    attendance_time.in_time_zone('Mountain Time (US & Canada)').to_date.to_s(:long_ordinal)
   end
 
   def pretty_time 
