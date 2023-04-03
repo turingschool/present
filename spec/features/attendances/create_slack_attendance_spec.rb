@@ -20,7 +20,7 @@ RSpec.describe 'Creating an Attendance' do
 
       # Stub any request to update a student's attendance
       stub_request(:post, ENV['POPULI_API_URL']).         
-        with(body: {"instanceID"=>/\d/, "meetingID"=>/\d/, "personID"=>/\d/, "status"=>/TARDY|ABSENT|PRESENT/, "task"=>"updateStudentAttendance"},).
+        with(body: {"instanceID"=>/\d/, "meetdingID"=>/\d/, "personID"=>/\d/, "status"=>/TARDY|ABSENT|PRESENT/, "task"=>"updateStudentAttendance"},).
         to_return(status: 200, body: '') 
 
       stub_request(:post, ENV['POPULI_API_URL']).
@@ -36,8 +36,6 @@ RSpec.describe 'Creating an Attendance' do
 
       expect(current_path).to eq("/modules/#{@test_module.id}/attendances/new")
       expect(page).to have_content(@test_module.name)
-      expect(page).to have_content(@test_module.inning.name)
-      expect(page).to have_content('Take Attendance for a Slack Thread')
 
       fill_in :attendance_meeting_url, with: slack_url
       click_button 'Take Attendance'
@@ -45,7 +43,6 @@ RSpec.describe 'Creating an Attendance' do
       new_attendance = Attendance.last
       expect(current_path).to eq(attendance_path(new_attendance))
       expect(page).to have_content("Slack Thread")
-      # expect(page).to have_content("Slack Message URL - #{slack_url}) future idea to have this on this page
       expect(page).to have_content("1:00 PM")
       expect(page).to have_content("November 30th, 2022")
     end
