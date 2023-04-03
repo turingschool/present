@@ -17,19 +17,12 @@
     <table>
       <tr>
         <th>Meeting Title</th>
-        <th>Start Time</th>
-        <th>Zoom Meeting ID</th>
+        <th>Attendance Time</th>
       </tr>
       <% @module.attendances.each do |attendance| %>
         <tr id='attendance-<%= attendance.id %>', class='attendance'>
-          <% if attendance.zoom_attendance %>
-            <td><%= link_to attendance.zoom_attendance.meeting_title, attendance_path(attendance) %></td>
-            <td><%= attendance.zoom_attendance.meeting_time %></td>
-            <td><%= attendance.zoom_attendance.zoom_meeting_id %></td>
-          <% elsif attendance.slack_attendance %>
-            <td><%= link_to attendance.slack_attendance.pretty_time_date, attendance_path(attendance) %></td>
-            <td><%= attendance.slack_attendance.attendance_start_time %></td>
-          <% end %>
+          <td><%= link_to attendance.meeting.title, attendance_path(attendance) %></td>
+          <td><%= attendance.pretty_time %> - <%= attendance.pretty_date %></td>
         </tr>
       <% end %>
     </table>

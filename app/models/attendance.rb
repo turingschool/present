@@ -1,9 +1,7 @@
 class Attendance < ApplicationRecord
   belongs_to :turing_module
   belongs_to :user
-  has_one :slack_attendance, dependent: :destroy
-  has_one :zoom_attendance, dependent: :destroy
-  has_many :zoom_aliases, through: :zoom_attendance
+  belongs_to :meeting, polymorphic: true
   has_many :student_attendances, dependent: :destroy
   has_many :students, through: :student_attendances
 
@@ -14,37 +12,25 @@ class Attendance < ApplicationRecord
     return zoom_attendance if zoom_attendance
   end
 
-  def record(meeting)
+  def record
     self.transaction do
-      create_child_attendance_record(meeting)
-      meeting.assign_participant_statuses(attendance_time)
-      student_attendances = take_participant_attendance(meeting.participants)
+      take_participant_attendance
       take_absentee_attendance
     end
   end
-  
-  def create_child_attendance_record(meeting)
-    if meeting.respond_to? :message_timestamp
-      SlackAttendance.create(channel_id: meeting.channel_id, sent_timestamp: meeting.message_timestamp, attendance_start_time: attendance_time, attendance: self)
-    elsif meeting.respond_to? :title
-      ZoomAttendance.create!(meeting_time: meeting.start_time, meeting_title: meeting.title, zoom_meeting_id: meeting.id, attendance: self)
-    end
+
+  def rerecord
+    student_attendances.destroy_all
+    record
   end
 
-  def take_participant_attendance(participants)
-    participants.each do |participant|
-      student = find_student_from_participant(participant)
+  def take_participant_attendance
+    meeting.participants.each do |participant|
+      student = meeting.find_student_from_participant(participant)
       next if student.nil?
-      create_participant_attendance(student, participant)
-    end
-  end
-
-  def create_participant_attendance(student, participant)
-    student_attendance = student_attendances.find_or_create_by(student: student)
-    if student_attendance.tardy? && participant.status == "present"
-      student_attendance.update(status: "present")
-    elsif student_attendance.absent? || student_attendance.status.nil?
-      student_attendance.update(status: participant.status) 
+      student_attendance = student_attendances.find_or_create_by(student: student)
+      participant.assign_status!(attendance_time)
+      student_attendance.record_status_for_participant(participant)
     end
   end
 
@@ -56,23 +42,18 @@ class Attendance < ApplicationRecord
     end
   end
 
-  def find_student_from_participant(participant)
-    if participant.class == ZoomParticipant
-      zoom_alias = zoom_attendance.find_or_create_zoom_alias(participant.name)
-      return zoom_alias.student if zoom_alias
-    elsif participant.class == SlackThreadParticipant
-      Student.find_by(slack_id: participant.id)
-    end
-  end
-
-  def pretty_attendance_time
-    attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%l:%M%P - %b %e, %Y")
-  end
-
   def update_time(time)
     hour = time.split(":").first
     minutes = time.split(":").last
     new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
     self.update!(attendance_time: new_time)
   end
+  
+  def pretty_date
+    attendance_time.in_time_zone('Mountain Time (US & Canada)').to_date.to_s(:long_ordinal)
+  end
+
+  def pretty_time 
+    attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime('%l:%M %p').strip
+  end 
 end

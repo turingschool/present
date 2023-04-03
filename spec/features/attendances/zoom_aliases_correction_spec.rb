@@ -33,7 +33,98 @@ RSpec.describe 'attendance show page' do
     @attendance = Attendance.last
   end
 
-  it 'has a dropdown next to absent students' do
+  it 'can change an absent student to present using Zoom Alias dropdowns' do
+    lacey = @test_module.students.find_by(name: 'Lacey Weaver')
+
+    visit attendance_path(@attendance)
+    
+    within "#student-#{lacey.id}" do
+      expect(page).to have_content("absent")
+    end
+
+    within "#student-aliases-#{lacey.id}" do
+      expect(first('option').text).to eq("Lacey W (BE, she/her)")
+      select("Lacey W (BE, she/her)")
+      click_button "Save Zoom Alias"
+    end
+
+    expect(current_path).to eq(attendance_path(Attendance.last))
+    expect(page).to_not have_css("#student-aliases-#{lacey.id}")
+    
+    within "#student-#{lacey.id}" do
+      expect(page).to have_content("present")
+    end
+  end
+
+  it 'can change a tardy student to present using Zoom Alias dropdowns' do
+    j = @test_module.students.find_by(name: 'J Seymour')
+
+    visit attendance_path(@attendance)
+
+    within "#student-#{j.id}" do
+      expect(page).to have_content("tardy")
+    end
+
+    within "#student-aliases-#{j.id}" do
+      select("J (he/they) BE")
+      click_button "Save Zoom Alias"
+    end
+
+    within "#student-#{j.id}" do
+      expect(page).to have_content("present")
+    end
+  end
+
+  it 'can change an absent student to tardy using Zoom Alias dropdowns' do
+    sam = @test_module.students.find_by(name: 'Samuel Cox')
+
+    visit attendance_path(@attendance)
+
+    within "#student-#{sam.id}" do
+      expect(page).to have_content("absent")
+    end
+
+    within "#student-aliases-#{sam.id}" do
+      expect(first('option').text).to eq("Sam Cox (He/Him) BE")
+      select("Sam Cox (He/Him) BE")
+      click_button "Save Zoom Alias"
+    end
+
+    expect(page).to have_css("#student-aliases-#{sam.id}")
+
+    within "#student-#{sam.id}" do
+      expect(page).to have_content("tardy")
+    end
+  end
+
+  it 'doesnt change status for absent students who joined after 30 minutes' do
+    anhnhi = @test_module.students.find_by(name: 'Anhnhi Tran')
+
+    visit attendance_path(@attendance)
+
+    within "#student-#{anhnhi.id}" do
+      expect(page).to have_content("absent")
+    end
+    
+    within "#student-aliases-#{anhnhi.id}" do
+      expect(first('option').text).to eq("Anhnhi T BE she/her/hers")
+      select("Anhnhi T BE she/her/hers")
+      click_button "Save Zoom Alias"
+    end
+
+    expect(page).to have_css("#student-aliases-#{anhnhi.id}")
+    
+    within "#student-#{anhnhi.id}" do
+      expect(page).to have_content("absent")
+    end
+  end
+
+
+
+
+
+
+  xit 'can update status for absent students using Zoom Alias dropdowns' do
     lacey = @test_module.students.find_by(name: 'Lacey Weaver')
     anhnhi = @test_module.students.find_by(name: 'Anhnhi Tran')
 
@@ -63,35 +154,13 @@ RSpec.describe 'attendance show page' do
       within ".zoom-name" do
         expect(page).to have_content("Anhnhi T BE she/her/hers")
       end
+      expect(page).to have_content("absent")
     end
     
     within "#student-#{lacey.id}" do
       within ".zoom-name" do
         expect(page).to have_content("Lacey W (BE, she/her)")
       end
-    end
-  end
-
-  it 'can select zoom aliases for tardy students' do
-    j = @test_module.students.find_by(name: 'J Seymour')
-
-    visit attendance_path(@attendance)
-
-    within "#student-aliases-#{j.id}" do
-      select("J Seymour")
-      click_button "Save Zoom Alias"
-    end
-
-    within "#student-#{j.id}" do
-      expect(page).to have_content("tardy")
-    end
-
-    within "#student-aliases-#{j.id}" do
-      select("J (he/they) BE")
-      click_button "Save Zoom Alias"
-    end
-
-    within "#student-#{j.id}" do
       expect(page).to have_content("present")
     end
   end

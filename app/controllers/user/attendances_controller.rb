@@ -17,7 +17,6 @@ class User::AttendancesController < User::BaseController
 
   def show
     @attendance = Attendance.find(params[:id])
-    @facade = AttendanceShowFacade.new(@attendance.child)
     @module = @attendance.turing_module
   end
 
@@ -26,10 +25,10 @@ class User::AttendancesController < User::BaseController
   end
 
   def update
-    @attendance = Attendance.find(params[:id])
-    @attendance.update_time(params[:attendance][:attendance_time])
-    CreateAttendanceFacade.retake_attendance(@attendance)
-    redirect_to attendance_path(@attendance)
+    attendance = Attendance.find(params[:id])
+    attendance.update_time(params[:attendance][:attendance_time])
+    attendance.rerecord
+    redirect_to attendance_path(attendance)
   end
 
   def save_zoom_alias
@@ -37,14 +36,7 @@ class User::AttendancesController < User::BaseController
     zoom_alias = ZoomAlias.find(params[:student][:zoom_alias])
     zoom_alias.update(student: student)
     attendance = Attendance.find(params[:attendance_id])
-    retake_zoom_attendance(attendance)
+    attendance.rerecord
     redirect_to attendance_path(attendance)
-  end
-
-  def retake_zoom_attendance(attendance)
-    turing_module = attendance.turing_module
-    zoom_link = attendance.zoom_attendance.zoom_meeting_id
-    attendance.student_attendances.destroy_all
-    CreateAttendanceFacade.take_attendance(zoom_link, turing_module, current_user)
   end
 end

@@ -1,0 +1,18 @@
+<table id='student-attendances' class="sortable">
+  <thead>
+    <tr>
+      <th>Student</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% attendance.student_attendances.by_attendance_status.each do |student_attendance| %>
+      <tr id='student-attendance-<%= student_attendance.id %>' class='student-attendance'>
+        <section id='student-<%= student_attendance.student.id %>'>
+          <td><%= link_to student_attendance.student.name, student_path(student_attendance.student) %></td>
+          <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
+        </section>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

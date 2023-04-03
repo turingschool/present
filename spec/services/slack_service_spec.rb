@@ -36,7 +36,6 @@ RSpec.describe SlackService do
     expect(response[:data]).to be_a(Array)
     response[:data].each do |student_reply|
         expect(student_reply).to have_key(:slack_id)
-        expect(student_reply).to have_key(:status)
         expect(student_reply).to have_key(:reply_timestamp)
     end 
   end

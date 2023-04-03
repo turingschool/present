@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_17_185253) do
+ActiveRecord::Schema.define(version: 2023_03_30_152937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 2023_03_17_185253) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.datetime "attendance_time"
+    t.string "meeting_type"
+    t.bigint "meeting_id"
+    t.index ["meeting_type", "meeting_id"], name: "index_attendances_on_meeting_type_and_meeting_id"
     t.index ["turing_module_id"], name: "index_attendances_on_turing_module_id"
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
@@ -32,12 +35,10 @@ ActiveRecord::Schema.define(version: 2023_03_17_185253) do
     t.boolean "current", default: false
   end
 
-  create_table "slack_attendances", force: :cascade do |t|
+  create_table "slack_threads", force: :cascade do |t|
     t.string "channel_id"
-    t.datetime "sent_timestamp"
-    t.datetime "attendance_start_time"
-    t.bigint "attendance_id"
-    t.index ["attendance_id"], name: "index_slack_attendances_on_attendance_id"
+    t.string "sent_timestamp"
+    t.datetime "start_time"
   end
 
   create_table "student_attendances", force: :cascade do |t|
@@ -90,26 +91,22 @@ ActiveRecord::Schema.define(version: 2023_03_17_185253) do
     t.bigint "student_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "zoom_attendance_id"
+    t.bigint "zoom_meeting_id"
     t.index ["student_id"], name: "index_zoom_aliases_on_student_id"
-    t.index ["zoom_attendance_id"], name: "index_zoom_aliases_on_zoom_attendance_id"
+    t.index ["zoom_meeting_id"], name: "index_zoom_aliases_on_zoom_meeting_id"
   end
 
-  create_table "zoom_attendances", force: :cascade do |t|
-    t.string "zoom_meeting_id"
-    t.string "meeting_title"
-    t.datetime "meeting_time"
-    t.bigint "attendance_id"
-    t.index ["attendance_id"], name: "index_zoom_attendances_on_attendance_id"
+  create_table "zoom_meetings", force: :cascade do |t|
+    t.string "meeting_id"
+    t.string "title"
+    t.datetime "start_time"
   end
 
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
-  add_foreign_key "slack_attendances", "attendances"
   add_foreign_key "student_attendances", "attendances"
   add_foreign_key "student_attendances", "students"
   add_foreign_key "students", "turing_modules"
   add_foreign_key "turing_modules", "innings"
-  add_foreign_key "zoom_aliases", "zoom_attendances"
-  add_foreign_key "zoom_attendances", "attendances"
+  add_foreign_key "zoom_aliases", "zoom_meetings"
 end

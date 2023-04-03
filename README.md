@@ -69,6 +69,10 @@ rails s
 
 Keep in mind that the app will make real HTTP calls to the Zoom API and Google Oauth.
 
+### Schema
+
+![Schema](./doc/schema.jpg)
+
 ## Contributing
 
 * Please see the [project board](https://github.com/turingschool/present/projects/1) for open work.

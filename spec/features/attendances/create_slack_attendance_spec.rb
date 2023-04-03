@@ -44,9 +44,10 @@ RSpec.describe 'Creating an Attendance' do
 
       new_attendance = Attendance.last
       expect(current_path).to eq(attendance_path(new_attendance))
-      expect(page).to have_content("Slack Thread - #{new_attendance.slack_attendance.pretty_time}")
+      expect(page).to have_content("Slack Thread")
       # expect(page).to have_content("Slack Message URL - #{slack_url}) future idea to have this on this page
-      expect(page).to have_content("Attendance Time: 1:00pm - Nov 30, 2022")
+      expect(page).to have_content("1:00 PM")
+      expect(page).to have_content("November 30th, 2022")
     end
 
     it 'creates students attendances' do

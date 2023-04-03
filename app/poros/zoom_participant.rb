@@ -1,15 +1,20 @@
-class ZoomParticipant < Participant
-  def self.from_meeting(meeting_participant)
-    join_time = Time.parse(meeting_participant[:join_time])
-    new(nil, meeting_participant[:name], join_time, nil)
+class ZoomParticipant
+  attr_reader :status, :join_time, :name
+
+  ZOOM_TARDY_GRACE_PERIOD_IN_MINUTES = 1
+  ZOOM_ABSENT_GRACE_PERIOD_IN_MINUTES = 30
+
+  def initialize(participant_data)
+    @join_time = Time.parse(participant_data[:join_time])
+    @name = participant_data[:name]
+    @status = participant_data[:attendance_status]
   end
 
-  def assign_status(attendance_time)
-    return unless attendance_time
+  def assign_status!(attendance_time)
     minutes_passed_start_time = (join_time - attendance_time)/60.0
-    if minutes_passed_start_time > 30
+    if minutes_passed_start_time > ZOOM_ABSENT_GRACE_PERIOD_IN_MINUTES
       @status = 'absent' 
-    elsif minutes_passed_start_time > 1
+    elsif minutes_passed_start_time > ZOOM_TARDY_GRACE_PERIOD_IN_MINUTES
       @status = 'tardy'
     else
       @status = 'present' 

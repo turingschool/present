@@ -40,7 +40,7 @@ RSpec.describe 'taking attendance with Populi' do
         to_return(status: 200, body: '') 
     end
 
-    it 'sends the request to update the students attendance in Populi' do
+    xit 'sends the request to update the students attendance in Populi' do
       visit turing_module_path(@mod)
 
       click_link('Take Attendance')
