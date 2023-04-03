@@ -1,7 +1,7 @@
 <h2><%= link_to @attendance.turing_module.name, turing_module_path(@attendance.turing_module) %></h2>
 <h3><%= @attendance.meeting.title %></h3>
-<h3>Date: <%= @attendance.pretty_date %></h3>
-<h3>Attendance Time: <%= @attendance.pretty_time %></h3>
+<h3>Date: <%= pretty_date(@attendance.attendance_time) %></h3>
+<h3>Attendance Time: <%= pretty_time@attendance.attendance_time) %></h3>
 
 <%= form_with model: @attendance, local: true do |f| %>
   <%= f.label "Attendance Time:" %>

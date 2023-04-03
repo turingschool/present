@@ -1,7 +1,7 @@
 <h2><%= link_to @module.name, turing_module_path(@module) %></h2>
 <h3><%= @attendance.meeting.title %></h3>
-<h3>Date: <%= @attendance.pretty_date %></h3>
-<h3>Attendance Time: <%= @attendance.pretty_time %> <%= link_to "Update Attendance Time", edit_attendance_path(@attendance) %></h3>
+<h3>Date: <%= pretty_date(@attendance.attendance_time) %></h3>
+<h3>Attendance Time: <%= pretty_time(@attendance.attendance_time) %> <%= link_to "Update Attendance Time", edit_attendance_path(@attendance) %></h3>
 <% if @attendance.meeting_type == "ZoomMeeting" %>
   <%= render partial: "shared/zoom_attendance_table", locals: {facade: AttendanceShowFacade.new(@attendance)} %>  
 <% else %>

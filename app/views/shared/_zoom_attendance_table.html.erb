@@ -4,6 +4,7 @@
     <tr>
       <th>Student</th>
       <th>Status</th>
+      <th>Join Time</th>
       <th>Zoom Alias</th>
     </tr>
   </thead>
@@ -12,6 +13,11 @@
       <tr id='student-attendance-<%= student_attendance.id %>' class='student-attendance'>
         <section id='student-<%= student_attendance.student.id %>'>
           <td><%= link_to student_attendance.student.name, student_path(student_attendance.student) %></td>
+          <% if student_attendance.join_time %>
+            <td><%= pretty_time(student_attendance.join_time) %></td>
+          <% else %>
+            <td>N/A</td>
+          <% end %>
           <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
           <% unless student_attendance.present? %>
             <td id='student-aliases-<%= student_attendance.student.id %>'>
