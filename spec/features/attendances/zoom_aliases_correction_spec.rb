@@ -21,7 +21,6 @@ RSpec.describe 'attendance show page' do
       with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@test_module.populi_course_id}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
 
-
     visit turing_module_path(@test_module)
 
     click_link('Take Attendance')
@@ -116,52 +115,6 @@ RSpec.describe 'attendance show page' do
     
     within "#student-#{anhnhi.id}" do
       expect(page).to have_content("absent")
-    end
-  end
-
-
-
-
-
-
-  xit 'can update status for absent students using Zoom Alias dropdowns' do
-    lacey = @test_module.students.find_by(name: 'Lacey Weaver')
-    anhnhi = @test_module.students.find_by(name: 'Anhnhi Tran')
-
-    visit attendance_path(@attendance)
-
-    within "#student-aliases-#{lacey.id}" do
-      expect(first('option').text).to eq("Lacey W (BE, she/her)")
-      select("Lacey W (BE, she/her)")
-      click_button "Save Zoom Alias"
-    end
-
-    expect(current_path).to eq(attendance_path(Attendance.last))
-    
-    within "#student-aliases-#{anhnhi.id}" do
-      expect(first('option').text).to eq("Anhnhi T BE she/her/hers")
-      select("Anhnhi T BE she/her/hers")
-      click_button "Save Zoom Alias"
-    end
-
-    expect(page).to_not have_css("#student-aliases-#{lacey.id}")
-    # Anhnhi is still absent because she joined after 30 mintutes
-    expect(page).to have_css("#student-aliases-#{anhnhi.id}")
-    
-    visit turing_module_students_path(@test_module)
-
-    within "#student-#{anhnhi.id}" do
-      within ".zoom-name" do
-        expect(page).to have_content("Anhnhi T BE she/her/hers")
-      end
-      expect(page).to have_content("absent")
-    end
-    
-    within "#student-#{lacey.id}" do
-      within ".zoom-name" do
-        expect(page).to have_content("Lacey W (BE, she/her)")
-      end
-      expect(page).to have_content("present")
     end
   end
 end
