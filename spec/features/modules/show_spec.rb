@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Modules show page' do
+  include ApplicationHelper
+  
   before(:each) do
     @user = mock_login
     @test_module = create(:setup_module)
@@ -28,8 +30,8 @@ RSpec.describe 'Modules show page' do
         @attendances.each do |attendance|
           within("#attendance-#{attendance.id}") do
             expect(page).to have_content(attendance.meeting.title)
-            expect(page).to have_content(attendance.pretty_date)
-            expect(page).to have_content(attendance.pretty_time)
+            expect(page).to have_content(pretty_date(attendance.attendance_time))
+            expect(page).to have_content(pretty_time(attendance.attendance_time))
           end
         end
       end

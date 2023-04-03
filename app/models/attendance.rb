@@ -48,12 +48,4 @@ class Attendance < ApplicationRecord
     new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
     self.update!(attendance_time: new_time)
   end
-  
-  def pretty_date
-    attendance_time.in_time_zone('Mountain Time (US & Canada)').to_date.to_s(:long_ordinal)
-  end
-
-  def pretty_time 
-    attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime('%l:%M %p').strip
-  end 
 end

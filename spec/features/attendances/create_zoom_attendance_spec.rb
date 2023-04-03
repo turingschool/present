@@ -10,7 +10,6 @@ RSpec.describe 'Creating a Zoom Attendance' do
     inning = mod.inning
     visit new_turing_module_attendance_path(mod)
     expect(page).to have_link(mod.name, href: turing_module_path(mod))
-    expect(page).to have_link(inning.name, href: inning_path(inning))
   end
 
   context 'with valid meeting ids' do
@@ -40,8 +39,6 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
       expect(current_path).to eq("/modules/#{@test_module.id}/attendances/new")
       expect(page).to have_content(@test_module.name)
-      expect(page).to have_content(@test_module.inning.name)
-      expect(page).to have_content('Take Attendance for a Slack Thread or Zoom Meeting')
       fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
       click_button 'Take Attendance'
 

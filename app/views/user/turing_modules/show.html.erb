@@ -22,7 +22,7 @@
       <% @module.attendances.each do |attendance| %>
         <tr id='attendance-<%= attendance.id %>', class='attendance'>
           <td><%= link_to attendance.meeting.title, attendance_path(attendance) %></td>
-          <td><%= attendance.pretty_time %> - <%= attendance.pretty_date %></td>
+          <td><%= pretty_time(attendance.attendance_time) %> - <%= pretty_date(attendance.attendance_time) %></td>
         </tr>
       <% end %>
     </table>
