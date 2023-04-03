@@ -7,6 +7,6 @@ RSpec.describe ZoomAlias do
 
   describe 'relationships' do
     it {should belong_to(:student).optional}
-    it {should belong_to(:zoom_meeting)}
+    it {should belong_to(:zoom_meeting).optional}
   end
 end
