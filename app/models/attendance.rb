@@ -50,7 +50,7 @@ class Attendance < ApplicationRecord
   end
   
   def pretty_date
-    attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%A %b %e, %Y")
+    attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%A %b #{attendance_time.day.ordinalize}, %Y")
   end
 
   def pretty_time 
