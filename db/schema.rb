@@ -2,25 +2,24 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_30_152937) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_04_04_224202) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "attendances", force: :cascade do |t|
     t.bigint "turing_module_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "user_id"
-    t.datetime "attendance_time"
+    t.datetime "attendance_time", precision: nil
     t.string "meeting_type"
     t.bigint "meeting_id"
     t.index ["meeting_type", "meeting_id"], name: "index_attendances_on_meeting_type_and_meeting_id"
@@ -30,32 +29,32 @@ ActiveRecord::Schema.define(version: 2023_03_30_152937) do
 
   create_table "innings", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "current", default: false
   end
 
   create_table "slack_threads", force: :cascade do |t|
     t.string "channel_id"
     t.string "sent_timestamp"
-    t.datetime "start_time"
+    t.datetime "start_time", precision: nil
   end
 
   create_table "student_attendances", force: :cascade do |t|
     t.integer "status"
     t.bigint "student_id"
     t.bigint "attendance_id"
-    t.datetime "join_time"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "join_time", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["attendance_id"], name: "index_student_attendances_on_attendance_id"
     t.index ["student_id"], name: "index_student_attendances_on_student_id"
   end
 
   create_table "students", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "turing_module_id"
     t.string "slack_id"
     t.string "populi_id"
@@ -64,8 +63,8 @@ ActiveRecord::Schema.define(version: 2023_03_30_152937) do
 
   create_table "turing_modules", force: :cascade do |t|
     t.bigint "inning_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "program"
     t.integer "module_number"
     t.boolean "calendar_integration", default: false
@@ -78,8 +77,8 @@ ActiveRecord::Schema.define(version: 2023_03_30_152937) do
     t.string "google_id"
     t.string "email"
     t.string "google_oauth_token"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "google_refresh_token"
     t.bigint "turing_module_id"
     t.string "organization_domain"
@@ -89,8 +88,8 @@ ActiveRecord::Schema.define(version: 2023_03_30_152937) do
   create_table "zoom_aliases", force: :cascade do |t|
     t.string "name"
     t.bigint "student_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "zoom_meeting_id"
     t.index ["student_id"], name: "index_zoom_aliases_on_student_id"
     t.index ["zoom_meeting_id"], name: "index_zoom_aliases_on_zoom_meeting_id"
@@ -99,7 +98,7 @@ ActiveRecord::Schema.define(version: 2023_03_30_152937) do
   create_table "zoom_meetings", force: :cascade do |t|
     t.string "meeting_id"
     t.string "title"
-    t.datetime "start_time"
+    t.datetime "start_time", precision: nil
   end
 
   add_foreign_key "attendances", "turing_modules"
