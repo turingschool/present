@@ -1,0 +1,3 @@
+<h3><%= attendance.meeting.title %></h3>
+<h3>Date: <%= pretty_date(attendance.attendance_time) %></h3>
+<h3>Attendance Time: <%= pretty_time(attendance.attendance_time) %> <%= link_to "Update Attendance Time", edit_attendance_path(attendance) if updatable %></h3>

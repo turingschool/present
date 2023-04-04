@@ -48,4 +48,8 @@ class Attendance < ApplicationRecord
     new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
     self.update!(attendance_time: new_time)
   end
+
+  def count_status(status)
+    student_attendances.where(status: status).count
+  end
 end

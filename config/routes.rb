@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :innings, only: [:show, :create, :index, :update]
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
       resources :attendances, only: [:new, :create, :show, :edit, :update] do
+        get "populi_transfer", to: "populi_transfer#new"
         patch "students/:id", to: 'attendances#save_zoom_alias', as: :student
       end
 
