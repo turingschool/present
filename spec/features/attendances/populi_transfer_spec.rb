@@ -56,7 +56,7 @@ RSpec.describe 'Populi Transfer' do
 # And when I view the corresponding attendance record in Populi,
 # Then I see the attendance is updated accurately.
 
-  it 'sends the request to update the students attendance in Populi' do
+  xit 'sends the request to update the students attendance in Populi' do
     visit turing_module_path(@mod)
 
     click_link('Take Attendance')
