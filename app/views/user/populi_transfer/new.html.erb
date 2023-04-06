@@ -9,9 +9,6 @@
   <li>Scroll to the bottom of the page and click "Save Attendance"</li>
 </ol>
 
-<p>Please Confirm that you have followed the above instructions:</p>
-<%= button_to "I have created the Attendance record in Populi", id: "populi-attendance-confirmation" %>
-
-<script>
-  debugger;
-</script>
+<p>Click this button to confirm that you have followed the above instructions:</p>
+<%= button_to "I have created the Attendance record in Populi", nil, id: "populi-attendance-confirmation", class: 's-button' %>
+<%= button_to "Transfer Student Attendances to Populi", nil, id: "populi-attendance-transfer", disabled: true, class: 's-button' %>
