@@ -93,3 +93,5 @@ end
 # end
 
 
+
+gem "honeybadger", "~> 5.2"
