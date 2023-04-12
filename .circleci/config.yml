@@ -13,7 +13,7 @@ jobs: # a collection of steps
           PGHOST: 127.0.0.1
           PGUSER: postgres
           RAILS_ENV: test
-      - image: circleci/postgres:11 # database image
+      - image: cimg/postgres:14.7 # database image - this should ideally match what Heroku uses
         environment: # environment variables for database, it is kind of obvious but it is important that they match with your test config in database.yml
           POSTGRES_USER: postgres
           POSTGRES_DB: attendance_tracker_hackathon_test
