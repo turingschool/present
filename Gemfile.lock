@@ -324,6 +324,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  arm64-darwin-22
 
 DEPENDENCIES
   bootsnap
@@ -356,7 +357,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 3.1.1p18
+   ruby 3.1.4p223
 
 BUNDLED WITH
    2.3.7
