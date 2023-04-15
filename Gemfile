@@ -60,7 +60,7 @@ gem 'omniauth-google-oauth2'
 # Generate JWT Token for Zoom API
 gem 'jwt'
 
-gem 'populi_api', git: 'https://github.com/turingschool/populi_api.git', branch: 'brian'
+gem 'populi_api', git: 'https://github.com/turingschool/populi_api.git', branch: 'main'
 
 gem 'fuzzy-string-match'
 

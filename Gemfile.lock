@@ -1,10 +1,10 @@
 GIT
   remote: https://github.com/turingschool/populi_api.git
-  revision: ea8ab2fe2e2895cefab4f43843b6db9b4c24d638
-  branch: brian
+  revision: 5db05773e0bcff223602f3e1696c076d0f587a3e
+  branch: main
   specs:
     populi_api (0.8.0)
-      activesupport (>= 5.2, <= 7.0.4.3)
+      activesupport (>= 5.2, < 8.0)
       faraday (>= 1.0, <= 2.0)
       faraday_middleware (~> 1.0)
       multi_xml (~> 0.6)
