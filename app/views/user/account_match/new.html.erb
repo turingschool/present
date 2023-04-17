@@ -1,5 +1,5 @@
 <h2>Match Accounts </h2>
-<%= form_with local: true do |f| %>
+<%= form_with url: turing_module_account_match_index_path(facade.module), method: :post, local: true do |f| %>
   <table class='s-table'>
     <thead>
       <tr>

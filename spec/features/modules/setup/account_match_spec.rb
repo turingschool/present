@@ -47,7 +47,7 @@ RSpec.describe "Module Setup Account Matching" do
     end
   
     it 'redirects to the account match page' do 
-      expect(current_path).to eq(turing_module_account_match_path(@mod))
+      expect(current_path).to eq("/modules/#{@mod.id}/account_match/new")
     end 
     
     it 'has Populi students listed' do
@@ -198,5 +198,23 @@ RSpec.describe "Module Setup Account Matching" do
         expect(page.find('.slack-id').text).to eq('')
       end
     end
+  end
+
+  it 'displays an error when same account is selected for multiple students' do
+    within "#student-#{@anthony_b.id}" do
+      within '.slack-select' do 
+        select "Anthony Blackwell Tallent"
+      end
+    end
+    
+    within "#student-#{@j.id}" do
+      within '.slack-select' do 
+        select "Anthony Blackwell Tallent"
+      end
+    end
+
+    click_button 'Match'
+
+    expect(current_path).to eq()
   end
 end
