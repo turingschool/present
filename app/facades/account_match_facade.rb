@@ -1,7 +1,7 @@
 class AccountMatchFacade
   include StringMatcher
 
-  attr_reader :module
+  attr_reader :module, :zoom_meeting
 
   def initialize(turing_module, zoom_meeting_id)
     @module = turing_module

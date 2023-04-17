@@ -198,23 +198,24 @@ RSpec.describe "Module Setup Account Matching" do
         expect(page.find('.slack-id').text).to eq('')
       end
     end
-  end
-
-  it 'displays an error when same account is selected for multiple students' do
-    within "#student-#{@anthony_b.id}" do
-      within '.slack-select' do 
-        select "Anthony Blackwell Tallent"
+  
+    it 'displays an error when same account is selected for multiple students' do
+      within "#student-#{@anthony_b.id}" do
+        within '.slack-select' do 
+          select "Anthony Blackwell Tallent"
+        end
       end
-    end
-    
-    within "#student-#{@j.id}" do
-      within '.slack-select' do 
-        select "Anthony Blackwell Tallent"
+      
+      within "#student-#{@j.id}" do
+        within '.slack-select' do 
+          select "Anthony Blackwell Tallent"
+        end
       end
+
+      click_button 'Match'
+
+      expect(page).to have_css('#account-match-table')
+      expect(page).to have_content("Two or more students were assigned the same Slack User")
     end
-
-    click_button 'Match'
-
-    expect(current_path).to eq()
   end
 end
