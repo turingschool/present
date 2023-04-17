@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :student do
     name { Faker::Name.name }
+    sequence(:slack_id) {|n| "<slack_id_#{n}>"}
     
     factory :setup_student do
       turing_module
-      sequence(:slack_id) {|n| "<slack_id_#{n}>"}
       sequence(:populi_id) {|n| "<populi_id_#{n}>"}
 
       after :create do |student|
