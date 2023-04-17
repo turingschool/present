@@ -52,4 +52,12 @@ class Attendance < ApplicationRecord
   def count_status(status)
     student_attendances.where(status: status).count
   end
+
+  def transfer_to_populi!
+    service = PopuliService.new
+    course_id = self.turing_module.populi_course_id
+    student_attendances.includes(:student).each do |student_attendance|
+      service.update_student_attendance(course_id, self.populi_meeting_id, student_attendance.student.populi_id, student_attendance.status)
+    end
+  end
 end

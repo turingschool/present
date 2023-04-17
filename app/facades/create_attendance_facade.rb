@@ -3,9 +3,8 @@ class CreateAttendanceFacade
     course_id = turing_module.populi_course_id
     meeting = create_meeting(meeting_url)
     populi_meeting = retrieve_populi_meeting(course_id, meeting.start_time)
-    attendance = turing_module.attendances.find_or_create_by(user: user, attendance_time: populi_meeting.start, meeting: meeting)
+    attendance = turing_module.attendances.find_or_create_by(user: user, attendance_time: populi_meeting.start, meeting: meeting, populi_meeting_id: populi_meeting.id)
     attendance.record
-    # update_populi(attendance, course_id, populi_meeting.id)
     return attendance
   end
 
@@ -21,12 +20,6 @@ class CreateAttendanceFacade
       @meeting = SlackThread.from_message_link(meeting_url)
     else
       @meeting = ZoomMeeting.from_meeting_details(meeting_url)
-    end
-  end
-
-  def self.update_populi(attendance, course_id, populi_meeting_id)
-    attendance.student_attendances.each do |student_attendance|
-      PopuliService.new.update_student_attendance(course_id, populi_meeting_id, student_attendance.student.populi_id, student_attendance.status)
     end
   end
 

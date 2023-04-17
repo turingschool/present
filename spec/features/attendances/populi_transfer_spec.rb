@@ -69,7 +69,7 @@ RSpec.describe 'Populi Transfer' do
 
     click_link "Transfer Student Attendances to Populi"
 
-    expect(current_path).to eq("/attendances/#{test_attendance.id}/populi_transfer")
+    expect(current_path).to eq("/attendances/#{test_attendance.id}/populi_transfer/new")
 
     expect(page).to have_content(test_attendance.meeting.title)
     expect(page).to have_content(pretty_time(test_attendance.attendance_time))
@@ -77,10 +77,6 @@ RSpec.describe 'Populi Transfer' do
     expect(page).to have_content("Tardy: 2")
     expect(page).to have_content("Present: 2")
     expect(page).to have_content("Absent: 2")
-    save_and_open_page
-    click_button "I have created the Attendance record in Populi"
-
-    expect(current_path).to eq("/attendances/#{test_attendance.id}/populi_transfer")
 
     click_button "Transfer Student Attendances to Populi"
 
