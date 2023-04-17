@@ -30,13 +30,10 @@ class ZoomMeeting < ApplicationRecord
   end
 
   def find_or_create_zoom_alias(name)
-    aliases = turing_module.zoom_aliases.where(name: name)
-    if aliases.empty?
-      self.zoom_aliases.create!(name: name)
-      return nil
-    else
-      return aliases.first
-    end
+    zoom_alias = turing_module.zoom_aliases.find_by(name: name)
+    return zoom_alias if zoom_alias
+    self.zoom_aliases.create!(name: name)
+    return nil
   end  
 
 private

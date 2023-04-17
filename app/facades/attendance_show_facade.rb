@@ -12,6 +12,6 @@ class AttendanceShowFacade
   end
 
   def student_attendances
-    @attendance.student_attendances.by_attendance_status
+    @attendance.student_attendances.includes(:student).by_attendance_status
   end
 end

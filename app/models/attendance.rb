@@ -13,10 +13,8 @@ class Attendance < ApplicationRecord
   end
 
   def record
-    self.transaction do
-      take_participant_attendance
-      take_absentee_attendance
-    end
+    take_participant_attendance
+    take_absentee_attendance
   end
 
   def rerecord
