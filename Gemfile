@@ -65,7 +65,7 @@ gem 'populi_api', git: 'https://github.com/turingschool/populi_api.git', branch:
 gem 'fuzzy-string-match'
 
 group :development, :test do
-  gem 'pry'
+  gem 'pry-rails'
   gem 'figaro'
 end
 
