@@ -19,8 +19,7 @@ Rails.application.routes.draw do
 
       get '/zoom/new', to: 'zoom#new', as: :zoom_integration
 
-      get '/account_match', to: 'account_match#new'
-      post '/account_match', to: 'account_match#create'
+      resources :account_match, only: [:new, :create]
 
       get '/populi/new', to: 'populi#new', as: :populi_integration
       get '/populi/courses/:course_id', to: 'populi#match_students', as: :populi_match_students
