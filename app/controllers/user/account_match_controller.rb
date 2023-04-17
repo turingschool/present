@@ -10,10 +10,6 @@ class User::AccountMatchController < ApplicationController
   def create
     if duplicate_slack_ids?
       flash[:error] = "We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student."
-      # require 'pry';binding.pry
-      # render :new, locals: {
-      #   facade: AccountMatchFacade.new(current_module, params[:zoom_meeting_id])
-      # }
       redirect_to new_turing_module_account_match_path(current_module, zoom_meeting_id: params[:zoom_meeting_id])
     else
       current_module.attendances.destroy_all #if this is a redo
