@@ -215,7 +215,8 @@ RSpec.describe "Module Setup Account Matching" do
       click_button 'Match'
 
       expect(page).to have_css('#account-match-table')
-      expect(page).to have_content("Two or more students were assigned the same Slack User")
+      expect(current_path).to eq(new_turing_module_account_match_path(@mod))
+      expect(page).to have_content("We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student.")
     end
   end
 end
