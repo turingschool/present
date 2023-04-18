@@ -1,0 +1,11 @@
+<h1>Transfer Student Attendances to Populi</h1>
+<%= render partial: "shared/attendance_details", locals: {attendance: @attendance, updatable: false} %>
+<p>To transfer these attendance results to Populi, you must first create the Populi attendance record by following these steps:</p>
+<ol>
+  <li>In Populi under My Course -> Attendance, select the corresponding Attendance time slot</li>
+  <li>Click the link "All Excused" to give each student a temporary status</li>
+  <li>Select the appropriate checkboxes for "Fulfills Attnd. Hrs." and "Fulfills Clinical Hrs."</li>
+  <li>Scroll to the bottom of the page and click "Save Attendance"</li>
+</ol>
+
+<%= button_to "Transfer Student Attendances to Populi", attendance_populi_transfer_index_path(@attendance), id: "populi-attendance-transfer", class: "s-button" %>

@@ -9,9 +9,12 @@ Rails.application.routes.draw do
   scope module: :user do
     resources :users, only: [:update]
     resources :innings, only: [:show, :create, :index, :update]
-    patch 'attendances/:attendance_id/students/:id', to: 'attendances#save_zoom_alias', as: :attendance_student
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
-      resources :attendances, only: [:new, :create, :show, :edit, :update]
+      resources :attendances, only: [:new, :create, :show, :edit, :update] do
+        resources :populi_transfer, only: [:new, :create, :index]
+        patch "students/:id", to: 'attendances#save_zoom_alias', as: :student
+      end
+
       resources :students
 
       get '/slack/new', to: 'slack#new', as: :slack_integration

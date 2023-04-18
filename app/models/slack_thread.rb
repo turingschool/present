@@ -1,4 +1,4 @@
-class SlackThread < ApplicationRecord
+class SlackThread < Meeting
   has_one :attendance, as: :meeting
 
   def find_student_from_participant(participant)
