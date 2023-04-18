@@ -1,10 +1,10 @@
 GIT
   remote: https://github.com/turingschool/populi_api.git
-  revision: ea8ab2fe2e2895cefab4f43843b6db9b4c24d638
-  branch: brian
+  revision: 5db05773e0bcff223602f3e1696c076d0f587a3e
+  branch: main
   specs:
     populi_api (0.8.0)
-      activesupport (>= 5.2, <= 7.0.4.3)
+      activesupport (>= 5.2, < 8.0)
       faraday (>= 1.0, <= 2.0)
       faraday_middleware (~> 1.0)
       multi_xml (~> 0.6)
@@ -147,6 +147,7 @@ GEM
       activesupport (>= 5.0)
     hashdiff (1.0.1)
     hashie (5.0.0)
+    honeybadger (5.2.1)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.5)
@@ -181,7 +182,9 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
-    nokogiri (1.14.2-arm64-darwin)
+    nokogiri (1.14.3-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.14.3-x86_64-linux)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -209,6 +212,8 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
     public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
@@ -324,6 +329,8 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  arm64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   bootsnap
@@ -334,6 +341,7 @@ DEPENDENCIES
   faraday
   figaro
   fuzzy-string-match
+  honeybadger (~> 5.2)
   importmap-rails
   jwt
   launchy
@@ -341,7 +349,7 @@ DEPENDENCIES
   orderly
   pg (~> 1.1)
   populi_api!
-  pry
+  pry-rails
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.3)
   rspec-rails
@@ -356,7 +364,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 3.1.1p18
+   ruby 3.1.4p223
 
 BUNDLED WITH
    2.3.7

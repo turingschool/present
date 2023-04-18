@@ -2,4 +2,3 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "custom/sortable"
-import "custom/populi_transfer"
