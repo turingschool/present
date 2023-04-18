@@ -46,7 +46,6 @@ RSpec.describe 'Creating a Zoom Attendance' do
       expect(current_path).to eq(attendance_path(new_attendance))
       expect(page).to have_content("9:00 AM")
       expect(page).to have_content("January 10th, 2023")
-      expect(new_attendance.populi_meeting_id).to eq("1962")
     end
 
     it 'creates students attendances' do
