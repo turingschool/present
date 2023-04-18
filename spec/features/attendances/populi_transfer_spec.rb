@@ -17,7 +17,7 @@ RSpec.describe 'Populi Transfer' do
     
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_without_ids.xml'))
 
     @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL']).         
       with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490140", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
@@ -78,6 +78,11 @@ RSpec.describe 'Populi Transfer' do
     expect(page).to have_content("Present: 2")
     expect(page).to have_content("Absent: 2")
 
+    # Assume that the User has followed instructions to create attendance record in Populi. The corresponding meeting should be returned from the Populi API with a meetingID.
+    stub_request(:post, ENV['POPULI_API_URL']).
+      with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+
     click_button "Transfer Student Attendances to Populi"
 
     expect(current_path).to eq(attendance_path(test_attendance))
@@ -91,4 +96,6 @@ RSpec.describe 'Populi Transfer' do
     expect(@update_attendance_stub5).to have_been_requested
     expect(@update_attendance_stub6).to have_been_requested
   end
+
+  it 'can transfer to a different time slot'
 end

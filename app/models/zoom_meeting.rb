@@ -1,4 +1,4 @@
-class ZoomMeeting < ApplicationRecord
+class ZoomMeeting < Meeting
   has_many :zoom_aliases
   has_one :attendance, as: :meeting
   has_one :turing_module, through: :attendance
