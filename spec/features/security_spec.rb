@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Security' do
+  before :each do
+    create(:inning)
+  end
+  
   it 'does not allow a visitor to visit any routes under the user namespace' do
     visit '/innings/1'
 

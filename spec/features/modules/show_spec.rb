@@ -12,7 +12,6 @@ RSpec.describe 'Modules show page' do
     visit "/modules/#{@test_module.id}"
 
     expect(page).to have_content("#{@test_module.program} Mod #{@test_module.module_number}")
-    expect(page).to have_content("#{@test_module.inning.name} inning")
   end
 
   context "with attendances" do

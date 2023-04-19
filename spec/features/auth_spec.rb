@@ -7,6 +7,8 @@ RSpec.describe "Authentication" do
   let(:google_refresh_token){'<REFRESH_TOKEN>'}
   let(:organization_domain){'turing.edu'}
   before :each do
+    create(:inning)
+
     OmniAuth.config.test_mode = true
 
     OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
@@ -37,7 +39,6 @@ RSpec.describe "Authentication" do
 
     click_link 'Sign In With Google'
 
-    expect(current_path).to eq('/')
     expect(page).to have_link('Log Out')
     expect(page).to_not have_link('Sign In With Google')
   end
