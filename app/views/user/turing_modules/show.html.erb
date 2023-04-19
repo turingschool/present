@@ -10,7 +10,7 @@
         <th>Meeting Title</th>
         <th>Attendance Time</th>
       </tr>
-      <% @module.attendances.each do |attendance| %>
+      <% @module.attendances_by_time.each do |attendance| %>
         <tr id='attendance-<%= attendance.id %>', class='attendance'>
           <td><%= link_to attendance.meeting.title, attendance_path(attendance) %></td>
           <td><%= pretty_time(attendance.attendance_time) %> - <%= pretty_date(attendance.attendance_time) %></td>

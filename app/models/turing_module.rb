@@ -24,4 +24,8 @@ class TuringModule < ApplicationRecord
     # checking to make sure some students have slack ids and some have zoom aliases. 
     # if some students have both slack/zoom aliases, that tells us that a user went through the match process
   end 
+
+  def attendances_by_time
+    attendances.order(attendance_time: :desc)
+  end
 end
