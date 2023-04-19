@@ -51,14 +51,11 @@ RSpec.describe 'Modules show page' do
   end
 
   it 'mod show page shows link for students and taking attendance once match is done' do 
-      @test_module.students.create!(name: 'blah', populi_id: 'some_id', slack_id: 'some_id')
-      @test_module.update(slack_channel_id: 'some_id')
+    visit turing_module_path(@test_module)
 
-      visit turing_module_path(@test_module)
-
-      expect(page).to_not have_link("Setup Module")
-      expect(page).to have_link("Take Attendance")
-    end 
+    expect(page).to_not have_link("Setup Module")
+    expect(page).to have_button("Take Attendance")
+  end 
 
   context 'when setup isnt fully complete' do 
     before(:each) do 
