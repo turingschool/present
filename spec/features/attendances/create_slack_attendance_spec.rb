@@ -32,9 +32,7 @@ RSpec.describe 'Creating an Attendance' do
       slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
 
       visit turing_module_path(@test_module)
-      click_link('Take Attendance')
 
-      expect(current_path).to eq("/modules/#{@test_module.id}/attendances/new")
       expect(page).to have_content(@test_module.name)
 
       fill_in :attendance_meeting_url, with: slack_url
@@ -56,7 +54,6 @@ RSpec.describe 'Creating an Attendance' do
       slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
 
       visit turing_module_path(@test_module)
-      click_link('Take Attendance')
 
       fill_in :attendance_meeting_url, with: slack_url
       click_button 'Take Attendance'
