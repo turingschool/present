@@ -54,3 +54,14 @@
 .select-field option {
 	font-weight:normal;
 }
+#take-attendance {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.my-mod-button {
+  display: inline-block;
+}
+.module-header {
+  display: inline-block;
+  padding-right: 10px;
+}
