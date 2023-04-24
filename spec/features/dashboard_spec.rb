@@ -20,16 +20,8 @@ RSpec.describe "Dashboard" do
     it 'user can see their module linked' do
       visit '/'
 
-      expect(page).to have_content("My Module: #{@my_mod.name}")
+      expect(page).to have_content("Your Module: #{@my_mod.name}")
       expect(page).to have_link(@my_mod.name, href: turing_module_path(@my_mod))
-    end
-
-    it 'does not show current inning info' do
-      current_inning = create(:inning, current: true)
-
-      visit '/'
-
-      expect(page).to_not have_content("Current Inning:")
     end
     
     it 'user cant take attendance for their mod if account match isnt complete' do
@@ -62,12 +54,8 @@ RSpec.describe "Dashboard" do
   end
     
 
-  context 'if my_module is not set and there is a current inning' do
-    before(:each) do
-      @my_mod.inning.update(current: true)
-    end
-
-    it 'User sees a message about my_module' do
+  context 'if my_module is not set' do
+    it 'User sees a message about getting started' do
       visit '/'
       expect(page).to have_content("My Module is not set. To set My Module visit a module page.")
     end

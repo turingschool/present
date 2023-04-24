@@ -12,20 +12,22 @@ RSpec.describe "Inning Show Page" do
 
   it 'has a message if module is already set as My Module' do
     within "#turing-module-#{@my_mod.id}" do
-      expect(page).to have_content('Currently set as My Module)')
+      expect(page).to have_content('This is your Module')
     end
   end
 
   it 'has a button to set the module as my_module' do
-    expect(page).to have_button('Set as My Module', count: 3)
+    visit inning_path(@test_inning)
+
+    expect(page).to have_button('Set as my Module', count: 3)
     within "#turing-module-#{@other_mods.second.id}" do
-      click_button 'Set as My Module'
+      click_button 'Set as my Module'
     end
 
     expect(current_path).to eq(inning_path(@test_inning))
 
     within "#turing-module-#{@other_mods.second.id}" do
-      expect(page).to have_content('Currently set as My Module)')
+      expect(page).to have_content('This is your Module')
     end
   end
 end

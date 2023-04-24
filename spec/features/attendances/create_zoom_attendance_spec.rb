@@ -5,13 +5,6 @@ RSpec.describe 'Creating a Zoom Attendance' do
     @user = mock_login
   end
 
-  it 'links back to module and inning' do
-    mod = create(:setup_module)
-    inning = mod.inning
-    visit new_turing_module_attendance_path(mod)
-    expect(page).to have_link(mod.name, href: turing_module_path(mod))
-  end
-
   context 'with valid meeting ids' do
     before(:each) do
       @test_zoom_meeting_id = 95490216907
