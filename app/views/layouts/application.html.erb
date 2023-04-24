@@ -21,7 +21,6 @@
             <li class='s-nav-menu-item'><%= link_to "All Modules", inning_path(current_inning) %></li>
             <li class='s-nav-menu-item'><%= link_to 'Log Out', '/sessions', method: :delete %></li>
           <% else %>
-            <li><%= link_to "Help", "/help" %></li>
             <li><%= link_to "Sign In With Google", "/auth/google_oauth2" %></li>
           <% end %>
         </ul>
