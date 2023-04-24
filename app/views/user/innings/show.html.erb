@@ -1,12 +1,2 @@
 <h2 class="s-h2">Modules for the <%= @inning.name %> Inning</h2>
-<% @inning.turing_modules.each do |mod| %>
-  <section id="turing-module-<%= mod.id %>">
-    <h2 class="module-header"><%= link_to mod.name, turing_module_path(mod) %></h2> 
-    <% if current_user.is_this_my_mod?(mod) %>
-      <h2 class="module-header">(Currently set as My Module)</h2>
-    <% else %>
-      <%= button_to 'Set as My Module', user_path(current_user), method: :patch, params: {turing_module_id: mod.id}, class: 's-button', form_class:  "my-mod-button"  %>
-    <% end %>
-    <br>
-  </section>
-<% end %>
+<%= render partial: 'shared/module_list', locals: {modules: current_inning.turing_modules} %>
