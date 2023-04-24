@@ -5,13 +5,6 @@ RSpec.describe 'Creating a Zoom Attendance' do
     @user = mock_login
   end
 
-  it 'links back to module and inning' do
-    mod = create(:setup_module)
-    inning = mod.inning
-    visit new_turing_module_attendance_path(mod)
-    expect(page).to have_link(mod.name, href: turing_module_path(mod))
-  end
-
   context 'with valid meeting ids' do
     before(:each) do
       @test_zoom_meeting_id = 95490216907
@@ -35,9 +28,7 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
     it 'creates a new attendance by filling in a past zoom meeting' do
       visit turing_module_path(@test_module)
-      click_link('Take Attendance')
 
-      expect(current_path).to eq("/modules/#{@test_module.id}/attendances/new")
       expect(page).to have_content(@test_module.name)
       fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
       click_button 'Take Attendance'
@@ -55,7 +46,6 @@ RSpec.describe 'Creating a Zoom Attendance' do
       present = @test_module.students.find_by(name: 'Leo Banos Garcia')
       
       visit turing_module_path(@test_module)
-      click_link('Take Attendance')
 
       fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
       click_button 'Take Attendance'
@@ -73,14 +63,27 @@ RSpec.describe 'Creating a Zoom Attendance' do
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{invalid_zoom_id}") \
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
 
-      test_module = create(:turing_module)
-      visit new_turing_module_attendance_path(test_module)
+      test_module = create(:setup_module)
+      visit turing_module_path(test_module)
 
       fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{invalid_zoom_id}"
       click_button 'Take Attendance'
 
-      expect(current_path).to eq(new_turing_module_attendance_path(test_module))
+      expect(current_path).to eq(turing_module_path(test_module))
       expect(page).to have_content("It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again.")
+    end
+
+    it 'shows a message if no meeting id is entered' do
+      stub_request(:get, "https://api.zoom.us/v2/meetings/") \
+        .to_return(body: File.read('spec/fixtures/zoom/endpoint_not_recognized.json'))
+
+      test_module = create(:setup_module)
+      visit turing_module_path(test_module)
+
+      click_button 'Take Attendance'
+
+      expect(current_path).to eq(turing_module_path(test_module))
+      expect(page).to have_content("Please enter a Zoom or Slack link.")
     end
   end
 end

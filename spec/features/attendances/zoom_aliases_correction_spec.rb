@@ -23,8 +23,6 @@ RSpec.describe 'attendance show page' do
 
     visit turing_module_path(@test_module)
 
-    click_link('Take Attendance')
-
     fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
 
     click_button 'Take Attendance'

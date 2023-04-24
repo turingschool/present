@@ -1,17 +1,8 @@
-
-<h1><%= @module.name %></h1>
-<% if current_user.is_this_my_mod?(@module) %>
-  <p>(Set to My Module)</p>
-<% else %>
-  <p><%= button_to 'Set as My Module', user_path(current_user), method: :patch, params: {turing_module_id: @module.id}, class: 's-button' %></p>
-<% end %>
+<h1 class='module-header'><%=link_to @module.name, turing_module_path(@module) %></h1><span><%= link_to "Students (#{@module.students.length})", turing_module_students_path(@module), class: 's-link' %></span>
 <% if !@module.account_match_complete %>
   <p><%= link_to "Setup Module", turing_module_populi_integration_path(@module), class: 's-button' %></p>
 <% else %>
-  <p><%= link_to "#{@module.inning.name} inning", inning_path(@module.inning), class: 's-link' %></p>
-  <p><%= link_to "Redo Module Setup", turing_module_populi_integration_path(@module), class: 's-link' %></p>
-  <p><%= link_to "Students (#{@module.students.length})", turing_module_students_path(@module), class: 's-link' %></p>
-  <p><%= link_to 'Take Attendance', new_turing_module_attendance_path(@module), class: 's-link' %></p>
+  <%= render partial: 'shared/take_attendance', locals: {attendance: Attendance.new, mod: @module} %>
   <section id='past-attendances'>
     <h3 class='s-h3'>Past Attendances</h3>
     <table>
@@ -19,7 +10,7 @@
         <th>Meeting Title</th>
         <th>Attendance Time</th>
       </tr>
-      <% @module.attendances.each do |attendance| %>
+      <% @module.attendances_by_time.each do |attendance| %>
         <tr id='attendance-<%= attendance.id %>', class='attendance'>
           <td><%= link_to attendance.meeting.title, attendance_path(attendance) %></td>
           <td><%= pretty_time(attendance.attendance_time) %> - <%= pretty_date(attendance.attendance_time) %></td>
@@ -27,4 +18,6 @@
       <% end %>
     </table>
   </section>
+  <h2>Other Options</h2>
+  <p><%= link_to "Redo Module Setup", turing_module_populi_integration_path(@module), class: 's-button' %></p>
 <% end %>

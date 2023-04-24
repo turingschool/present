@@ -4,13 +4,12 @@ Rails.application.routes.draw do
   get '/welcome', to: 'welcome#index'
   get '/auth/google_oauth2/callback', to: 'sessions#create'
   delete '/sessions', to: 'sessions#destroy'
-  get '/help', to: 'welcome#help'
 
   scope module: :user do
     resources :users, only: [:update]
-    resources :innings, only: [:show, :create, :index, :update]
+    resources :innings, only: [:show]
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
-      resources :attendances, only: [:new, :create, :show, :edit, :update] do
+      resources :attendances, only: [:create, :show, :edit, :update] do
         resources :populi_transfer, only: [:new, :create, :index]
         patch "students/:id", to: 'attendances#save_zoom_alias', as: :student
       end

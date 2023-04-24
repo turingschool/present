@@ -1,7 +1,7 @@
 class User::UsersController < User::BaseController
   def update
     current_user.update(user_params)
-    redirect_to turing_module_path(current_user.my_module)
+    redirect_to current_inning
   end
 
   private

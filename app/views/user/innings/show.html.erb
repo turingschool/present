@@ -1,8 +1,2 @@
-<h1 style="display:inline;"><%= @inning.name %> Inning</h1> <%= "(current inning)" if @inning.current%>
-<% if !@inning.current %>
-    <%= button_to "Set To Current Inning", inning_path(@inning), method: :patch, form: {style: 'display:inline-block;'} %>
-<% end %>
-
-<% if !@inning.turing_modules.empty? %>
-    <%= render partial: "shared/module_list", locals: {modules: @inning.turing_modules} %>
-<% end %>
+<h2 class="s-h2">Modules for the <%= @inning.name %> Inning</h2>
+<%= render partial: 'shared/module_list', locals: {modules: current_inning.turing_modules} %>

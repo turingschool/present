@@ -7,6 +7,7 @@ class ZoomMeeting < Meeting
     meeting_id = meeting_url.split("/").last
     meeting_details = ZoomService.meeting_details(meeting_id)    
     raise invalid_error if meeting_details[:code] == 3001
+    raise no_meeting_error if meeting_details[:code] == 2300
     create(
       meeting_id: meeting_id, 
       start_time: meeting_details[:start_time].to_datetime, 
@@ -39,6 +40,10 @@ class ZoomMeeting < Meeting
 private
   def self.invalid_error
     InvalidMeetingError.new("It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again.")
+  end
+  
+  def self.no_meeting_error
+    InvalidMeetingError.new("Please enter a Zoom or Slack link.")
   end
 
   def participant_report

@@ -41,25 +41,8 @@ RSpec.describe 'Populi Transfer' do
       to_return(status: 200, body: '') 
   end
 
-
-# And I see there are instructions informing me that I first need to first create the attendance in Populi 
-# by marking all students as absent, clicking the correct check boxes for whether or not the attendance 
-# fulfills attendance hours and/or clinical hours, and clicking "Save Attendance".
-
-# And I see a button to confirm "I have created the Attendance record in Populi".
-# When I click this button,
-# Then I see that button is inactive,
-# And I see there is a new button for "Transfer Student Attendance to Populi" that was inactive is now active.
-# When I click that button,
-# Then I am redirected to the attendance's show page,
-# And I see a confirmation that the attendance was saved successfully.
-# And when I view the corresponding attendance record in Populi,
-# Then I see the attendance is updated accurately.
-
   it 'sends the request to update the students attendance in Populi' do
     visit turing_module_path(@mod)
-
-    click_link('Take Attendance')
 
     fill_in :attendance_meeting_url, with:  "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
                 

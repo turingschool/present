@@ -12,7 +12,6 @@ RSpec.describe 'Modules show page' do
     visit "/modules/#{@test_module.id}"
 
     expect(page).to have_content("#{@test_module.program} Mod #{@test_module.module_number}")
-    expect(page).to have_content("#{@test_module.inning.name} inning")
   end
 
   context "with attendances" do
@@ -51,36 +50,12 @@ RSpec.describe 'Modules show page' do
     end
   end
 
-  it 'has a message if module is already set as My Module' do
-    @user.turing_module = @test_module
-
-    visit turing_module_path(@test_module)
-
-    expect(page).to have_content('(Set to My Module)')
-  end
-
-  it 'has a button to set the module as my_module' do
-    visit turing_module_path(@test_module)
-
-    click_button 'Set as My Module'
-
-    expect(current_path).to eq(turing_module_path(@test_module))
-    expect(page).to have_content('(Set to My Module)')
-    expect(@user.is_this_my_mod?(@test_module)).to eq(true)
-  end
-
-
-
-  
   it 'mod show page shows link for students and taking attendance once match is done' do 
-      @test_module.students.create!(name: 'blah', populi_id: 'some_id', slack_id: 'some_id')
-      @test_module.update(slack_channel_id: 'some_id')
+    visit turing_module_path(@test_module)
 
-      visit turing_module_path(@test_module)
-
-      expect(page).to_not have_link("Setup Module")
-      expect(page).to have_link("Take Attendance")
-    end 
+    expect(page).to_not have_link("Setup Module")
+    expect(page).to have_button("Take Attendance")
+  end 
 
   context 'when setup isnt fully complete' do 
     before(:each) do 

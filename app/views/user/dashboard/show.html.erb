@@ -1,15 +1,11 @@
-<h1>Welcome <%= current_user.email %>!</h1>
 <% if @my_module %>
-  <h2>My Module: <%= link_to @my_module.name, turing_module_path(@my_module) %></h2>
   <% if @my_module.account_match_complete %>
     <%= render partial: 'shared/take_attendance', locals: {attendance: Attendance.new, mod: @my_module} %>
   <% else %>
     <p><%= link_to "Setup Module", turing_module_populi_integration_path(@my_module), class: 's-button' %></p>
   <% end %>
-<% elsif current_inning %>
-  <p>My Module is not set. To set My Module visit a module page.</p>
-  <h2>Current Inning: <%= current_inning.name %></h2>
-  <%= render partial: 'shared/module_list', locals: {modules: current_inning.turing_modules} %>
+  <h3>Your Module: <%= link_to @my_module.name, turing_module_path(@my_module) %></h3>
 <% else %>
-  <p>No Inning is set as the current inning. Visit the <%= link_to 'All Innings', innings_path %> page to set the current inning.</p>
+  <h1>Welcome <%= current_user.email %>!</h1>
+  <%= render partial: 'shared/module_list', locals: {modules: current_inning.turing_modules} %>
 <% end %>

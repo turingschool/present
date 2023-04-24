@@ -1,9 +1,12 @@
-<h3>Modules</h3>
-<table class='inning-modules'>
-    <% modules.each do |mod| %>
-    <tr>
-      <td><%= link_to mod.name, turing_module_path(mod) %>---</td>
-      <td><%= link_to 'Take Attendance', new_turing_module_attendance_path(mod) %></td>
-    </tr>
+<p>Use the buttons below to set your Module. Then click the link to your Module to get started.</p>
+<% modules.each do |mod| %>
+  <section id="turing-module-<%= mod.id %>">
+    <h2 class="module-header"><%= link_to mod.name, turing_module_path(mod) %></h2> 
+    <% if current_user.is_this_my_mod?(mod) %>
+      <h2 class="module-header">(This is your Module)</h2>
+    <% else %>
+      <%= button_to 'Set as my Module', user_path(current_user), method: :patch, params: {turing_module_id: mod.id}, class: 's-button', form_class: "my-mod-button"  %>
     <% end %>
-</table>
+    <br>
+  </section>
+<% end %>
