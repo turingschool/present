@@ -1,9 +1,4 @@
 class User::AttendancesController < User::BaseController
-  def new
-    @module = TuringModule.find(params[:turing_module_id])
-    @attendance = Attendance.new
-  end
-
   def create
     turing_module = TuringModule.find(params[:turing_module_id])
     begin
@@ -11,7 +6,7 @@ class User::AttendancesController < User::BaseController
       redirect_to attendance_path(attendance)
     rescue InvalidMeetingError => error
       flash[:error] = error.message
-      redirect_to new_turing_module_attendance_path(turing_module)
+      redirect_to request.referrer
     end
   end
 
