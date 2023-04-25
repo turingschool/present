@@ -1,10 +1,5 @@
 <% if @my_module %>
-  <% if @my_module.account_match_complete %>
-    <%= render partial: 'shared/take_attendance', locals: {attendance: Attendance.new, mod: @my_module} %>
-  <% else %>
-    <p><%= link_to "Setup Module", turing_module_populi_integration_path(@my_module), class: 's-button' %></p>
-  <% end %>
-  <h3>Your Module: <%= link_to @my_module.name, turing_module_path(@my_module) %></h3>
+  <%= render partial: "shared/dashboard", locals: {mod: @my_module} %>
 <% else %>
   <h1>Welcome <%= current_user.email %>!</h1>
   <%= render partial: 'shared/module_list', locals: {modules: current_inning.turing_modules} %>

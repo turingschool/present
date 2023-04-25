@@ -1,0 +1,21 @@
+<section id="module-content">
+  <section id='left-column'>
+    <section id="turing-module-selection">
+      <%= select_tag :turing_module, options_from_collection_for_select(current_inning.turing_modules, :id, :name, mod.id), {id: "turing-module-select"} %>
+    </section>
+    <% unless current_user.is_this_my_mod?(mod) %>
+      <%= button_to 'Set as my Module', user_path(current_user), method: :patch, data: {turbo: false}, params: {turing_module_id: mod.id}, class: 's-button', form_class: "my-mod-button"  %>
+    <% end %>
+    <% if mod.account_match_complete %>
+      <%= link_to "Students (#{mod.students.length})", turing_module_students_path(mod), class: 's-link students-link' %>
+      <%= render partial: 'shared/take_attendance', locals: {attendance: Attendance.new, mod: mod} %>
+      <h2 id="other-options">Other Options</h2>
+      <%= link_to "Redo Module Setup", turing_module_populi_integration_path(mod), class: 's-button' %>
+    <% elsif current_user.is_this_my_mod?(mod) %>
+      <p><%= link_to "Setup Module", turing_module_populi_integration_path(mod), class: 's-button' %></p>
+    <% end %>
+  </section>
+  <section id='right-column'>
+    <%= render partial: 'shared/past_attendances', locals: {attendances: mod.attendances_by_time} %>
+  </section>
+</section>
