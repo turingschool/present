@@ -111,3 +111,7 @@
 .error p {
   background-color: #fad7dc;
 }
+
+.danger {
+  background-color: #9b0428;
+}
