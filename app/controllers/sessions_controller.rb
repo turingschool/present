@@ -13,6 +13,7 @@ class SessionsController < ApplicationController
       organization_domain: auth_hash["extra"]["raw_info"]["hd"]
     })
     session[:user_id] = user.id
+    flash[:success] = "Welcome, #{user.email}!"
     redirect_to root_path
   end
 

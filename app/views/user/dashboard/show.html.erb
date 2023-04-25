@@ -1,6 +1,3 @@
-<% if @my_module %>
-  <%= render partial: "shared/dashboard", locals: {mod: @my_module} %>
-<% else %>
-  <h1>Welcome <%= current_user.email %>!</h1>
-  <%= render partial: 'shared/module_list', locals: {modules: current_inning.turing_modules} %>
-<% end %>
+<p>Select your Module from the list to get started</p>
+<%= render partial: 'shared/module_list', locals: {modules: current_inning.turing_modules} %>
+
