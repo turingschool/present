@@ -97,18 +97,19 @@
 }
 
 .flash-message p {
-  border-radius: 10px;
   font-weight: bold;
   padding: 20px;
-  color: #939598;
-  margin-top: 5px;
+  /* color: #939598; */
+  margin-top: 0px;
 }
 
 .success p {
+  color: #036575;
   background-color: #c4f1e2;
 }
 
 .error p {
+  color: #9b0428;
   background-color: #fad7dc;
 }
 
