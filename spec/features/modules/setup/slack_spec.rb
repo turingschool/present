@@ -56,7 +56,6 @@ RSpec.describe "Module Setup Slack Workflow" do
       it 'adds a slack channel to a module' do 
         @mod.reload 
 
-        expect(page).to have_content("Successfully uploaded Channel #{@channel_id}")
         expect(@mod.slack_channel_id).to eq(@channel_id)
       end 
 

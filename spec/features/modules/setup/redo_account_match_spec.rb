@@ -46,8 +46,8 @@ RSpec.describe "Redo Module Setup Account Matching" do
         fill_in :zoom_meeting_id, with: @zoom_meeting_id
         click_button "Import Zoom Accounts From Meeting"
 
-        click_button 'Match'
-        
+        click_button 'Connect Accounts'
+
         @test_module.reload
         
         expect(@test_module.students.count).to eq(7) #there are 7 students in the populi fixture file.
