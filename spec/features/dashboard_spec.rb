@@ -6,29 +6,15 @@ RSpec.describe "Dashboard" do
     @my_mod = create(:turing_module)
   end
 
-  it 'shows a welcome message' do
-    visit '/'
-
-    expect(page).to have_content("Welcome #{@user.email}!")
-  end
-
   context 'if my_module is set' do
     before(:each) do
       @user.update(turing_module: @my_mod)
     end
 
-    it 'user can see their module linked' do
+    it 'redirects them to their mod show page' do
       visit '/'
 
-      expect(page).to have_content("Your Module: #{@my_mod.name}")
-      expect(page).to have_link(@my_mod.name, href: turing_module_path(@my_mod))
-    end
-    
-    it 'user cant take attendance for their mod if account match isnt complete' do
-      visit '/'
-
-      expect(page).to have_link("Setup Module")
-      expect(page).to_not have_content('Take Attendance for a Slack or Zoom Meeting')
+      expect(current_path).to eq(turing_module_path(@my_mod))
     end
     
     context 'if account match is complete' do
@@ -55,9 +41,11 @@ RSpec.describe "Dashboard" do
     
 
   context 'if my_module is not set' do
-    it 'User sees a message about getting started' do
+    it 'User sees all modules' do
+      create_list(:turing_module, 3, inning: @my_mod.inning)
       visit '/'
-      expect(page).to have_content('Use the buttons below to set your Module. Then click the link to your Module to get started.')
+      expect(page).to have_content('Select your Module from the list to get started')
+      expect(page).to have_css(".module", count: 4)
     end
   end
 end

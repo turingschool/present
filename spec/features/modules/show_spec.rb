@@ -63,6 +63,13 @@ RSpec.describe 'Modules show page' do
       @channel_id = "C02HRH7MF5K"
     end 
 
+    it 'user cant take attendance for their mod' do
+      visit '/'
+
+      expect(page).to have_link("Setup Module")
+      expect(page).to_not have_content('Take Attendance')
+    end
+
     it 'has a button to set up mod that goes to populi/new page' do
       visit turing_module_path(@test_module)
 
