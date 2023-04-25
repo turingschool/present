@@ -12,6 +12,7 @@ class User::AccountMatchController < ApplicationController
         Student.update!(student_id, {slack_id: ids[:slack_id]})
         ZoomAlias.create(name: ids[:zoom_id], student_id: student_id)
       end
+      flash[:success] = "#{current_module.name} is now set up. Happy attendance taking!"
       redirect_to current_module
     rescue ActiveRecord::RecordInvalid => error
       flash[:error] = "We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student."

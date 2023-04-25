@@ -71,4 +71,12 @@ RSpec.describe "Authentication" do
     click_link 'Sign In With Google'
     expect(User.count).to eq(1)
   end
+
+  it 'shows a welcome message' do
+    visit '/'
+
+    click_link 'Sign In With Google'
+
+    expect(page).to have_content("Welcome, #{email}!")
+  end
 end

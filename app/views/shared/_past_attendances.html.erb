@@ -1,0 +1,15 @@
+<section id='past-attendances'>  
+  <h3 class='s-h3'>Past Attendances</h3>
+  <table>
+    <tr>
+      <th>Meeting Title</th>
+      <th>Attendance Time</th>
+    </tr>
+    <% attendances.each do |attendance| %>
+      <tr id='attendance-<%= attendance.id %>', class='attendance'>
+        <td><%= link_to attendance.meeting.title, attendance_path(attendance) %></td>
+        <td><%= pretty_time(attendance.attendance_time) %> - <%= pretty_date(attendance.attendance_time) %></td>
+      </tr>
+    <% end %>
+  </table>
+</section>

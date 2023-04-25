@@ -14,6 +14,16 @@ RSpec.describe 'Modules show page' do
     expect(page).to have_content("#{@test_module.program} Mod #{@test_module.module_number}")
   end
 
+  it 'has a button to set the module as my_module' do
+    visit "/modules/#{@test_module.id}"
+
+    click_button('Set as my Module')
+
+    expect(current_path).to eq(turing_module_path(@test_module))
+
+    expect(page).to_not have_button('Set as my Module')
+  end
+
   context "with attendances" do
     before :each do 
       zoom_attendances = create_list(:zoom_attendance, 3, turing_module: @test_module)
@@ -60,8 +70,16 @@ RSpec.describe 'Modules show page' do
   context 'when setup isnt fully complete' do 
     before(:each) do 
       @test_module = create(:turing_module)
+      @user.update!(turing_module: @test_module)
       @channel_id = "C02HRH7MF5K"
     end 
+
+    it 'user cant take attendance for their mod' do
+      visit turing_module_path(@test_module)
+
+      expect(page).to have_link("Setup Module")
+      expect(page).to_not have_content('Take Attendance')
+    end
 
     it 'has a button to set up mod that goes to populi/new page' do
       visit turing_module_path(@test_module)

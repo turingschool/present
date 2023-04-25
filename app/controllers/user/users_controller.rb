@@ -1,7 +1,10 @@
 class User::UsersController < User::BaseController
   def update
     current_user.update(user_params)
-    redirect_to current_inning
+    turing_module = TuringModule.find(params[:turing_module_id])
+    current_user.update(turing_module: turing_module)
+    flash[:success] = "Success! #{turing_module.name} is now set as your Module."
+    redirect_to turing_module_path(turing_module)
   end
 
   private

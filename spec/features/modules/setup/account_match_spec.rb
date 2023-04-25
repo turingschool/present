@@ -159,7 +159,7 @@ RSpec.describe "Module Setup Account Matching" do
         end
       end
 
-      click_button 'Match'
+      click_button 'Connect Accounts'
       
       expect(current_path).to eq(turing_module_path(@mod))
 
@@ -212,7 +212,7 @@ RSpec.describe "Module Setup Account Matching" do
         end
       end
 
-      click_button 'Match'
+      click_button 'Connect Accounts'
 
       expect(page).to have_css('#account-match-table')
       expect(current_path).to eq(new_turing_module_account_match_path(@mod))

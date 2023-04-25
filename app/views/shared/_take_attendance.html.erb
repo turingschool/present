@@ -1,6 +1,6 @@
 <section id='take-attendance'>
   <h2>Take Attendance for a Slack or Zoom Meeting</h2>
-  <%= form_with model: [mod, attendance], local: true, id: 'take-attendance' do |f| %>
+  <%= form_with model: [mod, attendance], id: 'take-attendance', data: {turbo: false} do |f| %>
     <p class='s-p'>
       <%= f.label :meeting_url, "Enter the Zoom or Slack Link" %>
       <%= f.text_field :meeting_url %>
