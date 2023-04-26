@@ -1,0 +1,7 @@
+<h2>Please select your inning:</h2>
+<section id="term-select">
+  <%= form_with url: turing_module_populi_path, method: :patch do |f| %>
+    <%= f.select :term_id, facade.term_options %>
+    <%= f.submit "Submit", class: 's-button' %>
+  <% end %>
+</section>

@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       get '/populi/new', to: 'populi#new', as: :populi_integration
       get '/populi/courses/:course_id', to: 'populi#match_students', as: :populi_match_students
       post '/populi', to: 'populi#create'
+      patch '/populi', to: 'populi#update'
     end
   end
 end

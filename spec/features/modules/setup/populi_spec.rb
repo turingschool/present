@@ -16,6 +16,14 @@ RSpec.describe "Module Setup Populi Workflow" do
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
+    
+    stub_request(:post, ENV['POPULI_API_URL']).
+      with(body: {"task"=>"getAcademicTerms"}).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/academic_terms.xml'), headers: {})
+    
+    stub_request(:post, ENV['POPULI_API_URL']).
+      with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295898"}).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
   end
 
   it 'suggests the best match of module from the list of populi courses' do
@@ -24,10 +32,6 @@ RSpec.describe "Module Setup Populi Workflow" do
     within '#best-match' do
       expect(page).to have_content('BE Mod 2 - Web Application Development')
     end
-  end
-
-  context 'Best match does not match users module' do
-    it 'user can click "no" and select their mod from all populi modules'
   end
   
   context 'user confirms Populi module' do
@@ -67,5 +71,23 @@ RSpec.describe "Module Setup Populi Workflow" do
         expect(@mod.students.length).to eq(7)
       end 
     end 
+  end
+
+   context 'User clicks no' do
+    it 'user can select their inning and then module' do
+      visit turing_module_populi_integration_path(@mod)
+
+      click_button "No"
+      
+      select("2211")
+
+      click_button("Submit")
+
+      click_button('BE Mod 2 - Web Application Development')
+
+      expect(current_path).to eq(turing_module_slack_integration_path(@mod))
+      
+      expect(@mod.students.length).to eq(7)
+    end
   end
 end

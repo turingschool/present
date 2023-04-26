@@ -3,9 +3,16 @@ class PopuliFacade
 
   attr_reader :module
   
-  def initialize(turing_module, course_id = nil)
+  def initialize(turing_module, course_id = nil, term_id = nil)
     @module = turing_module
     @course_id = course_id
+    @term_id = term_id
+  end
+
+  def courses
+    PopuliService.new.get_term_courses(@term_id)[:response][:course_instance].map do |course_data|
+      PopuliCourse.new(course_data)
+    end
   end
 
   def matching_module
@@ -27,9 +34,16 @@ class PopuliFacade
   end 
 
   def import_students
+    # Refactor: Might want to move this
     self.module.students.destroy_all
     populi_students.each do |student|
       self.module.students.create!(name: student.name, populi_id: student.personid)
+    end
+  end
+
+  def term_options
+    PopuliService.new.get_terms[:response][:academic_term].map do |term|
+      [term[:fullname], term[:termid]]
     end
   end
 
