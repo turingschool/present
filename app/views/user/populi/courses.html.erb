@@ -1,0 +1,4 @@
+<h2>Select your Populi Course:</h2>
+<% facade.courses.each do |course| %>
+  <%= button_to course.name, turing_module_populi_path(facade.module), params: {course_id: course.id}, class: 's-button populi-course' %>
+<% end %>
