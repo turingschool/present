@@ -12,8 +12,8 @@ class User::PopuliController < User::BaseController
       redirect_to turing_module_slack_integration_path(current_module)
     else
       render :terms, locals: {
-      facade: PopuliFacade.new(current_module)
-    }
+        facade: PopuliFacade.new(current_module)
+      }
     end
   end
 
