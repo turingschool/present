@@ -92,7 +92,7 @@
   border: 2px solid #036575;
   -ms-word-break: normal;
   word-break: normal;
-  border-radius: 100px;
+  border-radius: 30px;
   outline: none;
 }
 
@@ -115,4 +115,27 @@
 
 .danger {
   background-color: #9b0428;
+}
+
+button.populi-course {
+  margin-top: 5px;
+}
+
+select {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  padding: 12px 24px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.75;
+  color: #4d4d4f;
+  border: 2px solid #4d4d4f;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+  border-radius: 30px;
+}
+
+form.populi-match {
+  display: inline;
 }
