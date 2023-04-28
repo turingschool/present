@@ -23,7 +23,7 @@
             <td id='student-aliases-<%= student_attendance.student.id %>'>
               <%= form_with  model: [@attendance, student_attendance.student] do |f| %>
                 <%= f.select :zoom_alias, facade.alias_options_for(student_attendance.student) %>
-                <%= f.submit "Save Zoom Alias" %>
+                <%= f.submit "Save Zoom Alias", class: "s-button" %>
               <% end %>
             </td>
           <% end %>
