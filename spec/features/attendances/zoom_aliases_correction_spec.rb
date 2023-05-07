@@ -115,4 +115,24 @@ RSpec.describe 'attendance show page' do
       expect(page).to have_content("absent")
     end
   end
+
+  it 'shows the alias used for the student' do
+    leo = @test_module.students.find_by(name: "Leo Banos Garcia")
+    within "#student-#{leo.id}" do
+      within '.alias-used' do
+        expect(page).to have_content("Leo BG# BE")
+      end
+    end
+  end
+
+  it 'allows user to undo a zoom alias' do
+    leo = @test_module.students.find_by(name: "Leo Banos Garcia")
+    within "#student-#{leo.id}" do
+      expect(page).to have_content("present")
+      within '.alias-used' do
+        click_button "Undo"
+      end
+      expect(page).to have_content("absent")
+    end 
+  end
 end

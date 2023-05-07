@@ -28,7 +28,9 @@ class Attendance < ApplicationRecord
       next if student.nil?
       student_attendance = student_attendances.find_or_create_by(student: student)
       participant.assign_status!(attendance_time)
-      student_attendance.record_status_for_participant(participant)
+      if student_attendance.record_status_for_participant!(participant)
+        meeting.connect_alias(student_attendance, participant.name) if meeting.respond_to? :zoom_aliases
+      end
     end
   end
 

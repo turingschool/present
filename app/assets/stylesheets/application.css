@@ -143,3 +143,7 @@ form.populi-match {
 form#account-match {
   margin-top: 5%;
 }
+
+.alias-correction {
+  font-size: 12px;
+}

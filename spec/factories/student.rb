@@ -8,7 +8,7 @@ FactoryBot.define do
       sequence(:slack_id) {|n| "<slack_id_#{n}>"}
       
       after :create do |student|
-        create(:zoom_alias, student: student, name: Faker.name)
+        create(:zoom_alias, student: student)
       end
     end
   end
