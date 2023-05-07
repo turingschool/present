@@ -1,8 +1,13 @@
 class User::AccountMatchController < ApplicationController
   def new 
-    render locals: {
-      facade: AccountMatchFacade.new(current_module, params[:zoom_meeting_id])
-    }
+    begin
+      render locals: {
+        facade: AccountMatchFacade.new(current_module, params[:zoom_meeting_id])
+      }
+    rescue InvalidMeetingError => error
+      flash[:error] = "Please Provide a valid Zoom meeting link"
+      redirect_to turing_module_zoom_integration_path
+    end
   end 
 
   def create

@@ -1,6 +1,6 @@
 <h2>Import Slack Channel</h2>
 
-  <%= form_with url: turing_module_slack_path(@module), local: true do |f| %>
+  <%= form_with url: turing_module_slack_path(@module), data: {turbo: false} do |f| %>
     <p class='s-p'>
       <%= f.label :slack_channel_id, "Enter this cohort's channel id: " %>
       <%= f.text_field :slack_channel_id %>
