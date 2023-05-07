@@ -31,6 +31,7 @@ RSpec.describe "Module Setup Populi Workflow" do
 
     within '#best-match' do
       expect(page).to have_content('BE Mod 2 - Web Application Development')
+      expect(page).to have_content('Inning: 2301')
     end
   end
   

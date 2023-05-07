@@ -19,6 +19,10 @@ class PopuliFacade
     @matching_module ||= find_matching_module
   end
 
+  def current_term_name
+    service.get_current_academic_term[:response][:name]
+  end
+
   def student_options
     populi_students.map do |student|
       [student.name, student.personid]
