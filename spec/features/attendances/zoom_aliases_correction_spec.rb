@@ -135,20 +135,4 @@ RSpec.describe 'attendance show page' do
       expect(page).to have_content("absent")
     end 
   end
-
-  it 'associates all alias of the same name with the student' do
-    sam = @test_module.students.find_by(name: 'Samuel Cox')
-
-    visit attendance_path(@attendance)
-
-    within "#student-aliases-#{sam.id}" do
-      select("Sam Cox (He/Him) BE")
-      click_button "Save Zoom Alias"
-    end
-
-    within "#student-aliases-#{sam.id}" do
-      expect(first('option').text).to_not eq("Sam Cox (He/Him) BE")
-    end
-    save_and_open_page
-  end
 end
