@@ -2,8 +2,8 @@
 <section id='best-match'>
   <p>Is this your Populi Course?<strong><%= facade.matching_module.name %></strong></p>
   <p>
-    <%= button_to "Yes", turing_module_populi_path(facade.module), params: {course_id: facade.matching_module.id}, class: "s-button", form_class: 'populi-match' %>
-    <%= button_to "No", turing_module_populi_path(facade.module), form_class: 'populi-match', class: "s-button" %>
+    <%= button_to "Yes", turing_module_populi_path(facade.module), params: {course_id: facade.matching_module.id}, class: "s-button", form_class: 'populi-match', data: {turbo: false} %>
+    <%= button_to "No", turing_module_populi_path(facade.module), form_class: 'populi-match', class: "s-button", data: {turbo: false} %>
   </p>
   
 </section>
