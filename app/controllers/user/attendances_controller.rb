@@ -26,11 +26,15 @@ class User::AttendancesController < User::BaseController
     redirect_to attendance_path(attendance)
   end
 
-  def save_zoom_alias
+  def update_zoom_alias
+    attendance = Attendance.find(params[:attendance_id])
     student = Student.find(params[:id])
     zoom_alias = ZoomAlias.find(params[:student][:zoom_alias])
-    zoom_alias.update(student: student)
-    attendance = Attendance.find(params[:attendance_id])
+    if params[:commit] == "Undo"
+      zoom_alias.update(student: nil)
+    else
+      zoom_alias.update(student: student)
+    end
     attendance.rerecord
     redirect_to attendance_path(attendance)
   end

@@ -30,15 +30,6 @@ RSpec.describe 'attendance show page' do
     @attendance = Attendance.last
   end
 
-  it 'shows the alias used for the student' do
-    leo = @test_module.students.find_by(name: "Leo Banos Garcia")
-    within "#student-#{leo.id}" do
-      within '.alias-used' do
-        expect(page).to have_content("Leo BG# BE")
-      end
-    end
-  end
-
   it 'can change an absent student to present using Zoom Alias dropdowns' do
     lacey = @test_module.students.find_by(name: 'Lacey Weaver')
 
@@ -123,5 +114,41 @@ RSpec.describe 'attendance show page' do
     within "#student-#{anhnhi.id}" do
       expect(page).to have_content("absent")
     end
+  end
+
+  it 'shows the alias used for the student' do
+    leo = @test_module.students.find_by(name: "Leo Banos Garcia")
+    within "#student-#{leo.id}" do
+      within '.alias-used' do
+        expect(page).to have_content("Leo BG# BE")
+      end
+    end
+  end
+
+  it 'allows user to undo a zoom alias' do
+    leo = @test_module.students.find_by(name: "Leo Banos Garcia")
+    within "#student-#{leo.id}" do
+      expect(page).to have_content("present")
+      within '.alias-used' do
+        click_button "Undo"
+      end
+      expect(page).to have_content("absent")
+    end 
+  end
+
+  it 'associates all alias of the same name with the student' do
+    sam = @test_module.students.find_by(name: 'Samuel Cox')
+
+    visit attendance_path(@attendance)
+
+    within "#student-aliases-#{sam.id}" do
+      select("Sam Cox (He/Him) BE")
+      click_button "Save Zoom Alias"
+    end
+
+    within "#student-aliases-#{sam.id}" do
+      expect(first('option').text).to_not eq("Sam Cox (He/Him) BE")
+    end
+    save_and_open_page
   end
 end
