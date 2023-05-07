@@ -5,7 +5,8 @@
       <th>Student</th>
       <th>Join Time</th>
       <th>Status</th>
-      <th>Zoom Alias</th>
+      <th>Zoom Alias Used</th>
+      <th>Save a new Zoom Alias</th>
     </tr>
   </thead>
   <tbody>
@@ -19,6 +20,11 @@
             <td>N/A</td>
           <% end %>
           <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
+          <% if student_attendance.absent? %>
+            <td class="alias-used">N/A</td>
+          <% else %>
+            <td class="alias-used"><%= student_attendance.zoom_alias.name %></td>
+          <% end %>
           <% unless student_attendance.present? %>
             <td id='student-aliases-<%= student_attendance.student.id %>'>
               <%= form_with  model: [@attendance, student_attendance.student] do |f| %>

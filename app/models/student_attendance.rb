@@ -1,6 +1,7 @@
 class StudentAttendance < ApplicationRecord
   belongs_to :student
   belongs_to :attendance
+  belongs_to :zoom_alias, optional: true
 
   enum status: [:present, :tardy, :absent]
 
@@ -10,9 +11,12 @@ class StudentAttendance < ApplicationRecord
       .order("status DESC, last_name ASC")
   end
 
-  def record_status_for_participant(participant)
+  def record_status_for_participant!(participant)
     if self.absent? || self.status.nil? || (self.tardy? && participant.status == "present")
       self.update(status: participant.status, join_time: participant.join_time) 
+      return true
+    else
+      return false
     end
   end
 end

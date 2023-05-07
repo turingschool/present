@@ -37,6 +37,11 @@ class ZoomMeeting < Meeting
     return nil
   end  
 
+  def connect_alias(student_attendance, name)
+    zoom_alias = turing_module.zoom_aliases.find_by(name: name)
+    student_attendance.update(zoom_alias: zoom_alias)
+  end
+
 private
   def self.invalid_error
     InvalidMeetingError.new("It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again.")

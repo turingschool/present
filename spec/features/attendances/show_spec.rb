@@ -45,10 +45,10 @@ RSpec.describe 'attendance show page' do
       student_z = create(:student, name: "Firstname Zlastname", turing_module: @test_attendance.turing_module)
       student_b = create(:student, name: "Firstname Blastname", turing_module: @test_attendance.turing_module)
       student_c = create(:student, name: "Firstname Clastname", turing_module: @test_attendance.turing_module)
-      create(:student_attendance, student: student_a, status: 'present', attendance: @test_attendance)
-      create(:student_attendance, student: student_z, status: 'absent', attendance: @test_attendance)
-      create(:student_attendance, student: student_b, status: 'tardy', attendance: @test_attendance)
-      create(:student_attendance, student: student_c, status: 'absent', attendance: @test_attendance)
+      create(:student_attendance_zoom, student: student_a, status: 'present', attendance: @test_attendance)
+      create(:student_attendance_zoom, student: student_z, status: 'absent', attendance: @test_attendance)
+      create(:student_attendance_zoom, student: student_b, status: 'tardy', attendance: @test_attendance)
+      create(:student_attendance_zoom, student: student_c, status: 'absent', attendance: @test_attendance)
 
       visit attendance_path(@test_attendance)
 
@@ -60,9 +60,9 @@ RSpec.describe 'attendance show page' do
     it 'applies css classes to all students based on status' do
       test_attendance = create(:attendance)
       
-      create_list(:student_attendance, 4, attendance: test_attendance, status: :tardy)
-      create_list(:student_attendance, 3, attendance: test_attendance, status: :absent)
-      create_list(:student_attendance, 7, attendance: test_attendance, status: :present)
+      create_list(:student_attendance_zoom, 4, attendance: test_attendance, status: :tardy)
+      create_list(:student_attendance_zoom, 3, attendance: test_attendance, status: :absent)
+      create_list(:student_attendance_zoom, 7, attendance: test_attendance, status: :present)
 
       visit "/attendances/#{test_attendance.id}"
 
@@ -121,9 +121,9 @@ RSpec.describe 'attendance show page' do
     it 'applies css classes to all students based on status' do
       test_attendance = create(:attendance)
       
-      create_list(:student_attendance, 4, attendance: test_attendance, status: :tardy)
-      create_list(:student_attendance, 3, attendance: test_attendance, status: :absent)
-      create_list(:student_attendance, 7, attendance: test_attendance, status: :present)
+      create_list(:student_attendance_zoom, 4, attendance: test_attendance, status: :tardy)
+      create_list(:student_attendance_zoom, 3, attendance: test_attendance, status: :absent)
+      create_list(:student_attendance_zoom, 7, attendance: test_attendance, status: :present)
 
       visit "/attendances/#{test_attendance.id}"
 

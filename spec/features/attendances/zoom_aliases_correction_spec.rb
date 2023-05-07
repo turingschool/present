@@ -30,6 +30,15 @@ RSpec.describe 'attendance show page' do
     @attendance = Attendance.last
   end
 
+  it 'shows the alias used for the student' do
+    leo = @test_module.students.find_by(name: "Leo Banos Garcia")
+    within "#student-#{leo.id}" do
+      within '.alias-used' do
+        expect(page).to have_content("Leo BG# BE")
+      end
+    end
+  end
+
   it 'can change an absent student to present using Zoom Alias dropdowns' do
     lacey = @test_module.students.find_by(name: 'Lacey Weaver')
 

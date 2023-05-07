@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_04_224202) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_07_195034) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,8 +47,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_04_224202) do
     t.datetime "join_time", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.bigint "zoom_alias_id"
     t.index ["attendance_id"], name: "index_student_attendances_on_attendance_id"
     t.index ["student_id"], name: "index_student_attendances_on_student_id"
+    t.index ["zoom_alias_id"], name: "index_student_attendances_on_zoom_alias_id"
   end
 
   create_table "students", force: :cascade do |t|
