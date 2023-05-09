@@ -8,6 +8,7 @@ class ZoomMeeting < Meeting
     meeting_details = ZoomService.meeting_details(meeting_id)    
     raise invalid_error if meeting_details[:code] == 3001
     raise no_meeting_error if meeting_details[:code] == 2300
+    raise personal_meeting_error if meeting_details[:start_time].nil?
     create(
       meeting_id: meeting_id, 
       start_time: meeting_details[:start_time].to_datetime, 
@@ -49,6 +50,10 @@ private
   
   def self.no_meeting_error
     InvalidMeetingError.new("Please enter a Zoom or Slack link.")
+  end
+
+  def self.personal_meeting_error
+    InvalidMeetingError.new("It looks like that Zoom link is for a Personal Meeting Room. You will need to use a unique meeting instead.")
   end
 
   def participant_report

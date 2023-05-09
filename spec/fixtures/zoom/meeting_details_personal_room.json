@@ -1,0 +1,177 @@
+{
+  "uuid": "bw4EmAt0Q5iqGgoTodQttQ==",
+  "id": 7170185152,
+  "host_id": "msK7o1nSTP2EHDfbcULCtg",
+  "host_email": "mike@turing.edu",
+  "assistant_id": "",
+  "topic": "Mike (he/him)'s Personal Meeting Room",
+  "type": 4,
+  "status": "waiting",
+  "timezone": "America/Denver",
+  "agenda": "",
+  "created_at": "2019-01-28T13:23:55Z",
+  "start_url": "https://turingschool.zoom.us/s/7170185152?zak=eyJ0eXAiOiJKV1QiLCJzdiI6IjAwMDAwMSIsInptX3NrbSI6InptX28ybSIsImFsZyI6IkhTMjU2In0.eyJhdWQiOiJjbGllbnRzbSIsInVpZCI6Im1zSzdvMW5TVFAyRUhEZmJjVUxDdGciLCJpc3MiOiJ3ZWIiLCJzayI6IjEzMTUwNTY4NTEzMDUwOTEyODYiLCJzdHkiOjEwMCwid2NkIjoiYXcxIiwiY2x0IjowLCJtbnVtIjoiNzE3MDE4NTE1MiIsImV4cCI6MTY4MzY3MTM2MCwiaWF0IjoxNjgzNjY0MTYwLCJhaWQiOiJCSnY2eG1yWlFPU0lweUVObzJzWFNnIiwiY2lkIjoiIn0.KIXPEokeHNmrJyVzhdLjsnwzYSGk5GTNWYjfUsI9VxQ",
+  "join_url": "https://turingschool.zoom.us/j/7170185152",
+  "settings": {
+    "host_video": true,
+    "participant_video": true,
+    "cn_meeting": false,
+    "in_meeting": false,
+    "join_before_host": false,
+    "jbh_time": 0,
+    "mute_upon_entry": false,
+    "watermark": true,
+    "use_pmi": false,
+    "approval_type": 2,
+    "audio": "both",
+    "auto_recording": "none",
+    "enforce_login": true,
+    "enforce_login_domains": "",
+    "alternative_hosts": "",
+    "alternative_host_update_polls": false,
+    "close_registration": false,
+    "show_share_button": false,
+    "allow_multiple_devices": false,
+    "registrants_confirmation_email": true,
+    "waiting_room": false,
+    "request_permission_to_unmute_participants": false,
+    "global_dial_in_countries": [
+      "US"
+    ],
+    "global_dial_in_numbers": [
+      {
+        "country_name": "US",
+        "city": "Houston",
+        "number": "+1 346 248 7799",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "city": "San Jose",
+        "number": "+1 669 900 6833",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 719 359 4580",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 253 205 0468",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "city": "Tacoma",
+        "number": "+1 253 215 8782",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 669 444 9171",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 309 205 3325",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "city": "Chicago",
+        "number": "+1 312 626 6799",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 360 209 5623",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 386 347 5053",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 507 473 4847",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 564 217 2000",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "city": "New York",
+        "number": "+1 646 558 8656",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 646 931 3860",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 689 278 1000",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "city": "Washington DC",
+        "number": "+1 301 715 8592",
+        "type": "toll",
+        "country": "US"
+      },
+      {
+        "country_name": "US",
+        "number": "+1 305 224 1968",
+        "type": "toll",
+        "country": "US"
+      }
+    ],
+    "registrants_email_notification": true,
+    "meeting_authentication": true,
+    "authentication_option": "signIn_BJv6xmrZQOSIpyENo2sXSg",
+    "authentication_name": "Sign in to Zoom",
+    "authentication_domains": "",
+    "encryption_type": "enhanced_encryption",
+    "approved_or_denied_countries_or_regions": {
+      "enable": false
+    },
+    "question_and_answer": {
+      "enable": false
+    },
+    "breakout_room": {
+      "enable": false
+    },
+    "alternative_hosts_email_notification": true,
+    "show_join_info": false,
+    "device_testing": false,
+    "focus_mode": false,
+    "enable_dedicated_group_chat": false,
+    "private_meeting": false,
+    "calendar_type": 2,
+    "email_notification": true,
+    "host_save_video_order": false
+  },
+  "pre_schedule": false
+}
