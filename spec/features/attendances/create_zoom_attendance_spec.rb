@@ -57,16 +57,21 @@ RSpec.describe 'Creating a Zoom Attendance' do
       expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy')
       expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present')
     end
+  end
+
+  context "With invalid ids" do
+    before :each do
+      @invalid_zoom_id = 'InvalidID'
+    end
 
     it 'shows a message if an invalid meeting id is entered' do
-      invalid_zoom_id = 'InvalidID'
-      stub_request(:get, "https://api.zoom.us/v2/meetings/#{invalid_zoom_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
+      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@invalid_zoom_id}") \
+        .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
 
       test_module = create(:setup_module)
       visit turing_module_path(test_module)
 
-      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{invalid_zoom_id}"
+      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@invalid_zoom_id}"
       click_button 'Take Attendance'
 
       expect(current_path).to eq(turing_module_path(test_module))
@@ -84,6 +89,19 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
       expect(current_path).to eq(turing_module_path(test_module))
       expect(page).to have_content("Please enter a Zoom or Slack link.")
+    end
+
+    it 'shows a message if a personal meeting room is entered' do
+      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@invalid_zoom_id}") \
+        .to_return(body: File.read('spec/fixtures/zoom/meeting_details_personal_room.json'))
+
+      test_module = create(:setup_module)
+      visit turing_module_path(test_module)
+
+      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@invalid_zoom_id}"
+      click_button 'Take Attendance'
+      
+      expect(page).to have_content("It looks like that Zoom link is for a Personal Meeting Room. You will need to use a unique meeting instead.")
     end
   end
 end

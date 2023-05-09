@@ -5,7 +5,7 @@ class User::AccountMatchController < ApplicationController
         facade: AccountMatchFacade.new(current_module, params[:zoom_meeting_id])
       }
     rescue InvalidMeetingError => error
-      flash[:error] = "Please Provide a valid Zoom meeting link"
+      flash[:error] = error.message
       redirect_to turing_module_zoom_integration_path
     end
   end 
