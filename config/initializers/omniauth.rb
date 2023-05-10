@@ -2,18 +2,16 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   if Rails.env.production?
     provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
     {
-      redirect_uri: 'https://present.turing.edu/auth/google_oauth2/callback',
+      redirect_uri: 'https://turing-present.herokuapp.com/auth/google_oauth2/callback',
       scope: 'spreadsheets,email',
       access_type: 'offline'
     }
   elsif Rails.env.staging?
     provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
     {
-      # redirect_uri: 'https://present-staging.turing.edu/auth/google_oauth2/callback',
-      redirect_uri: 'https://%{host}/auth/google_oauth2/callback',
+       redirect_uri: 'https://turing-present-staging.herokuapp.com/auth/google_oauth2/callback',
       scope: 'spreadsheets,email',
       access_type: 'offline',
-      hd: ["present-staging.turing.edu", "turing-present-staging.herokuapp.com"]
     }
   else
     provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
