@@ -10,6 +10,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
     {
       # redirect_uri: 'https://present-staging.turing.edu/auth/google_oauth2/callback',
+      redirect_uri: 'https://%{host}/auth/google_oauth2/callback',
       scope: 'spreadsheets,email',
       access_type: 'offline',
       hd: ["present-staging.turing.edu", "turing-present-staging.herokuapp.com"]
@@ -23,4 +24,4 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   end
 end
 OmniAuth.config.allowed_request_methods = %i[get post]
-OmniAuth.config.silence_get_warning = true 
+OmniAuth.config.silence_get_warning = true
