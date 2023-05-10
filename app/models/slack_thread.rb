@@ -3,7 +3,7 @@ class SlackThread < Meeting
   has_one :turing_module, through: :attendance
 
   def find_student_from_participant(participant)
-    Student.find_by(slack_id: participant.slack_id)
+    turing_module.students.find_by(slack_id: participant.slack_id)
   end
 
   def self.from_message_link(message_url)
