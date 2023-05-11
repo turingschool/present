@@ -1,25 +1,17 @@
-Rails.application.config.middleware.use OmniAuth::Builder do
-  if Rails.env.production?
-    provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
-    {
-      redirect_uri: 'https://turing-present.herokuapp.com/auth/google_oauth2/callback',
-      scope: 'spreadsheets,email',
-      access_type: 'offline'
-    }
-  elsif Rails.env.staging?
-    provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
-    {
-      redirect_uri: 'https://present-staging.turing.edu/auth/google_oauth2/callback',
-      scope: 'spreadsheets,email',
-      access_type: 'offline',
-    }
-  else
-    provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
-    {
-      redirect_uri: 'http://localhost:3000/auth/google_oauth2/callback',
-      scope: 'spreadsheets,email'
-    }
-  end
-end
 OmniAuth.config.allowed_request_methods = %i[get post]
 OmniAuth.config.silence_get_warning = true
+
+SETUP_PROC = lambda do |env|
+  env['omniauth.strategy'].options[:client_id] = ENV['GOOGLE_OAUTH_CLIENT_ID']
+  env['omniauth.strategy'].options[:client_secret] = ENV['GOOGLE_OAUTH_CLIENT_SECRET']
+  env['omniauth.strategy'].options[:scope] = 'email'
+
+  # Oauth should redirect back to the originating domain to prevent CSRF errors
+  req = Rack::Request.new(env)
+  env['omniauth.strategy'].options[:redirect_uri] = "#{req.base_url}/auth/google_oauth2/callback"
+end
+
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :google_oauth2, setup: SETUP_PROC
+end
+

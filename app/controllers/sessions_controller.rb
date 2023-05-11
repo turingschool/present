@@ -17,6 +17,11 @@ class SessionsController < ApplicationController
     redirect_to root_path
   end
 
+  def failure
+    redirect_to root_path
+    flash[:error] = "We had some trouble logging you in with Google. Please make sure you are signing in with a turing.edu account. If you continue to have issues, please contact the app maintainers."
+  end
+
   def destroy
     session.delete(:user_id)
     redirect_to root_path

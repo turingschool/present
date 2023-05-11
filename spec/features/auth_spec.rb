@@ -6,6 +6,7 @@ RSpec.describe "Authentication" do
   let(:google_oauth_token){'<OAUTH_TOKEN>'}
   let(:google_refresh_token){'<REFRESH_TOKEN>'}
   let(:organization_domain){'turing.edu'}
+
   before :each do
     create(:inning)
 
@@ -78,5 +79,16 @@ RSpec.describe "Authentication" do
     click_link 'Sign In With Google'
 
     expect(page).to have_content("Welcome, #{email}!")
+  end
+
+  it 'displays a message for auth failure' do
+    OmniAuth.config.mock_auth[:google_oauth2] = :csrf_detected
+
+    visit '/'
+
+    click_link 'Sign In With Google'
+
+    expect(current_path).to eq(root_path)
+    expect(page).to have_content("We had some trouble logging you in with Google. Please make sure you are signing in with a turing.edu account. If you continue to have issues, please contact the app maintainers.")
   end
 end
