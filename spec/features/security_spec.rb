@@ -32,4 +32,8 @@ RSpec.describe 'Security' do
     expect(page).to have_content('You are not authorized to view this page')
     expect(page).to have_content('Please sign in with a Google account registered with the Turing Google Workspace')
   end
+
+  it 'does not allow a non-turing user to view the sidekiq dashboard' do
+    expect{ visit '/sidekiq' }.to raise_error(ActionController::RoutingError)
+  end
 end

@@ -1,3 +1,11 @@
+require 'sidekiq/web'
+
+VERIFY_USER = lambda do |request|
+  return false unless request.session[:user_id]
+  user = User.find(request.session[:user_id])
+  user.valid_google_user?
+end
+
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'user/dashboard#show'
@@ -5,6 +13,10 @@ Rails.application.routes.draw do
   get '/auth/google_oauth2/callback', to: 'sessions#create'
   get '/auth/failure', to: 'sessions#failure'
   delete '/sessions', to: 'sessions#destroy'
+
+  constraints VERIFY_USER do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   scope module: :user do
     resources :users, only: [:update]

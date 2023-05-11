@@ -67,6 +67,15 @@ rails db:seed
 rails s
 ```
 
+##### Running Sidekiq locally
+
+You need redis running for sidekiq.
+
+```
+brew install redis
+bundle exec sidekiq
+```
+
 Keep in mind that the app will make real HTTP calls to the Zoom API and Google Oauth.
 
 ### Schema
