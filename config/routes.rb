@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: 'user/dashboard#show'
   get '/welcome', to: 'welcome#index'
   get '/auth/google_oauth2/callback', to: 'sessions#create'
+  get '/auth/failure', to: 'sessions#failure'
   delete '/sessions', to: 'sessions#destroy'
 
   scope module: :user do
