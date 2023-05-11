@@ -4,10 +4,7 @@ OmniAuth.config.silence_get_warning = true
 SETUP_PROC = lambda do |env|
   env['omniauth.strategy'].options[:client_id] = ENV['GOOGLE_OAUTH_CLIENT_ID']
   env['omniauth.strategy'].options[:client_secret] = ENV['GOOGLE_OAUTH_CLIENT_SECRET']
-  env['omniauth.strategy'].options[:scope] = 'spreadsheets,email'
-  unless Rails.env.development?
-    env['access_type'].options[:access_type] = "offline"
-  end
+  env['omniauth.strategy'].options[:scope] = 'email'
 
   # Oauth should redirect back to the originating domain to prevent CSRF errors
   req = Rack::Request.new(env)
