@@ -9,7 +9,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   elsif Rails.env.staging?
     provider :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET'],
     {
-       redirect_uri: 'https://turing-present-staging.herokuapp.com/auth/google_oauth2/callback',
+      redirect_uri: 'https://present-staging.turing.edu/auth/google_oauth2/callback',
       scope: 'spreadsheets,email',
       access_type: 'offline',
     }
