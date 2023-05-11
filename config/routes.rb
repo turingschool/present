@@ -1,5 +1,4 @@
 require 'sidekiq/web'
-include ApplicationHelper
 
 VERIFY_USER = lambda do |request|
   return false unless request.session[:user_id]
