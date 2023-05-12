@@ -58,7 +58,13 @@ class Attendance < ApplicationRecord
     course_id = self.turing_module.populi_course_id
     populi_meeting = meeting.closest_populi_meeting_to_start_time(course_id)
     student_attendances.includes(:student).each do |student_attendance|
-      service.update_student_attendance(course_id, populi_meeting.id, student_attendance.student.populi_id, student_attendance.status)
+      response = service.update_student_attendance(course_id, populi_meeting.id, student_attendance.student.populi_id, student_attendance.status)
     end
+  end
+
+  def populi_url
+    course_id = self.turing_module.populi_course_id
+    populi_meeting_id = meeting.closest_populi_meeting_to_start_time(course_id).id
+    ENV["POPULI_API_URL"].gsub("/api", "") + "router/courseofferings/#{course_id}/meetings/#{populi_meeting_id}/attendance"
   end
 end

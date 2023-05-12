@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sidekiq/testing' 
 
 RSpec.describe 'Populi Transfer' do 
   include ApplicationHelper
@@ -39,6 +40,8 @@ RSpec.describe 'Populi Transfer' do
     @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL']).         
       with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490123", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
       to_return(status: 200, body: '') 
+
+    Sidekiq::Testing.inline!
   end
 
   it 'sends the request to update the students attendance in Populi' do
@@ -70,7 +73,7 @@ RSpec.describe 'Populi Transfer' do
 
     expect(current_path).to eq(attendance_path(test_attendance))
 
-    expect(page).to have_content("Success! Student Attendances have been transferred to Populi. Please double check that the attendance in Populi is accurate.")
+    expect(page).to have_content("Transferring attendance to Populi")
 
     expect(@update_attendance_stub1).to have_been_requested
     expect(@update_attendance_stub2).to have_been_requested
@@ -81,4 +84,6 @@ RSpec.describe 'Populi Transfer' do
   end
 
   it 'can transfer to a different time slot'
+
+  it 'can handle a failure response from Populi'
 end
