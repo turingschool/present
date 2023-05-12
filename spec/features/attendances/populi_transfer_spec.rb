@@ -73,7 +73,7 @@ RSpec.describe 'Populi Transfer' do
 
     expect(current_path).to eq(attendance_path(test_attendance))
 
-    expect(page).to have_content("Transfering attendance to Populi. Please confirm in Populi that attendance is accurate.")
+    expect(page).to have_content("Transferring attendance to Populi")
 
     expect(@update_attendance_stub1).to have_been_requested
     expect(@update_attendance_stub2).to have_been_requested
