@@ -1,4 +1,4 @@
-<h3><%= attendance.meeting.title %></h3>
+<h3>Title: <%= attendance.meeting.title %></h3>
 <h3>Date: <%= pretty_date(attendance.attendance_time) %></h3>
 <h3>Attendance Time: <%= pretty_time(attendance.attendance_time) %> <%= link_to "Update Attendance Time", edit_attendance_path(attendance) if updatable %></h3>
 <p><strong>Present: <%= attendance.count_status(:present) %>, Tardy: <%= attendance.count_status(:tardy) %>, Absent: <%= attendance.count_status(:absent) %></strong></p>

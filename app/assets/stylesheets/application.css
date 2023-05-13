@@ -147,3 +147,7 @@ form#account-match {
 .alias-correction {
   font-size: 12px;
 }
+
+#populi-attendance-transfer {
+  display: block;
+}
