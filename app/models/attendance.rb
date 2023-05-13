@@ -59,7 +59,12 @@ class Attendance < ApplicationRecord
     populi_meeting = meeting.closest_populi_meeting_to_start_time(course_id)
     student_attendances.includes(:student).each do |student_attendance|
       response = service.update_student_attendance(course_id, populi_meeting.id, student_attendance.student.populi_id, student_attendance.status)
-      Honeybadger.notify(response) unless response[:response][:result] == "UPDATED"
+      begin
+        raise "Student Attendance not updated" unless response[:response][:result] == "UPDATED"
+      rescue => error
+        Honeybadger.notify(response.to_s)
+        raise error # raise the error anyway so that the job will retry
+      end
     end
   end
 
