@@ -18,11 +18,6 @@ RSpec.describe 'Creating an Attendance' do
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
       .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
 
-      # Stub any request to update a student's attendance
-      stub_request(:post, ENV['POPULI_API_URL']).         
-        with(body: {"instanceID"=>/\d/, "meetdingID"=>/\d/, "personID"=>/\d/, "status"=>/TARDY|ABSENT|PRESENT/, "task"=>"updateStudentAttendance"},).
-        to_return(status: 200, body: '') 
-
       stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"instanceID"=>@test_module.populi_course_id, "task"=>"getCourseInstanceMeetings"}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
