@@ -32,3 +32,5 @@
 coverage
 
 .ruby-version
+
+dump.rdb
