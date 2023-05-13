@@ -12,11 +12,6 @@ RSpec.describe 'Attendance Update' do
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
-    # Stub any request to update a student's attendance
-    stub_request(:post, ENV['POPULI_API_URL']).         
-      with(body: {"instanceID"=>/\d/, "meetingID"=>/\d/, "personID"=>/\d/, "status"=>/TARDY|ABSENT|PRESENT/, "task"=>"updateStudentAttendance"},).
-      to_return(status: 200, body: '') 
-
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@test_module.populi_course_id}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
