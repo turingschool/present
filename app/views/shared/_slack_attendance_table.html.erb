@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <% attendance.student_attendances.by_attendance_status.each do |student_attendance| %>
+    <% facade.student_attendances.each do |student_attendance| %>
       <tr id='student-attendance-<%= student_attendance.id %>' class='student-attendance'>
         <section id='student-<%= student_attendance.student.id %>'>
           <td><%= link_to student_attendance.student.name, student_path(student_attendance.student) %></td>
