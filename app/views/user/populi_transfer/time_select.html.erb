@@ -1,0 +1,9 @@
+<h1><%= link_to facade.turing_module.name, turing_module_path(facade.turing_module) %></h1>
+<%= render partial: "shared/attendance_details", locals: {attendance: facade.attendance, updatable: false} %>
+<h1>Transfer Student Attendances to Populi</h1>
+
+<%= form_with url: attendance_populi_transfer_index_path(facade.attendance), method: :post do |f| %>
+  <h3>Please select the attendance time slot to transfer to:</h3>
+  <%= f.select :populi_meeting_id, facade.populi_meeting_options, selected: facade.populi_meeting_selection %>
+  <%= f.submit "Transfer Student Attendances to Populi", id: "populi-attendance-transfer", class: "s-button" %>
+<% end %>

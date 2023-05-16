@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
       resources :attendances, only: [:create, :show, :edit, :update] do
         resources :populi_transfer, only: [:new, :create, :index]
+        get 'populi_transfer/time_select', to: "populi_transfer#time_select"
         patch "students/:id", to: 'attendances#update_zoom_alias', as: :student
       end
 
