@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   end
 
   scope module: :user do
+    get '/test', to: 'test#test'
     resources :users, only: [:update]
     resources :innings, only: [:show]
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do

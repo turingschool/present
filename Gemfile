@@ -68,6 +68,9 @@ gem 'fuzzy-string-match'
 # Monitoring
 gem "honeybadger", "~> 5.2"
 
+gem "faye-websocket"
+gem 'eventmachine'
+
 group :development, :test do
   gem 'pry-rails'
   gem 'figaro'
