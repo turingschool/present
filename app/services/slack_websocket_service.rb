@@ -13,7 +13,10 @@ class SlackWebsocketService
 
     def self.connect
       endpoint = "rtm.connect"
-      response = conn.get(endpoint)
+      response = conn.get(endpoint) do |req|
+        req.params[:batch_presence_aware] = 1
+        req.params[:presence_sub] = 1
+      end
       JSON.parse(response.body,symbolize_names: true)
     end 
     
