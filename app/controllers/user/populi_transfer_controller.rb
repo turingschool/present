@@ -6,11 +6,23 @@ class User::PopuliTransferController < User::BaseController
     }
   end
 
+  def time_select
+    attendance = Attendance.find(params[:attendance_id])
+    render locals: {
+      facade: PopuliTransferFacade.new(attendance)
+    }
+  end
+
   def create
     attendance = Attendance.find(params[:attendance_id])
-    PopuliTransferJob.perform_async(attendance.id, params[:populi_meeting_id])
-    flash[:success] = "Transferring attendance to Populi. Please confirm in Populi that #{populi_attendance_link(attendance)} is accurate."
-    redirect_to attendance
+    if params[:populi_meeting_id].blank?
+      flash[:error] = "It looks like that Attendance hasn't been created in Populi yet. Please make sure you are following the directions below to create the Attendance record in Populi before proceeding"
+      redirect_to new_attendance_populi_transfer_path(attendance)
+    else
+      PopuliTransferJob.perform_async(attendance.id, params[:populi_meeting_id])
+      flash[:success] = "Transferring attendance to Populi. Please confirm in Populi that #{populi_attendance_link(attendance)} is accurate."
+      redirect_to attendance
+    end
   end
 
 private
