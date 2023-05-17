@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_07_195034) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_17_203652) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,9 +22,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_07_195034) do
     t.datetime "attendance_time", precision: nil
     t.string "meeting_type"
     t.bigint "meeting_id"
+    t.datetime "end_time"
     t.index ["meeting_type", "meeting_id"], name: "index_attendances_on_meeting_type_and_meeting_id"
     t.index ["turing_module_id"], name: "index_attendances_on_turing_module_id"
     t.index ["user_id"], name: "index_attendances_on_user_id"
+  end
+
+  create_table "inactive_periods", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_inactive_periods_on_student_id"
   end
 
   create_table "innings", force: :cascade do |t|
@@ -32,6 +42,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_07_195034) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "current", default: false
+  end
+
+  create_table "slack_presence_checks", force: :cascade do |t|
+    t.datetime "check_time"
+    t.bigint "student_id", null: false
+    t.integer "presence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_slack_presence_checks_on_student_id"
   end
 
   create_table "slack_threads", force: :cascade do |t|
@@ -105,6 +124,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_07_195034) do
 
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
+  add_foreign_key "inactive_periods", "students"
+  add_foreign_key "slack_presence_checks", "students"
   add_foreign_key "student_attendances", "attendances"
   add_foreign_key "student_attendances", "students"
   add_foreign_key "students", "turing_modules"
