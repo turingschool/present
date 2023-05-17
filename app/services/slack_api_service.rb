@@ -1,6 +1,6 @@
 class SlackApiService 
   def self.get_presence(user_id)
-    response = conn.get("user.getPresence") do |req|
+    response = conn.get("users.getPresence") do |req|
       req.params[:user] = user_id
     end
     parse_response(response)

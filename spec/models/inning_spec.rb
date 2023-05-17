@@ -38,19 +38,19 @@ RSpec.describe Inning, type: :model do
         @student_4 = create(:student, turing_module: mod2, slack_id: "4")
         @student_5 = create(:student, turing_module: mod3, slack_id: "5")
 
-        stub_request(:get, "https://slack.com/api/user.getPresence?user=1").
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=1").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
         
-        stub_request(:get, "https://slack.com/api/user.getPresence?user=2").
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=2").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_away.json"))
 
-        stub_request(:get, "https://slack.com/api/user.getPresence?user=3").
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=3").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
         
-        stub_request(:get, "https://slack.com/api/user.getPresence?user=4").
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=4").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
           
-        stub_request(:get, "https://slack.com/api/user.getPresence?user=5").
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=5").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))  
       end
 
@@ -68,7 +68,7 @@ RSpec.describe Inning, type: :model do
         allow(Time).to receive(:now).and_return(check_time)
         
         @inning.check_presence_for_students
-        
+
         expect(@student_1.slack_presence_checks.first.check_time).to eq(check_time)
         expect(@student_2.slack_presence_checks.first.check_time).to eq(check_time)
       end
