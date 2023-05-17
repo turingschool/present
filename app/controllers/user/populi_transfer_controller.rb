@@ -20,13 +20,8 @@ class User::PopuliTransferController < User::BaseController
       redirect_to new_attendance_populi_transfer_path(attendance)
     else
       PopuliTransferJob.perform_async(attendance.id, params[:populi_meeting_id])
-      flash[:success] = "Transferring attendance to Populi. Please confirm in Populi that #{populi_attendance_link(attendance)} is accurate."
+      flash[:success] = "Transferring attendance to Populi. This could take up to 5 minutes. Please confirm in Populi that the transfer was successful."
       redirect_to attendance
     end
-  end
-
-private
-  def populi_attendance_link(attendance)
-    "<a href='#{attendance.populi_url}'>this attendance</a>"
   end
 end
