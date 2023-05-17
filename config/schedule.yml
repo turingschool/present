@@ -1,8 +1,8 @@
 monitor_presence_job_head:
-  cron: "*/15 14-23 * * *"
+  cron: "*/15 14-23 * * 1-5"
   class: "PresenceMonitoringJob"
   queue: default
 monitor_presence_job_tail:
-  cron: "*/15 0 * * *"
+  cron: "*/15 0 * * 1-5"
   class: "PresenceMonitoringJob"
   queue: default
