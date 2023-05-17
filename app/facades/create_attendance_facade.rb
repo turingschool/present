@@ -8,7 +8,6 @@ class CreateAttendanceFacade
       end_time: populi_meeting.end,
       meeting: meeting
     )
-    MonitorPresenceJob.perform_async(attendance.id) if attendance.meeting_type == "SlackThread"
     attendance.record
     return attendance
   end
