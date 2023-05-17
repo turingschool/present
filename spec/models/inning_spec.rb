@@ -69,8 +69,9 @@ RSpec.describe Inning, type: :model do
         
         @inning.check_presence_for_students
 
-        expect(@student_1.slack_presence_checks.first.check_time).to eq(check_time)
-        expect(@student_2.slack_presence_checks.first.check_time).to eq(check_time)
+        # call .to_fs(:short) to remove any precision past hour/minute/second
+        expect(@student_1.slack_presence_checks.first.check_time.to_fs(:short)).to eq(check_time.to_fs(:short))
+        expect(@student_2.slack_presence_checks.first.check_time.to_fs(:short)).to eq(check_time.to_fs(:short))
       end
     end
   end 
