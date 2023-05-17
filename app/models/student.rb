@@ -3,6 +3,7 @@ class Student < ApplicationRecord
   has_many :student_attendances, dependent: :destroy
   has_many :attendances, through: :student_attendances
   has_many :zoom_aliases
+  has_many :inactive_periods
 
   validates_presence_of :name
 
