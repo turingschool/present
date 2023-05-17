@@ -24,9 +24,4 @@ class User::PopuliTransferController < User::BaseController
       redirect_to attendance
     end
   end
-
-private
-  def populi_attendance_link(attendance)
-    "<a href='#{attendance.populi_url}'>this attendance</a>"
-  end
 end

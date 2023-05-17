@@ -66,10 +66,4 @@ class Attendance < ApplicationRecord
       end
     end
   end
-
-  def populi_url
-    course_id = self.turing_module.populi_course_id
-    populi_meeting_id = meeting.closest_populi_meeting_to_start_time(course_id).id
-    ENV["POPULI_API_URL"].gsub("/api", "") + "router/courseofferings/#{course_id}/meetings/#{populi_meeting_id}/attendance"
-  end
 end
