@@ -68,6 +68,10 @@ gem 'fuzzy-string-match'
 # Monitoring
 gem "honeybadger", "~> 5.2"
 
+# Background Workers
+gem "sidekiq", "~> 7.1"
+gem "sidekiq-cron"
+
 group :development, :test do
   gem 'pry-rails'
   gem 'figaro'
@@ -87,4 +91,4 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
-gem "sidekiq", "~> 7.1"
+
