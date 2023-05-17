@@ -17,6 +17,7 @@ class Inning < ApplicationRecord
     students.each do |student|
       response = SlackApiService.get_presence(student.slack_id)
       student.slack_presence_checks.create(presence: response[:presence], check_time: Time.now)
+      HoneyBadger.notify(response.to_s) unless response[:ok]
     end
   end
 end
