@@ -20,7 +20,7 @@ class Inning < ApplicationRecord
         student.slack_presence_checks.create(presence: response[:presence], check_time: Time.now)
       else
         # We want to be notified if any API call to get a user's presence fails for any reason
-        Honeybadger.notify(response.to_s)
+        Honeybadger.notify("Slack Response: #{response.to_s}, Student Slack ID: #{student.slack_id.to_s}")
       end 
     end
   end
