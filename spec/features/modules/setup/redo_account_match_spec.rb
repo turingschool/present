@@ -56,7 +56,7 @@ RSpec.describe "Redo Module Setup Account Matching" do
     end 
 
     it 'does not destroy student records' do
-      original_lacey_id = Student.find_by(name: "Lacey Weaver").id
+      original_ids = Student.pluck(:id)
 
       visit turing_module_path(@test_module)
       click_link "Redo Module Setup"
@@ -75,7 +75,8 @@ RSpec.describe "Redo Module Setup Account Matching" do
       
       new_lacey_id = Student.find_by(name: "Lacey Weaver").id
 
-      expect(new_lacey_id).to eq(original_lacey_id)
+      # All the student ids that existed before the redo should still exist
+      expect(Student.where(id: original_ids).count).to eq(original_ids.length)
     end
   end
 end
