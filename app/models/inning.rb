@@ -15,7 +15,7 @@ class Inning < ApplicationRecord
 
   def check_presence_for_students
     check_time = Time.now
-    students.each_slice(50) do |student_slice|
+    students.each_slice(ENV.fetch("PRESENCE_CHECK_BATCH_SIZE", students.count)) do |student_slice|
       student_slice.each do |student|
         response = SlackApiService.get_presence(student.slack_id)
         if response[:ok]
