@@ -75,6 +75,9 @@ gem "sidekiq-cron"
 # Debugger and Rails Console
 gem 'pry-rails'
 
+# Rate Limiting
+gem 'ruby-limiter'
+
 group :development, :test do
   gem 'figaro'
 end

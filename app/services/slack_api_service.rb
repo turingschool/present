@@ -1,5 +1,9 @@
 class SlackApiService 
-  def self.get_presence(user_id)
+  extend Limiter::Mixin
+  # Rate limit users.getPresence api call to 50 requests per minute
+  limit_method :get_presence, rate: 50 
+
+  def get_presence(user_id)
     response = conn.get("users.getPresence") do |req|
       req.params[:user] = user_id
     end
@@ -7,8 +11,8 @@ class SlackApiService
   end
 
 private
-  def self.conn 
-    conn = Faraday.new(
+  def conn 
+    Faraday.new(
       url: 'https://slack.com/api',
       headers: {
         'Content-Type' => 'application/x-www-form-urlencoded',
