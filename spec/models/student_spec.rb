@@ -7,7 +7,7 @@ RSpec.describe Student, type: :model do
   end
   
   describe 'relationships' do
-    it {should belong_to(:turing_module).optional}
+    it {should belong_to(:turing_module)}
     it {should have_many :student_attendances}
     it {should have_many(:attendances).through(:student_attendances)}
     it {should have_many(:zoom_aliases)}

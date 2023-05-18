@@ -74,7 +74,50 @@ RSpec.describe "Module Setup Populi Workflow" do
     end 
   end
 
-   context 'User clicks no' do
+  context 'when students exist from a previous module' do
+    before :each do
+      # Loads students into module (see factories/turing_module.rb)
+      # Student "Mike Cummins" is not part of the previous mod, simulating a repeater
+      # Student "Samuel Cox" is returned from Populi as "Sam Cox", simulating him changing his name in Populi
+      @previous_mod = create(:setup_module)
+    end
+    
+    it 'does not duplicate student records' do
+      visit turing_module_populi_integration_path(@mod)
+
+      within '#best-match' do
+        # Should create a new student for Mike Cummins, but not Sam Cox
+        expect {click_button 'Yes'}.to change{Student.count}.by(1)
+      end
+    end
+
+    it 'changes the students mod assignments' do
+      visit turing_module_populi_integration_path(@mod)
+
+      within '#best-match' do
+        click_button 'Yes'
+      end
+
+      Student.all.each do |student|
+        expect(student.turing_module_id).to eq(@mod.id)
+      end
+      expect(@mod.students.count).to eq(7)
+      expect(@previous_mod.students.count).to eq(0)
+    end
+
+    it 'will update the students name' do
+      visit turing_module_populi_integration_path(@mod)
+
+      within '#best-match' do
+        click_button 'Yes'
+      end
+
+      expect(Student.where(name: 'Sam Cox').count).to eq(1)
+      expect(Student.where(name: 'Samuel Cox').count).to eq(0)
+    end
+  end
+
+  context 'User clicks no' do
     it 'user can select their inning and then module' do
       visit turing_module_populi_integration_path(@mod)
 
