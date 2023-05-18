@@ -15,8 +15,9 @@ class Inning < ApplicationRecord
 
   def check_presence_for_students
     check_time = Time.now
+    service = SlackApiService.new
     students.each do |student|
-      response = SlackApiService.get_presence(student.slack_id)
+      response = service.get_presence(student.slack_id)
       if response[:ok]
         student.slack_presence_checks.create(presence: response[:presence], check_time: check_time)
       else
