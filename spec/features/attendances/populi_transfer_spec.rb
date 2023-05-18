@@ -19,10 +19,6 @@ RSpec.describe 'Populi Transfer' do
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_without_ids.xml'))
-
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_without_ids.xml'))  
     
     visit turing_module_path(@mod)
 
@@ -36,6 +32,14 @@ RSpec.describe 'Populi Transfer' do
   end
 
   context "user follows instructions to create populi attendance record" do
+    before :each do
+      # Assume that the User has followed instructions to create attendance record in Populi. 
+      # The corresponding meeting should be returned from the Populi API with a meetingID.
+      stub_request(:post, ENV['POPULI_API_URL']).
+        with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))  
+    end
+
     context "update successful" do
       it 'sends the request to update the students attendance in Populi' do
         update_response = File.read('spec/fixtures/populi/update_student_attendance_success.xml')
@@ -71,12 +75,6 @@ RSpec.describe 'Populi Transfer' do
         expect(page).to have_content("Tardy: 2")
         expect(page).to have_content("Present: 2")
         expect(page).to have_content("Absent: 2")
-        
-        # Assume that the User has followed instructions to create attendance record in Populi. 
-        # The corresponding meeting should be returned from the Populi API with a meetingID.
-        stub_request(:post, ENV['POPULI_API_URL']).
-          with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
-          to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))  
         
         click_link "I have created the Attendance record in Populi"
 
@@ -121,19 +119,11 @@ RSpec.describe 'Populi Transfer' do
           to_return(status: 200, body: update_response) 
 
         click_link "Transfer Student Attendances to Populi"
-
-        # Assume that the User has followed instructions to create attendance record in Populi. 
-        # The corresponding meeting should be returned from the Populi API with a meetingID.
-        stub_request(:post, ENV['POPULI_API_URL']).
-          with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
-          to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))  
-        
         click_link "I have created the Attendance record in Populi"
 
         expect(page).to have_select(:populi_meeting_id)
 
         select("1:00 PM")
-
         click_button "Transfer Student Attendances to Populi"
 
         expect(@update_attendance_stub1).to have_been_requested
@@ -151,20 +141,20 @@ RSpec.describe 'Populi Transfer' do
           .with{|request| request.body.include? "updateStudentAttendance"} \
           .to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_error.xml')) 
 
-        visit turing_module_path(@mod)
-
-        fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
-                    
-        click_button 'Take Attendance'
-
         click_link "Transfer Student Attendances to Populi"
-
-        expect {click_button "Transfer Student Attendances to Populi"}.to raise_exception
+        click_link "I have created the Attendance record in Populi"
+        expect {click_button "Transfer Student Attendances to Populi"}.to raise_exception(AttendanceUpdateError)
       end
     end    
   end
 
   context "user doesn't follow instructions" do # Populi meeting won't have an id
+    before :each do
+      stub_request(:post, ENV['POPULI_API_URL']).
+      with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_without_ids.xml'))  
+    end
+    
     it 'returns them to the populi transfer start page and displays an error' do
       click_link "Transfer Student Attendances to Populi"
 

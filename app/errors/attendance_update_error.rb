@@ -1,0 +1,2 @@
+class AttendanceUpdateError < StandardError
+end
