@@ -72,8 +72,10 @@ gem "honeybadger", "~> 5.2"
 gem "sidekiq", "~> 7.1"
 gem "sidekiq-cron"
 
+# Debugger and Rails Console
+gem 'pry-rails'
+
 group :development, :test do
-  gem 'pry-rails'
   gem 'figaro'
 end
 
