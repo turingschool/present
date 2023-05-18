@@ -31,28 +31,51 @@ RSpec.describe "Redo Module Setup Account Matching" do
     end 
   
     it 'has option on mod show page to redo mod setup' do 
-        expect(@test_module.students.count).to eq(6) #there are 6 students created from the factory
+      expect(@test_module.students.count).to eq(6) #there are 6 students created from the factory
 
-        visit turing_module_path(@test_module)
-        click_link "Redo Module Setup"
+      visit turing_module_path(@test_module)
+      click_link "Redo Module Setup"
 
-        within '#best-match' do
-            click_button 'Yes'
-        end
+      within '#best-match' do
+        click_button 'Yes'
+      end
 
-        fill_in :slack_channel_id, with: @channel_id
-        click_button "Import Channel"
+      fill_in :slack_channel_id, with: @channel_id
+      click_button "Import Channel"
 
-        fill_in :zoom_meeting_id, with: @zoom_meeting_id
-        click_button "Import Zoom Accounts From Meeting"
+      fill_in :zoom_meeting_id, with: @zoom_meeting_id
+      click_button "Import Zoom Accounts From Meeting"
 
-        click_button 'Connect Accounts'
+      click_button 'Connect Accounts'
 
-        @test_module.reload
-        
-        expect(@test_module.students.count).to eq(7) #there are 7 students in the populi fixture file.
-        expect(current_path).to eq(turing_module_path(@test_module))
-        expect(@test_module.attendances.count).to eq(0)
+      @test_module.reload
+      
+      expect(@test_module.students.count).to eq(7) #there are 7 students in the populi fixture file.
+      expect(current_path).to eq(turing_module_path(@test_module))
+      expect(@test_module.attendances.count).to eq(0)
     end 
+
+    it 'does not destroy student records' do
+      original_lacey_id = Student.find_by(name: "Lacey Weaver").id
+
+      visit turing_module_path(@test_module)
+      click_link "Redo Module Setup"
+
+      within '#best-match' do
+        click_button 'Yes'
+      end
+
+      fill_in :slack_channel_id, with: @channel_id
+      click_button "Import Channel"
+
+      fill_in :zoom_meeting_id, with: @zoom_meeting_id
+      click_button "Import Zoom Accounts From Meeting"
+
+      click_button 'Connect Accounts'
+      
+      new_lacey_id = Student.find_by(name: "Lacey Weaver").id
+
+      expect(new_lacey_id).to eq(original_lacey_id)
+    end
   end
 end

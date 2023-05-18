@@ -38,10 +38,14 @@ class PopuliFacade
   end 
 
   def import_students
-    # Refactor: Might want to move this
-    self.module.students.destroy_all
-    populi_students.each do |student|
-      self.module.students.create!(name: student.name, populi_id: student.personid)
+    populi_students.each do |populi_student|
+      existing_student = Student.find_by(populi_id: populi_student.personid)
+      if existing_student
+        self.module.students << existing_student
+        existing_student.update(name: populi_student.name) unless populi_student.name == existing_student.name
+      else
+        self.module.students.create(name: populi_student.name, populi_id: populi_student.personid)
+      end
     end
   end
 
