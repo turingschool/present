@@ -72,8 +72,6 @@ RSpec.describe "Redo Module Setup Account Matching" do
       click_button "Import Zoom Accounts From Meeting"
 
       click_button 'Connect Accounts'
-      
-      new_lacey_id = Student.find_by(name: "Lacey Weaver").id
 
       # All the student ids that existed before the redo should still exist
       expect(Student.where(id: original_ids).count).to eq(original_ids.length)
