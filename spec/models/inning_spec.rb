@@ -93,7 +93,7 @@ RSpec.describe Inning, type: :model do
         expect(@student_2.slack_presence_checks.count).to eq(0)
         expect(@student_3.slack_presence_checks.count).to eq(0)
         expect(@student_5.slack_presence_checks.count).to eq(0)
-        # 3 students should have successful presence checks
+        # 2 students should have successful presence checks
         expect(SlackPresenceCheck.pluck(:student_id).uniq.length).to eq(2)
       end
     end
