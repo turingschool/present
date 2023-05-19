@@ -9,7 +9,7 @@
     <tr>
       <td><%= check.student.name %></td>
       <td><%= check.student.slack_id %></td>
-      <td><%= pretty_time(check.check_time) %></td>
+      <td><%= pretty_date(check.check_time) %> - <%= pretty_time(check.check_time) %></td>
       <td><%= check.presence %></td>
     </tr>
   <% end %>
