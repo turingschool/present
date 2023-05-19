@@ -6,6 +6,11 @@ RSpec.describe User, type: :model do
     it {should validate_presence_of :google_oauth_token}
     it {should validate_presence_of :google_id}
     it {should belong_to(:turing_module).optional}
+    it {should define_enum_for(:user_type).with_values([:default, :admin])}
+    it 'is not an admin by default' do
+      user = create(:user)
+      expect(user.admin?).to eq(false)
+    end
   end
 
   describe 'instance methods' do

@@ -3,6 +3,8 @@ class User < ApplicationRecord
 
   belongs_to :turing_module, optional: true
 
+  enum :user_type, [:default, :admin]
+
   def my_module
     turing_module
   end
