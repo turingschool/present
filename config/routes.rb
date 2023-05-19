@@ -43,4 +43,8 @@ Rails.application.routes.draw do
       patch '/populi', to: 'populi#update'
     end
   end
+
+  namespace :admin do
+    resources :slack_presence_checks, only: [:index]
+  end
 end

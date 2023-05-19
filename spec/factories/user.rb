@@ -4,5 +4,9 @@ FactoryBot.define do
     email { 'Alan.Turing@gmail.com' }
     google_oauth_token { '<google_oauth_token>' }
     google_refresh_token { '<google_refresh_token>' }
+    factory :admin do
+      user_type {:admin}
+      organization_domain {'turing.edu'}
+    end
   end
 end

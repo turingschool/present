@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_17_203652) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_19_205940) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,6 +103,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_17_203652) do
     t.string "google_refresh_token"
     t.bigint "turing_module_id"
     t.string "organization_domain"
+    t.integer "user_type", default: 0
     t.index ["turing_module_id"], name: "index_users_on_turing_module_id"
   end
 

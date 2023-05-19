@@ -1,4 +1,4 @@
-class User::AccountMatchController < ApplicationController
+class User::AccountMatchController < User::BaseController
   def new 
     begin
       render locals: {

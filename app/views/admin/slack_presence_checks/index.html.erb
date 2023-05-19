@@ -1,0 +1,17 @@
+<table>
+  <tr>
+    <th>Student</th>
+    <th>Slack ID</th>
+    <th>Check Time</th>
+    <th>Presence</th>
+  </tr>
+  <% @checks.each do |check| %>
+    <tr>
+      <td><%= check.student.name %></td>
+      <td><%= check.student.slack_id %></td>
+      <td><%= pretty_time(check.check_time) %></td>
+      <td><%= check.presence %></td>
+    </tr>
+  <% end %>
+</table>
+
