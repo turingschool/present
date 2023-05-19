@@ -41,16 +41,16 @@ RSpec.describe Inning, type: :model do
         stub_request(:get, "https://slack.com/api/users.getPresence?user=1").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
         
-        stub_request(:get, "https://slack.com/api/users.getPresence?user=2").
+        @user2_stub = stub_request(:get, "https://slack.com/api/users.getPresence?user=2").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_away.json"))
 
-        stub_request(:get, "https://slack.com/api/users.getPresence?user=3").
+        @user3_stub = stub_request(:get, "https://slack.com/api/users.getPresence?user=3").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
         
         stub_request(:get, "https://slack.com/api/users.getPresence?user=4").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
           
-        stub_request(:get, "https://slack.com/api/users.getPresence?user=5").
+        @user5_stub = stub_request(:get, "https://slack.com/api/users.getPresence?user=5").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))  
       end
 
@@ -72,6 +72,29 @@ RSpec.describe Inning, type: :model do
         # call .to_fs(:short) to remove any precision past hour/minute/second
         expect(@student_1.slack_presence_checks.first.check_time.to_fs(:short)).to eq(check_time.to_fs(:short))
         expect(@student_2.slack_presence_checks.first.check_time.to_fs(:short)).to eq(check_time.to_fs(:short))
+      end
+
+      it "retries up to 5 times upon receiving a failure" do
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=2").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
+
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=3").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
+        
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=5").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
+
+        @inning.check_presence_for_students
+        
+        # expect 6 times for 1 initial call plus 5 retries
+        expect(@user2_stub).to have_been_requested.times(6)
+        expect(@user3_stub).to have_been_requested.times(6)
+        expect(@user5_stub).to have_been_requested.times(6)
+        expect(@student_2.slack_presence_checks.count).to eq(0)
+        expect(@student_3.slack_presence_checks.count).to eq(0)
+        expect(@student_5.slack_presence_checks.count).to eq(0)
+        # 3 students should have successful presence checks
+        expect(SlackPresenceCheck.pluck(:student_id).uniq.length).to eq(2)
       end
     end
   end 

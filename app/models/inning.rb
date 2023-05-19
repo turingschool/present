@@ -16,13 +16,22 @@ class Inning < ApplicationRecord
   def check_presence_for_students
     check_time = Time.now
     service = SlackApiService.new
+    retry_counter = 0
     students.each do |student|
       response = service.get_presence(student.slack_id)
       if response[:ok]
         student.slack_presence_checks.create(presence: response[:presence], check_time: check_time)
+        retry_counter = 0
       else
-        # We want to be notified if any API call to get a user's presence fails for any reason
-        Honeybadger.notify("Slack Response: #{response.to_s}, Student Slack ID: #{student.slack_id.to_s}")
+        if retry_counter < 5
+          retry_counter += 1
+          redo
+        else
+          # Don't retry again if we've done 5 retries already
+          retry_counter = 0
+          # We want to be notified if any API call to get a user's presence fails and 5 retries are unsuccessful
+          Honeybadger.notify("Slack Response: #{response.to_s}, Student Slack ID: #{student.slack_id.to_s}")
+        end
       end 
     end
   end
