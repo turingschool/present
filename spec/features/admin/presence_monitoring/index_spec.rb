@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'Presence Monitoring Index' do
   include ApplicationHelper
-
+  before :each do
+    mock_admin_login
+  end
+  
   it 'shows the slack presence check time, the student, and their presence' do
     checks = create_list(:slack_presence_check, 5)
 

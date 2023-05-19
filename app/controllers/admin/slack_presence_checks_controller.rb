@@ -1,4 +1,4 @@
-class Admin::SlackPresenceChecksController < ApplicationController
+class Admin::SlackPresenceChecksController < Admin::BaseController
   def index
     @checks = SlackPresenceCheck.all.includes(:student)
   end
