@@ -1,4 +1,4 @@
-class User::SlackController < ApplicationController 
+class User::SlackController < User::BaseController
 
     def new 
         @module = TuringModule.find(params[:turing_module_id])
