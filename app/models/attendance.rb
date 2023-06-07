@@ -7,11 +7,6 @@ class Attendance < ApplicationRecord
 
   validates_presence_of :attendance_time
 
-  def child
-    return slack_attendance if slack_attendance
-    return zoom_attendance if zoom_attendance
-  end
-
   def record
     take_participant_attendance
     take_absentee_attendance

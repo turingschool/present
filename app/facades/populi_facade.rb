@@ -23,20 +23,6 @@ class PopuliFacade
     service.get_current_academic_term[:response][:name]
   end
 
-  def student_options
-    populi_students.map do |student|
-      [student.name, student.personid]
-    end
-  end
-
-  def best_matching_id(student)
-    student_names = populi_students.map {|student| student.name} 
-    match_name = find_jarow_match(student.name, student_names)
-    populi_students.find do |student|
-      student.name == match_name
-    end.personid
-  end 
-
   def import_students
     populi_students.each do |populi_student|
       existing_student = Student.find_by(populi_id: populi_student.personid)
