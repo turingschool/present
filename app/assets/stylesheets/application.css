@@ -151,3 +151,12 @@ form#account-match {
 #populi-attendance-transfer {
   display: block;
 }
+
+.inline {
+  display: inline;
+}
+
+#remove-student-button {
+  margin-left: 10px;
+  display: inline;
+}

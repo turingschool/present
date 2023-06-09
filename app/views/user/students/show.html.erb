@@ -1,18 +1,18 @@
 <h1 class='s-h1'><%= @student.name %></h1>
 <% if @student.turing_module %>
-  <p class='s-p'>Module: <%= link_to @module.name, turing_module_path(@module) %></p>
-  <%= form_with model: @student do |f| %>
+  <h2 class="inline">Module: <%= link_to @module.name, turing_module_path(@module) %></h2>
+  <%= form_with model: @student, id: "remove-student-button" do |f| %>
     <%= f.hidden_field :turing_module_id, value: nil %>
-    <%= f.submit "Remove from this Module" %>  
+    <%= f.submit "Remove from this Module", class: "s-button danger" %>  
   <% end %>
 <% else %>
-  <p class='s-p'>Module: none</p>  
+  <h2>Module: none</h2>  
 <% end %>
-<p class='s-p'>Zoom Name: <%= @student.zoom_name %></p>
+<h2>Zoom Name: <%= @student.zoom_name %></h2>
 <% if @student.slack_id %>
-    <p class='s-p'>Slack ID: <%= @student.slack_id %></p>
+    <h2>Slack ID: <%= @student.slack_id %></h2>
 <% else %>
-    <p class='s-p'>Slack ID: Not Yet Assigned</p>
+    <h2>Slack ID: Not Yet Assigned</h2>
 <% end %>
 <%= link_to 'Edit', edit_student_path(@student), class: 's-button' %>
 <%= button_to 'Delete', student_path(@student), method: :delete, data:
