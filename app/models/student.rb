@@ -25,9 +25,4 @@ class Student < ApplicationRecord
   def zoom_name
     latest_zoom_alias.name if latest_zoom_alias
   end
-
-  def add_zoom_alias(name)
-    return true if name.blank?
-    self.zoom_aliases.create(name: name)
-  end
 end

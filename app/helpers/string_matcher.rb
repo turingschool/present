@@ -12,11 +12,4 @@ module StringMatcher
       jarow.getDistance(string, list_item)
     end
   end
-
-  def sort_by_jarow(string, list)
-    jarow = FuzzyStringMatch::JaroWinkler.create(:pure)
-    list.sort_by do |list_item|
-      jarow.getDistance(string, list_item)
-    end
-  end
 end
