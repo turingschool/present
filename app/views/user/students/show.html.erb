@@ -1,5 +1,13 @@
 <h1 class='s-h1'><%= @student.name %></h1>
-<h3 class='s-h3'><%= link_to @module.name, turing_module_path(@module) %></h3>
+<% if @student.turing_module %>
+  <p class='s-p'>Module: <%= link_to @module.name, turing_module_path(@module) %></p>
+  <%= form_with model: @student do |f| %>
+    <%= f.hidden_field :turing_module_id, value: nil %>
+    <%= f.submit "Remove from this Module" %>  
+  <% end %>
+<% else %>
+  <p class='s-p'>Module: none</p>  
+<% end %>
 <p class='s-p'>Zoom Name: <%= @student.zoom_name %></p>
 <% if @student.slack_id %>
     <p class='s-p'>Slack ID: <%= @student.slack_id %></p>

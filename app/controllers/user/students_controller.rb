@@ -8,9 +8,14 @@ class User::StudentsController < User::BaseController
     @module = @student.turing_module
   end
 
-  def destroy
+  def update
     student = Student.find(params[:id])
-    student.destroy
-    redirect_to turing_module_students_path(student.turing_module)
+    student.update(student_params)
+    redirect_to student
+  end
+
+private
+  def student_params
+    params.require(:student).permit(:turing_module_id)
   end
 end
