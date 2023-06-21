@@ -30,12 +30,15 @@ RSpec.describe "Redo Module Setup Account Matching" do
         .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))
     end 
   
-    it 'has option on mod show page to redo mod setup' do 
+    it 'has option on mod show page to redo mod setup', js: true do 
       expect(@test_module.students.count).to eq(6) #there are 6 students created from the factory
 
       visit turing_module_path(@test_module)
-      click_link "Redo Module Setup"
 
+      accept_alert do
+        click_link "Redo Module Setup"
+      end
+      
       within '#best-match' do
         click_button 'Yes'
       end
@@ -55,11 +58,14 @@ RSpec.describe "Redo Module Setup Account Matching" do
       expect(@test_module.attendances.count).to eq(0)
     end 
 
-    it 'does not destroy student records' do
+    it 'does not destroy student records', js: true do
       original_ids = Student.pluck(:id)
 
       visit turing_module_path(@test_module)
-      click_link "Redo Module Setup"
+
+      accept_alert do
+        click_link "Redo Module Setup"
+      end
 
       within '#best-match' do
         click_button 'Yes'
