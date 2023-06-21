@@ -160,3 +160,20 @@ form#account-match {
   margin-left: 10px;
   display: inline;
 }
+
+.form-link {
+  background: none;
+  font-family: "Helvetica Neue", "Helvetica", "sans-serif";
+  font-weight: 700;
+  border: none;
+  text-transform: uppercase;
+  color: rgb(77, 77, 79);
+  margin-left: 5px;
+}
+
+.form-link:hover {
+  text-decoration: underline;
+  text-decoration-color: #12f1fc;
+  text-decoration-thickness: 4px;
+  text-underline-offset: 4px;
+}

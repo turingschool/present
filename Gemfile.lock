@@ -373,7 +373,6 @@ DEPENDENCIES
   rails (~> 7.0.4, >= 7.0.4.3)
   rspec-rails
   ruby-limiter
-  selenium-webdriver
   shoulda-matchers
   sidekiq (~> 7.1)
   sidekiq-cron
@@ -382,7 +381,7 @@ DEPENDENCIES
   stimulus-rails
   turbo-rails
   tzinfo-data
-  webdrivers
+  webdrivers (~> 5.0)
   webmock
 
 RUBY VERSION

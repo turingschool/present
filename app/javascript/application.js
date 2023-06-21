@@ -3,4 +3,5 @@ import "controllers"
 import "custom/main"
 import "custom/sortable"
 import "custom/dashboard"
-import "@hotwired/turbo-rails"
+import { Turbo } from "@hotwired/turbo-rails"
+Turbo.session.drive = false

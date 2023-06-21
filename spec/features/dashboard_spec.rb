@@ -16,6 +16,18 @@ RSpec.describe "Dashboard" do
 
       expect(current_path).to eq(turing_module_path(@my_mod))
     end
+
+    it 'user can navigate to other modules', js: true do
+      other_mod = create(:setup_module, inning: @my_mod.inning)
+
+      visit '/'
+
+      within '#turing-module-selection' do
+        select other_mod.name
+      end
+
+      expect(current_path).to eq(turing_module_path(other_mod))
+    end
     
     context 'if account match is complete' do
       before(:each) do
