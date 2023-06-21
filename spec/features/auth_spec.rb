@@ -33,6 +33,10 @@ RSpec.describe "Authentication" do
         }
       }
     })
+
+    OmniAuth.config.on_failure = Proc.new { |env|
+      OmniAuth::FailureEndpoint.new(env).redirect_to_failure
+    }
   end
 
   it 'user can log in with google oauth' do
