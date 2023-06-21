@@ -44,7 +44,7 @@ RSpec.describe "Authentication" do
 
     click_link 'Sign In With Google'
 
-    expect(page).to have_link('Log Out')
+    expect(page).to have_button('Log Out')
     expect(page).to_not have_link('Sign In With Google')
   end
 
@@ -52,7 +52,7 @@ RSpec.describe "Authentication" do
     visit '/'
 
     click_link 'Sign In With Google'
-    click_link('Log Out')
+    click_button('Log Out')
     expect(page).to have_link('Sign In With Google')
   end
 
