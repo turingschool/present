@@ -7,7 +7,7 @@ class Student < ApplicationRecord
 
   validates_presence_of :name
 
-  validates_uniqueness_of :slack_id, scope: :turing_module_id, allow_nil: true
+  validates_uniqueness_of :slack_id, scope: :turing_module_id, allow_blank: true
 
   def self.have_slack_ids 
     # REFACTOR
