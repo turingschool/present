@@ -218,5 +218,25 @@ RSpec.describe "Module Setup Account Matching" do
       expect(current_path).to eq(new_turing_module_account_match_path(@mod))
       expect(page).to have_content("We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student.")
     end
+  
+
+    it 'allows the user to select not in channel for multiple students' do
+      within "#student-#{@anthony_b.id}" do
+        within '.slack-select' do 
+          select "Not In Channel"
+        end
+      end
+      
+      within "#student-#{@j.id}" do
+        within '.slack-select' do 
+          select "Not In Channel"
+        end
+      end
+
+      click_button 'Connect Accounts'
+
+      expect(page).to_not have_content("We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student.")
+      expect(current_path).to eq(turing_module_path(@mod))
+    end
   end
 end
