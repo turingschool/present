@@ -12,16 +12,23 @@ class User::AccountMatchController < User::BaseController
 
   def create
     current_module.attendances.destroy_all #if this is a redo
-    begin
-      params[:student].each do |student_id, ids|
+    failure = false
+    params[:student].each do |student_id, ids|
+      begin
         Student.update!(student_id, {slack_id: ids[:slack_id]})
         ZoomAlias.create(name: ids[:zoom_id], student_id: student_id)
+      rescue ActiveRecord::RecordInvalid => error
+        failure = true
+        Rails.logger.debug error.message
+        Rails.logger.debug "IDs: #{ids}, student: #{student_id}"
+        flash[:error] = "We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student."
+        redirect_to new_turing_module_account_match_path(current_module, zoom_meeting_id: params[:zoom_meeting_id])
+        break
       end
+    end
+    unless failure
       flash[:success] = "#{current_module.name} is now set up. Happy attendance taking!"
       redirect_to current_module
-    rescue ActiveRecord::RecordInvalid => error
-      flash[:error] = "We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student."
-      redirect_to new_turing_module_account_match_path(current_module, zoom_meeting_id: params[:zoom_meeting_id])
     end
   end
 
