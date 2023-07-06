@@ -19,8 +19,7 @@ class User::AccountMatchController < User::BaseController
         ZoomAlias.create(name: ids[:zoom_id], student_id: student_id)
       rescue ActiveRecord::RecordInvalid => error
         failure = true
-        Rails.logger.debug error.message
-        Rails.logger.debug "IDs: #{ids}, student: #{student_id}"
+        Rails.logger.warn "Got this error: #{error.message}\nIDs: #{ids}\nstudent: #{student_id} "
         flash[:error] = "We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student."
         redirect_to new_turing_module_account_match_path(current_module, zoom_meeting_id: params[:zoom_meeting_id])
         break
