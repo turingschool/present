@@ -238,5 +238,50 @@ RSpec.describe "Module Setup Account Matching" do
       expect(page).to_not have_content("We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student.")
       expect(current_path).to eq(turing_module_path(@mod))
     end
+
+    it 'can correct a mistake if a user selects the wrong slack account for a student' do
+      within "#student-#{@anthony_b.id}" do
+        within '.slack-select' do 
+          select "J Seymour" # User accidentally selects the wrong student
+        end
+      end
+      
+      within "#student-#{@j.id}" do
+        within '.slack-select' do 
+          select "Anthony Blackwell Tallent" # User accidentally selects the wrong student
+        end
+      end
+
+      click_button 'Connect Accounts'
+
+      click_link "Redo Module Setup"
+
+      within '#best-match' do
+        click_button 'Yes'
+      end
+
+      fill_in :slack_channel_id, with: @channel_id
+      click_button "Import Channel"
+
+      fill_in :zoom_meeting_id, with: @zoom_meeting_id
+      click_button "Import Zoom Accounts From Meeting"
+
+      within "#student-#{@anthony_b.id}" do
+        within '.slack-select' do 
+          select "Anthony Blackwell Tallent"
+        end
+      end
+      
+      within "#student-#{@j.id}" do
+        within '.slack-select' do 
+          select "J Seymour"
+        end
+      end
+
+      click_button 'Connect Accounts'
+      
+      expect(page).to_not have_content("We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student.")
+      expect(current_path).to eq(turing_module_path(@mod))
+    end
   end
 end
