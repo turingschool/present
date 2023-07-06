@@ -20,6 +20,7 @@ class User::AccountMatchController < User::BaseController
       flash[:success] = "#{current_module.name} is now set up. Happy attendance taking!"
       redirect_to current_module
     rescue ActiveRecord::RecordInvalid => error
+      Rails.logger.debug error.message
       flash[:error] = "We're sorry, something isn't quite working. Make sure you are assigning a different Slack User for each student."
       redirect_to new_turing_module_account_match_path(current_module, zoom_meeting_id: params[:zoom_meeting_id])
     end
