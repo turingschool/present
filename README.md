@@ -8,8 +8,8 @@ Manage Turing student attendances.
 
 The rest of the setup assumes you have the following installed in your local environment.
 
-* Ruby 2.7.2. We recommend [RBenv](https://github.com/rbenv/rbenv) for managing your Ruby version.
-* Rails 5.2.6
+* Ruby 3.1.1. We recommend [RBenv](https://github.com/rbenv/rbenv) for managing your Ruby version.
+* Rails 7.0.4.3
 * Postgresql
 * Bundler 2.2.11
 
