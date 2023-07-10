@@ -11,7 +11,7 @@ The rest of the setup assumes you have the following installed in your local env
 * Ruby 3.1.4. We recommend [RBenv](https://github.com/rbenv/rbenv) for managing your Ruby version.
 * Rails 7.0.4.3
 * Postgresql
-* Bundler 2.2.11
+* Bundler 2.3.7
 
 
 
