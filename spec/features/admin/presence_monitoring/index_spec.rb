@@ -22,12 +22,12 @@ RSpec.describe 'Presence Monitoring Index' do
 
   describe 'pagination' do
     before(:each) do
-      @checks_one = create_list(:slack_presence_check, 49)
-      @first_page_last = create(:slack_presence_check)
-      @second_page_first = create(:slack_presence_check)
-      @checks_two = create_list(:slack_presence_check, 48)
-      @second_page_last = create(:slack_presence_check)
       @third_page_first = create(:slack_presence_check)
+      @second_page_last = create(:slack_presence_check)
+      @checks_two = create_list(:slack_presence_check, 48)
+      @second_page_first = create(:slack_presence_check)
+      @first_page_last = create(:slack_presence_check)
+      @checks_one = create_list(:slack_presence_check, 49)
     end
 
     it 'displays the slack presence checks in a paginated manner, with only 50 per page' do
