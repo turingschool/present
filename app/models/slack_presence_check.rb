@@ -8,6 +8,6 @@ class SlackPresenceCheck < ApplicationRecord
   paginates_per 50
 
   def self.collect_for_pagination
-    self.all.includes(:student).order(id: :desc)
+    self.all.includes(:student).order(created_at: :desc)
   end
 end
