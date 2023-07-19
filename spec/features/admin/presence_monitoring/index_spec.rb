@@ -50,6 +50,8 @@ RSpec.describe 'Presence Monitoring Index' do
       expect(page).to have_link('2', href: '/admin/slack_presence_checks/page/2')
       expect(page).to have_link('3', href: '/admin/slack_presence_checks/page/3')
       expect(page).to have_link('Last', href: '/admin/slack_presence_checks/page/3')
+      click_link('Next')
+      expect(current_path).to eq('/admin/slack_presence_checks/page/2')
     end
   end
 
