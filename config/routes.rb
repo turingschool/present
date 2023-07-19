@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :slack_presence_checks, only: [:index]
+    resources :slack_presence_checks do
+      get '/page/:page', action: :index, on: :collection
+    end
   end
 end
