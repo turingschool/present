@@ -1,5 +1,5 @@
 class Admin::SlackPresenceChecksController < Admin::BaseController
   def index
-    @checks = SlackPresenceCheck.all.includes(:student).order(id: :desc).page params[:page]
+    @checks = SlackPresenceCheck.collect_for_pagination.page params[:page]
   end
 end
