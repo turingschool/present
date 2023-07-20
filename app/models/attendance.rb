@@ -55,11 +55,9 @@ class Attendance < ApplicationRecord
       response = service.update_student_attendance(course_id, populi_meeting_id, student_attendance.student.populi_id, student_attendance.status)
       Rails.logger.info "Update Attendance Response: #{response.to_s}"
       begin
-        unless response[:response][:result] == "UPDATED"
-          raise AttendanceUpdateError.new("UPDATE FAILED. Student: #{student_attendance.student.populi_id}, status: #{student_attendance.status}, response: #{response.to_s}") 
-        end
-      rescue AttendanceUpdateError, NoMethodError => error
-        Honeybadger.notify(error.message)
+        raise AttendanceUpdateError.new("UPDATE FAILED") unless response[:response][:result] == "UPDATED"
+      rescue AttendanceUpdateError, NoMethodError
+        Honeybadger.notify("UPDATE FAILED. Student: #{student_attendance.student.populi_id}, status: #{student_attendance.status}, response: #{response.to_s}")
       end
     end
   end
