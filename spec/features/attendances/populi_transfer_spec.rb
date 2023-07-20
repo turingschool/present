@@ -189,7 +189,18 @@ RSpec.describe 'Populi Transfer' do
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: "")
 
-        expect(Honeybadger).to receive(:notify).with("undefined method `[]' for nil:NilClass\n\n        unless response[:response][:result] == \"UPDATED\"\n                                  ^^^^^^^^^")
+        expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: {}")
+        
+        click_button "Transfer Student Attendances to Populi"  
+      end
+      
+      it 'can handle a populi error when the student is not found' do
+        # responding with an error that says the student was not found
+        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
+          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
+          to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_not_found.xml'))
+
+        expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: {\"error\"=>{\"code\"=>\"BAD_PARAMETER\", \"message\"=>\"We could not find personID \\\"24490062\\\" in instanceID \\\"10547831\\\"\"}}")
         
         click_button "Transfer Student Attendances to Populi"  
       end
