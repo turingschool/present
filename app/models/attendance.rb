@@ -53,13 +53,9 @@ class Attendance < ApplicationRecord
     course_id = self.turing_module.populi_course_id
     student_attendances.includes(:student).each do |student_attendance|
       response = service.update_student_attendance(course_id, populi_meeting_id, student_attendance.student.populi_id, student_attendance.status)
-      begin
-        unless response[:response][:result] == "UPDATED"
-          raise AttendanceUpdateError.new("Student: #{student_attendance.student.populi_id}, status: #{student_attendance.status}, response: #{response.to_s}") 
-        end
-      rescue => error
-        Honeybadger.notify(response.to_s)
-        raise error # raise the error anyway so that the job will retry
+      Rails.logger.info "Update Attendance Response: #{response.to_s}"
+      unless response[:response][:result] == "UPDATED"
+        raise AttendanceUpdateError.new("UPDATE FAILED. Student: #{student_attendance.student.populi_id}, status: #{student_attendance.status}, response: #{response.to_s}") 
       end
     end
   end
