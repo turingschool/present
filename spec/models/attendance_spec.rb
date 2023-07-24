@@ -12,4 +12,12 @@ RSpec.describe Attendance, type: :model do
     it {should have_many :student_attendances}
     it {should have_many(:students).through(:student_attendances)}
   end
+  
+  describe 'instance methods' do
+    it '' do
+      
+    end
+    
+    
+  end
 end
