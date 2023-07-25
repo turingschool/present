@@ -9,9 +9,6 @@ class ZoomMeeting < Meeting
       raise invalid_zoom_url_error if meeting_id.include?(" ")
       raise invalid_meeting_id_length_zoom_url_error if meeting_id.length < 10 || meeting_id.length > 11
     end
-    #raise errors here 
-    #one for invalid link that has spaces
-    #one for invalid link that has less than or more than 11 characters in meeting id
     meeting_details = ZoomService.meeting_details(meeting_id)    
     raise invalid_error if meeting_details[:code] == 3001
     raise no_meeting_error if meeting_details[:code] == 2300
