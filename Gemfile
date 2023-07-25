@@ -78,6 +78,9 @@ gem 'pry-rails'
 # Rate Limiting
 gem 'ruby-limiter'
 
+# Pagination
+gem 'kaminari'
+
 group :development, :test do
   gem 'figaro'
 end

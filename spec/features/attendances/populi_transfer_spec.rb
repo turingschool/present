@@ -136,14 +136,73 @@ RSpec.describe 'Populi Transfer' do
     end
 
     context "update error" do
-      it 'can handle a failure response from Populi' do
-        stub_request(:post, ENV['POPULI_API_URL']) \
-          .with{|request| request.body.include? "updateStudentAttendance"} \
-          .to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_error.xml')) 
+      before :each do
+        update_response = File.read('spec/fixtures/populi/update_student_attendance_success.xml')
+
+        @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL']).         
+          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490140", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
+          to_return(status: 200, body: update_response) 
+        @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL']).         
+          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490130", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
+          to_return(status: 200, body: update_response) 
+        @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL']).         
+          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490100", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
+          to_return(status: 200, body: update_response) 
+        
+        # This attendance update fails for some reason
+        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
+          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
+          to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_error.xml')) 
+        
+        @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL']).         
+          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490161", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
+          to_return(status: 200, body: update_response) 
+        @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL']).         
+          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490123", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
+          to_return(status: 200, body: update_response)         
 
         click_link "Transfer Student Attendances to Populi"
         click_link "I have created the Attendance record in Populi"
-        expect {click_button "Transfer Student Attendances to Populi"}.to raise_exception(AttendanceUpdateError)
+
+        select("9:00 AM")
+      end
+
+      it 'keeps processing the job if it encounters an error' do
+        click_button "Transfer Student Attendances to Populi"  
+
+        expect(@update_attendance_stub1).to have_been_requested
+        expect(@update_attendance_stub2).to have_been_requested
+        expect(@update_attendance_stub3).to have_been_requested
+        expect(@update_attendance_stub4).to have_been_requested # This call errors out, but the job should continue to requests 5 and 6
+        expect(@update_attendance_stub5).to have_been_requested
+        expect(@update_attendance_stub6).to have_been_requested
+      end
+
+      it 'sends a Honeybadger notification' do
+        expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: {\"response\"=>{\"error\"=>\"Something went wrong\"}}")
+        click_button "Transfer Student Attendances to Populi"  
+      end
+
+      it 'can handle a no method error' do
+        # responding with an empty body so that it creates a no method error when accessing the response
+        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
+          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
+          to_return(status: 200, body: "")
+
+        expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: {}")
+        
+        click_button "Transfer Student Attendances to Populi"  
+      end
+      
+      it 'can handle a populi error when the student is not found' do
+        # responding with an error that says the student was not found
+        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
+          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
+          to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_not_found.xml'))
+
+        expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: {\"error\"=>{\"code\"=>\"BAD_PARAMETER\", \"message\"=>\"We could not find personID \\\"24490062\\\" in instanceID \\\"10547831\\\"\"}}")
+        
+        click_button "Transfer Student Attendances to Populi"  
       end
     end    
   end
