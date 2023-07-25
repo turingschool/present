@@ -14,6 +14,17 @@ RSpec.describe Attendance, type: :model do
   end
   
   describe 'instance methods' do
+    it '#update_time(time)' do
+      #expect the time to update in UTC when given the MDT time (24 hour format)
+      original = create(:attendance, attendance_time: "22 Jul 2023 15:00")
+      
+      expect(original.attendance_time).to eq("Sat, 22 Jul 2023 15:00:00.000000000 UTC +00:00")
+      
+      original.update_time("12:00")
+      
+      expect(original.attendance_time).to eq("Sat, 22 Jul 2023 18:00:00.000000000 UTC +00:00")
+    end
+    
     xit '#record' do
       
     end
@@ -28,18 +39,6 @@ RSpec.describe Attendance, type: :model do
     
     xit '#take_absentee_attendance' do
       
-    end
-    
-    xit '#update_time(time)' do
-      # def update_time(time)
-      #   hour = time.split(":").first
-      #   minutes = time.split(":").last
-      #   new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
-      #   self.update!(attendance_time: new_time)
-      # end
-      
-      # create instance w/ timestamp
-      # Update the time of the instance
     end
     
     xit '#count_status(status)' do
