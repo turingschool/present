@@ -5,7 +5,7 @@ class ZoomMeeting < Meeting
 
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
-    raise invalid_zoom_url_error if meeting_url.include?(" ")
+    raise invalid_zoom_url_error if meeting_id.match(/\D/)
     raise invalid_meeting_id_length_zoom_url_error if meeting_id.length < 10 || meeting_id.length > 11
     #raise errors here 
     #one for invalid link that has spaces
