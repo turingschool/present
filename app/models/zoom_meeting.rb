@@ -5,6 +5,10 @@ class ZoomMeeting < Meeting
 
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
+    raise invalid_zoom_url_error if meeting_url.include?(" ")
+    #raise errors here 
+    #one for invalid link that has spaces
+    #one for invalid link that has less than or more than 11 characters in meeting id
     meeting_details = ZoomService.meeting_details(meeting_id)    
     raise invalid_error if meeting_details[:code] == 3001
     raise no_meeting_error if meeting_details[:code] == 2300
@@ -54,6 +58,10 @@ private
 
   def self.personal_meeting_error
     InvalidMeetingError.new("It looks like that Zoom link is for a Personal Meeting Room. You will need to use a unique meeting instead.")
+  end
+
+  def self.invalid_zoom_url_error
+    InvalidMeetingError.new("The URL entered is not valid. Please enter a URL that follows this format: 'https://turingschool.zoom.us/j/12345678901'.")
   end
 
   def participant_report

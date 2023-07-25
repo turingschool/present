@@ -99,4 +99,17 @@ RSpec.describe 'Creating a Zoom Attendance' do
       expect(page).to have_content("It looks like that Zoom link is for a Personal Meeting Room. You will need to use a unique meeting instead.")
     end
   end
+
+  context "With invalid Zoom URLs" do
+    it "Shows an error message if the URL isn't continous, has spaces" do
+      test_module = create(:setup_module)
+      visit turing_module_path(test_module)
+
+      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/invalid_url 1 2 3"
+      click_button 'Take Attendance'
+
+      expect(page).to have_content("The URL entered is not valid. Please enter a URL that follows this format: 'https://turingschool.zoom.us/j/12345678901'.")
+    end
+
+  end
 end
