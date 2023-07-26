@@ -12,7 +12,8 @@ class ZoomMeeting < Meeting
     create(
       meeting_id: meeting_id, 
       start_time: meeting_details[:start_time].to_datetime, 
-      title: meeting_details[:topic]
+      title: meeting_details[:topic],
+      duration: (meeting_details[:duration])
     )
   end
 
@@ -74,7 +75,14 @@ private
   def uniq_participants_best_time(participants)
     grouped_by_name = participants.group_by(&:name)
     participants_best_time = grouped_by_name.map do |name, participant_records|
-      participant_records.min_by(&:join_time)
+      earliest_join_time = participant_records.min_by(&:join_time)
+      earliest_join_time.duration = calculate_duration(participant_records)
+      earliest_join_time
     end
   end
+
+  def calculate_duration(participant_records) 
+    meeting_duration = self.duration * 60
+    ((participant_records.sum(&:duration).to_f/meeting_duration) * 100 ).round
+  end 
 end
