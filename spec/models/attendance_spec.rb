@@ -26,7 +26,7 @@ RSpec.describe Attendance, type: :model do
     end
     
     it '#update_time(time) with invalid time' do
-      #expect the time to update in UTC when given the MDT time (24 hour format)
+      #returns an error when an invalid time is given
       original = create(:attendance, attendance_time: "22 Jul 2023 15:00")
       
       expect(original.attendance_time).to eq("Sat, 22 Jul 2023 15:00:00.000000000 UTC +00:00")
@@ -35,7 +35,7 @@ RSpec.describe Attendance, type: :model do
     end
     
     xit '#record' do
-      
+      # tests take_participant_attendance and take_absentee_attendance
     end
     
     xit '#rerecord' do
