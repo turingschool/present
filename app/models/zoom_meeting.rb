@@ -60,14 +60,6 @@ private
     InvalidMeetingError.new("It looks like that Zoom link is for a Personal Meeting Room. You will need to use a unique meeting instead.")
   end
 
-  def self.invalid_zoom_url_error
-    InvalidMeetingError.new("The Zoom URL entered is not valid. Please enter a URL that follows this format: 'https://turingschool.zoom.us/j/12345678901'.")
-  end
-
-  def self.invalid_meeting_id_length_zoom_url_error
-    InvalidMeetingError.new("The Zoom URL entered is not valid. Check that the meeting ID has 10-11 digits.")
-  end
-
   def participant_report
     @report ||= ZoomService.participant_report(self.meeting_id)[:participants]
   end
