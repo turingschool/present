@@ -38,10 +38,18 @@ class Attendance < ApplicationRecord
   end
 
   def update_time(time)
-    hour = time.split(":").first
-    minutes = time.split(":").last
-    new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
-    self.update!(attendance_time: new_time)
+    hour, minutes = time.split(":").map(&:to_i)
+    
+    if !validate_time_input(hour, minutes)
+      new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
+      self.update!(attendance_time: new_time)
+    end
+  end
+  
+  def validate_time_input(hour, minutes)
+    if hour < 0 || hour > 23 || minutes < 0 || minutes > 59
+      raise ArgumentError, "Invalid time format. Hour and minutes should be in the range 00:00 to 23:59."
+    end
   end
 
   def count_status(status)
