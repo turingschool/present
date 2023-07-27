@@ -14,7 +14,7 @@ RSpec.describe Attendance, type: :model do
   end
   
   describe 'instance methods' do
-    it '#update_time(time)' do
+    it '#update_time(time) with valid time' do
       #expect the time to update in UTC when given the MDT time (24 hour format)
       original = create(:attendance, attendance_time: "22 Jul 2023 15:00")
       
@@ -25,8 +25,17 @@ RSpec.describe Attendance, type: :model do
       expect(original.attendance_time).to eq("Sat, 22 Jul 2023 18:00:00.000000000 UTC +00:00")
     end
     
-    xit '#record' do
+    it '#update_time(time) with invalid time' do
+      #returns an error when an invalid time is given
+      original = create(:attendance, attendance_time: "22 Jul 2023 15:00")
       
+      expect(original.attendance_time).to eq("Sat, 22 Jul 2023 15:00:00.000000000 UTC +00:00")
+      
+      expect { original.update_time("25:00") }.to raise_error(ArgumentError, "Invalid time format. Hour and minutes should be in the range 00:00 to 23:59.")
+    end
+    
+    xit '#record' do
+      # tests take_participant_attendance and take_absentee_attendance
     end
     
     xit '#rerecord' do
