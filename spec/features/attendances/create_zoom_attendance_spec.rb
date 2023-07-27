@@ -108,27 +108,17 @@ RSpec.describe 'Creating a Zoom Attendance' do
       fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/invalid_url 1 2 3"
       click_button 'Take Attendance'
 
-      expect(page).to have_content("The Zoom URL entered is not valid. Please enter a URL that follows this format: 'https://turingschool.zoom.us/j/12345678901'.")
+      expect(page).to have_content("It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again.")
     end
 
-    it "Shows an error message if the meeting ID in the URL is less than 10." do
+    it "Shows an error message if the meeting ID in the URL is missing digits." do
       test_module = create(:setup_module)
       visit turing_module_path(test_module)
 
-      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/123456789"
+      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/9634435576"
       click_button 'Take Attendance'
 
-      expect(page).to have_content("The Zoom URL entered is not valid. Check that the meeting ID has 10-11 digits.")
-    end
-
-    it "Shows an error message if the meeting ID in the URL is greater than 11." do
-      test_module = create(:setup_module)
-      visit turing_module_path(test_module)
-
-      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/123456789012"
-      click_button 'Take Attendance'
-
-      expect(page).to have_content("The Zoom URL entered is not valid. Check that the meeting ID has 10-11 digits.")
+      expect(page).to have_content("It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again.")
     end
   end
 end
