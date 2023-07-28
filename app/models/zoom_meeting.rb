@@ -5,11 +5,8 @@ class ZoomMeeting < Meeting
 
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
-    # if !meeting_id.nil?
-    #   raise invalid_zoom_url_error if meeting_id.include?(" ")
-    #   raise invalid_meeting_id_length_zoom_url_error if meeting_id.length < 10 || meeting_id.length > 11
-    # end
     meeting_details = ZoomService.meeting_details(meeting_id)    
+    
     raise invalid_error if meeting_details[:code] == 3001
     raise no_meeting_error if meeting_details[:code] == 2300
     raise personal_meeting_error if meeting_details[:start_time].nil?
