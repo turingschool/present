@@ -56,7 +56,7 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
   context "With invalid ids" do
     before :each do
-      @invalid_zoom_id = 'InvalidID_'
+      @invalid_zoom_id = 'InvalidID'
     end
 
     it 'shows a message if an invalid meeting id is entered' do
@@ -102,16 +102,22 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
   context "With invalid Zoom URLs" do
     it "Shows an error message if the URL isn't continous, has spaces" do
+      stub_request(:get, "https://api.zoom.us/v2/meetings/92831928801 928 319 288 01") \
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
+
       test_module = create(:setup_module)
       visit turing_module_path(test_module)
 
-      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/invalid_url 1 2 3"
+      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/92831928801 928 319 288 01"
       click_button 'Take Attendance'
 
       expect(page).to have_content("It appears you have entered an invalid Zoom Meeting ID. Please double check the Meeting ID and try again.")
     end
 
     it "Shows an error message if the meeting ID in the URL is missing digits." do
+      stub_request(:get, "https://api.zoom.us/v2/meetings/9634435576}") \
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
+
       test_module = create(:setup_module)
       visit turing_module_path(test_module)
 
