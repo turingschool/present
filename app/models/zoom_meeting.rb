@@ -6,6 +6,7 @@ class ZoomMeeting < Meeting
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
     meeting_details = ZoomService.meeting_details(meeting_id)    
+    
     raise invalid_error if meeting_details[:code] == 3001
     raise no_meeting_error if meeting_details[:code] == 2300
     raise personal_meeting_error if meeting_details[:start_time].nil?
