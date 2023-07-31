@@ -38,10 +38,18 @@ class Attendance < ApplicationRecord
   end
 
   def update_time(time)
-    hour = time.split(":").first
-    minutes = time.split(":").last
-    new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
-    self.update!(attendance_time: new_time)
+    hour, minutes = time.split(":").map(&:to_i)
+    
+    if !validate_time_input(hour, minutes)
+      new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
+      self.update!(attendance_time: new_time)
+    end
+  end
+  
+  def validate_time_input(hour, minutes)
+    if hour < 0 || hour > 23 || minutes < 0 || minutes > 59
+      raise ArgumentError, "Invalid time format. Hour and minutes should be in the range 00:00 to 23:59."
+    end
   end
 
   def count_status(status)
@@ -53,13 +61,11 @@ class Attendance < ApplicationRecord
     course_id = self.turing_module.populi_course_id
     student_attendances.includes(:student).each do |student_attendance|
       response = service.update_student_attendance(course_id, populi_meeting_id, student_attendance.student.populi_id, student_attendance.status)
+      Rails.logger.info "Update Attendance Response: #{response.to_s}"
       begin
-        unless response[:response][:result] == "UPDATED"
-          raise AttendanceUpdateError.new("Student: #{student_attendance.student.populi_id}, status: #{student_attendance.status}, response: #{response.to_s}") 
-        end
-      rescue => error
-        Honeybadger.notify(response.to_s)
-        raise error # raise the error anyway so that the job will retry
+        raise AttendanceUpdateError.new("UPDATE FAILED") unless response[:response][:result] == "UPDATED"
+      rescue AttendanceUpdateError, NoMethodError
+        Honeybadger.notify("UPDATE FAILED. Student: #{student_attendance.student.populi_id}, status: #{student_attendance.status}, response: #{response.to_s}")
       end
     end
   end
