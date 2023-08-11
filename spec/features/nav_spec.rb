@@ -20,7 +20,7 @@ RSpec.describe "Nav Bar" do
       user = mock_login
 
       visit root_path
-      expect(page).to_not have_link("Admin")
+      expect(page).to_not have_button("Admin")
     end
   end
 
@@ -30,7 +30,7 @@ RSpec.describe "Nav Bar" do
       user = mock_admin_login
 
       visit root_path
-      expect(page).to have_link("Admin", href: "/admin")
+      expect(page).to have_button("Admin")
     end
   end
 end

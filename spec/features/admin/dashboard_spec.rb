@@ -9,8 +9,9 @@ RSpec.describe 'Admin Dashboard' do
   describe 'Page Display' do
     it 'diplays "Admin Dashboard"' do
       visit admin_path
-
+      
       expect(page).to have_content("Admin Dashboard")
+      expect(page).to_not have_button("Admin")
     end
   end
 end
