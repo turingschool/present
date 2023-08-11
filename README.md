@@ -82,17 +82,6 @@ Keep in mind that the app will make real HTTP calls to the Zoom API and Google O
 
 ![Schema](./doc/schema.jpg)
 
-## Contributing
-
-* Please see the [project board](https://github.com/turingschool/present/projects/1) for open work.
-* Select an unassigned issue from the `To Do` column and assign yourself or multiple people if you would like to pair.
-* Move the card to `In Progress`
-* If you need to pause working on an issue for more than a week, please unassign yourself and move back to `To Do`. If you have relevant work push up your branch and add notes to the issue
-* Submit a Pull Request and fill out the PR template.
-* Check that CircleCI tests pass
-* Request a review
-* Do not merge your own PR unless discussed and approved by the team
-
 
 ## Developer Resources:
 
