@@ -20,7 +20,7 @@
             <li class='s-nav-menu-item' id="signed-in-as">Signed in as <%= current_user.email %></li>
             <li class='s-nav-menu-item'><%= button_to 'Log Out', '/sessions', method: :delete, class: 'form-link' %></li>
             <% if current_user.admin? %>
-              <%= content_tag(:li, button_to('Admin', '/admin'), method: :get, class: 's-nav-menu-item', style: 'margin-right: 2px;') %>
+              <li class='s-nav-menu-item'><%= button_to 'Admin', '/admin', method: :get, class: 'form-link' %></li>
             <% end %>
           <% else %>
             <li><%= link_to "Sign In With Google", "/auth/google_oauth2" %></li>
