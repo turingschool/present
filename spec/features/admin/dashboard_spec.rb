@@ -11,7 +11,7 @@ RSpec.describe 'Admin Dashboard' do
       visit admin_path
       
       expect(page).to have_content("Admin Dashboard")
-      expect(page).to_not have_button("Admin")
+      expect(page).to have_button("Admin")
     end
   end
 end
