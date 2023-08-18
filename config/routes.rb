@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    get '/', to: 'dashboard#show'
     resources :slack_presence_checks, only: [:index]
   end
 end
