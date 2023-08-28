@@ -34,7 +34,7 @@ class Attendance < ApplicationRecord
     student_ids = student_attendances.pluck(:student_id)
     absent_students = turing_module.students.where.not(id: student_ids)
     absent_students.each do |student|
-      student_attendances.create(student: student, status: "absent", duration: "0%")
+      student_attendances.create(student: student, status: "absent", duration: 0)
     end
   end
 
