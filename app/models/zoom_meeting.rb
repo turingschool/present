@@ -82,7 +82,6 @@ private
   end
 
   def calculate_duration(participant_records) 
-    meeting_duration = self.duration * 60
-    ((participant_records.sum(&:duration).to_f/meeting_duration) * 100 ).round
+    ((participant_records.sum(&:duration).to_f) / 60 ).round
   end 
 end
