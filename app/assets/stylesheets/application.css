@@ -13,10 +13,36 @@
  *= require_tree .
  *= require_self
  */
+
+.pagination {
+  margin: 20px;
+}
+
+.pagination span {
+  border: 1px solid #DDD;
+  border-radius: 5px;
+  display: inline-block;
+  font-size: 24px;
+  margin: 5px;
+  padding: 10px;
+  transition: background-color .3s;
+}
+
+.pagination span:hover:not(.current) {
+  background-color: #ddd;
+}
+
+
+.pagination .current {
+  background-color: #4d4d4f;
+  color: #FFF;
+}
+
 #take-attendance {
   margin-bottom: 20px;
   margin-top: 20px;
 }
+
 .my-mod-button {
   margin-bottom: 2%;
 }
