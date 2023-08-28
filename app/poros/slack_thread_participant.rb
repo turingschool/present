@@ -21,6 +21,6 @@ class SlackThreadParticipant
   end
 
   def duration
-    0
+    nil
   end
 end
