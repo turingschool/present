@@ -19,4 +19,8 @@ class SlackThreadParticipant
       @status = 'present' 
     end
   end
+
+  def duration
+    nil
+  end
 end
