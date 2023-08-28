@@ -44,7 +44,7 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
       fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
       click_button 'Take Attendance'
-      save_and_open_page
+
       expect(current_path).to eq(attendance_path(Attendance.last))
       expect(page).to have_css('.student-attendance', count: @test_module.students.count)
       expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Duration" => "0")
