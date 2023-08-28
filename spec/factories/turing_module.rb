@@ -25,5 +25,20 @@ FactoryBot.define do
         create(:zoom_alias, student: student6, name: "Samuel C (He/Him) BE")
       end
     end
+    
+    factory :setup_module_no_aliases do
+      module_number {3}
+      program {:BE} 
+      populi_course_id {10547831}
+
+      after(:create) do |mod|
+        create(:setup_student, turing_module: mod, name: 'Leo Banos Garcia', populi_id: 24490130, slack_id: "U013Y0T89V1")
+        create(:setup_student, turing_module: mod, name: 'Anthony Blackwell Tallent', populi_id: 24490140, slack_id: "U035BQEGZ")
+        create(:setup_student, turing_module: mod, name: 'Lacey Weaver', populi_id: 24490100, slack_id: "U0255B3MMB4")
+        create(:setup_student, turing_module: mod, name: 'Anhnhi Tran', populi_id: 24490062, slack_id: "U022NF3D4SV")
+        create(:setup_student, turing_module: mod, name: 'J Seymour', populi_id: 24490161, slack_id: "U02199TD8SC")
+        create(:setup_student, turing_module: mod, name: 'Samuel Cox', populi_id: 24490123, slack_id: "U01CBJGFXRC")
+      end
+    end
   end
 end
