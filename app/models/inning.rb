@@ -1,5 +1,6 @@
 class Inning < ApplicationRecord
   validates_presence_of :name
+  validates_presence_of :start_date
 
   has_many :turing_modules, dependent: :destroy
   has_many :students, through: :turing_modules
@@ -11,6 +12,10 @@ class Inning < ApplicationRecord
 
   def self.order_by_name
     order(name: :desc)
+  end
+
+  def self.current_and_future
+    where(["current = ? or start_date >= ?", true, Date.today]).order(:start_date)
   end
 
   def check_presence_for_students
