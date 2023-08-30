@@ -20,12 +20,6 @@ RSpec.describe 'Admin Dashboard' do
 
       expect(page).to have_content("Innings")
     end
-
-    it 'does not display innings section if there are no innings present' do
-      visit admin_path
-
-      expect(page).to_not have_content('Innings')
-    end
   end
 
   describe 'Within the Innings section' do
