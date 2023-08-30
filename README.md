@@ -14,13 +14,13 @@ The rest of the setup assumes you have the following installed in your local env
 * Rails 7.0.4.3
 * Postgresql
 * Bundler 2.3.7
-
-
+* Google Chrome v116.0.5845.110
 
 Other versions may work. If you wish to test other versions you will have to modify the `Gemfile`, remove `Gemfile.lock` and run `bundle install`.
 
+### Running the Test Suite
 
-To set up locally, clone this repo and run the following commands.
+First, clone this repo and run the following commands.
 
 ```
 bundle install
@@ -39,22 +39,25 @@ To run locally you will need to set up some environment variables. This project 
 bundle exec figaro install
 ```
 
-Then, open the file `config/application.yml`. Copy and paste the following template into the file:
+Then, open the file `config/application.yml` and enter your environment variables. If you are an active developer on this project, you can find these credentials pinned in the Present Development Slack channel.
+
+Otherwise, you can copy and paste the following template into the file:
 
 ```
 GOOGLE_OAUTH_CLIENT_ID: <YOUR_GOOGLE_OAUTH_CLIENT_ID_HERE>
 GOOGLE_OAUTH_CLIENT_SECRET: <YOUR_GOOGLE_OAUTH_CLIENT_SECRET_HERE>
 ZOOM_API_SECRET: <YOUR_ZOOM_API_SECRET_HERE>
 ZOOM_API_KEY: <YOUR_ZOOM_API_KEY_HERE>
+slack_api_key: <YOUR_SLACK_API_KEY_HERE>
+POPULI_API_ACCESS_KEY: <YOUR_POPULI_API_KEY_HERE>
+POPULI_API_URL: https://turing-validation.populi.co/api/
 ```
 
-**Note: It may be necessary to contact the maintainers in order to obtain access to the Google Cloud App. Alternatively, you can create your own Google Cloud project with OAuth credentials.**
+To obtain the Google Cloud credentials, you will need to create an application in the Google Cloud Console and create OAuth2.0 Credentials. 
 
-To obtain the Google Cloud credentials, navigate to the Present Dashboard in the [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418). Under "Credentials" select one of the OAuth 2.0 Client IDs. Currently the only one is named `Present-OAuth-Client`. Copy the Client ID and Client Secret and paste into the appropriate fields in `config/application.yml`.
+To obtain Zoom credentials, you will need to follow [these instructions](https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/#create-a-server-to-server-oauth-app) to create a Server to Server Oauth App with Zoom. You will need to select scopes for getting meeting details and reports.
 
-Next you will need to obtain Zoom Credentials. Follow [these instructions](https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/#create-a-server-to-server-oauth-app) to create a Server to Server Oauth App with Zoom. You do not need to enable WebHooks. Select the appropriate scopes to get meeting details and meeting reports. Then, copy the API Key and the API Secret into the appropriate fields in `config/application.yml`.
-
-If you do not wish to use Figaro you will need to use another method to set the `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET`, `ZOOM_API_SECRET`, and `ZOOM_API_KEY` environment variables.
+If you do not wish to use Figaro you will need to use another method to set the above referenced environment variables.
 
 **PLEASE KEEP IN MIND THAT THESE ARE LIVE CREDENTIALS**
 
