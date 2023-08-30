@@ -1,7 +1,5 @@
 class ZoomMeeting < Meeting
   has_many :zoom_aliases
-  has_one :attendance, as: :meeting
-  has_one :turing_module, through: :attendance
 
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
@@ -15,6 +13,25 @@ class ZoomMeeting < Meeting
       title: meeting_details[:topic],
       duration: (meeting_details[:duration])
     )
+  end
+
+  def take_participant_attendance
+    create_zoom_aliases if zoom_aliases.empty? # If we are retaking attendance no need to recreate zoom aliases
+    turing_module.students.each do |student|
+      # REFACTOR: use upsert_all instead
+      take_attendance_for_student(student)
+    end
+  end
+
+  def take_attendance_for_student(student)
+    matching_participants = participants.find_all do |participant|
+      student.zoom_aliases.pluck(:name).include?(participant.name)
+    end
+    total_duration = calculate_duration(matching_participants)
+    best_status = best_status(matching_participants)
+    student_attendance = attendance.student_attendances.find_or_create_by(student: student)
+    student_attendance.update(duration: total_duration, status: best_status)
+    require 'pry';binding.pry if student.name == "Lacey Weaver"
   end
 
   def participants
@@ -32,12 +49,6 @@ class ZoomMeeting < Meeting
     return zoom_alias.student if zoom_alias
   end
 
-  def find_or_create_zoom_alias(name)
-    zoom_alias = turing_module.zoom_aliases.find_by(name: name)
-    return zoom_alias if zoom_alias
-    self.zoom_aliases.create!(name: name)
-    return nil
-  end  
 
   def connect_alias(student_attendance, name)
     zoom_alias = turing_module.zoom_aliases.find_by(name: name)
@@ -83,5 +94,18 @@ private
 
   def calculate_duration(participant_records) 
     ((participant_records.sum(&:duration).to_f) / 60 ).round
-  end 
+  end
+
+  def create_zoom_aliases
+    participant_report.each do |participant|
+      find_or_create_zoom_alias(participant[:name])
+    end
+  end
+
+  def find_or_create_zoom_alias(name)
+    zoom_alias = turing_module.zoom_aliases.find_by(name: name)
+    return zoom_alias if zoom_alias
+    self.zoom_aliases.create!(name: name)
+    return nil
+  end  
 end

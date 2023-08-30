@@ -6,7 +6,7 @@
       <th>Join Time</th>
       <th>Status</th>
       <th>Duration (minutes)</th>
-      <th>Zoom Alias Used</th>
+      <th>Zoom Aliases Used</th>
       <th>Save a new Zoom Alias</th>
     </tr>
   </thead>
@@ -26,9 +26,9 @@
           <% if student_attendance.absent? %>
             <td class="alias-used">N/A</td>
           <% else %>
-            <td class="alias-used"><%= student_attendance.zoom_alias.name %>
+            <td class="alias-used"><%= student_attendance.student.zoom_aliases.map(&:name) %>
             <%= form_with model: [@attendance, student_attendance.student], class: "alias-correction" do |f| %>
-              <%= f.hidden_field :zoom_alias, value: student_attendance.zoom_alias.id %>
+              <%= f.hidden_field :zoom_alias, value: nil %>
               <%= f.submit "Undo", class: "s-button danger alias-correction" %>
             <% end %>
             </td>

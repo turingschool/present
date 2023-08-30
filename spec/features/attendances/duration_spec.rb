@@ -14,7 +14,7 @@ RSpec.describe "Duration" do
 
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@test_module.populi_course_id}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_for_duration.xml'))
 
     visit turing_module_path(@test_module)
 
@@ -46,7 +46,7 @@ RSpec.describe "Duration" do
       select("Lacey Weaver")
       click_button "Save Zoom Alias"
     end
-
+    save_and_open_page
     within "#student-#{lacey.id}" do
       expect(page).to have_content("35")
     end
