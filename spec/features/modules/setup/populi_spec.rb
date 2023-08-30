@@ -5,23 +5,23 @@ RSpec.describe "Module Setup Populi Workflow" do
     @user = mock_login
     @mod = create(:turing_module, module_number: 2, program: :BE)
 
-    stub_request(:post, ENV['POPULI_API_URL']).
+    stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
       with(body: {"task"=>"getCurrentAcademicTerm"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.xml'), headers: {})
     
-    stub_request(:post, ENV['POPULI_API_URL']).
+    stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
       with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
     
-    stub_request(:post, ENV['POPULI_API_URL']).
+    stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
       with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
     
-    stub_request(:post, ENV['POPULI_API_URL']).
+    stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
       with(body: {"task"=>"getAcademicTerms"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/academic_terms.xml'), headers: {})
     
-    stub_request(:post, ENV['POPULI_API_URL']).
+    stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
       with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295898"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
   end

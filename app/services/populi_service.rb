@@ -5,8 +5,8 @@ class PopuliService
 
   def initialize
       PopuliAPI.connect(
-          url: ENV["POPULI_API_URL"],  
-          access_key: ENV["POPULI_API_ACCESS_KEY"]
+          url: ENV["POPULI_API_URL"] || "https://fake-populi-domain.com",  
+          access_key: ENV["POPULI_API_ACCESS_KEY"] || "abc123"
       )
   end
 
