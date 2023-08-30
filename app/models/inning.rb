@@ -1,6 +1,5 @@
 class Inning < ApplicationRecord
-  validates_presence_of :name
-  validates_presence_of :start_date
+  validates_presence_of :name, :start_date
 
   has_many :turing_modules, dependent: :destroy
   has_many :students, through: :turing_modules
