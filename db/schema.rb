@@ -58,6 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_21_225424) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.bigint "zoom_alias_id"
+    t.integer "duration"
     t.index ["attendance_id"], name: "index_student_attendances_on_attendance_id"
     t.index ["student_id"], name: "index_student_attendances_on_student_id"
     t.index ["zoom_alias_id"], name: "index_student_attendances_on_zoom_alias_id"
@@ -112,6 +113,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_21_225424) do
     t.string "meeting_id"
     t.string "title"
     t.datetime "start_time", precision: nil
+    t.integer "duration"
   end
 
   add_foreign_key "attendances", "turing_modules"
