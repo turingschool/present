@@ -84,10 +84,13 @@ Keep in mind that the app will make real HTTP calls to the Zoom API and Google O
 
 ![Schema](./doc/schema.jpg)
 
+## Contributing
+
+If you would like to contribute, please contact @BrianZanti on Github or Turing Slack.
 
 ## Developer Resources:
 
-* [project board](https://www.notion.so/e2903cbd009d45329a9324d83cfb44ec?v=72ee4cad35ab44cab4b41c712e7b8dd0))
+* [project board](https://www.notion.so/e2903cbd009d45329a9324d83cfb44ec?v=72ee4cad35ab44cab4b41c712e7b8dd0)
 * [Staging](https://present-staging.turing.edu/)
 * [CircleCI](https://app.circleci.com/pipelines/github/turingschool/present?filter=all)
 * [Wireframes](https://miro.com/app/board/o9J_luclx_c=/)
