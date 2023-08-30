@@ -14,7 +14,8 @@ The rest of the setup assumes you have the following installed in your local env
 * Rails 7.0.4.3
 * Postgresql
 * Bundler 2.3.7
-* Google Chrome v116.0.5845.110
+* Google Chrome 116.0
+* Redis 7.0.11
 
 Other versions may work. If you wish to test other versions you will have to modify the `Gemfile`, remove `Gemfile.lock` and run `bundle install`.
 
@@ -33,7 +34,9 @@ You should have all passing tests. If you do not, make sure you have met the pre
 
 ### Environment Variables
 
-To run locally you will need to set up some environment variables. This project includes [Figaro](https://github.com/laserlemon/figaro) in its Bundler environment and can be used to set up environment variables:
+To run locally you will need to set up some environment variables. This project includes [Figaro](https://github.com/laserlemon/figaro) in its Bundler environment and can be used to set up environment variables.
+
+To setup up Figaro, run
 
 ```
 bundle exec figaro install
@@ -53,7 +56,7 @@ POPULI_API_ACCESS_KEY: <YOUR_POPULI_API_KEY_HERE>
 POPULI_API_URL: https://turing-validation.populi.co/api/
 ```
 
-To obtain the Google Cloud credentials, you will need to create an application in the Google Cloud Console and create OAuth2.0 Credentials. 
+To obtain the Google Cloud credentials, you will need to create an application in the Google Cloud Console and create OAuth Credentials for a Web Application. Register `http://localhost:3000/auth/google_oauth2/callback` as an Authorized Redirect URI.
 
 To obtain Zoom credentials, you will need to follow [these instructions](https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/#create-a-server-to-server-oauth-app) to create a Server to Server Oauth App with Zoom. You will need to select scopes for getting meeting details and reports.
 
@@ -61,7 +64,7 @@ If you do not wish to use Figaro you will need to use another method to set the 
 
 **PLEASE KEEP IN MIND THAT THESE ARE LIVE CREDENTIALS**
 
-Avoid making execessive API calls to Zoom or Google or you could hit rate limits. If you write any new tests that trigger API calls, make sure that WebMock is intercepting these calls. WebMock should be enabled by default. **DO NOT DISABLE WEBMOCK IN YOUR TESTS**.
+Avoid making execessive API calls to Zoom, Google, or Populi or you could hit rate limits. If you write any new tests that trigger API calls, make sure that WebMock is intercepting these calls. WebMock should be enabled by default. **DO NOT DISABLE WEBMOCK IN YOUR TESTS**.
 
 ### Running Local
 
@@ -72,12 +75,9 @@ rails db:seed
 rails s
 ```
 
-##### Running Sidekiq locally
-
-You need redis running for sidekiq.
+Features that use Sidekiq for background workers will also require that Redis is running on the default port (6379), and that a separate Sidekiq process is running. You can run Sidekiq by creating a new terminal tab or window and running:
 
 ```
-brew install redis
 bundle exec sidekiq
 ```
 
