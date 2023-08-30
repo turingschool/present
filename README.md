@@ -2,6 +2,8 @@
 
 Manage Turing student attendances.
 
+[Deployed Here](https://present.turing.edu/)
+
 ## Setup
 
 ### Prerequisites
@@ -85,9 +87,8 @@ Keep in mind that the app will make real HTTP calls to the Zoom API and Google O
 
 ## Developer Resources:
 
-* [project board](https://github.com/turingschool/present/projects/1)
-* [Heroku Production](http://turing-present.herokuapp.com)
-* [Heroku Staging](https://turing-present-staging.herokuapp.com/)
+* [project board]([https://github.com/turingschool/present/projects/1](https://www.notion.so/e2903cbd009d45329a9324d83cfb44ec?v=72ee4cad35ab44cab4b41c712e7b8dd0))
+* [Staging]([https://turing-present-staging.herokuapp.com/](https://present-staging.turing.edu/))
 * [CircleCI](https://app.circleci.com/pipelines/github/turingschool/present?filter=all)
 * [Wireframes](https://miro.com/app/board/o9J_luclx_c=/)
 * [Saville Style System](https://savile.turing.edu/)
