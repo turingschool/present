@@ -4,7 +4,7 @@ Manage Turing student attendances.
 
 [Deployed Here](https://present.turing.edu/)
 
-## Setup
+## Local Setup
 
 ### Prerequisites
 
