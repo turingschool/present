@@ -8,6 +8,8 @@ RSpec.describe Inning, type: :model do
 
   describe 'validations' do
     it {should validate_presence_of :name}
+    it {should validate_presence_of :start_date}
+    
     it 'has current set to false by default upon creation' do 
       inning = Inning.create(name: '2108')
       expect(inning.current).to eq(false)
@@ -101,12 +103,21 @@ RSpec.describe Inning, type: :model do
 
   describe 'class methods' do 
     it '.order_by_name' do 
-      inning_1 = Inning.create(name: '2201')
-      inning_2 = Inning.create(name: '2108')
-      inning_3 = Inning.create(name: '2210')
+      inning_1 = Inning.create(name: '2201', start_date: Date.today)
+      inning_2 = Inning.create(name: '2108', start_date: Date.today)
+      inning_3 = Inning.create(name: '2210', start_date: Date.today)
 
       expect(Inning.order_by_name).to eq([inning_3, inning_1, inning_2])
     end 
+
+    it '.current_and_future' do
+      inning1 = create(:inning, :is_current)
+      inning4 = create(:inning, current: false, name: '2205', start_date: Date.today+3.weeks)
+      inning2 = create(:inning, :not_current_future, name: '2201')
+      inning3 = create(:inning, :not_current_past, name: '2104')
+
+      expect(Inning.current_and_future).to eq([inning1, inning2, inning4])
+    end
   end 
 
 end

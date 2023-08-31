@@ -1,1 +1,14 @@
 <h1>Admin Dashboard</h1>
+
+<h2>Innings</h2>
+<section class="innings-list">
+<% @innings.each do |inning| %>
+  <ul>
+    <% if inning.current %>
+      <%= "#{inning.name} - Start Date: #{inning.start_date.strftime('%d%b%Y')} (Current Inning)" %>
+    <% else %>
+      <%= "#{inning.name} - Start Date: #{inning.start_date.strftime('%d%b%Y')}" %>
+    <% end %>
+  </ul>
+<% end %>
+</section>
