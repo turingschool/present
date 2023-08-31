@@ -16,7 +16,7 @@ RSpec.describe 'Populi Transfer' do
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
-    stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
+    stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_without_ids.xml'))
     
@@ -35,7 +35,7 @@ RSpec.describe 'Populi Transfer' do
     before :each do
       # Assume that the User has followed instructions to create attendance record in Populi. 
       # The corresponding meeting should be returned from the Populi API with a meetingID.
-      stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
+      stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))  
     end
@@ -44,24 +44,24 @@ RSpec.describe 'Populi Transfer' do
       it 'sends the request to update the students attendance in Populi' do
         update_response = File.read('spec/fixtures/populi/update_student_attendance_success.xml')
 
-        @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490140", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
-        @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490130", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
         # Absent
-        @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490100", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
         # Absent due to tardiness
-        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
-        @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490161", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
-        @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490123", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
 
@@ -97,24 +97,24 @@ RSpec.describe 'Populi Transfer' do
       it 'can transfer to a different time slot' do
         update_response = File.read('spec/fixtures/populi/update_student_attendance_success.xml')
 
-        @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490140", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
-        @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490130", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
         # Absent
-        @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490100", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
         # Absent due to tardiness
-        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
-        @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490161", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
-        @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490123", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
 
@@ -139,25 +139,25 @@ RSpec.describe 'Populi Transfer' do
       before :each do
         update_response = File.read('spec/fixtures/populi/update_student_attendance_success.xml')
 
-        @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490140", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
-        @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490130", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
-        @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490100", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
         
         # This attendance update fails for some reason
-        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_error.xml')) 
         
-        @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490161", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response) 
-        @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490123", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: update_response)         
 
@@ -185,7 +185,7 @@ RSpec.describe 'Populi Transfer' do
 
       it 'can handle a no method error' do
         # responding with an empty body so that it creates a no method error when accessing the response
-        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: "")
 
@@ -196,7 +196,7 @@ RSpec.describe 'Populi Transfer' do
       
       it 'can handle a populi error when the student is not found' do
         # responding with an error that says the student was not found
-        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").         
+        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
           with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
           to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_not_found.xml'))
 
@@ -209,7 +209,7 @@ RSpec.describe 'Populi Transfer' do
 
   context "user doesn't follow instructions" do # Populi meeting won't have an id
     before :each do
-      stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
+      stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_without_ids.xml'))  
     end

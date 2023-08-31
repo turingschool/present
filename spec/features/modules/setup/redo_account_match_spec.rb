@@ -8,15 +8,15 @@ RSpec.describe "Redo Module Setup Account Matching" do
       @channel_id = "C02HRH7MF5K" 
       @zoom_meeting_id = 96428502996
 
-      stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
+      stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"task"=>"getCurrentAcademicTerm"}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.xml'), headers: {})
       
-      stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
+      stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
       
-      stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
+      stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
 
