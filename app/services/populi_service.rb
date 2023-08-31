@@ -4,10 +4,11 @@ class PopuliService
   limit_method :update_student_attendance, rate: 50 
 
   def initialize
-      PopuliAPI.connect(
-          url: ENV["POPULI_API_URL"],  
-          access_key: ENV["POPULI_API_ACCESS_KEY"]
-      )
+    check_env_vars
+    PopuliAPI.connect(
+        url: ENV["POPULI_API_URL"],  
+        access_key: ENV["POPULI_API_ACCESS_KEY"]
+    )
   end
 
   def get_person(id)
@@ -40,5 +41,15 @@ class PopuliService
 
   def course_meetings(course_id)
     PopuliAPI.get_course_instance_meetings(instanceID: course_id)
+  end
+
+private
+  def check_env_vars
+    if ENV["POPULI_API_URL"] == FAKE_POPULI_URL
+      Rails.logger.warn("WARNING: POPULI_API_URL environment variable is not set. Using a fake url. This may cause issues with features that utilize the Populi API")
+    end
+    if ENV["POPULI_API_ACCESS_KEY"] == FAKE_POPULI_ACCESS_KEY
+      Rails.logger.warn("WARNING: POPULI_API_ACCESS_KEY environment variable is not set. Using a fake access key. This may cause issues with features that utilize the Populi API")
+    end
   end
 end
