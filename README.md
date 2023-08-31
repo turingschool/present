@@ -2,7 +2,9 @@
 
 Manage Turing student attendances.
 
-## Setup
+[Deployed Here](https://present.turing.edu/)
+
+## Local Setup
 
 ### Prerequisites
 
@@ -12,13 +14,14 @@ The rest of the setup assumes you have the following installed in your local env
 * Rails 7.0.4.3
 * Postgresql
 * Bundler 2.3.7
-
-
+* Google Chrome 116.0
+* Redis 7.0.11
 
 Other versions may work. If you wish to test other versions you will have to modify the `Gemfile`, remove `Gemfile.lock` and run `bundle install`.
 
+### Running the Test Suite
 
-To set up locally, clone this repo and run the following commands.
+First, clone this repo and run the following commands.
 
 ```
 bundle install
@@ -31,32 +34,37 @@ You should have all passing tests. If you do not, make sure you have met the pre
 
 ### Environment Variables
 
-To run locally you will need to set up some environment variables. This project includes [Figaro](https://github.com/laserlemon/figaro) in its Bundler environment and can be used to set up environment variables:
+To run locally you will need to set up some environment variables. This project includes [Figaro](https://github.com/laserlemon/figaro) in its Bundler environment and can be used to set up environment variables.
+
+To setup up Figaro, run
 
 ```
 bundle exec figaro install
 ```
 
-Then, open the file `config/application.yml`. Copy and paste the following template into the file:
+Then, open the file `config/application.yml` and enter your environment variables. If you are an active developer on this project, you can find these credentials pinned in the Present Development Slack channel.
+
+Otherwise, you can copy and paste the following template into the file:
 
 ```
 GOOGLE_OAUTH_CLIENT_ID: <YOUR_GOOGLE_OAUTH_CLIENT_ID_HERE>
 GOOGLE_OAUTH_CLIENT_SECRET: <YOUR_GOOGLE_OAUTH_CLIENT_SECRET_HERE>
 ZOOM_API_SECRET: <YOUR_ZOOM_API_SECRET_HERE>
 ZOOM_API_KEY: <YOUR_ZOOM_API_KEY_HERE>
+slack_api_key: <YOUR_SLACK_API_KEY_HERE>
+POPULI_API_ACCESS_KEY: <YOUR_POPULI_API_KEY_HERE>
+POPULI_API_URL: https://turing-validation.populi.co/api/
 ```
 
-**Note: It may be necessary to contact the maintainers in order to obtain access to the Google Cloud App. Alternatively, you can create your own Google Cloud project with OAuth credentials.**
+To obtain the Google Cloud credentials, you will need to create an application in the Google Cloud Console and create OAuth Credentials for a Web Application. Register `http://localhost:3000/auth/google_oauth2/callback` as an Authorized Redirect URI.
 
-To obtain the Google Cloud credentials, navigate to the Present Dashboard in the [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418). Under "Credentials" select one of the OAuth 2.0 Client IDs. Currently the only one is named `Present-OAuth-Client`. Copy the Client ID and Client Secret and paste into the appropriate fields in `config/application.yml`.
+To obtain Zoom credentials, you will need to follow [these instructions](https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/#create-a-server-to-server-oauth-app) to create a Server to Server Oauth App with Zoom. You will need to select scopes for getting meeting details and reports.
 
-Next you will need to obtain Zoom Credentials. Follow [these instructions](https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/#create-a-server-to-server-oauth-app) to create a Server to Server Oauth App with Zoom. You do not need to enable WebHooks. Select the appropriate scopes to get meeting details and meeting reports. Then, copy the API Key and the API Secret into the appropriate fields in `config/application.yml`.
-
-If you do not wish to use Figaro you will need to use another method to set the `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET`, `ZOOM_API_SECRET`, and `ZOOM_API_KEY` environment variables.
+If you do not wish to use Figaro you will need to use another method to set the above referenced environment variables.
 
 **PLEASE KEEP IN MIND THAT THESE ARE LIVE CREDENTIALS**
 
-Avoid making execessive API calls to Zoom or Google or you could hit rate limits. If you write any new tests that trigger API calls, make sure that WebMock is intercepting these calls. WebMock should be enabled by default. **DO NOT DISABLE WEBMOCK IN YOUR TESTS**.
+Avoid making execessive API calls to Zoom, Google, or Populi or you could hit rate limits. If you write any new tests that trigger API calls, make sure that WebMock is intercepting these calls. WebMock should be enabled by default. **DO NOT DISABLE WEBMOCK IN YOUR TESTS**.
 
 ### Running Local
 
@@ -67,12 +75,9 @@ rails db:seed
 rails s
 ```
 
-##### Running Sidekiq locally
-
-You need redis running for sidekiq.
+Features that use Sidekiq for background workers will also require that Redis is running on the default port (6379), and that a separate Sidekiq process is running. You can run Sidekiq by creating a new terminal tab or window and running:
 
 ```
-brew install redis
 bundle exec sidekiq
 ```
 
@@ -82,12 +87,14 @@ Keep in mind that the app will make real HTTP calls to the Zoom API and Google O
 
 ![Schema](./doc/schema.jpg)
 
+## Contributing
+
+If you would like to contribute, please contact @BrianZanti on Github or Turing Slack.
 
 ## Developer Resources:
 
-* [project board](https://github.com/turingschool/present/projects/1)
-* [Heroku Production](http://turing-present.herokuapp.com)
-* [Heroku Staging](https://turing-present-staging.herokuapp.com/)
+* [project board](https://www.notion.so/e2903cbd009d45329a9324d83cfb44ec?v=72ee4cad35ab44cab4b41c712e7b8dd0)
+* [Staging](https://present-staging.turing.edu/)
 * [CircleCI](https://app.circleci.com/pipelines/github/turingschool/present?filter=all)
 * [Wireframes](https://miro.com/app/board/o9J_luclx_c=/)
 * [Saville Style System](https://savile.turing.edu/)

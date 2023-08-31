@@ -96,6 +96,6 @@ group :test do
   gem 'faker'
   gem 'capybara_table'
   gem 'orderly'
-  gem 'webdrivers', '~> 5.0', require: false
+  gem 'selenium-webdriver'
 end
 
