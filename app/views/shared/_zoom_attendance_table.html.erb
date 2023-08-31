@@ -5,6 +5,7 @@
       <th>Student</th>
       <th>Join Time</th>
       <th>Status</th>
+      <th>Duration (minutes)</th>
       <th>Zoom Alias Used</th>
       <th>Save a new Zoom Alias</th>
     </tr>
@@ -20,6 +21,7 @@
             <td>N/A</td>
           <% end %>
           <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
+          <td><%= student_attendance.duration %></td>
 
           <% if student_attendance.absent? %>
             <td class="alias-used">N/A</td>
