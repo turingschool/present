@@ -46,6 +46,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get '/', to: 'dashboard#show'
+    resources :innings, only: [:update]
     resources :slack_presence_checks, only: [:index]
   end
 end
