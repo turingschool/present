@@ -5,7 +5,7 @@
 <% @innings.each do |inning| %>
   <ul>
   <section id="inning-<%= inning.id %>">
-    <%= link_to "Edit", admin_inning_path(inning) %>
+    <%= link_to "Edit", admin_inning_path(inning), method: :patch %>
     <% if inning.current %>
       <%= "#{inning.name} - Start Date: #{inning.start_date.strftime('%d%b%Y')} (Current Inning)" %>
     <% else %>

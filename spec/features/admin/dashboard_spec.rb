@@ -50,5 +50,14 @@ RSpec.describe 'Admin Dashboard' do
         end
       end
     end
+
+    it 'routes to inning edit page when you click link' do
+      within('.innings-list') do
+        within("#inning-#{@inning1.id}") do
+          click_link "Edit"
+          expect(current_path).to eq(admin_inning_path(@inning1))         
+        end
+      end
+    end
   end
 end
