@@ -42,11 +42,9 @@ RSpec.describe 'Admin Dashboard' do
 
     it 'displays link to edit inning next to each inning' do
       within('.innings-list') do
-        4.times do
-          expect(page).to have_link("Edit")
-        end
-        Innings.each do |inning|
-          within(".#{inning.id}") do
+        Inning.current_and_future.all.each do |inning|
+          within("#inning-#{inning.id}") do
+            expect(page).to have_link("Edit")
             expect("Edit").to appear_before(inning.name)
           end
         end
