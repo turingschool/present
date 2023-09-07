@@ -55,7 +55,7 @@ RSpec.describe 'Admin Dashboard' do
       within('.innings-list') do
         within("#inning-#{@inning1.id}") do
           click_link "Edit"
-          expect(current_path).to eq(admin_inning_path(@inning1))         
+          expect(current_path).to eq(edit_admin_inning_path(@inning1))         
         end
       end
     end
