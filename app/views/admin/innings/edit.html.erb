@@ -1,6 +1,6 @@
-<h1>Edit Inning Form</h1>
+<h1>Edit Inning</h1>
 
-<%= form_with model: @inning, local: true do |f| %>
+<%= form_with model: @inning, local: true, url: admin_inning_path do |f| %>
   <p class='s-p'>
     <%= f.label :name, 'Name: ' %>
     <%= f.text_field :name %>
@@ -9,5 +9,5 @@
     <%= f.label :date, 'Start Date: ' %>
     <%= f.date_field :start_date %>
   </p>
-    <%= f.submit 'Update Inning', class: 's-button', data: {confirm: 'Are you sure you want to update this inning?'} %>
+    <%= f.submit 'Update Inning', class: 's-button' %>
 <% end %>
