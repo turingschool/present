@@ -3,6 +3,9 @@ class Admin::InningsController < Admin::BaseController
   
   def edit
   end
+
+  def new
+  end
   
   def update
     @inning.update(inning_params)
