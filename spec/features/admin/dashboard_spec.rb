@@ -59,5 +59,11 @@ RSpec.describe 'Admin Dashboard' do
         end
       end
     end
+
+    it 'has a link to create a new inning' do
+      expect(page).to have_link("Create New Inning")
+      click_link "Create New Inning"
+      expect(current_path).to eq(new_admin_inning_path)
+    end
   end
 end

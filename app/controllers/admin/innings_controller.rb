@@ -3,6 +3,20 @@ class Admin::InningsController < Admin::BaseController
   
   def edit
   end
+
+  def new
+    @inning = Inning.new
+  end
+
+  def create
+    @inning = Inning.new(inning_params)
+    if @inning.save
+      redirect_to admin_path
+    else
+      flash[:error] = @inning.errors.full_messages.to_sentence
+      render :new
+    end
+  end
   
   def update
     @inning.update(inning_params)

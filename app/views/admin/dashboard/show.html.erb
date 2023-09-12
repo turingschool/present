@@ -1,6 +1,7 @@
 <h1>Admin Dashboard</h1>
 
 <h2>Innings</h2>
+<%= link_to "Create New Inning", new_admin_inning_path %>
 <section class="innings-list">
 <% @innings.each do |inning| %>
   <ul>
