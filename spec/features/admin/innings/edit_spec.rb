@@ -41,5 +41,15 @@ RSpec.describe 'Inning Edit' do
       expect(page).to have_content("Name can't be blank")
       expect(current_path).to eq(admin_inning_path(@inning1))
     end
+
+    it 'does not update if start date is blank' do
+      fill_in 'inning[start_date]', with: ''
+
+      click_button 'Update Inning'
+
+      expect(page).to have_content('Edit Inning')
+      expect(page).to have_content("Start date can't be blank")
+      expect(current_path).to eq(admin_inning_path(@inning1))
+    end
   end
 end
