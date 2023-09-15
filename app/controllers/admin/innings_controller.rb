@@ -11,6 +11,7 @@ class Admin::InningsController < Admin::BaseController
   def create
     @inning = Inning.new(inning_params)
     if @inning.save
+      InningRolloverJob.perform_at(@inning.start_date.to_time, @inning.id)
       redirect_to admin_path
     else
       flash[:error] = @inning.errors.full_messages.to_sentence
