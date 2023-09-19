@@ -13,4 +13,24 @@ RSpec.describe "Nav Bar" do
     
     expect(page).to have_link("Present!", href: "/")
   end
+
+  context 'user is logged in as default user_type' do
+    it 'default user is not able to see admin button' do
+      create(:inning)
+      user = mock_login
+
+      visit root_path
+      expect(page).to_not have_button("Admin")
+    end
+  end
+
+  context 'user is logged in as admin' do
+    it 'admin user is able to see admin button' do
+      create(:inning)
+      user = mock_admin_login
+
+      visit root_path
+      expect(page).to have_button("Admin")
+    end
+  end
 end

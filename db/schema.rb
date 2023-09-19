@@ -32,6 +32,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_28_221323) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "current", default: false
+    t.date "start_date"
   end
 
   create_table "slack_presence_checks", force: :cascade do |t|

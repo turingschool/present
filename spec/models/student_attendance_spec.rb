@@ -145,9 +145,9 @@ RSpec.describe StudentAttendance, type: :model do
       end
     end
 
-    xdescribe "time caluclations" do
+    describe "time calculations" do
       # these should be moved to slack thread participant and zoom participant tests
-      it 'assigns absent for a student that never joins the meeting' do
+      xit 'assigns absent for a student that never joins the meeting' do
         student_attendance = create(:student_attendance)
 
         join_time = nil
@@ -156,7 +156,7 @@ RSpec.describe StudentAttendance, type: :model do
         expect(student_attendance.status).to eq('absent')
       end
 
-      it 'assigns present if the student is exactly 1 minute late' do
+      xit 'assigns present if the student is exactly 1 minute late' do
         student_attendance = create(:student_attendance, join_time: nil)
         join_time = Time.parse("2021-12-17T16:01:00Z")
         start_time = Time.parse("2021-12-17T16:00:00Z")
@@ -164,7 +164,7 @@ RSpec.describe StudentAttendance, type: :model do
         expect(student_attendance.status).to eq('present')
       end
 
-      it 'assigns tardy if the student is 1 second past 1 minute late' do
+      xit 'assigns tardy if the student is 1 second past 1 minute late' do
         student_attendance = create(:student_attendance, join_time: nil)
         join_time = Time.parse("2021-12-17T16:01:01Z")
         start_time = Time.parse("2021-12-17T16:00:00Z")
@@ -172,7 +172,7 @@ RSpec.describe StudentAttendance, type: :model do
         expect(student_attendance.status).to eq('tardy')
       end
 
-      it 'assigns tardy if the student is exactly 30 minutes late' do
+      xit 'assigns tardy if the student is exactly 30 minutes late' do
         student_attendance = create(:student_attendance, join_time: nil)
         join_time = Time.parse("2021-12-17T16:30:00Z")
         start_time = Time.parse("2021-12-17T16:00:00Z")
@@ -180,7 +180,7 @@ RSpec.describe StudentAttendance, type: :model do
         expect(student_attendance.status).to eq('tardy')
       end
 
-      it 'assigns absent if the student is more than 30 minutes late' do
+      xit 'assigns absent if the student is more than 30 minutes late' do
         student_attendance = create(:student_attendance, join_time: nil)
         join_time = Time.parse("2021-12-17T16:30:01Z")
         start_time = Time.parse("2021-12-17T16:00:00Z")

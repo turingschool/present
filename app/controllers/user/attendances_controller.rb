@@ -1,4 +1,5 @@
 class User::AttendancesController < User::BaseController
+  
   def create
     turing_module = TuringModule.find(params[:turing_module_id])
     begin
@@ -6,6 +7,9 @@ class User::AttendancesController < User::BaseController
       redirect_to attendance_path(attendance)
     rescue InvalidMeetingError => error
       flash[:error] = error.message
+      redirect_to request.referrer
+    rescue URI::InvalidURIError => error
+      flash[:error] = ZoomMeeting.invalid_error
       redirect_to request.referrer
     end
   end

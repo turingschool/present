@@ -1,0 +1,13 @@
+<h1>Edit Inning</h1>
+
+<%= form_with model: @inning, local: true, url: admin_inning_path do |f| %>
+  <p class='s-p'>
+    <%= f.label :name, 'Name: ' %>
+    <%= f.text_field :name %>
+  </p>
+  <p class='s-p'>
+    <%= f.label :date, 'Start Date: ' %>
+    <%= f.date_field :start_date %>
+  </p>
+    <%= f.submit 'Update Inning', class: 's-button' %>
+<% end %>

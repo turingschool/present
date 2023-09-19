@@ -2,7 +2,7 @@ version: 2.1 # use CircleCI 2.1
 orbs:
    node: circleci/node@5.1.0
    heroku: circleci/heroku@1.0.1 # Use the Heroku orb in your config
-   browser-tools: circleci/browser-tools@1.4.1 # for selenium chromedriver
+   browser-tools: circleci/browser-tools@1.4.4 # for selenium chromedriver
 jobs: # a collection of steps
   build-and-test: # runs not using Workflows must have a `build` job as entry point
     docker: # run the steps with Docker
@@ -26,6 +26,10 @@ jobs: # a collection of steps
       - node/install:
           install-yarn: true
           node-version: '16.19'
+      - browser-tools/install-chrome:
+          chrome-version: 114.0.5735.90
+          replace-existing: true
+      - browser-tools/install-chromedriver
       - run:
           name: Force Bundler Version
           command: |
@@ -41,8 +45,6 @@ jobs: # a collection of steps
       - run:
           name: Database setup
           command: bin/rails db:{create,migrate} --trace
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - run:
           command: |
             google-chrome --version
