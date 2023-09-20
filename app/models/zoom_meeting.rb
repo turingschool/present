@@ -3,14 +3,19 @@ class ZoomMeeting < Meeting
 
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
-    meeting_details = ZoomService.meeting_details(meeting_id)    
-    
+    meeting_details = ZoomService.meeting_details(meeting_id)
+
     raise invalid_error if meeting_details[:code] == 3001
     raise no_meeting_error if meeting_details[:code] == 2300
     raise personal_meeting_error if meeting_details[:start_time].nil?
+    
+    start_time = meeting_details[:start_time].to_datetime
+    end_time = start_time + meeting_details[:duration].minutes
+
     create(
       meeting_id: meeting_id, 
-      start_time: meeting_details[:start_time].to_datetime, 
+      start_time: start_time, 
+      end_time: end_time, 
       title: meeting_details[:topic],
       duration: (meeting_details[:duration])
     )
@@ -26,9 +31,7 @@ class ZoomMeeting < Meeting
         grouped_participants[zoom_name]
       end.compact
       total_duration = calculate_duration(matching_participants)
-      best_status = best_status(matching_participants)
-      student_attendance = attendance.student_attendances.find_or_create_by(student: student)
-      student_attendance.update(duration: total_duration, status: best_status)
+      record_student_attendance(student, matching_participants, total_duration)
     end
   end
 
@@ -57,7 +60,6 @@ class ZoomMeeting < Meeting
     zoom_alias = find_or_create_zoom_alias(participant.name)
     return zoom_alias.student if zoom_alias
   end
-
 
   def connect_alias(student_attendance, name)
     zoom_alias = turing_module.zoom_aliases.find_by(name: name)
@@ -88,7 +90,7 @@ private
 
   def create_participant_objects
     participant_report.map do |participant| 
-      ZoomParticipant.new(participant)
+      ZoomParticipant.new(participant, self.start_time, self.end_time)
     end
   end
 
@@ -102,6 +104,7 @@ private
   end
 
   def calculate_duration(participant_records) 
+    
     ((participant_records.sum(&:duration).to_f) / 60 ).round
   end
 

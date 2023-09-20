@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_20_152507) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_20_205547) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -115,6 +115,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_152507) do
     t.string "title"
     t.datetime "start_time", precision: nil
     t.integer "duration"
+    t.datetime "end_time"
   end
 
   add_foreign_key "attendances", "turing_modules"

@@ -122,13 +122,35 @@ RSpec.describe 'attendance show page' do
 
   it 'allows user to undo a zoom alias' do
     leo = @test_module.students.find_by(name: "Leo Banos Garcia")
+    zoom_alias = ZoomAlias.find_by(name: "Leo BG# BE")
+
     within "#student-#{leo.id}" do
+      save_and_open_page
       expect(page).to have_content("present")
-      within '.alias-used' do
-        click_button "Undo"
+      click_link leo.name
+    end
+    
+    within '#aliases-used' do
+      within "#zoom-alias-#{zoom_alias.id}" do
+        expect(page).to have_content(zoom_alias.name)
+        click_button "Remove"
       end
+    end
+
+    expect(current_path).to eq(student_path(leo))
+    expect(page).to_not have_content(zoom_alias.name)
+
+    visit turing_module_path(@test_module)
+
+    fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
+
+    click_button 'Take Attendance'
+
+    visit attendance_path(Attendance.last)
+
+    within "#student-#{leo.id}" do
       expect(page).to have_content("absent")
-    end 
+    end
   end
 
   it 'does not create new aliases if that same alias has been used previously in a module\'s meetings'

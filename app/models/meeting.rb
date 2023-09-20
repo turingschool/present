@@ -28,4 +28,10 @@ class Meeting < ApplicationRecord
     end
     return best
   end
+
+  def record_student_attendance(student, matching_participants, duration)
+    best_status = best_status(matching_participants)
+    student_attendance = attendance.student_attendances.find_or_create_by(student: student)
+    student_attendance.update(duration: duration, status: best_status)
+  end
 end

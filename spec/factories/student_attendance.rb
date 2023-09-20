@@ -3,10 +3,6 @@ FactoryBot.define do
     student
     attendance
 
-    factory :student_attendance_zoom do
-      zoom_alias
-    end
-
     factory :student_attendance_with_status do
       student {create(:setup_student)}
 

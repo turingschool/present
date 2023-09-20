@@ -76,6 +76,4 @@ RSpec.describe 'Creating an Attendance' do
       expect(page).to have_css('.student-attendance', count: @test_module.students.count)
     end
   end
-
-  it 'sad path'
 end 

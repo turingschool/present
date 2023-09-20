@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   scope module: :user do
     resources :users, only: [:update]
     resources :innings, only: [:show]
+    resources :zoom_aliases, only: [:update]
     resources :turing_modules, path: '/modules', only: [:show, :create], shallow: true do
       resources :attendances, only: [:create, :show, :edit, :update] do
         resources :populi_transfer, only: [:new, :create, :index]

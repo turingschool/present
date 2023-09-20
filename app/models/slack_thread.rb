@@ -25,4 +25,12 @@ class SlackThread < Meeting
   def title
     "Slack Thread"
   end
+
+  def take_participant_attendance
+    grouped_participants = participants.group_by(&:slack_id)
+    turing_module.students.each do |student|
+      matching_participants = grouped_participants[student.slack_id] || []
+      record_student_attendance(student, matching_participants, 0)
+    end
+  end
 end

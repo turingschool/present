@@ -48,7 +48,7 @@ RSpec.describe "Duration" do
     end
 
     within "#student-#{lacey.id} .duration" do
-      expect(page).to have_content("35")
+      expect(page).to have_content("33")
     end
 
     within "#student-aliases-#{lacey.id}" do
@@ -57,7 +57,7 @@ RSpec.describe "Duration" do
     end
 
     within "#student-#{lacey.id} .duration" do
-      expect(page).to have_content("59")
+      expect(page).to have_content("57")
     end
     
     within "#student-aliases-#{lacey.id}" do
@@ -66,7 +66,7 @@ RSpec.describe "Duration" do
     end
 
     within "#student-#{lacey.id} .duration" do
-      expect(page).to have_content("63")
+      expect(page).to have_content("61")
     end
   end
   
@@ -103,7 +103,7 @@ RSpec.describe "Duration" do
     end
 
     within "#student-#{lacey.id} .duration" do
-      expect(page).to have_content("63")
+      expect(page).to have_content("61")
     end
   end
 
@@ -153,5 +153,19 @@ RSpec.describe "Duration" do
     end
   end
   
-  it 'does not include minutes after the meeting in duration'
+  it 'does not include minutes after the meeting in duration' do
+    lacey = @test_module.students.find_by(name: 'Lacey Weaver')
+
+    visit attendance_path(@attendance)
+
+    within "#student-aliases-#{lacey.id}" do
+      # Using a different participant for this test. It doesn't matter that this isn't actually Lacey
+      select("Daniel C (he/him)# FE") 
+      click_button "Save Zoom Alias"
+    end
+
+    within "#student-#{lacey.id} .duration" do
+      expect(page).to have_content("90")
+    end
+  end
 end
