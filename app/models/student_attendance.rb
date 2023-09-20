@@ -1,7 +1,6 @@
 class StudentAttendance < ApplicationRecord
   belongs_to :student
   belongs_to :attendance
-  belongs_to :zoom_alias, optional: true
 
   enum status: [:present, :tardy, :absent]
 
