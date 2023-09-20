@@ -17,12 +17,12 @@ FactoryBot.define do
         student5 = create(:setup_student, turing_module: mod, name: 'J Seymour', populi_id: 24490161, slack_id: "U02199TD8SC")
         student6 = create(:setup_student, turing_module: mod, name: 'Samuel Cox', populi_id: 24490123, slack_id: "U01CBJGFXRC")
         
-        create(:zoom_alias, student: student1, name: 'Leo BG# BE')
-        create(:zoom_alias, student: student2, name: "Anthony B. (He/Him) BE 2210")
-        create(:zoom_alias, student: student3, name: "Lacey W (she/her)")
-        create(:zoom_alias, student: student4, name: "Anhnhi T# BE")
-        create(:zoom_alias, student: student5, name: "J Seymour (he/they) BE")
-        create(:zoom_alias, student: student6, name: "Samuel C (He/Him) BE")
+        create(:zoom_alias, student: student1, name: 'Leo BG# BE', turing_module: mod)
+        create(:zoom_alias, student: student2, name: "Anthony B. (He/Him) BE 2210", turing_module: mod)
+        create(:zoom_alias, student: student3, name: "Lacey W (she/her)", turing_module: mod)
+        create(:zoom_alias, student: student4, name: "Anhnhi T# BE", turing_module: mod)
+        create(:zoom_alias, student: student5, name: "J Seymour (he/they) BE", turing_module: mod)
+        create(:zoom_alias, student: student6, name: "Samuel C (He/Him) BE", turing_module: mod)
       end
     end
     

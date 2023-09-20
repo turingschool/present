@@ -21,7 +21,7 @@
             <td>N/A</td>
           <% end %>
           <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
-          <td><%= student_attendance.duration %></td>
+          <td class='duration'><%= student_attendance.duration %></td>
 
           <% if student_attendance.absent? %>
             <td class="alias-used">N/A</td>

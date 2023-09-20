@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_28_221323) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_20_152507) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,7 +103,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_28_221323) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.bigint "zoom_meeting_id"
+    t.bigint "turing_module_id"
+    t.index ["name", "turing_module_id"], name: "index_zoom_aliases_on_name_and_turing_module_id", unique: true
     t.index ["student_id"], name: "index_zoom_aliases_on_student_id"
+    t.index ["turing_module_id"], name: "index_zoom_aliases_on_turing_module_id"
     t.index ["zoom_meeting_id"], name: "index_zoom_aliases_on_zoom_meeting_id"
   end
 
@@ -121,5 +124,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_28_221323) do
   add_foreign_key "student_attendances", "students"
   add_foreign_key "students", "turing_modules"
   add_foreign_key "turing_modules", "innings"
+  add_foreign_key "zoom_aliases", "turing_modules"
   add_foreign_key "zoom_aliases", "zoom_meetings"
 end

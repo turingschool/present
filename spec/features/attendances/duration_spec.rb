@@ -29,7 +29,7 @@ RSpec.describe "Duration" do
     lacey = @test_module.students.find_by(name: 'Lacey Weaver')
     visit attendance_path(@attendance)
     
-    within "#student-#{lacey.id}" do
+    within "#student-#{lacey.id} .duration" do
       expect(page).to have_content("0")
     end
   end
@@ -38,7 +38,7 @@ RSpec.describe "Duration" do
     lacey = @test_module.students.find_by(name: 'Lacey Weaver')
 
     visit attendance_path(@attendance)
-    within "#student-#{lacey.id}" do
+    within "#student-#{lacey.id} .duration" do
       expect(page).to have_content("0")
     end
 
@@ -46,8 +46,8 @@ RSpec.describe "Duration" do
       select("Lacey Weaver")
       click_button "Save Zoom Alias"
     end
-    save_and_open_page
-    within "#student-#{lacey.id}" do
+
+    within "#student-#{lacey.id} .duration" do
       expect(page).to have_content("35")
     end
 
@@ -56,7 +56,7 @@ RSpec.describe "Duration" do
       click_button "Save Zoom Alias"
     end
 
-    within "#student-#{lacey.id}" do
+    within "#student-#{lacey.id} .duration" do
       expect(page).to have_content("59")
     end
     
@@ -65,35 +65,93 @@ RSpec.describe "Duration" do
       click_button "Save Zoom Alias"
     end
 
-    within "#student-#{lacey.id}" do
+    within "#student-#{lacey.id} .duration" do
       expect(page).to have_content("63")
     end
   end
   
   it "Duration is not dependent on order zoom aliases are assigned" do
-    j = @test_module.students.find_by(name: 'J Seymour')
+    lacey = @test_module.students.find_by(name: 'Lacey Weaver')
+
     visit attendance_path(@attendance)
-    
-    within "#student-#{j.id}" do
+
+    within "#student-#{lacey.id} .duration" do
       expect(page).to have_content("0")
     end
 
-    within "#student-aliases-#{j.id}" do
-      select("J Seymour (he/they) BE")
+    within "#student-aliases-#{lacey.id}" do
+      select("Lacey Weaver (She/Her)")
       click_button "Save Zoom Alias"
     end
 
-    within "#student-#{j.id}" do
-      expect(page).to have_content("21")
+    within "#student-#{lacey.id} .duration" do
+      expect(page).to have_content("23")
     end
 
-    within "#student-aliases-#{j.id}" do
+    within "#student-aliases-#{lacey.id}" do
+      select("Lacey Weaver (She/Her, BE)")
       click_button "Save Zoom Alias"
     end
 
-    within "#student-#{j.id}" do
-      select("J (he/they) BE")
-      expect(page).to have_content("60")
+    within "#student-#{lacey.id} .duration" do
+      expect(page).to have_content("28")
+    end
+
+    within "#student-aliases-#{lacey.id}" do
+      select("Lacey Weaver")
+      click_button "Save Zoom Alias"
+    end
+
+    within "#student-#{lacey.id} .duration" do
+      expect(page).to have_content("63")
     end
   end
+
+  it 'does not lose precision due to rounding' do
+    lacey = @test_module.students.find_by(name: 'Lacey Weaver')
+
+    visit attendance_path(@attendance)
+
+    within "#student-aliases-#{lacey.id}" do
+      # Using a different participant for this test. It doesn't matter that this isn't actually Lacey
+      # This participant was present for 89 seconds, which rounds down to 1 minute
+      select("Calli H.") 
+      click_button "Save Zoom Alias"
+    end
+
+    within "#student-#{lacey.id} .duration" do
+      expect(page).to have_content("1")
+    end
+
+    within "#student-aliases-#{lacey.id}" do
+      # This participant was also present for 89 seconds
+      select("Calli H. 2") 
+      click_button "Save Zoom Alias"
+    end
+
+    within "#student-#{lacey.id} .duration" do
+      # The total duration of 89 + 89 seconds should round up to 3 minutes
+      # We should not round both values and then sum then together which would result in a duration of 2 minutes
+      expect(page).to have_content("3")
+    end
+  end
+
+  it 'does not include minutes before the meeting in duration' do
+    lacey = @test_module.students.find_by(name: 'Lacey Weaver')
+
+    visit attendance_path(@attendance)
+
+    within "#student-aliases-#{lacey.id}" do
+      # Using a different participant for this test. It doesn't matter that this isn't actually Lacey
+      select("Kailey K. 1 (she/her)# BE") 
+      click_button "Save Zoom Alias"
+    end
+
+    within "#student-#{lacey.id} .duration" do
+      # This participant was present for 21 minutes, but only 7 of those were after the meeting start time
+      expect(page).to have_content("7")
+    end
+  end
+  
+  it 'does not include minutes after the meeting in duration'
 end

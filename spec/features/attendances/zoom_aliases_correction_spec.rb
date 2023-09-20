@@ -130,4 +130,6 @@ RSpec.describe 'attendance show page' do
       expect(page).to have_content("absent")
     end 
   end
+
+  it 'does not create new aliases if that same alias has been used previously in a module\'s meetings'
 end

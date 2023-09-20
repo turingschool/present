@@ -18,22 +18,30 @@ class ZoomMeeting < Meeting
 
   def take_participant_attendance
     create_zoom_aliases if zoom_aliases.empty? # If we are retaking attendance no need to recreate zoom aliases
+    grouped_participants = participants.group_by(&:name)
     turing_module.students.each do |student|
       # REFACTOR: use upsert_all instead
-      take_attendance_for_student(student)
+      # take_attendance_for_student(student)
+      matching_participants = student.zoom_aliases.pluck(:name).flat_map do |zoom_name|
+        grouped_participants[zoom_name]
+      end.compact
+      total_duration = calculate_duration(matching_participants)
+      best_status = best_status(matching_participants)
+      student_attendance = attendance.student_attendances.find_or_create_by(student: student)
+      student_attendance.update(duration: total_duration, status: best_status)
     end
   end
 
-  def take_attendance_for_student(student)
-    matching_participants = participants.find_all do |participant|
-      student.zoom_aliases.pluck(:name).include?(participant.name)
-    end
-    total_duration = calculate_duration(matching_participants)
-    best_status = best_status(matching_participants)
-    student_attendance = attendance.student_attendances.find_or_create_by(student: student)
-    student_attendance.update(duration: total_duration, status: best_status)
-    require 'pry';binding.pry if student.name == "Lacey Weaver"
-  end
+  # def take_attendance_for_student(student)
+  #   matching_participants = participants.find_all do |participant|
+  #     student.zoom_aliases.pluck(:name).include?(participant.name)
+  #   end
+  #   total_duration = matching_participants.sum(&:duration)
+  #   best_status = best_status(matching_participants)
+  #   student_attendance = attendance.student_attendances.find_or_create_by(student: student)
+  #   student_attendance.update(duration: total_duration, status: best_status)
+  #   # require 'pry';binding.pry if student.name == "Lacey Weaver"
+  # end
 
   def participants
     @participants ||= synthesize_participant_report
@@ -75,7 +83,7 @@ private
 
   def synthesize_participant_report
     participants = create_participant_objects
-    uniq_participants_best_time(participants)
+    # uniq_participants_best_time(participants)
   end
 
   def create_participant_objects
@@ -98,9 +106,14 @@ private
   end
 
   def create_zoom_aliases
-    participant_report.each do |participant|
-      find_or_create_zoom_alias(participant[:name])
+    aliases = participant_report.map do |participant|
+      {
+        name: participant[:name], 
+        zoom_meeting_id: self.id, 
+        turing_module_id: self.turing_module.id
+      }
     end
+    ZoomAlias.insert_all(aliases, unique_by: [:name, :turing_module_id])
   end
 
   def find_or_create_zoom_alias(name)
