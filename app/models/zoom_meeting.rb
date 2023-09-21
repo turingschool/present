@@ -47,7 +47,11 @@ class ZoomMeeting < Meeting
   # end
 
   def participants
-    @participants ||= synthesize_participant_report
+    @participants ||= create_participant_objects
+  end
+
+  def uniq_participants_by_name
+    participants.uniq(&:name)
   end
 
   def unclaimed_aliases
@@ -81,11 +85,6 @@ private
 
   def participant_report
     @report ||= ZoomService.participant_report(self.meeting_id)[:participants]
-  end
-
-  def synthesize_participant_report
-    participants = create_participant_objects
-    # uniq_participants_best_time(participants)
   end
 
   def create_participant_objects

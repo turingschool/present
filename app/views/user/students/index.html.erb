@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Most Recent Zoom Alias</th>
+      <th>Zoom Aliases Used</th>
       <th>Slack Id</th>
       <th>Populi ID</th>
     </tr>
@@ -13,7 +13,7 @@
     <% @module.students.each do |student| %>
       <tr class='student' id='student-<%= student.id %>'>
         <td><%= link_to student.name, student_path(student) %></td>
-        <td class='zoom-name'><%= student.zoom_name %></td>
+        <td class='zoom-aliases'><%= student.zoom_alias_names.to_sentence %></td>
         <td class='slack-id'><%= student.slack_id %></td>
         <td class='populi-id'><%= student.populi_id %></td>
       </tr>

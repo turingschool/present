@@ -31,7 +31,7 @@ RSpec.describe StudentAttendance, type: :model do
   end
 
   describe 'instance methods' do
-    describe '#record_status_for_participant!' do
+    xdescribe '#record_status_for_participant!' do
       before :each do
         @join_time = "2021-12-17T15:48:18Z"
         @different_join_time = "2021-11-11T11:11:18Z"

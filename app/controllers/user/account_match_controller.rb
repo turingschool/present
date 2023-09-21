@@ -11,7 +11,7 @@ class User::AccountMatchController < User::BaseController
   end 
 
   def create
-    current_module.students.update_all(slack_id: nil)
+    current_module.reset_students
     if process_account_match_form
       flash[:success] = "#{current_module.name} is now set up. Happy attendance taking!"
       redirect_to current_module
@@ -27,11 +27,13 @@ private
   end
 
   def process_account_match_form
+    # REFACTOR use insert_all instead
     success = true
     params[:student].each do |student_id, ids|
       begin
-        Student.update!(student_id, {slack_id: ids[:slack_id]})
-        ZoomAlias.create(name: ids[:zoom_id], student_id: student_id)
+        student = Student.update!(student_id, {slack_id: ids[:slack_id]})
+        next if ids[:zoom_id].blank?
+        student.zoom_aliases.create!(name: ids[:zoom_id], turing_module: current_module)
       rescue ActiveRecord::RecordInvalid => error
         success = false
         Rails.logger.warn "Got this error: #{error.message}\nIDs: #{ids}\nstudent: #{student_id}"
