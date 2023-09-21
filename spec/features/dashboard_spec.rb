@@ -56,7 +56,7 @@ RSpec.describe "Dashboard" do
     it 'User sees all modules' do
       create_list(:turing_module, 3, inning: @my_mod.inning)
       visit '/'
-      expect(page).to have_content('Select your Module from the list to get started')
+      expect(page).to have_content('You currently do not have an assigned module. Please select your Module from the list below to get started')
       expect(page).to have_css(".module", count: 4)
     end
   end
