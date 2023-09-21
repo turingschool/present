@@ -1,8 +1,10 @@
 require 'rails_helper'
 require 'sidekiq/testing'
+Sidekiq::Testing.inline!
 
 RSpec.describe InningRolloverJob, type: :job do
   before :each do
+    Sidekiq::Testing.fake!
     @inning1 = create(:inning, :is_current)
     @inning2 = create(:inning, :not_current_future)
   end
@@ -47,7 +49,7 @@ RSpec.describe InningRolloverJob, type: :job do
       user1 = create(:user, turing_module: @inning1.turing_modules.first)
       user2 = create(:user, turing_module: @inning1.turing_modules.second)
       user3 = create(:user, turing_module: @inning1.turing_modules.third)
-      
+
       expect(user1.turing_module_id).to_not eq(nil)
       expect(user2.turing_module_id).to_not eq(nil)
       expect(user3.turing_module_id).to_not eq(nil)
