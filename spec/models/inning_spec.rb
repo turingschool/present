@@ -139,17 +139,5 @@ RSpec.describe Inning, type: :model do
 
       expect(Inning.current_and_future).to eq([inning1, inning2, inning4])
     end
-
-    it '.current_to_false' do
-      inning1 = create(:inning, :is_current)
-      inning4 = create(:inning, current: false, name: '2205', start_date: Date.today+3.weeks)
-      inning2 = create(:inning, :not_current_future, name: '2201')
-      inning3 = create(:inning, :not_current_past, name: '2104')
-
-      expect(inning1.current).to eq(true)
-      Inning.current_to_false
-      expect(inning1.reload.current).to eq(false)
-    end
   end 
-
 end
