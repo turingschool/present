@@ -26,7 +26,7 @@
           <% if student_attendance.absent? %>
             <td class="alias-used">N/A</td>
           <% else %>
-            <td class="alias-used"><%= student_attendance.student.zoom_aliases.map(&:name) %>
+            <td class="alias-used"><%= student_attendance.student.zoom_alias_names.to_sentence %>
             <%= form_with model: [@attendance, student_attendance.student], class: "alias-correction" do |f| %>
               <%= f.hidden_field :zoom_alias, value: nil %>
               <%= f.submit "Undo", class: "s-button danger alias-correction" %>
