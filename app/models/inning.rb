@@ -17,10 +17,6 @@ class Inning < ApplicationRecord
     where(["current = ? or start_date >= ?", true, Date.today]).order(:start_date)
   end
   
-  def self.current_to_false
-    where(current: true).update(current: false)
-  end
-  
   def check_presence_for_students
     check_time = Time.now
     service = SlackApiService.new
@@ -42,11 +38,6 @@ class Inning < ApplicationRecord
         end
       end 
     end
-  end
-
-  def make_current_inning
-    self.update(current: true)
-    Inning.where.not(id: self.id).update_all(current: false)
   end
 
   def create_turing_modules
