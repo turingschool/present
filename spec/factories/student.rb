@@ -8,7 +8,7 @@ FactoryBot.define do
       sequence(:populi_id) {|n| "<populi_id_#{n}>"}
       
       after :create do |student|
-        create(:zoom_alias, student: student)
+        create(:zoom_alias, student: student, turing_module: student.turing_module)
       end
     end
   end

@@ -2,7 +2,6 @@ class TuringModule < ApplicationRecord
   belongs_to :inning
   has_many :attendances, dependent: :destroy
   has_many :students, dependent: :destroy
-  has_many :zoom_aliases, through: :students
 
   validates_numericality_of :module_number, {
     greater_than_or_equal_to: 1,
@@ -20,12 +19,18 @@ class TuringModule < ApplicationRecord
   end
 
   def account_match_complete 
-    self.students.have_slack_ids && self.students.have_zoom_aliases?
+    self.students.have_slack_ids# && self.students.have_zoom_aliases?
     # checking to make sure some students have slack ids and some have zoom aliases. 
     # if some students have both slack/zoom aliases, that tells us that a user went through the match process
   end 
 
   def attendances_by_time
     attendances.order(attendance_time: :desc)
+  end
+  
+  def reset_students
+    self.students.update_all(slack_id: nil)
+    zoom_alias_ids = self.students.joins(:zoom_aliases).pluck(Arel.sql("zoom_aliases.id"))
+    ZoomAlias.destroy(zoom_alias_ids)
   end
 end

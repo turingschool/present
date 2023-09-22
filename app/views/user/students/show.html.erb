@@ -8,7 +8,20 @@
 <% else %>
   <h2>Module: none</h2>  
 <% end %>
-<h2>Zoom Name: <%= @student.zoom_name %></h2>
+<section >
+<h2>Zoom Aliases Used</h2>
+<ul id="aliases-used">
+  <% @student.zoom_aliases.each do |zoom_alias| %>
+    <li id="zoom-alias-<%= zoom_alias.id %>">
+      <%= zoom_alias.name %>
+      <%= form_with model: zoom_alias do |f| %>
+        <%= f.hidden_field :student_id, value: nil %>
+        <%= f.submit "Remove" , class: "remove-alias" %>
+      <% end %>
+      </li>
+  <% end %>
+</ul>
+</section>
 <% if @student.slack_id %>
     <h2>Slack ID: <%= @student.slack_id %></h2>
 <% else %>

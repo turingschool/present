@@ -6,7 +6,7 @@
       <th>Join Time</th>
       <th>Status</th>
       <th>Duration (minutes)</th>
-      <th>Zoom Alias Used</th>
+      <th>Zoom Aliases Used</th>
       <th>Save a new Zoom Alias</th>
     </tr>
   </thead>
@@ -21,16 +21,13 @@
             <td>N/A</td>
           <% end %>
           <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
-          <td><%= student_attendance.duration %></td>
+          <td class='duration'><%= student_attendance.duration %></td>
 
           <% if student_attendance.absent? %>
             <td class="alias-used">N/A</td>
           <% else %>
-            <td class="alias-used"><%= student_attendance.zoom_alias.name %>
-            <%= form_with model: [@attendance, student_attendance.student], class: "alias-correction" do |f| %>
-              <%= f.hidden_field :zoom_alias, value: student_attendance.zoom_alias.id %>
-              <%= f.submit "Undo", class: "s-button danger alias-correction" %>
-            <% end %>
+            <td class="alias-used"><%= student_attendance.student.zoom_alias_names.to_sentence %>
+            <%= link_to "Edit", student_path(student_attendance.student), class: "s-button danger alias-correction" %>
             </td>
           <% end %>
 

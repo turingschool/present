@@ -1,25 +1,57 @@
 class ZoomMeeting < Meeting
   has_many :zoom_aliases
-  has_one :attendance, as: :meeting
-  has_one :turing_module, through: :attendance
 
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
-    meeting_details = ZoomService.meeting_details(meeting_id)    
-    
+    meeting_details = ZoomService.meeting_details(meeting_id)
+
     raise invalid_error if meeting_details[:code] == 3001
     raise no_meeting_error if meeting_details[:code] == 2300
     raise personal_meeting_error if meeting_details[:start_time].nil?
+    
+    start_time = meeting_details[:start_time].to_datetime
+    end_time = start_time + meeting_details[:duration].minutes
+
     create(
       meeting_id: meeting_id, 
-      start_time: meeting_details[:start_time].to_datetime, 
+      start_time: start_time, 
+      end_time: end_time, 
       title: meeting_details[:topic],
       duration: (meeting_details[:duration])
     )
   end
 
+  def take_participant_attendance
+    create_zoom_aliases if zoom_aliases.empty? # If we are retaking attendance no need to recreate zoom aliases
+    grouped_participants = participants.group_by(&:name)
+    turing_module.students.each do |student|
+      # REFACTOR: use upsert_all instead
+      # take_attendance_for_student(student)
+      matching_participants = student.zoom_aliases.pluck(:name).flat_map do |zoom_name|
+        grouped_participants[zoom_name]
+      end.compact
+      total_duration = calculate_duration(matching_participants)
+      record_student_attendance(student, matching_participants, total_duration)
+    end
+  end
+
+  # def take_attendance_for_student(student)
+  #   matching_participants = participants.find_all do |participant|
+  #     student.zoom_aliases.pluck(:name).include?(participant.name)
+  #   end
+  #   total_duration = matching_participants.sum(&:duration)
+  #   best_status = best_status(matching_participants)
+  #   student_attendance = attendance.student_attendances.find_or_create_by(student: student)
+  #   student_attendance.update(duration: total_duration, status: best_status)
+  #   # require 'pry';binding.pry if student.name == "Lacey Weaver"
+  # end
+
   def participants
-    @participants ||= synthesize_participant_report
+    @participants ||= create_participant_objects
+  end
+
+  def uniq_participants_by_name
+    participants.uniq(&:name)
   end
 
   def unclaimed_aliases
@@ -32,13 +64,6 @@ class ZoomMeeting < Meeting
     zoom_alias = find_or_create_zoom_alias(participant.name)
     return zoom_alias.student if zoom_alias
   end
-
-  def find_or_create_zoom_alias(name)
-    zoom_alias = turing_module.zoom_aliases.find_by(name: name)
-    return zoom_alias if zoom_alias
-    self.zoom_aliases.create!(name: name)
-    return nil
-  end  
 
   def connect_alias(student_attendance, name)
     zoom_alias = turing_module.zoom_aliases.find_by(name: name)
@@ -62,14 +87,9 @@ private
     @report ||= ZoomService.participant_report(self.meeting_id)[:participants]
   end
 
-  def synthesize_participant_report
-    participants = create_participant_objects
-    uniq_participants_best_time(participants)
-  end
-
   def create_participant_objects
     participant_report.map do |participant| 
-      ZoomParticipant.new(participant)
+      ZoomParticipant.new(participant, self.start_time, self.end_time)
     end
   end
 
@@ -83,6 +103,25 @@ private
   end
 
   def calculate_duration(participant_records) 
+    
     ((participant_records.sum(&:duration).to_f) / 60 ).round
-  end 
+  end
+
+  def create_zoom_aliases
+    aliases = participant_report.map do |participant|
+      {
+        name: participant[:name], 
+        zoom_meeting_id: self.id, 
+        turing_module_id: self.turing_module.id
+      }
+    end
+    ZoomAlias.insert_all(aliases, unique_by: [:name, :turing_module_id])
+  end
+
+  def find_or_create_zoom_alias(name)
+    zoom_alias = turing_module.zoom_aliases.find_by(name: name)
+    return zoom_alias if zoom_alias
+    self.zoom_aliases.create!(name: name)
+    return nil
+  end  
 end

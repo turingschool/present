@@ -1,7 +1,4 @@
 class SlackThread < Meeting
-  has_one :attendance, as: :meeting
-  has_one :turing_module, through: :attendance
-
   def find_student_from_participant(participant)
     turing_module.students.find_by(slack_id: participant.slack_id)
   end
@@ -27,5 +24,13 @@ class SlackThread < Meeting
 
   def title
     "Slack Thread"
+  end
+
+  def take_participant_attendance
+    grouped_participants = participants.group_by(&:slack_id)
+    turing_module.students.each do |student|
+      matching_participants = grouped_participants[student.slack_id] || []
+      record_student_attendance(student, matching_participants, 0)
+    end
   end
 end

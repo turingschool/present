@@ -11,10 +11,10 @@ FactoryBot.define do
 
         after(:create) do |attendance|
           2.times do 
-            create(:student_attendance_present, attendance: attendance, zoom_alias: create(:zoom_alias, zoom_meeting: attendance.meeting))
+            create(:student_attendance_present, attendance: attendance)
           end
           2.times do 
-            create(:student_attendance_tardy, attendance: attendance, zoom_alias: create(:zoom_alias, zoom_meeting: attendance.meeting))
+            create(:student_attendance_tardy, attendance: attendance)
           end
           2.times do 
             create(:student_attendance_absent, attendance: attendance)

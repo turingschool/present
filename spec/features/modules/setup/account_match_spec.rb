@@ -164,9 +164,8 @@ RSpec.describe "Module Setup Account Matching" do
       expect(current_path).to eq(turing_module_path(@mod))
 
       visit turing_module_students_path(@mod)
-
       within "#student-#{@anthony_b.id}" do
-        within '.zoom-name' do
+        within '.zoom-aliases' do
           expect(page).to have_content("Anthony B. (He/Him) BE 2210")
         end
         
@@ -178,9 +177,9 @@ RSpec.describe "Module Setup Account Matching" do
           expect(page).to have_content('24490140')
         end
       end
-      
+
       within "#student-#{@j.id}" do
-        within '.zoom-name' do
+        within '.zoom-aliases' do
           expect(page).to have_content("J Seymour (he/they) BE")
         end
         
@@ -194,7 +193,7 @@ RSpec.describe "Module Setup Account Matching" do
       end
       
       within "#student-#{@leo.id}" do
-        expect(page.find('.zoom-name').text).to eq('')
+        expect(page.find('.zoom-aliases').text).to eq('')
         expect(page.find('.slack-id').text).to eq('')
       end
     end

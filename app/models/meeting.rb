@@ -1,6 +1,9 @@
 class Meeting < ApplicationRecord
   self.abstract_class = true
 
+  has_one :attendance, as: :meeting
+  has_one :turing_module, through: :attendance
+
   def closest_populi_meeting_to_start_time(course_id)
     meeting_data = PopuliService.new.course_meetings(course_id)[:response][:meeting].min_by do |data|
       (start_time.to_i - data[:start].to_datetime.to_i).abs
@@ -14,5 +17,21 @@ class Meeting < ApplicationRecord
       meeting_day == Date.parse(data[:start])
     end
     meetings.map{|data| PopuliMeeting.new(data)}
+  end
+
+  def best_status(participants)
+    best = "absent"
+    participants.each do |participant|
+      participant.assign_status!(attendance.attendance_time)
+      return "present" if participant.status == "present"
+      best = "tardy" if participant.status == "tardy"
+    end
+    return best
+  end
+
+  def record_student_attendance(student, matching_participants, duration)
+    best_status = best_status(matching_participants)
+    student_attendance = attendance.student_attendances.find_or_create_by(student: student)
+    student_attendance.update(duration: duration, status: best_status)
   end
 end

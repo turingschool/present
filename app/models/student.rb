@@ -25,4 +25,8 @@ class Student < ApplicationRecord
   def zoom_name
     latest_zoom_alias.name if latest_zoom_alias
   end
+
+  def zoom_alias_names
+    zoom_aliases.pluck(:name)
+  end
 end

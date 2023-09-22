@@ -42,7 +42,7 @@ private
   end
 
   def zoom_participants_by_match(student)
-    @zoom_meeting.participants.sort_by do |participant|
+    @zoom_meeting.uniq_participants_by_name.sort_by do |participant|
       string_distance(student.name, participant.name)
     end.reverse
   end
