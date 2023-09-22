@@ -1,26 +1,24 @@
 require 'rails_helper'
 require 'sidekiq/testing'
-Sidekiq::Testing.inline!
 
 RSpec.describe InningRolloverJob, type: :job do
   before :each do
-    Sidekiq::Testing.fake!
+    Sidekiq::Testing.inline!
     @inning1 = create(:inning, :is_current)
     @inning2 = create(:inning, :not_current_future)
+    Sidekiq::Worker.clear_all
   end
-
+  
   describe 'queueing' do
     it 'queues the job' do
+      Sidekiq::Testing.fake!
       expect { InningRolloverJob.perform_async(@inning2.id) }.to change(InningRolloverJob.jobs, :size).by(1)
-      Sidekiq::Worker.drain_all
     end
   end
 
   describe 'executes perform' do
     it 'makes the new inning current and the old inning not current' do
       InningRolloverJob.perform_async(@inning2.id)
-    
-      Sidekiq::Worker.drain_all
 
       expect(@inning1.reload.current).to eq(false)
       expect(@inning2.reload.current).to eq(true)
@@ -29,8 +27,6 @@ RSpec.describe InningRolloverJob, type: :job do
     it 'creates turing modules for the new inning' do
       expect(@inning2.turing_modules.count).to eq(0)
       InningRolloverJob.perform_async(@inning2.id)
-    
-      Sidekiq::Worker.drain_all
       
       expect(@inning2.turing_modules.count).to eq(7)
 
@@ -55,9 +51,6 @@ RSpec.describe InningRolloverJob, type: :job do
       expect(user3.turing_module_id).to_not eq(nil)
 
       InningRolloverJob.perform_async(@inning2.id)
-    
-      Sidekiq::Worker.drain_all
-      
       
       expect(user1.reload.turing_module_id).to eq(nil)
       expect(user2.reload.turing_module_id).to eq(nil)
