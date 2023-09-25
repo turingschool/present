@@ -16,7 +16,7 @@ class Inning < ApplicationRecord
   def self.current_and_future
     where(["current = ? or start_date >= ?", true, Date.today]).order(:start_date)
   end
-
+  
   def check_presence_for_students
     check_time = Time.now
     service = SlackApiService.new
@@ -37,6 +37,16 @@ class Inning < ApplicationRecord
           Honeybadger.notify("Slack Response: #{response.to_s}, Student Slack ID: #{student.slack_id.to_s}")
         end
       end 
+    end
+  end
+
+  def create_turing_modules
+    turing_modules.create!(program: 'Combined', module_number: 4)
+    3.times do |i|
+      turing_modules.create!(program: 'FE', module_number: i + 1)
+    end
+    3.times do |i|
+      turing_modules.create!(program: 'BE', module_number: i + 1)
     end
   end
 end

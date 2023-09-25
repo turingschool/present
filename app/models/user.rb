@@ -5,6 +5,10 @@ class User < ApplicationRecord
 
   enum :user_type, [:default, :admin]
 
+  def self.reset_modules
+    update_all(turing_module_id: nil)
+  end
+
   def my_module
     turing_module
   end

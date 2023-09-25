@@ -28,7 +28,28 @@ RSpec.describe Inning, type: :model do
       expect(past_innings.first.current).to eq(true)
 
       expect(Inning.where.not(id: past_innings.first.id).all?{ |inning| !inning.current }).to eq(true)
-    end 
+    end
+
+    it '#create_turing_modules' do
+      inning1 = Inning.create(name: '2108', start_date: Date.today)
+      inning2 = Inning.create(name: '2109', start_date: Date.today)
+
+      expect(inning1.turing_modules.count).to eq(0)
+      
+      inning1.create_turing_modules
+      
+      expect(inning1.turing_modules.count).to eq(7)
+      expect(inning2.turing_modules.count).to eq(0)
+
+      expect(inning1.turing_modules.where(program: 'FE').count).to eq(3)
+      expect(inning1.turing_modules.where(program: 'BE').count).to eq(3)
+      expect(inning1.turing_modules.where(program: 'Combined').count).to eq(1)
+
+      expect(inning1.turing_modules.where(module_number: 1).count).to eq(2)
+      expect(inning1.turing_modules.where(module_number: 2).count).to eq(2)
+      expect(inning1.turing_modules.where(module_number: 3).count).to eq(2)
+      expect(inning1.turing_modules.where(module_number: 4).count).to eq(1)
+    end
 
     describe "#check_presence_for_students" do
       before :each do
@@ -119,5 +140,4 @@ RSpec.describe Inning, type: :model do
       expect(Inning.current_and_future).to eq([inning1, inning2, inning4])
     end
   end 
-
 end

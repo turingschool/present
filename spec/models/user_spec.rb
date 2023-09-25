@@ -67,4 +67,24 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'class methods' do
+    it 'reset_modules' do
+      inning = Inning.create(name: '2108', start_date: Date.today)
+      inning.create_turing_modules
+      user1 = create(:user, turing_module: inning.turing_modules.first)
+      user2 = create(:user, turing_module: inning.turing_modules.second)
+      user3 = create(:user, turing_module: inning.turing_modules.third)
+      
+      expect(user1.turing_module_id).to_not eq(nil)
+      expect(user2.turing_module_id).to_not eq(nil)
+      expect(user3.turing_module_id).to_not eq(nil)
+
+      User.reset_modules
+      
+      expect(user1.reload.turing_module_id).to eq(nil)
+      expect(user2.reload.turing_module_id).to eq(nil)
+      expect(user3.reload.turing_module_id).to eq(nil)
+    end
+  end
 end
