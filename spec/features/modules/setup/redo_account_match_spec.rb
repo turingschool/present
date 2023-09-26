@@ -58,14 +58,12 @@ RSpec.describe "Redo Module Setup Account Matching" do
       expect(@test_module.attendances.count).to eq(0)
     end 
 
-    it 'does not destroy student records', js: true do
+    it 'does not destroy student records' do
       original_ids = Student.pluck(:id)
 
       visit turing_module_path(@test_module)
 
-      accept_alert do
-        click_link "Redo Module Setup"
-      end
+      click_link "Redo Module Setup"
 
       within '#best-match' do
         click_button 'Yes'
