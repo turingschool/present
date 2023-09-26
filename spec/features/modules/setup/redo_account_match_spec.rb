@@ -82,5 +82,29 @@ RSpec.describe "Redo Module Setup Account Matching" do
       # All the student ids that existed before the redo should still exist
       expect(Student.where(id: original_ids).count).to eq(original_ids.length)
     end
+
+    it 'removes any students that were part of the module before the redo' do
+      new_student = create(:student)
+
+      @test_module.students << new_student
+
+      visit turing_module_path(@test_module)
+
+      click_link "Redo Module Setup"
+
+      within '#best-match' do
+        click_button 'Yes'
+      end
+
+      fill_in :slack_channel_id, with: @channel_id
+      click_button "Import Channel"
+
+      fill_in :zoom_meeting_id, with: @zoom_meeting_id
+      click_button "Import Zoom Accounts From Meeting"
+
+      click_button 'Connect Accounts'
+
+      expect(@test_module.students).to_not include(new_student)
+    end
   end
 end
