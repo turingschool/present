@@ -4,7 +4,7 @@ FactoryBot.define do
     module_number { 3 }
     inning
 
-    factory :setup_module do
+    factory :setup_module do # Can only have one setup_module per test because students must be unique by populi_id
       module_number {3}
       program {:BE} 
       populi_course_id {10547831}
