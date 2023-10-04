@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sidekiq/testing'
 
 RSpec.describe 'Inning Edit' do
   # include ApplicationHelper
@@ -6,8 +7,14 @@ RSpec.describe 'Inning Edit' do
     mock_admin_login
     @inning1 = create(:inning, :current_past, name: '1000')
     @inning2 = create(:inning, :not_current_future, name: '1000')
-
+    Sidekiq::Testing.disable!
+    InningRolloverJob.perform_at(@inning2.start_date.to_time, @inning2.id)
+    @jobs = Sidekiq::ScheduledSet.new
     visit edit_admin_inning_path(@inning2)
+  end
+  
+  after :each do
+    Sidekiq::ScheduledSet.new.clear
   end
 
   describe 'Update Form' do
@@ -49,6 +56,44 @@ RSpec.describe 'Inning Edit' do
       expect(page).to have_content('Edit Inning')
       expect(page).to have_content("Start date can't be blank")
       expect(current_path).to eq(admin_inning_path(@inning2))
+    end
+  end
+
+  describe 'Reschedule Job upon inning start date change' do
+    it 'does not reschedule job if start date is not changed' do
+      job = @jobs.find do |job|
+        job.item["args"] == [@inning2.id] && job.display_class == "InningRolloverJob"
+      end
+      expect(@inning2.name).to eq('1000')
+      expect(Time.at(job.score).strftime('%d%b%Y')).to eq(@inning2.start_date.strftime('%d%b%Y'))
+
+      fill_in 'inning[name]', with: '2201'
+
+      click_button 'Update Inning'
+      @inning2.reload
+
+      expect(@inning2.name).to eq('2201')
+      expect(Time.at(job.score).strftime('%d%b%Y')).to eq(@inning2.start_date.strftime('%d%b%Y'))
+    end
+
+    it 'reschedules job if start date is changed' do
+      job = @jobs.find do |job|
+        job.item["args"] == [@inning2.id] && job.display_class == "InningRolloverJob"
+      end
+      expect(@inning2.name).to eq('1000')
+      expect(Time.at(job.score).strftime('%d%b%Y')).to eq(@inning2.start_date.strftime('%d%b%Y'))
+
+      fill_in 'inning[start_date]', with: Date.today + 14.weeks
+
+      click_button 'Update Inning'
+      @inning2.reload
+      # test that old job does not exist
+      new_job = @jobs.find do |job|
+        job.item["args"] == [@inning2.id] && job.display_class == "InningRolloverJob"
+      end
+      expect(@inning2.name).to eq('1000')
+      expect(Time.at(new_job.score).strftime('%d%b%Y')).to eq(@inning2.start_date.strftime('%d%b%Y'))
+      expect(job.score).to_not eq(new_job.score)
     end
   end
 end
