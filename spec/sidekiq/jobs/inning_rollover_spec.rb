@@ -6,7 +6,6 @@ RSpec.describe InningRolloverJob, type: :job do
     Sidekiq::Testing.inline!
     @inning1 = create(:inning, :is_current)
     @inning2 = create(:inning, :not_current_future)
-    Sidekiq::Worker.clear_all
   end
   
   describe 'queueing' do
