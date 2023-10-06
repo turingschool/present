@@ -1,7 +1,6 @@
 import ready from "custom/main";
 
 ready(() => {
-  debugger;
   let buttons = Array.from(document.querySelectorAll(".remove-alias"));
 
   const warningMessage = "Warning! Removing this student's zoom alias could have effects on past attendances. You will need to retake any attendances that were affected."
