@@ -92,7 +92,7 @@ def testing_mode_confirmation(testing)
     puts "Testing mode is enabled by default. To disable testing mode, pass the argument \"false\" to this task"
   else
     puts "Testing mode is disabled"
-    puts "WARNING: This task will delete the duplicate student records and correct foreign key relationships in the databse"
+    puts "WARNING: This task will delete the duplicate student records and correct foreign key relationships in the database"
     puts "If you would like to proceed, please enter y. Press enter to abort."
     unless gets.chomp == "y"
       exit

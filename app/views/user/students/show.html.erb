@@ -14,7 +14,7 @@
   <% @student.zoom_aliases.each do |zoom_alias| %>
     <li id="zoom-alias-<%= zoom_alias.id %>">
       <%= zoom_alias.name %>
-      <%= form_with model: zoom_alias do |f| %>
+      <%= form_with model: zoom_alias, local: true do |f| %>
         <%= f.hidden_field :student_id, value: nil %>
         <%= f.submit "Remove" , class: "remove-alias" %>
       <% end %>
