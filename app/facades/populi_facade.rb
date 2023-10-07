@@ -24,15 +24,11 @@ class PopuliFacade
   end
 
   def import_students
-    populi_students.each do |populi_student|
-      existing_student = Student.find_by(populi_id: populi_student.personid)
-      if existing_student
-        self.module.students << existing_student
-        existing_student.update(name: populi_student.name) unless populi_student.name == existing_student.name
-      else
-        self.module.students.create(name: populi_student.name, populi_id: populi_student.personid)
-      end
+    @module.students.update_all(turing_module_id: nil)
+    student_attributes = populi_students.map do |populi_student|
+      {name: populi_student.name, populi_id: populi_student.personid, turing_module_id: @module.id}
     end
+    Student.upsert_all(student_attributes, unique_by: :populi_id)
   end
 
   def term_options
