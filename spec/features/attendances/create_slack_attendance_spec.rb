@@ -61,5 +61,19 @@ RSpec.describe 'Creating an Attendance' do
       expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy')
       expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present')
     end
+
+    it 'does not find a student from a different module' do
+      other_inning = create(:inning, current: false)
+      other_module = create(:setup_module, inning: other_inning)
+      @test_module = create(:setup_module)
+      slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
+
+      visit turing_module_path(@test_module)
+
+      fill_in :attendance_meeting_url, with: slack_url
+      click_button 'Take Attendance'
+
+      expect(page).to have_css('.student-attendance', count: @test_module.students.count)
+    end
   end
 end 
