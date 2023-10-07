@@ -7,7 +7,7 @@ ready(() => {
   const handleClick = (event) => {
     event.preventDefault();
     if(confirm(warningMessage) == true) {
-      debugger;
+      event.target.parentElement.submit()
     }
   }
   
