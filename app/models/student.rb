@@ -9,6 +9,8 @@ class Student < ApplicationRecord
 
   validates_uniqueness_of :slack_id, scope: :turing_module_id, allow_blank: true
 
+  validates_uniqueness_of :populi_id, allow_blank: true
+
   def self.have_slack_ids 
     # REFACTOR
     !Student.where.not(slack_id: nil).empty?

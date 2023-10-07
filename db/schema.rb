@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_20_205547) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_26_165406) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,6 +69,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_205547) do
     t.bigint "turing_module_id"
     t.string "slack_id"
     t.string "populi_id"
+    t.index ["populi_id"], name: "index_students_on_populi_id", unique: true
     t.index ["turing_module_id"], name: "index_students_on_turing_module_id"
   end
 
