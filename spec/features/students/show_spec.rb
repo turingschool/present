@@ -44,4 +44,20 @@ RSpec.describe 'Student Show Page' do
 
     expect(page).to have_link(test_module.name, href: turing_module_path(test_module))
   end
+
+  it 'can remove a zoom alias', js: true do
+    test_module = create(:setup_module)
+    student = test_module.students.first
+    zoom_alias = student.zoom_aliases.first
+    visit student_path(student)
+
+    within "#zoom-alias-#{zoom_alias.id}" do
+      accept_alert do
+        click_button "Remove"
+      end
+    end
+
+    expect(current_path).to eq(student_path(student))
+    expect(page).to_not have_css("#zoom-alias-#{zoom_alias.id}")
+  end
 end
