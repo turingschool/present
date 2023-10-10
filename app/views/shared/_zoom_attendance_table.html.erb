@@ -22,23 +22,16 @@
           <% end %>
           <td class='<%= student_attendance.status %>'><%= student_attendance.status %></td>
           <td class='duration'><%= student_attendance.duration %></td>
-
-          <% if student_attendance.absent? %>
-            <td class="alias-used">N/A</td>
-          <% else %>
-            <td class="alias-used"><%= student_attendance.student.zoom_alias_names.to_sentence %>
+          <td class="alias-used">
+            <%= student_attendance.student.zoom_alias_names.to_sentence %>
             <%= link_to "Edit", student_path(student_attendance.student), class: "s-button danger alias-correction" %>
-            </td>
-          <% end %>
-
-          <% unless student_attendance.present? %>
-            <td id='student-aliases-<%= student_attendance.student.id %>'>
-              <%= form_with model: [@attendance, student_attendance.student], class: "alias-correction" do |f| %>
-                <%= f.select :zoom_alias, facade.alias_options_for(student_attendance.student), {}, class: "alias-correction" %>
-                <%= f.submit "Save Zoom Alias", class: "s-button alias-correction" %>
-              <% end %>
-            </td>
-          <% end %>
+          </td>
+          <td id='student-aliases-<%= student_attendance.student.id %>'>
+            <%= form_with model: [@attendance, student_attendance.student], class: "alias-correction" do |f| %>
+              <%= f.select :zoom_alias, facade.alias_options_for(student_attendance.student), {}, class: "alias-correction" %>
+              <%= f.submit "Save Zoom Alias", class: "s-button alias-correction" %>
+            <% end %>
+          </td>
         </section>
       </tr>
     <% end %>
