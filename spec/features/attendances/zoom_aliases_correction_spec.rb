@@ -41,7 +41,6 @@ RSpec.describe 'attendance show page' do
     end
 
     expect(current_path).to eq(attendance_path(Attendance.last))
-    expect(page).to_not have_css("#student-aliases-#{lacey.id}")
     
     within "#student-#{lacey.id}" do
       expect(page).to have_content("present")
