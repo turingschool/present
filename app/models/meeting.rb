@@ -19,19 +19,14 @@ class Meeting < ApplicationRecord
     meetings.map{|data| PopuliMeeting.new(data)}
   end
 
-  def best_status(participants)
-    best = "absent"
-    participants.each do |participant|
-      participant.assign_status!(attendance.attendance_time)
-      return "present" if participant.status == "present"
-      best = "tardy" if participant.status == "tardy"
-    end
-    return best
-  end
-
   def record_student_attendance(student, matching_participants, duration)
-    best_status = best_status(matching_participants)
     student_attendance = attendance.student_attendances.find_or_create_by(student: student)
-    student_attendance.update(duration: duration, status: best_status)
+    best = matching_participants.min_by(&:join_time)
+    if best.nil?
+      student_attendance.update(duration: duration, status: "absent", join_time: nil)
+    else
+      best.assign_status!(attendance.attendance_time)
+      student_attendance.update(duration: duration, status: best.status, join_time: best.join_time)
+    end
   end
 end

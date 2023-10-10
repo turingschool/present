@@ -47,10 +47,10 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
       expect(current_path).to eq(attendance_path(Attendance.last))
       expect(page).to have_css('.student-attendance', count: @test_module.students.count)
-      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Duration" => "0")
-      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent', "Duration" => "63")
-      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Duration" => "59")
-      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Duration" => "61")
+      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Duration" => "0", "Join Time" => "N/A")
+      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent', "Duration" => "63", "Join Time" => "9:31")
+      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Duration" => "59", "Join Time" => "9:01")
+      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Duration" => "61", "Join Time" => "8:58")
     end
 
   end
