@@ -111,11 +111,24 @@ RSpec.describe 'attendance show page' do
     end
   end
 
-  it 'shows the alias used for the student' do
+  it 'shows the aliases used for the student' do
     leo = @test_module.students.find_by(name: "Leo Banos Garcia")
+
+    within "#student-aliases-#{leo.id}" do
+      select("Sam Cox (He/Him) BE")
+      click_button "Save Zoom Alias"
+    end
+   
+    within "#student-aliases-#{leo.id}" do
+      select("Anhnhi T BE she/her/hers")
+      click_button "Save Zoom Alias"
+    end
+
     within "#student-#{leo.id}" do
       within '.alias-used' do
         expect(page).to have_content("Leo BG# BE")
+        expect(page).to have_content("Anhnhi T BE she/her/hers")
+        expect(page).to have_content("Sam Cox (He/Him) BE")
       end
     end
   end
