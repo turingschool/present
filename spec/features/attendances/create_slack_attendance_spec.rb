@@ -56,10 +56,10 @@ RSpec.describe 'Creating an Attendance' do
       expect(current_path).to eq(attendance_path(Attendance.last))
       expect(page).to have_css('.student-attendance', count: @test_module.students.count)
 
-      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent')
-      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent')
-      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy')
-      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present')
+      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Join Time" => "N/A")
+      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent', "Join Time" => "1:30")
+      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Join Time" => "1:05")
+      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Join Time" => "12:46")
     end
   end
 end 
