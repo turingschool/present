@@ -34,7 +34,7 @@ class Inning < ApplicationRecord
           # Don't retry again if we've done 5 retries already
           retry_counter = 0
           # We want to be notified if any API call to get a user's presence fails and 5 retries are unsuccessful
-          Honeybadger.notify("Slack Response: #{response.to_s}, Student Slack ID: #{student.slack_id.to_s}")
+          Honeybadger.notify("Slack Response: #{response.to_s}, Student Slack ID: #{student.slack_id.to_s}, Student: #{student.id}: #{student.name}")
         end
       end 
     end
