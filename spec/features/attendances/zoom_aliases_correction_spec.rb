@@ -125,7 +125,6 @@ RSpec.describe 'attendance show page' do
     zoom_alias = ZoomAlias.find_by(name: "Leo BG# BE")
 
     within "#student-#{leo.id}" do
-      save_and_open_page
       expect(page).to have_content("present")
       click_link leo.name
     end
