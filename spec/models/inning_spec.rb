@@ -38,17 +38,20 @@ RSpec.describe Inning, type: :model do
       
       inning1.create_turing_modules
       
-      expect(inning1.turing_modules.count).to eq(7)
+      expect(inning1.turing_modules.count).to eq(13)
       expect(inning2.turing_modules.count).to eq(0)
 
       expect(inning1.turing_modules.where(program: 'FE').count).to eq(3)
       expect(inning1.turing_modules.where(program: 'BE').count).to eq(3)
       expect(inning1.turing_modules.where(program: 'Combined').count).to eq(1)
+      expect(inning1.turing_modules.where(program: 'Launch').count).to eq(6)
 
-      expect(inning1.turing_modules.where(module_number: 1).count).to eq(2)
-      expect(inning1.turing_modules.where(module_number: 2).count).to eq(2)
-      expect(inning1.turing_modules.where(module_number: 3).count).to eq(2)
-      expect(inning1.turing_modules.where(module_number: 4).count).to eq(1)
+      expect(inning1.turing_modules.where(module_number: 1).count).to eq(3)
+      expect(inning1.turing_modules.where(module_number: 2).count).to eq(3)
+      expect(inning1.turing_modules.where(module_number: 3).count).to eq(3)
+      expect(inning1.turing_modules.where(module_number: 4).count).to eq(2)
+      expect(inning1.turing_modules.where(module_number: 5).count).to eq(1)
+      expect(inning1.turing_modules.where(module_number: 6).count).to eq(1)
     end
 
     describe "#check_presence_for_students" do

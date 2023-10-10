@@ -48,5 +48,8 @@ class Inning < ApplicationRecord
     3.times do |i|
       turing_modules.create!(program: 'BE', module_number: i + 1)
     end
+    6.times do |i|
+      turing_modules.create!(program: 'Launch', module_number: i + 1)
+    end
   end
 end

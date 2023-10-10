@@ -5,14 +5,14 @@ class TuringModule < ApplicationRecord
 
   validates_numericality_of :module_number, {
     greater_than_or_equal_to: 1,
-    less_than_or_equal_to: 4,
+    less_than_or_equal_to: 6,
     only_integer: true
   }
 
   validates_inclusion_of :calendar_integration, in: [true, false]
 
   validates_presence_of :program
-  enum program: [:FE, :BE, :Combined]
+  enum program: [:FE, :BE, :Combined, :Launch]
 
   def name
     "#{self.program} Mod #{self.module_number}"

@@ -28,16 +28,19 @@ RSpec.describe InningRolloverJob, type: :job do
       expect(@inning2.turing_modules.count).to eq(0)
       InningRolloverJob.perform_async(@inning2.id)
       
-      expect(@inning2.turing_modules.count).to eq(7)
+      expect(@inning2.turing_modules.count).to eq(13)
 
       expect(@inning2.turing_modules.where(program: 'FE').count).to eq(3)
       expect(@inning2.turing_modules.where(program: 'BE').count).to eq(3)
       expect(@inning2.turing_modules.where(program: 'Combined').count).to eq(1)
+      expect(@inning2.turing_modules.where(program: 'Launch').count).to eq(6)
 
-      expect(@inning2.turing_modules.where(module_number: 1).count).to eq(2)
-      expect(@inning2.turing_modules.where(module_number: 2).count).to eq(2)
-      expect(@inning2.turing_modules.where(module_number: 3).count).to eq(2)
-      expect(@inning2.turing_modules.where(module_number: 4).count).to eq(1)
+      expect(@inning2.turing_modules.where(module_number: 1).count).to eq(3)
+      expect(@inning2.turing_modules.where(module_number: 2).count).to eq(3)
+      expect(@inning2.turing_modules.where(module_number: 3).count).to eq(3)
+      expect(@inning2.turing_modules.where(module_number: 4).count).to eq(2)
+      expect(@inning2.turing_modules.where(module_number: 5).count).to eq(1)
+      expect(@inning2.turing_modules.where(module_number: 6).count).to eq(1)
     end
 
     it 'resets the modules for all users' do
