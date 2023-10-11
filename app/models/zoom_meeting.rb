@@ -22,6 +22,7 @@ class ZoomMeeting < Meeting
   end
 
   def take_participant_attendance
+    raise ZoomMeeting.participants_not_ready_error if participant_report.nil?
     create_zoom_aliases if zoom_aliases.empty? # If we are retaking attendance no need to recreate zoom aliases
     grouped_participants = participants.group_by(&:name)
     turing_module.students.each do |student|
@@ -83,6 +84,10 @@ private
     InvalidMeetingError.new("It looks like that Zoom link is for a Personal Meeting Room. You will need to use a unique meeting instead.")
   end
 
+  def self.participants_not_ready_error
+    InvalidMeetingError.new("That Zoom Meeting does not have any participants yet. This could be because the meeting is still in progress. Please try again later.")
+  end
+
   def participant_report
     @report ||= ZoomService.participant_report(self.meeting_id)[:participants]
   end
@@ -103,7 +108,6 @@ private
   end
 
   def calculate_duration(participant_records) 
-    
     ((participant_records.sum(&:duration).to_f) / 60 ).round
   end
 
