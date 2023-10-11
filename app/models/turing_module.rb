@@ -14,6 +14,10 @@ class TuringModule < ApplicationRecord
   validates_presence_of :program
   enum program: [:FE, :BE, :Combined, :Launch]
 
+  def unclaimed_aliases
+    ZoomAlias.where(turing_module_id: self.id).where(student_id: nil)
+  end
+
   def name
     "#{self.program} Mod #{self.module_number}"
   end
