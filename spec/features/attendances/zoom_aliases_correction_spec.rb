@@ -164,5 +164,41 @@ RSpec.describe 'attendance show page' do
     end
   end
 
-  it 'does not create new aliases if that same alias has been used previously in a module\'s meetings'
+  it 'shows alias options from previous meetings' do
+    visit turing_module_path(@test_module)
+
+    fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
+
+    click_button 'Take Attendance'
+
+    sam = @test_module.students.find_by(name: 'Samuel Cox')
+
+    visit attendance_path(Attendance.last)
+
+    within "#student-aliases-#{sam.id}" do
+      expect(all('option').map(&:text)).to include("Sam Cox (He/Him) BE")
+    end
+  end
+
+  it 'does not duplicate aliases for the same module' do
+    visit turing_module_path(@test_module)
+
+    fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
+
+    expect { click_button 'Take Attendance' }.to_not change { ZoomAlias.count }
+  end
+
+  it 'will duplicate aliases for different modules' do
+    student = create(:setup_student) # Need to create one setup student so the module will be considered "set up"
+    other_module = student.turing_module
+
+    stub_request(:post, ENV['POPULI_API_URL']).
+      with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>other_module.populi_course_id}).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+
+    visit turing_module_path(other_module)
+    fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
+    
+    expect { click_button 'Take Attendance' }.to change { ZoomAlias.count }
+  end
 end
