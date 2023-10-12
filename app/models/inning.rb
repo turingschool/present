@@ -8,7 +8,7 @@ class Inning < ApplicationRecord
   def date_within_allowed_range
     if Inning.none?
       # Execute as normal without triggering validation error
-    else current_inning_date = Inning.where(current: true).first.start_date
+    else current_inning_date = Inning.find_by_current(true).start_date
       date_validation(current_inning_date)
     end
   end
@@ -61,7 +61,7 @@ class Inning < ApplicationRecord
   end
 
   def date_validation(current_inning_date)
-    return errors.add(:start_date, "Can't be blank") if start_date.nil?
+    return errors.add(:start_date, "Can't be blank") if start_date.blank?
     return errors.add(:start_date, "must be at least 7 weeks after the start of the current inning") if start_date < current_inning_date + 7.weeks 
   end
 end
