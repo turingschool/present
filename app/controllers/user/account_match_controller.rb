@@ -2,7 +2,7 @@ class User::AccountMatchController < User::BaseController
   def new 
     begin
       render locals: {
-        facade: AccountMatchFacade.new(current_module, params[:zoom_meeting_id])
+        facade: AccountMatchFacade.new(current_module)
       }
     rescue InvalidMeetingError => error
       flash[:error] = error.message
