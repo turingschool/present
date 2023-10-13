@@ -21,20 +21,22 @@ RSpec.describe 'Admin Dashboard' do
 
   describe 'Within the Innings section' do
     before :each do
-      @inning1 = create(:inning, :is_current)
+      @inning3 = create(:inning, :current_past, name: '2101')
       @inning2 = create(:inning, :not_current_future, name: '2201')
-      @inning3 = create(:inning, :not_current_past, name: '2104')
-      @inning4 = create(:inning, current: false, name: '2205', start_date: Date.today+3.weeks)
+      @inning1 = create(:inning, current: false, name: '2205', start_date: Date.today+21.weeks)
+      @inning4 = create(:inning, current: false, name: '2208', start_date: Date.today+28.weeks)
+
+      @inning2.make_current_inning
       visit admin_path
     end
 
     it 'displays the current inning and all future innings in ascending order by start date' do
       within('.innings-list') do
-        expect(page).to have_content("#{@inning1.name} - Start Date: #{@inning1.start_date.strftime('%d%b%Y')} (Current Inning)")
-        expect(page).to have_content("#{@inning2.name} - Start Date: #{@inning2.start_date.strftime('%d%b%Y')}")
+        expect(page).to have_content("#{@inning1.name} - Start Date: #{@inning1.start_date.strftime('%d%b%Y')}")
+        expect(page).to have_content("#{@inning2.name} - Start Date: #{@inning2.start_date.strftime('%d%b%Y')} (Current Inning)")
         expect(page).to have_content("#{@inning4.name} - Start Date: #{@inning4.start_date.strftime('%d%b%Y')}")
-        expect(@inning1.name).to appear_before(@inning2.name)
-        expect(@inning2.name).to appear_before(@inning4.name)
+        expect(@inning2.name).to appear_before(@inning1.name)
+        expect(@inning1.name).to appear_before(@inning4.name)
         expect(page).to_not have_content(@inning3.name)
         expect(page).to_not have_content(@inning3.start_date)
       end
