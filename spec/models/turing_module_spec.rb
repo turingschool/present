@@ -49,21 +49,25 @@ RSpec.describe TuringModule, type: :model do
     end
 
     describe '#account_match_complete' do 
-      it 'returns true if some students in a mod have slack ids, and some have zoom ids' do 
+      it 'returns true if all the students in the module have slack ids' do 
         test_module = create(:setup_module)
 
         expect(test_module.account_match_complete).to eq true 
       end 
-      it 'returns false if some students in a mod have slack ids but none have zoom ids' do 
+
+      it 'returns false if no students in a mod have slack ids' do 
         test_module = create(:turing_module)
         
         expect(test_module.account_match_complete).to eq false 
       end 
-
-      it 'returns false if no students have slack or zoom ids' do 
+    
+      it 'returns true if some students in a mod have slack ids' do 
         test_module = create(:turing_module)
 
-        expect(test_module.account_match_complete).to eq false 
+        students = create_list(:student, 2, turing_module: test_module)
+        students.first.update(slack_id: "some id")
+        
+        expect(test_module.account_match_complete).to eq true 
       end 
     end 
   end

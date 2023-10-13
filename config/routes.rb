@@ -34,8 +34,6 @@ Rails.application.routes.draw do
       get '/slack/new', to: 'slack#new', as: :slack_integration
       post '/slack', to: 'slack#create'
 
-      get '/zoom/new', to: 'zoom#new', as: :zoom_integration
-
       resources :account_match, only: [:new, :create]
 
       get '/populi/new', to: 'populi#new', as: :populi_integration

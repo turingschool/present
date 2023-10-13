@@ -46,9 +46,6 @@ RSpec.describe "Redo Module Setup Account Matching" do
       fill_in :slack_channel_id, with: @channel_id
       click_button "Import Channel"
 
-      fill_in :zoom_meeting_id, with: @zoom_meeting_id
-      click_button "Import Zoom Accounts From Meeting"
-
       click_button 'Connect Accounts'
 
       @test_module.reload
@@ -72,9 +69,6 @@ RSpec.describe "Redo Module Setup Account Matching" do
       fill_in :slack_channel_id, with: @channel_id
       click_button "Import Channel"
 
-      fill_in :zoom_meeting_id, with: @zoom_meeting_id
-      click_button "Import Zoom Accounts From Meeting"
-
       click_button 'Connect Accounts'
 
       # All the student ids that existed before the redo should still exist
@@ -96,9 +90,6 @@ RSpec.describe "Redo Module Setup Account Matching" do
 
       fill_in :slack_channel_id, with: @channel_id
       click_button "Import Channel"
-
-      fill_in :zoom_meeting_id, with: @zoom_meeting_id
-      click_button "Import Zoom Accounts From Meeting"
 
       click_button 'Connect Accounts'
 

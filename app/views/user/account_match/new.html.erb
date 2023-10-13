@@ -4,7 +4,6 @@
 <p>When are you done, click the button at the bottom of the page to connect accounts.</p>
 
 <%= form_with url: turing_module_account_match_index_path(facade.module), method: :post, data: {turbo: false}, id: "account-match" do |f| %>
-  <%= f.hidden_field :zoom_meeting_id, value: facade.zoom_meeting.meeting_id %>
   <table class='s-table', id='account-match-table'>
     <thead>
       <tr>
@@ -19,10 +18,6 @@
           <td class='student-name'><h2><%= student.name %></h2></td>
           <td class='slack-select'>
             <%= f.select "student[#{student.id}][slack_id]", facade.slack_options(student), selected: facade.best_matching_slacker(student) %>
-          </td>
-
-          <td class='zoom-select'>
-            <%= f.select "student[#{student.id}][zoom_id]", facade.zoom_options(student), selected: facade.best_matching_zoomer(student) %>
           </td>
         </tr>
       <% end %>

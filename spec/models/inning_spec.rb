@@ -14,25 +14,46 @@ RSpec.describe Inning, type: :model do
       inning = Inning.create(name: '2108')
       expect(inning.current).to eq(false)
     end 
+
+    describe '# date_within_allowed_range validation' do
+      it 'start_date must be at least 12 weeks after the current innings start_date' do
+        inning1 = create(:inning, :is_current)
+        inning = Inning.new(name: '2108', start_date: Date.today)
+
+        expect(inning).to_not be_valid
+        expect(inning.errors.full_messages).to eq(["Start date must be at least 7 weeks after the start of the current inning"])
+      end
+
+      it 'if there are zero innings in the database, date_within_allowed_range validation does not apply' do
+        expect(Inning.count).to eq(0)
+        inning = Inning.new(name: '2108', start_date: Date.today, :current => true)
+        expect(inning).to be_valid
+        inning.save
+        expect(Inning.count).to eq(1)
+      end
+    end
   end 
 
   describe 'instance methods' do 
     it '#make_current_inning' do 
-      past_innings = create_list(:inning,3)
-      current_inning = create(:inning, current: true)
-      
-      past_innings.first.make_current_inning
+      inning1 = create(:inning, :current_past, name: '2104')
+      inning2 = create(:inning, :not_current_future, name: '2107')
+      inning3 = create(:inning, :not_current_future, name: '2201')
+
+      expect(inning1.current).to eq(true)
+
+      inning2.make_current_inning
 
       Inning.all.reload
 
-      expect(past_innings.first.current).to eq(true)
+      expect(inning2.current).to eq(true)
 
-      expect(Inning.where.not(id: past_innings.first.id).all?{ |inning| !inning.current }).to eq(true)
+      expect(Inning.where.not(id: inning2.id).all?{ |inning| !inning.current }).to eq(true)
     end
 
     it '#create_turing_modules' do
-      inning1 = Inning.create(name: '2108', start_date: Date.today)
-      inning2 = Inning.create(name: '2109', start_date: Date.today)
+      inning1 = create(:inning, :current_past, name: '2203')
+      inning2 = create(:inning, :not_current_future, name: "2301")
 
       expect(inning1.turing_modules.count).to eq(0)
       
@@ -127,20 +148,22 @@ RSpec.describe Inning, type: :model do
 
   describe 'class methods' do 
     it '.order_by_name' do 
-      inning_1 = Inning.create(name: '2201', start_date: Date.today)
-      inning_2 = Inning.create(name: '2108', start_date: Date.today)
-      inning_3 = Inning.create(name: '2210', start_date: Date.today)
+      inning_1 = Inning.create(name: '2201', start_date: Date.today, current: true)
+      inning_2 = Inning.create(name: '2108', start_date: Date.today+7.weeks)
+      inning_3 = Inning.create(name: '2210', start_date: Date.today+14.weeks)
 
       expect(Inning.order_by_name).to eq([inning_3, inning_1, inning_2])
     end 
 
     it '.current_and_future' do
-      inning1 = create(:inning, :is_current)
-      inning4 = create(:inning, current: false, name: '2205', start_date: Date.today+3.weeks)
-      inning2 = create(:inning, :not_current_future, name: '2201')
-      inning3 = create(:inning, :not_current_past, name: '2104')
+      inning1 = create(:inning, :current_past, name: '2104')
+      inning2 = create(:inning, current: false, name: '2111', start_date: Date.today+19.weeks)
+      inning3 = create(:inning, current: false, name: '2201', start_date: Date.today+26.weeks)
+      inning4 = create(:inning, :not_current_future, name: '2107')
+      
+      inning4.make_current_inning
 
-      expect(Inning.current_and_future).to eq([inning1, inning2, inning4])
+      expect(Inning.current_and_future).to eq([inning4, inning2, inning3])
     end
   end 
 end

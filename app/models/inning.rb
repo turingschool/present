@@ -1,8 +1,17 @@
 class Inning < ApplicationRecord
   validates_presence_of :name, :start_date
+  validate :date_within_allowed_range
 
   has_many :turing_modules, dependent: :destroy
   has_many :students, through: :turing_modules
+
+  def date_within_allowed_range
+    if Inning.none?
+      # Execute as normal without triggering validation error
+    else current_inning_date = Inning.find_by_current(true).start_date
+      date_validation(current_inning_date)
+    end
+  end
 
   def make_current_inning
     self.update(current: true)
@@ -40,6 +49,7 @@ class Inning < ApplicationRecord
     end
   end
 
+
   def create_turing_modules
     turing_modules.create!(program: 'Combined', module_number: 4)
     3.times do |i|
@@ -52,4 +62,10 @@ class Inning < ApplicationRecord
       turing_modules.create!(program: 'Launch', module_number: i + 1)
     end
   end
+
+  def date_validation(current_inning_date)
+    return errors.add(:start_date, "Can't be blank") if start_date.blank?
+    return errors.add(:start_date, "must be at least 7 weeks after the start of the current inning") if start_date < current_inning_date + 7.weeks 
+  end
 end
+

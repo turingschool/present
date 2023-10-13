@@ -8,7 +8,7 @@ class User::SlackController < User::BaseController
         @module = TuringModule.find(params[:turing_module_id])
         if !params[:slack_channel_id].empty?
             @module.update(slack_channel_id: params[:slack_channel_id])
-            redirect_to turing_module_zoom_integration_path(@module)
+            redirect_to new_turing_module_account_match_path(@module)
         else
             flash[:error] = "Please provide a Channel ID"
             render :new
