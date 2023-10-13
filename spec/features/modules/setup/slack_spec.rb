@@ -60,7 +60,7 @@ RSpec.describe "Module Setup Slack Workflow" do
       end 
 
       it 'redirects to the zoom/new page' do
-        expect(current_path).to eq(turing_module_zoom_integration_path(@mod))
+        expect(current_path).to eq(new_turing_module_account_match_path(@mod))
       end
     end
   end
