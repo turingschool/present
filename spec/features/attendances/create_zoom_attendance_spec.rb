@@ -53,6 +53,16 @@ RSpec.describe 'Creating a Zoom Attendance' do
       expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Duration" => "61", "Join Time" => "8:58")
     end
 
+    it 'records the populi attedance start and end times' do
+      visit turing_module_path(@test_module)
+
+      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
+      click_button 'Take Attendance'
+      
+      attendance = Attendance.last
+      expect(attendance.attendance_time).to eq(DateTime.parse("2023-01-10T09:00:00-07:00"))
+      expect(attendance.end_time).to eq(DateTime.parse("2023-01-10T12:00:00-07:00"))
+    end
   end
 
   context "With invalid ids" do

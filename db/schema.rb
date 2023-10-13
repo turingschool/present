@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_26_165406) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_13_155945) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_26_165406) do
     t.datetime "attendance_time", precision: nil
     t.string "meeting_type"
     t.bigint "meeting_id"
+    t.datetime "end_time"
     t.index ["meeting_type", "meeting_id"], name: "index_attendances_on_meeting_type_and_meeting_id"
     t.index ["turing_module_id"], name: "index_attendances_on_turing_module_id"
     t.index ["user_id"], name: "index_attendances_on_user_id"
