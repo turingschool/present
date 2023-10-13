@@ -123,19 +123,6 @@
         },
         {
             "id": "",
-            "user_id": "16787456",
-            "name": "Daniel C (he/him)# FE",
-            "user_email": "",
-            "join_time": "2023-08-23T15:24:27Z",
-            "leave_time": "2023-08-23T15:37:06Z",
-            "duration": 759,
-            "attentiveness_score": "",
-            "failover": false,
-            "status": "in_meeting",
-            "customer_key": ""
-        },
-        {
-            "id": "",
             "user_id": "16788480",
             "name": "Javen W",
             "user_email": "",
@@ -854,20 +841,6 @@
         },
         {
             "id": "",
-            "user_id": "16843776",
-            "name": "Daniel C (he/him)# FE",
-            "user_email": "",
-            "join_time": "2023-08-23T15:37:07Z",
-            "leave_time": "2023-08-23T15:42:28Z",
-            "duration": 321,
-            "attentiveness_score": "",
-            "bo_mtg_id": "DEkbn/UX4eraPjfbbpV3pQ==",
-            "failover": false,
-            "status": "in_meeting",
-            "customer_key": ""
-        },
-        {
-            "id": "",
             "user_id": "16844800",
             "name": "Alex K (He/Him) BE",
             "user_email": "",
@@ -1324,19 +1297,6 @@
             "duration": 306,
             "attentiveness_score": "",
             "bo_mtg_id": "DEkbn/UX4eraPjfbbpV3pQ==",
-            "failover": false,
-            "status": "in_meeting",
-            "customer_key": ""
-        },
-        {
-            "id": "",
-            "user_id": "16878592",
-            "name": "Daniel C (he/him)# FE",
-            "user_email": "",
-            "join_time": "2023-08-23T15:42:28Z",
-            "leave_time": "2023-08-23T15:58:44Z",
-            "duration": 976,
-            "attentiveness_score": "",
             "failover": false,
             "status": "in_meeting",
             "customer_key": ""
@@ -1975,20 +1935,6 @@
             "duration": 268,
             "attentiveness_score": "",
             "bo_mtg_id": "Vk4qez4gsBheCvr1xTzXgg==",
-            "failover": false,
-            "status": "in_meeting",
-            "customer_key": ""
-        },
-        {
-            "id": "",
-            "user_id": "16929792",
-            "name": "Daniel C (he/him)# FE",
-            "user_email": "",
-            "join_time": "2023-08-23T15:58:45Z",
-            "leave_time": "2023-08-23T16:03:13Z",
-            "duration": 268,
-            "attentiveness_score": "",
-            "bo_mtg_id": "DEkbn/UX4eraPjfbbpV3pQ==",
             "failover": false,
             "status": "in_meeting",
             "customer_key": ""
@@ -2716,19 +2662,6 @@
         },
         {
             "id": "",
-            "user_id": "16984064",
-            "name": "Daniel C (he/him)# FE",
-            "user_email": "",
-            "join_time": "2023-08-23T16:03:14Z",
-            "leave_time": "2023-08-23T16:26:35Z",
-            "duration": 1401,
-            "attentiveness_score": "",
-            "failover": false,
-            "status": "in_meeting",
-            "customer_key": ""
-        },
-        {
-            "id": "",
             "user_id": "16985088",
             "name": "Alexa V (she/her) FE",
             "user_email": "",
@@ -3244,20 +3177,6 @@
             "duration": 267,
             "attentiveness_score": "",
             "bo_mtg_id": "BkvN45whDBm7Xd0m6v8ToQ==",
-            "failover": false,
-            "status": "in_meeting",
-            "customer_key": ""
-        },
-        {
-            "id": "",
-            "user_id": "17026048",
-            "name": "Daniel C (he/him)# FE",
-            "user_email": "",
-            "join_time": "2023-08-23T16:26:35Z",
-            "leave_time": "2023-08-23T16:31:02Z",
-            "duration": 267,
-            "attentiveness_score": "",
-            "bo_mtg_id": "DEkbn/UX4eraPjfbbpV3pQ==",
             "failover": false,
             "status": "in_meeting",
             "customer_key": ""
