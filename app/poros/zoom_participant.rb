@@ -30,12 +30,10 @@ private
     if @join_time < meeting_time
       seconds_before_meeting_time = meeting_time - @join_time
       @duration -= seconds_before_meeting_time
-      @join_time = meeting_time
     end
     if @leave_time > meeting_end
       seconds_after_meeting_time = @leave_time - meeting_end
       @duration -= seconds_after_meeting_time
-      @leave_time = meeting_end
     end
   end
 end

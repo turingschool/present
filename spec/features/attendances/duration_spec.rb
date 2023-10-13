@@ -136,7 +136,9 @@ RSpec.describe "Duration" do
     end
   end
 
-  it 'does not include minutes before the meeting in duration' do
+  it 'does not include minutes before the populi attendance start in duration' do
+    # Populi attendance start is set to 9:29 in fixture
+
     lacey = @test_module.students.find_by(name: 'Lacey Weaver')
 
     visit attendance_path(@attendance)
@@ -148,12 +150,15 @@ RSpec.describe "Duration" do
     end
 
     within "#student-#{lacey.id} .duration" do
-      # This participant was present for 21 minutes, but only 7 of those were after the meeting start time
-      expect(page).to have_content("7")
+      # This participant was present from 9:16 - 9:37 giving them a duration of 21 minutes,
+      # but attendance doesn't start until 9:29 so they don't get duration for the 13 minutes before attendance starts
+      expect(page).to have_content("8")
     end
   end
   
-  it 'does not include minutes after the meeting in duration' do
+  it 'does not include minutes after the populi attendance end in duration' do
+    # Populi attendance start is set to 11:00 in fixture
+
     lacey = @test_module.students.find_by(name: 'Lacey Weaver')
 
     visit attendance_path(@attendance)
@@ -165,7 +170,9 @@ RSpec.describe "Duration" do
     end
 
     within "#student-#{lacey.id} .duration" do
-      expect(page).to have_content("90")
+      # This student was present from 10:31 - 11:01 giving them a duration of 30 minutes
+      # but the attedance time ends at 11:00 so they don't get duration for that extra minute after the attendance end
+      expect(page).to have_content("29")
     end
   end
 end

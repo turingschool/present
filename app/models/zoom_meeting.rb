@@ -88,7 +88,7 @@ private
 
   def create_participant_objects
     participant_report.map do |participant| 
-      ZoomParticipant.new(participant, self.start_time, self.end_time)
+      ZoomParticipant.new(participant, attendance.attendance_time, attendance.end_time)
     end
   end
 
