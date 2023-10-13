@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "Module Setup Account Matching" do
-  context 'user imports students from populi, imports a slack channel, and imports participants from a zoom meeting' do
+  context 'user imports students from populi and imports a slack channel' do
     before :each do
       @user = mock_login
       @mod = create(:turing_module, module_number: 2, program: :BE)
       @channel_id = "C02HRH7MF5K" 
-      @zoom_meeting_id = 96428502996
 
       stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"task"=>"getCurrentAcademicTerm"}).
@@ -19,12 +18,6 @@ RSpec.describe "Module Setup Account Matching" do
       stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
-
-      stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
-        .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
-
-      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@zoom_meeting_id}") \
-        .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))  
 
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))
@@ -41,9 +34,6 @@ RSpec.describe "Module Setup Account Matching" do
 
       fill_in :slack_channel_id, with: @channel_id
       click_button "Import Channel"
-
-      fill_in :zoom_meeting_id, with: @zoom_meeting_id
-      click_button "Import Zoom Accounts From Meeting"
     end
   
     it 'redirects to the account match page' do 
@@ -90,28 +80,6 @@ RSpec.describe "Module Setup Account Matching" do
       end
     end
 
-    it 'has a select field with the closest matching name from Zoom' do
-      within "#student-#{@anthony_b.id}" do
-        within '.zoom-select' do 
-          expect(page).to have_select(selected: "Anthony O. BE")
-          options = page.all('option')
-          expect(options[1].text).to eq("Anthony O. BE")
-          expect(options[2].text).to eq("Anhnhi T# BE")
-          expect(options[3].text).to eq("Anthony B. (He/Him) BE 2210")
-        end
-      end
-    
-      within "#student-#{@leo.id}" do
-        within '.zoom-select' do 
-          expect(page).to have_select(selected: "Leo BG# BE")
-          options = page.all('option')
-          expect(options[1].text).to eq("Leo BG# BE")
-          expect(options[2].text).to eq("Anthony B. (He/Him) BE 2210")
-          expect(options[3].text).to eq("Max M (she/her) be")
-        end
-      end
-    end
-
     xit 'has a select field with the closest matching name from Zoom that is more accurate' do
       within "#student-#{@anthony_b.id}" do
         within '.zoom-select' do 
@@ -124,36 +92,20 @@ RSpec.describe "Module Setup Account Matching" do
       end
     end
 
-    it 'only includes one option for each uniq zoom name' do
-      options = page.first('.zoom-select').all('option').map do |option|
-        option.text
-      end
-      expect(options.uniq.length).to eq(options.length)
-    end
-
     it 'user can make selections and complete account matching' do
       within "#student-#{@anthony_b.id}" do
-        within '.zoom-select' do 
-          select "Anthony B. (He/Him) BE 2210"
-        end
         within '.slack-select' do 
           select "Anthony Blackwell Tallent"
         end
       end
       
       within "#student-#{@j.id}" do
-        within '.zoom-select' do 
-          select "J Seymour (he/they) BE"
-        end
         within '.slack-select' do 
           select "J Seymour"
         end
       end
       
       within "#student-#{@leo.id}" do
-        within '.zoom-select' do 
-          select "Not Present"
-        end
         within '.slack-select' do 
           select "Not In Channel"
         end
@@ -165,10 +117,6 @@ RSpec.describe "Module Setup Account Matching" do
 
       visit turing_module_students_path(@mod)
       within "#student-#{@anthony_b.id}" do
-        within '.zoom-aliases' do
-          expect(page).to have_content("Anthony B. (He/Him) BE 2210")
-        end
-        
         within '.slack-id' do
           expect(page).to have_content('U035BQEGZ')
         end
@@ -179,10 +127,6 @@ RSpec.describe "Module Setup Account Matching" do
       end
 
       within "#student-#{@j.id}" do
-        within '.zoom-aliases' do
-          expect(page).to have_content("J Seymour (he/they) BE")
-        end
-        
         within '.slack-id' do
           expect(page).to have_content('U02199TD8SC')
         end
@@ -261,9 +205,6 @@ RSpec.describe "Module Setup Account Matching" do
 
       fill_in :slack_channel_id, with: @channel_id
       click_button "Import Channel"
-
-      fill_in :zoom_meeting_id, with: @zoom_meeting_id
-      click_button "Import Zoom Accounts From Meeting"
 
       within "#student-#{@anthony_b.id}" do
         within '.slack-select' do 

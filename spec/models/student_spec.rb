@@ -30,20 +30,5 @@ RSpec.describe Student, type: :model do
         expect(Student.have_slack_ids).to eq false
       end 
     end 
-
-    describe '::have_zoom_aliases?' do 
-      it 'returns true if some students have zoom ids' do 
-        create_list(:student, 3)
-        student = create(:student)
-        create(:zoom_alias, student: student)
-        
-        expect(Student.have_zoom_aliases?).to eq true
-      end 
-      
-      it 'returns false if no students have zoom ids' do 
-        students = create_list(:student, 5)
-        expect(Student.have_zoom_aliases?).to eq false
-      end 
-    end 
   end
 end

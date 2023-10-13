@@ -12,13 +12,8 @@ class Student < ApplicationRecord
   validates_uniqueness_of :populi_id, allow_blank: true
 
   def self.have_slack_ids 
-    # REFACTOR
-    !Student.where.not(slack_id: nil).empty?
+    Student.where.not(slack_id: nil).any?
   end 
-  
-  def self.have_zoom_aliases?
-    joins(:zoom_aliases).any?
-  end
 
   def latest_zoom_alias
     zoom_aliases.order(created_at: :DESC).limit(1).first
