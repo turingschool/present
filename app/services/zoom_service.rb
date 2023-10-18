@@ -11,21 +11,28 @@ class ZoomService
 
 private
   def self.conn
-    conn = Faraday.new(
+    Faraday.new(
       url: 'https://api.zoom.us',
       headers: {
         'Content-Type' => 'application/json',
-        'authorization' => "Bearer #{generate_jwt}"
+        'authorization' => "Bearer #{access_token}"
       }
     )
   end
 
-  def self.generate_jwt
-    payload = {
-      "iss": ENV['ZOOM_API_KEY'],
-      "exp": Time.now.to_i + 5
-    }
-    JWT.encode payload, ENV['ZOOM_API_SECRET'], 'HS256'
+  def self.access_token
+    Rails.cache.fetch("zoom_oauth_token", expires_in: 55.minutes) do
+      response = auth_conn.post
+      JSON.parse(response.body)["access_token"]
+    end
+  end  
+
+  def self.auth_conn
+    Faraday.new(url: "https://zoom.us/oauth/token") do |conn|
+      conn.request :basic_auth, ENV["ZOOM_CLIENT_ID"], ENV["ZOOM_CLIENT_SECRET"]
+      conn.params["grant_type"] = "account_credentials"
+      conn.params["account_id"] = ENV["ZOOM_ACCOUNT_ID"]
+    end
   end
 
   def self.parse_response(response)
