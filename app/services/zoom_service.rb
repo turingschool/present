@@ -39,6 +39,7 @@ private
 
   def self.access_token
     Rails.cache.fetch("zoom_oauth_token", expires_in: 55.minutes) do
+      Rails.logger.info "Requesting new Zoom Oauth Token"
       response = auth_conn.post do |req|
         req.body = {
           account_id: ENV["ZOOM_ACCOUNT_ID"],
