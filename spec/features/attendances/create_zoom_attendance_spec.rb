@@ -10,6 +10,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
       @test_zoom_meeting_id = 95490216907
       @test_module = create(:setup_module)
 
+      allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
+
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
@@ -71,6 +73,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
     end
 
     it 'shows a message if an invalid meeting id is entered' do
+      allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
+
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@invalid_zoom_id}") \
         .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
 
@@ -85,6 +89,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
     end
 
     it 'shows a message if no meeting id is entered' do
+      allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
+
       stub_request(:get, "https://api.zoom.us/v2/meetings/") \
         .to_return(body: File.read('spec/fixtures/zoom/endpoint_not_recognized.json'))
 
@@ -98,6 +104,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
     end
 
     it 'shows a message if a personal meeting room is entered' do
+      allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
+
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@invalid_zoom_id}") \
         .to_return(body: File.read('spec/fixtures/zoom/meeting_details_personal_room.json'))
 
@@ -113,6 +121,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
   context "With invalid Zoom URLs" do
     it "Shows an error message if the URL isn't continous, has spaces" do
+      allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
+
       stub_request(:get, "https://api.zoom.us/v2/meetings/92831928801 928 319 288 01") \
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
 
@@ -126,6 +136,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
     end
 
     it "Shows an error message if the meeting ID in the URL is missing digits." do
+      allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
+      
       stub_request(:get, "https://api.zoom.us/v2/meetings/9634435576") \
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details_invalid.json'))
 
@@ -143,6 +155,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
     before(:each) do
       @test_zoom_meeting_id = 95490216907
       @test_module = create(:setup_module)
+
+      allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/zoom/participant_report_not_ready.json'))
@@ -170,6 +184,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
       @test_zoom_meeting_id = 95490216907
       @test_module = create(:setup_module)
 
+      allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
+      
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
