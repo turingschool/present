@@ -6,6 +6,8 @@ RSpec.describe "Duration" do
     @test_module = create(:setup_module_no_aliases)
     @test_zoom_meeting_id = 95490216907
 
+    allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
+    
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
       .to_return(body: File.read('spec/fixtures/zoom/participant_report_for_duration.json'))
 

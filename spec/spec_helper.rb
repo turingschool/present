@@ -95,4 +95,13 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  config.before(:example, cache: true) do
+    allow(Rails).to receive(:cache).and_return(ActiveSupport::Cache.lookup_store(:memory_store))
+    Rails.cache.clear
+  end
+
+  config.after(:example, cache: true) do
+    allow(Rails).to receive(:cache).and_call_original
+  end
 end

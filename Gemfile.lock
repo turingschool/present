@@ -376,7 +376,6 @@ DEPENDENCIES
   fuzzy-string-match
   honeybadger (~> 5.2)
   importmap-rails
-  jwt
   kaminari
   launchy
   omniauth-google-oauth2
