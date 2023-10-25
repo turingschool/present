@@ -18,12 +18,16 @@ RSpec.describe "Module Setup Populi Workflow" do
       to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
     
     stub_request(:post, ENV['POPULI_API_URL']).
+      with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547876"}).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
+    
+    stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getAcademicTerms"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/academic_terms.xml'), headers: {})
     
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295898"}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
+      to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2308.xml'), headers: {})
   end
 
   it 'suggests the best match of module from the list of populi courses' do
@@ -31,6 +35,20 @@ RSpec.describe "Module Setup Populi Workflow" do
 
     within '#best-match' do
       expect(page).to have_content('BE Mod 2 - Web Application Development')
+      expect(page).to have_content('Inning: 2301')
+    end
+  end
+
+  it 'can get a best match with a launch module' do
+    stub_request(:post, ENV['POPULI_API_URL']).
+      with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2308.xml'), headers: {})
+
+    launch_mod = create(:turing_module, module_number: 1, program: :Launch)
+    visit turing_module_populi_integration_path(launch_mod)
+
+    within '#best-match' do
+      expect(page).to have_content('C#.NET Mod 1')
       expect(page).to have_content('Inning: 2301')
     end
   end
