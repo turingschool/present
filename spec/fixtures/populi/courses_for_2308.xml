@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+    <course_instance>
+        <instanceid>10548031</instanceid>
+        <courseid>1791161</courseid>
+        <name>Back End Prerequisite</name>
+        <abbrv>BE Mod 0</abbrv>
+        <section>1</section>
+        <primary_faculty_id></primary_faculty_id>
+        <primary_faculty_name></primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>0.00</hours>
+        <affects_earned_credits>0</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-10-27</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-10-27</closed_to_students_date>
+        <max_enrolled>28</max_enrolled>
+        <max_auditors>28</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37711</id>
+                <name>Back End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10547875</instanceid>
+        <courseid>1783729</courseid>
+        <name>Object Oriented Programming with Ruby</name>
+        <abbrv>BE Mod 1</abbrv>
+        <section>1</section>
+        <primary_faculty_id>24490048</primary_faculty_id>
+        <primary_faculty_name>Meg Stang</primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>180.00</hours>
+        <affects_earned_credits>1</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-11-17</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-11-17</closed_to_students_date>
+        <max_enrolled>35</max_enrolled>
+        <max_auditors>28</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37711</id>
+                <name>Back End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10547876</instanceid>
+        <courseid>1783735</courseid>
+        <name>Web Application Development</name>
+        <abbrv>BE Mod 2</abbrv>
+        <section>1</section>
+        <primary_faculty_id>24490052</primary_faculty_id>
+        <primary_faculty_name>Juliet Eyraud</primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>180.00</hours>
+        <affects_earned_credits>1</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-11-17</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-11-17</closed_to_students_date>
+        <max_enrolled>28</max_enrolled>
+        <max_auditors>0</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37711</id>
+                <name>Back End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10547877</instanceid>
+        <courseid>1783741</courseid>
+        <name>Professional Rails Applications</name>
+        <abbrv>BE Mod 3</abbrv>
+        <section>1</section>
+        <primary_faculty_id>24490050</primary_faculty_id>
+        <primary_faculty_name>Chris Simmons</primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>180.00</hours>
+        <affects_earned_credits>1</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-11-17</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-11-17</closed_to_students_date>
+        <max_enrolled>28</max_enrolled>
+        <max_auditors>0</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37711</id>
+                <name>Back End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10547878</instanceid>
+        <courseid>1783747</courseid>
+        <name>Cross-Team Processes and Applications</name>
+        <abbrv>BE Mod 4</abbrv>
+        <section>1</section>
+        <primary_faculty_id>24490051</primary_faculty_id>
+        <primary_faculty_name>Erin Pintozzi</primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>180.00</hours>
+        <affects_earned_credits>1</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-11-17</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-11-17</closed_to_students_date>
+        <max_enrolled></max_enrolled>
+        <max_auditors>0</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37711</id>
+                <name>Back End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10548048</instanceid>
+        <courseid>1791163</courseid>
+        <name>BE/FE Mod 0</name>
+        <abbrv>BE/FE Mod 0</abbrv>
+        <section>1</section>
+        <primary_faculty_id></primary_faculty_id>
+        <primary_faculty_name></primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>0.00</hours>
+        <affects_earned_credits>0</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-23</start_date>
+        <end_date>2023-10-29</end_date>
+        <open_to_students_date>2023-10-23</open_to_students_date>
+        <closed_to_students_date>2023-10-29</closed_to_students_date>
+        <max_enrolled></max_enrolled>
+        <max_auditors></max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37711</id>
+                <name>Back End Engineering IDL</name>
+            </program>
+            <program>
+                <id>37705</id>
+                <name>Front End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10548049</instanceid>
+        <courseid>1791163</courseid>
+        <name>BE/FE Mod 0</name>
+        <abbrv>BE/FE Mod 0</abbrv>
+        <section>2</section>
+        <primary_faculty_id></primary_faculty_id>
+        <primary_faculty_name></primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>0.00</hours>
+        <affects_earned_credits>0</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-11-06</start_date>
+        <end_date>2023-11-12</end_date>
+        <open_to_students_date>2023-11-06</open_to_students_date>
+        <closed_to_students_date>2023-11-12</closed_to_students_date>
+        <max_enrolled></max_enrolled>
+        <max_auditors></max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37711</id>
+                <name>Back End Engineering IDL</name>
+            </program>
+            <program>
+                <id>37705</id>
+                <name>Front End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10547978</instanceid>
+        <courseid>1791154</courseid>
+        <name>Object Oriented Programming</name>
+        <abbrv>C#.NET Mod 1</abbrv>
+        <section>1</section>
+        <primary_faculty_id>24490047</primary_faculty_id>
+        <primary_faculty_name>Richard Tillies</primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>144.00</hours>
+        <affects_earned_credits>1</affects_earned_credits>
+        <delivery_method_id></delivery_method_id>
+        <delivery_method_name></delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-11-17</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-11-17</closed_to_students_date>
+        <max_enrolled>28</max_enrolled>
+        <max_auditors>28</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37713</id>
+                <name>Launch IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10547977</instanceid>
+        <courseid>1791158</courseid>
+        <name>Advanced Programming Concepts</name>
+        <abbrv>C#.NET Mod 5</abbrv>
+        <section>1</section>
+        <primary_faculty_id>24490061</primary_faculty_id>
+        <primary_faculty_name>Megan McMahon</primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>144.00</hours>
+        <affects_earned_credits>1</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-11-17</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-11-17</closed_to_students_date>
+        <max_enrolled>28</max_enrolled>
+        <max_auditors>28</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37713</id>
+                <name>Launch IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10547879</instanceid>
+        <courseid>1783753</courseid>
+        <name>Fundamental Web Technologies</name>
+        <abbrv>FE Mod 1</abbrv>
+        <section>1</section>
+        <primary_faculty_id>24490038</primary_faculty_id>
+        <primary_faculty_name>Travis Rollins</primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>180.00</hours>
+        <affects_earned_credits>1</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-11-17</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-11-17</closed_to_students_date>
+        <max_enrolled>35</max_enrolled>
+        <max_auditors>28</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37705</id>
+                <name>Front End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10547880</instanceid>
+        <courseid>1783759</courseid>
+        <name>Web Development with JavaScript</name>
+        <abbrv>FE Mod 2</abbrv>
+        <section>1</section>
+        <primary_faculty_id>24490035</primary_faculty_id>
+        <primary_faculty_name>Robbie Jaeger</primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>180.00</hours>
+        <affects_earned_credits>1</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-11-17</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-11-17</closed_to_students_date>
+        <max_enrolled>28</max_enrolled>
+        <max_auditors>0</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37705</id>
+                <name>Front End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10547881</instanceid>
+        <courseid>1783771</courseid>
+        <name>Professional Client Side Development</name>
+        <abbrv>FE Mod 3</abbrv>
+        <section>1</section>
+        <primary_faculty_id>24490042</primary_faculty_id>
+        <primary_faculty_name>Heather Faerber</primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>180.00</hours>
+        <affects_earned_credits>1</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-11-17</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-11-17</closed_to_students_date>
+        <max_enrolled>28</max_enrolled>
+        <max_auditors>0</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37705</id>
+                <name>Front End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+    <course_instance>
+        <instanceid>10547878</instanceid>
+        <courseid>1791139</courseid>
+        <name>Cross-Team Processes and Applications</name>
+        <abbrv>FE Mod 4</abbrv>
+        <section>1</section>
+        <primary_faculty_id>24490051</primary_faculty_id>
+        <primary_faculty_name>Erin Pintozzi</primary_faculty_name>
+        <description></description>
+        <pass_fail>1</pass_fail>
+        <department_id>1</department_id>
+        <department_name>Software Development</department_name>
+        <credits>0.00</credits>
+        <hours>180.00</hours>
+        <affects_earned_credits>1</affects_earned_credits>
+        <delivery_method_id>1</delivery_method_id>
+        <delivery_method_name>Online</delivery_method_name>
+        <campus_id>0</campus_id>
+        <campus_name></campus_name>
+        <start_date>2023-10-09</start_date>
+        <end_date>2023-11-17</end_date>
+        <open_to_students_date>2023-10-09</open_to_students_date>
+        <closed_to_students_date>2023-11-17</closed_to_students_date>
+        <max_enrolled></max_enrolled>
+        <max_auditors>0</max_auditors>
+        <synced>0</synced>
+        <published>1</published>
+        <finalized>0</finalized>
+        <programs>
+            <program>
+                <id>37705</id>
+                <name>Front End Engineering IDL</name>
+            </program>
+        </programs>
+    </course_instance>
+</response>
