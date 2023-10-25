@@ -19,7 +19,11 @@ class TuringModule < ApplicationRecord
   end
 
   def name
-    "#{self.program} Mod #{self.module_number}"
+    if self.Launch?
+      "C#.NET Mod #{self.module_number}"  
+    else
+      "#{self.program} Mod #{self.module_number}"
+    end
   end
 
   def account_match_complete 
