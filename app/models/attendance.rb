@@ -72,4 +72,23 @@ class Attendance < ApplicationRecord
       end
     end
   end
+
+  def record_duration_from_presence_checks!
+    time_chunk_start = self.attendance_time
+    student_attendances = self.student_attendances.includes(:student)
+    student_attendances.update_all(duration: 0)
+    until time_chunk_start >= self.end_time
+      time_chunk_end = time_chunk_start + 15.minutes
+      time_chunk_end = self.end_time if time_chunk_end > self.end_time
+      student_attendances.each do |sa|
+        successful_checks = SlackPresenceCheck.where(student: sa.student, presence: :active, check_time: time_chunk_start...time_chunk_end)
+        if successful_checks.any?
+          chunk_length = ((time_chunk_end - time_chunk_start).to_f / 60).to_i
+          sa.duration += chunk_length
+        end
+      end
+      time_chunk_start += 15.minutes
+    end
+    student_attendances.each(&:save)
+  end
 end
