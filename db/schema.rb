@@ -49,6 +49,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_210742) do
     t.string "channel_id"
     t.string "sent_timestamp"
     t.datetime "start_time", precision: nil
+    t.boolean "presence_check_complete"
+  end
+
+  create_table "student_attendance_hours", force: :cascade do |t|
+    t.datetime "start"
+    t.datetime "end"
+    t.integer "duration"
+    t.integer "status"
+    t.bigint "student_attendance_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_attendance_id"], name: "index_student_attendance_hours_on_student_attendance_id"
   end
 
   create_table "student_attendances", force: :cascade do |t|
@@ -123,6 +135,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_210742) do
   add_foreign_key "attendances", "turing_modules"
   add_foreign_key "attendances", "users"
   add_foreign_key "slack_presence_checks", "students"
+  add_foreign_key "student_attendance_hours", "student_attendances"
   add_foreign_key "student_attendances", "attendances"
   add_foreign_key "student_attendances", "students"
   add_foreign_key "students", "turing_modules"
