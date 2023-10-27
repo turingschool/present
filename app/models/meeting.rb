@@ -28,5 +28,6 @@ class Meeting < ApplicationRecord
       best.assign_status!(attendance.attendance_time)
       student_attendance.update(duration: duration, status: best.status, join_time: best.join_time)
     end
+    return student_attendance
   end
 end

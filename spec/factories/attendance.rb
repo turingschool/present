@@ -3,6 +3,7 @@ FactoryBot.define do
     turing_module
     user
     attendance_time { Time.now }
+    end_time { Time.now + 1.hour }
     meeting {create(:zoom_meeting)}
 
     factory :attendance_with_student_attendances do

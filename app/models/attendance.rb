@@ -17,22 +17,6 @@ class Attendance < ApplicationRecord
     record
   end
 
-  # def take_participant_attendance
-  #   turing_module.students.each do |student|
-  #     meeting.take_attendance_for_student(student)
-  #   end
-    # meeting.participants.each do |participant|
-    #   student = meeting.find_student_from_participant(participant)
-    #   next if student.nil?
-    #   student_attendance = student_attendances.find_or_create_by(student: student)
-    #   student_attendance.update(duration: participant.duration)
-    #   participant.assign_status!(attendance_time)
-    #   if student_attendance.record_status_for_participant!(participant)
-    #     meeting.connect_alias(student_attendance, participant.name) if meeting.respond_to? :zoom_aliases
-    #   end
-    # end
-  # end
-
   def take_absentee_attendance
     student_ids = student_attendances.pluck(:student_id)
     absent_students = turing_module.students.where.not(id: student_ids)
