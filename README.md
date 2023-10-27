@@ -92,6 +92,7 @@ Keep in mind that the app will make real HTTP calls to the Zoom API and Google O
 
 * [Notion](https://www.notion.so/turingschool/Present-7a7ae18ee4044e4dbd18303f9fdeb20e)
 * [project board](https://www.notion.so/e2903cbd009d45329a9324d83cfb44ec?v=72ee4cad35ab44cab4b41c712e7b8dd0)
+* [Heroku](https://dashboard.heroku.com/pipelines/7dc60a3f-3ec7-4d3f-b224-fae3806473a3)
 * [Staging](https://present-staging.turing.edu/)
 * [CircleCI](https://app.circleci.com/pipelines/github/turingschool/present?filter=all)
 * [Wireframes](https://miro.com/app/board/o9J_luclx_c=/)
