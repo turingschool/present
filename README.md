@@ -93,6 +93,7 @@ If you would like to contribute, please contact @BrianZanti on Github or Turing 
 
 ## Developer Resources:
 
+* [Notion](https://www.notion.so/turingschool/Present-7a7ae18ee4044e4dbd18303f9fdeb20e)
 * [project board](https://www.notion.so/e2903cbd009d45329a9324d83cfb44ec?v=72ee4cad35ab44cab4b41c712e7b8dd0)
 * [Staging](https://present-staging.turing.edu/)
 * [CircleCI](https://app.circleci.com/pipelines/github/turingschool/present?filter=all)
@@ -100,3 +101,4 @@ If you would like to contribute, please contact @BrianZanti on Github or Turing 
 * [Saville Style System](https://savile.turing.edu/)
 * [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418)
 * [Zoom Marketplace](https://marketplace.zoom.us/)
+
