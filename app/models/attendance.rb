@@ -4,6 +4,7 @@ class Attendance < ApplicationRecord
   belongs_to :meeting, polymorphic: true
   has_many :student_attendances, dependent: :destroy
   has_many :students, through: :student_attendances
+  has_many :student_attendance_hours, through: :student_attendances
 
   validates_presence_of :attendance_time
 
