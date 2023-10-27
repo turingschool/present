@@ -77,7 +77,6 @@ RSpec.describe 'Student Attendance By Hours' do
     end
 
     it 'records student_attendance_hours' do
-      
       slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
 
       visit turing_module_path(@test_module)

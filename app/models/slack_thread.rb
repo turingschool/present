@@ -37,6 +37,16 @@ class SlackThread < Meeting
   def record_duration_from_presence_checks!
     # First create the student attendance hours,
     # Then as we're checking duration, also update the attendance hours
+    num_hours = ((self.attendance.end_time - self.attendance.attendance_time).to_f / 3600).to_i
+    student_attendance_hours = [{start: , end: , duration: , status: , student_attendance_id: }]
+    student_attendances = self.attendance.student_attendances
+    num_hours.times do |hour|
+      start = self.attendance.attendance_time + (hour * 1.hour)
+      end_time = start + 1.hour
+      student_attendance_hours += student_attendances.map do |student_attendance|
+        {student_attendance_id: student_attendance.id, duration: 0, status: :absent, start: start, end: end_time}
+      end
+    end
     time_chunk_start = self.attendance.attendance_time
     student_attendances = self.attendance.student_attendances.includes(:student)
     student_attendances.update_all(duration: 0)

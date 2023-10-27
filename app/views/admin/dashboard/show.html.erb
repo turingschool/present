@@ -1,18 +1,29 @@
 <h1>Admin Dashboard</h1>
 
-<h2>Innings</h2>
-<%= link_to "Create New Inning", new_admin_inning_path %>
-<section class="innings-list">
-<% @innings.each do |inning| %>
-  <ul>
-  <section id="inning-<%= inning.id %>">
-    <%= link_to "Edit", edit_admin_inning_path(inning) %>
-    <% if inning.current %>
-      <%= "#{inning.name} - Start Date: #{inning.start_date.strftime('%d%b%Y')} (Current Inning)" %>
-    <% else %>
-      <%= "#{inning.name} - Start Date: #{inning.start_date.strftime('%d%b%Y')}" %>
+<section id='innings'>
+  <h2>Innings</h2>
+  <%= link_to "Create New Inning", new_admin_inning_path %>
+  <section class="innings-list">
+    <% @innings.each do |inning| %>
+      <ul>
+      <section id="inning-<%= inning.id %>">
+        <%= link_to "Edit", edit_admin_inning_path(inning) %>
+        <% if inning.current %>
+          <%= "#{inning.name} - Start Date: #{inning.start_date.strftime('%d%b%Y')} (Current Inning)" %>
+        <% else %>
+          <%= "#{inning.name} - Start Date: #{inning.start_date.strftime('%d%b%Y')}" %>
+        <% end %>
+      </section>
+      </ul>
     <% end %>
   </section>
-  </ul>
-<% end %>
+</section>
+<section id='available-reports'>
+  <h2>Reports</h2>
+  <section id="current-inning-report">
+    <%= form_with url: admin_reports_path, method: :get do |f| %>
+      <%= f.label "Current Inning report" %>
+      <%= f.submit "Generate Report" %>
+    <% end %>
+  </section>
 </section>

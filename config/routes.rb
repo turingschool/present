@@ -1,4 +1,5 @@
 require 'sidekiq/web'
+require 'sidekiq/cron/web'
 
 VERIFY_USER = lambda do |request|
   return false unless request.session[:user_id]
@@ -47,5 +48,6 @@ Rails.application.routes.draw do
     get '/', to: 'dashboard#show'
     resources :innings, only: [:update, :edit, :new, :create]
     resources :slack_presence_checks, only: [:index]
+    resources :reports, only: [:index]
   end
 end
