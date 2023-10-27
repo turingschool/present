@@ -87,9 +87,6 @@ Keep in mind that the app will make real HTTP calls to the Zoom API and Google O
 
 ![Schema](./doc/schema.jpg)
 
-## Contributing
-
-If you would like to contribute, please contact @BrianZanti on Github or Turing Slack.
 
 ## Developer Resources:
 
