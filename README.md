@@ -59,7 +59,7 @@ POPULI_API_URL: https://turing-validation.populi.co/api/
 
 To obtain the Google Cloud credentials, you will need to create an application in the Google Cloud Console and create OAuth Credentials for a Web Application. Register `http://localhost:3000/auth/google_oauth2/callback` as an Authorized Redirect URI.
 
-To obtain Zoom credentials, you will need to follow [these instructions(https://developers.zoom.us/docs/internal-apps/create/) to create a Server to Server Oauth App with Zoom. You will need to select scopes for getting meeting details and reports. **note** You may need elevated permissions for your Zoom account to be able to select the required scopes.
+To obtain Zoom credentials, you will need to follow [these instructions](https://developers.zoom.us/docs/internal-apps/create/) to create a Server to Server Oauth App with Zoom. You will need to select scopes for getting meeting details and reports. **note** You may need elevated permissions for your Zoom account to be able to select the required scopes.
 
 If you do not wish to use Figaro you will need to use another method to set the above referenced environment variables.
 
