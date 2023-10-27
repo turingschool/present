@@ -96,6 +96,7 @@ Keep in mind that the app will make real HTTP calls to the Zoom API and Google O
 * [Heroku](https://dashboard.heroku.com/pipelines/7dc60a3f-3ec7-4d3f-b224-fae3806473a3)
 * [Staging](https://present-staging.turing.edu/)
 * [CircleCI](https://app.circleci.com/pipelines/github/turingschool/present?filter=all)
+* [Postman Suite](https://turing-school-student-plan-team.postman.co/workspace/Present~5f3853b2-37ad-482e-9086-ced13c20e5d3)
 * [Wireframes](https://miro.com/app/board/o9J_luclx_c=/)
 * [Saville Style System](https://savile.turing.edu/)
 * [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418)
