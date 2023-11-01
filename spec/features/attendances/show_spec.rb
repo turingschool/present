@@ -5,6 +5,7 @@ RSpec.describe 'attendance show page' do
 
   before :each do
     @user = mock_login
+    @module = create(:turing_module)
   end
 
   it 'links to the module and shows attendance date, time, and title' do
@@ -16,7 +17,22 @@ RSpec.describe 'attendance show page' do
     expect(page).to have_content(@test_attendance.meeting.title)
     expect(page).to have_content(pretty_date(@test_attendance.attendance_time))
     expect(page).to have_content(pretty_time(@test_attendance.attendance_time))
-  end  
+  end
+
+  it "has a link to delete attendance record" do
+    test_attendance = create(:zoom_attendance, turing_module: @module)
+
+    visit "/attendances/#{test_attendance.id}"
+
+    expect(page).to have_link("Delete Attendance")
+    expect(@module.attendances.count).to eq(1)
+
+    click_link "Delete Attendance"
+
+    expect(current_path).to eq(turing_module_path(@module))
+    expect(page).to have_content("Attendance successfully deleted.")
+    expect(@module.attendances.count).to eq(0)
+  end
 
   context "for a Zoom meeting" do
     before(:each) do
