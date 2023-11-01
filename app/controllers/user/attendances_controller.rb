@@ -42,4 +42,12 @@ class User::AttendancesController < User::BaseController
     attendance.rerecord
     redirect_to attendance_path(attendance)
   end
+
+  def destroy
+    attendance = Attendance.find(params[:id])
+    module_id = attendance.turing_module.id
+    attendance.destroy
+    redirect_to turing_module_path(module_id)
+    flash[:sucess] = "Attendance successfully deleted."
+  end
 end
