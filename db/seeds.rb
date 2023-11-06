@@ -1,4 +1,4 @@
-inning = Inning.create!(name: "2203", current: true, start_date: Date.today)
+inning = Inning.create!(name: Date.today.strftime("%y%m"), current: true, start_date: Date.today)
 
 mod4 = inning.turing_modules.create!(program: 'Combined', module_number: 4)
 fe1 = inning.turing_modules.create!(program: 'FE', module_number: 1)
