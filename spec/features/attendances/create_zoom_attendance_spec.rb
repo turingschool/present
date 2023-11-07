@@ -177,7 +177,39 @@ RSpec.describe 'Creating a Zoom Attendance' do
 
       expect(page).to have_content("That Zoom Meeting does not have any participants yet. This could be because the meeting is still in progress. Please try again later.")
     end
+
   end
+  
+  context 'meeting has zero participants' do
+    before(:each) do
+      @test_zoom_meeting_id = 95490216907
+      @test_module = create(:setup_module)
+
+      allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
+
+      stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
+        .to_return(body: File.read('spec/fixtures/zoom/participant_report_not_ready.json'))
+
+      stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
+        .to_return(body: File.read('spec/fixtures/zoom/meeting_details_with_zero_participants.json'))
+
+      stub_request(:post, ENV['POPULI_API_URL']).
+        with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@test_module.populi_course_id}).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+    end
+
+    it 'flashes a message letting the user know that there are no participants in the meeting and does not create attendance record' do
+      visit turing_module_path(@test_module)
+      expect(Attendance.all.count).to eq(0)
+
+      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
+      click_button 'Take Attendance'
+      
+      expect(Attendance.all.count).to eq(0)
+      expect(page).to have_content("That Zoom Meeting does not have any participants yet. This could be because the meeting is still in progress. Please try again later.")
+    end
+  end
+    
 
   context "the participant report is updated" do
     before(:each) do
