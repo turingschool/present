@@ -11,7 +11,8 @@ class SlackThread < Meeting
     create({
       channel_id: channel_id,
       sent_timestamp: sent_timestamp,
-      start_time: start_time  
+      start_time: start_time,
+      presence_check_complete: false
     })
   end
 

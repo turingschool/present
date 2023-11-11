@@ -55,7 +55,6 @@ class Inning < ApplicationRecord
     end
   end
 
-
   def create_turing_modules
     turing_modules.create!(program: 'Combined', module_number: 4)
     3.times do |i|

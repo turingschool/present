@@ -7,7 +7,6 @@ RSpec.describe SlackThread do
 
   describe "Instance Methods" do
     describe "#record_duration_from_presence_checks!" do
-
       context "class is 3 hours long" do
         before :each do
           @test_module = create(:turing_module)
@@ -186,6 +185,13 @@ RSpec.describe SlackThread do
           expect(@flaky_student.student_attendance_hours.count).to eq(3) # No new attendance hours should be created
           expect(@flaky_student.student_attendance_hours.first.duration).to eq(60) # Previous data should be overwritten
           expect(@flaky_student.student_attendance_hours.first.status).to eq("present") # Previous data should be overwritten
+        end
+
+        it 'marks the slack thread presence check as complete' do
+          expect(@slack_thread.presence_check_complete).to_not eq(true)
+          @slack_thread.record_duration_from_presence_checks!
+          @slack_thread.reload
+          expect(@slack_thread.presence_check_complete).to eq(true)
         end
       end  
 

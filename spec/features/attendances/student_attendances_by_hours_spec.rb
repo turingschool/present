@@ -31,20 +31,20 @@ RSpec.describe 'Student Attendance By Hours' do
       attendance = Attendance.last
       expect(attendance.student_attendance_hours.count).to eq(3 * 6) # This class was 3 hours long and there are 6 students
 
-      leo = Student.find_by(name: "Leo Banos Garcia")
-      hours = leo.student_attendance_hours.order(:start)
+      flaky_student = Student.find_by(name: "Leo Banos Garcia")
+      hours = flaky_student.student_attendance_hours.order(:start)
       expect(hours.first.start).to eq(attendance.attendance_time)
-      expect(hours.first.end).to eq(attendance.attendance_time + 1.hour)
+      expect(hours.first.end_time).to eq(attendance.attendance_time + 1.hour)
       expect(hours.first.duration).to eq(60) # Duration greater than or equal to 50 minutes out of the hour counts as present
       expect(hours.first.status).to eq("present")
 
       expect(hours.second.start).to eq(attendance.attendance_time + 1.hour)
-      expect(hours.second.end).to eq(attendance.attendance_time + 2.hours)
+      expect(hours.second.end_time).to eq(attendance.attendance_time + 2.hours)
       expect(hours.second.duration).to eq(60) # Duration greater than 50 minutes out of the hour counts as present
       expect(hours.second.status).to eq("present")
 
       expect(hours.third.start).to eq(attendance.attendance_time + 2.hours)
-      expect(hours.third.end).to eq(attendance.end_time)
+      expect(hours.third.end_time).to eq(attendance.end_time)
       expect(hours.third.duration).to eq(49) # Duration less than 50 minutes out of the hour counts as absent
       expect(hours.third.status).to eq("absent")
     end
@@ -74,62 +74,67 @@ RSpec.describe 'Student Attendance By Hours' do
       stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"instanceID"=>@test_module.populi_course_id, "task"=>"getCourseInstanceMeetings"}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
-    end
 
-    it 'records student_attendance_hours' do
       slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
 
       visit turing_module_path(@test_module)
       fill_in :attendance_meeting_url, with: slack_url
       click_button 'Take Attendance'
-   
-      attendance = Attendance.last
 
-      leo = Student.find_by(name: "Leo Banos Garcia")
-      anhnhi = Student.find_by(name: "Anhnhi Tran")
-      sam = Student.find_by(name: "Samuel Cox")
-      lacey = Student.find_by(name: "'Lacey Weaver'")
+      @attendance = Attendance.last
+
+      @flaky_student = Student.find_by(name: "Leo Banos Garcia")
+      @present_student = Student.find_by(name: "Anhnhi Tran")
+      @absent_student = Student.find_by(name: "Samuel Cox")
+      @error_student = Student.find_by(name: "Lacey Weaver")
+
       36.times do |i|
-        check_time = attendance.attendance_time + 2.minutes + (5.minutes * i) # Checks happen every 5 minutes starting 2 minutes past attendance time
+        check_time = @attendance.attendance_time + 2.minutes + (5.minutes * i) # Checks happen every 5 minutes starting 2 minutes past attendance time
         flaky_presence = i % 5 == 0 ? :active : :away # The flaky student is active for every 5th check starting with the first one
-        create(:slack_presence_check, student: leo, check_time: check_time, presence: flaky_presence)
-        create(:slack_presence_check, student: anhnhi, check_time: check_time, presence: :active)
-        create(:slack_presence_check, student: sam, check_time: check_time, presence: :away)
+        create(:slack_presence_check, student: @flaky_student, check_time: check_time, presence: flaky_presence)
+        create(:slack_presence_check, student: @present_student, check_time: check_time, presence: :active)
+        create(:slack_presence_check, student: @absent_student, check_time: check_time, presence: :away)
       end
-      # For Leo (the flaky student), the end result is that Leo is present for 3/4 of the 15 minute checks of the first hour,
-      # 2/4 of the 15 minute checks of the second hour, and 3/4 of the 15 minute checks of the third hour,
+      # For the flaky student, the end result is that they are present for 3/4 of the 15 minute checks of the first hour,
+      # 2/4 of the 15 minute checks of the second hour, and 3/4 of the 15 minute checks of the third hour
 
       @test_module.inning.process_presence_data_for_slack_attendances! # manually call this method. In production this will be called from a cron job
+    end
 
-      expect(attendance.student_attendance_hours.count).to eq(3 * 6) # This class was 3 hours long and there are 6 students
+    it 'records student_attendance_hours' do
+      expect(@attendance.student_attendance_hours.count).to eq(3 * 6) # This class was 3 hours long and there are 6 students
 
-      expect(leo.student_attendance_hours.first.duration).to eq(45)
-      expect(leo.student_attendance_hours.first.status).to eq(:absent)
-      expect(leo.student_attendance_hours.second.duration).to eq(30)
-      expect(leo.student_attendance_hours.second.status).to eq(:absent)
-      expect(leo.student_attendance_hours.third.duration).to eq(45)
-      expect(leo.student_attendance_hours.third.status).to eq(:absent)
+      expect(@flaky_student.student_attendance_hours.first.duration).to eq(45)
+      expect(@flaky_student.student_attendance_hours.first.status).to eq("absent")
+      expect(@flaky_student.student_attendance_hours.second.duration).to eq(30)
+      expect(@flaky_student.student_attendance_hours.second.status).to eq("absent")
+      expect(@flaky_student.student_attendance_hours.third.duration).to eq(45)
+      expect(@flaky_student.student_attendance_hours.third.status).to eq("absent")
       
-      expect(anhnhi.student_attendance_hours.first.duration).to eq(60)
-      expect(anhnhi.student_attendance_hours.first.status).to eq(:present)
-      expect(anhnhi.student_attendance_hours.second.duration).to eq(60)
-      expect(anhnhi.student_attendance_hours.second.status).to eq(:present)
-      expect(anhnhi.student_attendance_hours.third.duration).to eq(60)
-      expect(anhnhi.student_attendance_hours.third.status).to eq(:present)
+      expect(@present_student.student_attendance_hours.first.duration).to eq(60)
+      expect(@present_student.student_attendance_hours.first.status).to eq("present")
+      expect(@present_student.student_attendance_hours.second.duration).to eq(60)
+      expect(@present_student.student_attendance_hours.second.status).to eq("present")
+      expect(@present_student.student_attendance_hours.third.duration).to eq(60)
+      expect(@present_student.student_attendance_hours.third.status).to eq("present")
       
-      expect(sam.student_attendance_hours.first.duration).to eq(0)
-      expect(sam.student_attendance_hours.first.status).to eq(:absent)
-      expect(sam.student_attendance_hours.second.duration).to eq(0)
-      expect(sam.student_attendance_hours.second.status).to eq(:absent)
-      expect(sam.student_attendance_hours.third.duration).to eq(0)
-      expect(sam.student_attendance_hours.third.status).to eq(:absent)
+      expect(@absent_student.student_attendance_hours.first.duration).to eq(0)
+      expect(@absent_student.student_attendance_hours.first.status).to eq("absent")
+      expect(@absent_student.student_attendance_hours.second.duration).to eq(0)
+      expect(@absent_student.student_attendance_hours.second.status).to eq("absent")
+      expect(@absent_student.student_attendance_hours.third.duration).to eq(0)
+      expect(@absent_student.student_attendance_hours.third.status).to eq("absent")
       
-      expect(lacey.student_attendance_hours.first.duration).to eq(0)
-      expect(lacey.student_attendance_hours.first.status).to eq(:absent)
-      expect(lacey.student_attendance_hours.second.duration).to eq(0)
-      expect(lacey.student_attendance_hours.second.status).to eq(:absent)
-      expect(lacey.student_attendance_hours.third.duration).to eq(0)
-      expect(lacey.student_attendance_hours.third.status).to eq(:absent)
+      expect(@error_student.student_attendance_hours.first.duration).to eq(0)
+      expect(@error_student.student_attendance_hours.first.status).to eq("absent")
+      expect(@error_student.student_attendance_hours.second.duration).to eq(0)
+      expect(@error_student.student_attendance_hours.second.status).to eq("absent")
+      expect(@error_student.student_attendance_hours.third.duration).to eq(0)
+      expect(@error_student.student_attendance_hours.third.status).to eq("absent")
+    end
+
+    it 'marks the slack thread presence check as complete' do
+      expect(@attendance.meeting.presence_check_complete).to eq(true)
     end
   end
 end
