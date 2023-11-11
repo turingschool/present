@@ -80,18 +80,15 @@ class SlackThread < Meeting
     end
     student_attendances.each(&:save)
     StudentAttendanceHour.upsert_all(student_attendance_hours, unique_by: [:student_attendance_id, :start])
+    self.update(presence_check_complete: true)
   end
 
   def find_attendance_hour(grouped_attendance_hours, student_attendance_id, target_time)
-    # begin
-      attendance_hours = grouped_attendance_hours.find do |start, attendance_hours|
-        target_time - start < 1.hour
-      end
-      attendance_hours.last.find do |attendance_hour|
-        attendance_hour[:student_attendance_id] == student_attendance_id
-      end
-    # rescue => e
-      # require 'pry';binding.pry
-    # end
+    attendance_hours = grouped_attendance_hours.find do |start, attendance_hours|
+      target_time - start < 1.hour
+    end
+    attendance_hours.last.find do |attendance_hour|
+      attendance_hour[:student_attendance_id] == student_attendance_id
+    end
   end
 end

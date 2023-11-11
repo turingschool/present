@@ -37,17 +37,6 @@ class ZoomMeeting < Meeting
     end
   end
 
-  # def take_attendance_for_student(student)
-  #   matching_participants = participants.find_all do |participant|
-  #     student.zoom_aliases.pluck(:name).include?(participant.name)
-  #   end
-  #   total_duration = matching_participants.sum(&:duration)
-  #   best_status = best_status(matching_participants)
-  #   student_attendance = attendance.student_attendances.find_or_create_by(student: student)
-  #   student_attendance.update(duration: total_duration, status: best_status)
-  #   # require 'pry';binding.pry if student.name == "Lacey Weaver"
-  # end
-
   def participants
     @participants ||= create_participant_objects
   end
