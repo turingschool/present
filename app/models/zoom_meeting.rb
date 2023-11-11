@@ -120,7 +120,8 @@ private
       end_time = start + 1.hour
       time_in_hour = calculate_time_in_hour(start, end_time, matching_participants)
       status = time_in_hour >= 50 ? :present : :absent
-      attendance_hour = student_attendance.student_attendance_hours.create!(start: start, end: end_time, duration: time_in_hour, status: status)
+      attributes = {start: start, end_time: end_time, duration: time_in_hour, status: status}
+      attendance_hour = student_attendance.student_attendance_hours.upsert(attributes, unique_by: [:student_attendance_id, :start])
     end
   end
 
