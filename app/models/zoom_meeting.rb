@@ -127,8 +127,6 @@ private
 
   def calculate_time_in_hour(start_time, end_time, participants)
     seconds = participants.sum do |participant|
-      participant.join_time
-      participant.leave_time
       if participant.join_time >= start_time && participant.leave_time < end_time # this participation falls within the hour
         participant.duration
       elsif participant.join_time < start_time && participant.leave_time > end_time # this participation starts before the hour and ends after the hour
