@@ -35,17 +35,28 @@ class SlackThread < Meeting
   end
 
   def record_duration_from_presence_checks!
-    # First create the student attendance hours,
-    # Then as we're checking duration, also update the attendance hours
     num_hours = ((self.attendance.end_time - self.attendance.attendance_time).to_f / 3600).to_i
-    student_attendance_hours = [{start: , end: , duration: , status: , student_attendance_id: }]
+    tail_minutes = (((self.attendance.end_time - self.attendance.attendance_time).to_f % 3600) / 60).to_i
+    student_attendance_hours = []
     student_attendances = self.attendance.student_attendances
     num_hours.times do |hour|
       start = self.attendance.attendance_time + (hour * 1.hour)
       end_time = start + 1.hour
       student_attendance_hours += student_attendances.map do |student_attendance|
-        {student_attendance_id: student_attendance.id, duration: 0, status: :absent, start: start, end: end_time}
+        {student_attendance_id: student_attendance.id, duration: 0, status: :absent, start: start, end_time: end_time}
       end
+    end
+
+    if tail_minutes != 0
+      start = self.attendance.attendance_time + (num_hours * 1.hour)
+      end_time = start + tail_minutes.minutes
+      student_attendance_hours += student_attendances.map do |student_attendance|
+        {student_attendance_id: student_attendance.id, duration: 0, status: :absent, start: start, end_time: end_time}
+      end
+    end
+
+    grouped_attendance_hours = student_attendance_hours.group_by do |attendance_hour|
+      attendance_hour[:start]
     end
     time_chunk_start = self.attendance.attendance_time
     student_attendances = self.attendance.student_attendances.includes(:student)
@@ -58,12 +69,28 @@ class SlackThread < Meeting
         if successful_checks.any?
           chunk_length = ((time_chunk_end - time_chunk_start).to_f / 60).to_i
           student_attendance.duration += chunk_length
+          student_attendance_hour = find_attendance_hour(grouped_attendance_hours, student_attendance.id, time_chunk_start)
+          student_attendance_hour[:duration] += chunk_length
+          present_threshold = ((student_attendance_hour[:end_time] - student_attendance_hour[:start]) / 60 * (5.0 / 6.0)).to_i
+          student_attendance_hour[:status] = :present if student_attendance_hour[:duration] >= present_threshold
         end
       end
       time_chunk_start += 15.minutes
     end
     student_attendances.each(&:save)
+    StudentAttendanceHour.upsert_all(student_attendance_hours, unique_by: [:student_attendance_id, :start])
+  end
 
-
+  def find_attendance_hour(grouped_attendance_hours, student_attendance_id, target_time)
+    # begin
+      attendance_hours = grouped_attendance_hours.find do |start, attendance_hours|
+        target_time - start < 1.hour
+      end
+      attendance_hours.last.find do |attendance_hour|
+        attendance_hour[:student_attendance_id] == student_attendance_id
+      end
+    # rescue => e
+      # require 'pry';binding.pry
+    # end
   end
 end
