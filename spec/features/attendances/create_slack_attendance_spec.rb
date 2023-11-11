@@ -61,5 +61,18 @@ RSpec.describe 'Creating an Attendance' do
       expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Join Time" => "1:05")
       expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Join Time" => "12:46")
     end
+
+    it 'marks the slack thread as incomplete for presence checks' do
+      slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
+
+      visit turing_module_path(@test_module)
+
+      fill_in :attendance_meeting_url, with: slack_url
+      click_button 'Take Attendance'
+
+      attendance = Attendance.last
+
+      expect(attendance.meeting.presence_check_complete).to eq(false)
+    end
   end
 end 

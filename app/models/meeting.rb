@@ -3,6 +3,7 @@ class Meeting < ApplicationRecord
 
   has_one :attendance, as: :meeting
   has_one :turing_module, through: :attendance
+  has_one :inning, through: :turing_module
 
   def closest_populi_meeting_to_start_time(course_id)
     meeting_data = PopuliService.new.course_meetings(course_id)[:response][:meeting].min_by do |data|
@@ -28,5 +29,6 @@ class Meeting < ApplicationRecord
       best.assign_status!(attendance.attendance_time)
       student_attendance.update(duration: duration, status: best.status, join_time: best.join_time)
     end
+    return student_attendance
   end
 end

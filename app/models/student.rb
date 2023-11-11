@@ -2,6 +2,7 @@ class Student < ApplicationRecord
   belongs_to :turing_module, optional: true
   has_many :student_attendances, dependent: :destroy
   has_many :attendances, through: :student_attendances
+  has_many :student_attendance_hours, through: :student_attendances
   has_many :zoom_aliases
   has_many :slack_presence_checks
 

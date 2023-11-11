@@ -49,6 +49,11 @@ class Inning < ApplicationRecord
     end
   end
 
+  def process_presence_data_for_slack_attendances!
+    SlackThread.joins(:inning).where(inning: {id: self.id}, presence_check_complete: false).each do |slack_thread|
+      slack_thread.record_duration_from_presence_checks!
+    end
+  end
 
   def create_turing_modules
     turing_modules.create!(program: 'Combined', module_number: 4)

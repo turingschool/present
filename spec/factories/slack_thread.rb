@@ -4,6 +4,7 @@ FactoryBot.define do
       channel_id {"C02HRH7MF5K"}
       sent_timestamp {"1672861516089859"}
       start_time { Time.parse("2022-11-30T20:00:59.999+00:00")}
+      presence_check_complete { false }
     end
   end
 end

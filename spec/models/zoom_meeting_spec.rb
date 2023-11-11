@@ -6,4 +6,8 @@ RSpec.describe ZoomMeeting do
     it {should have_one :attendance}
     it {should have_one(:turing_module).through(:attendance)}
   end
+
+  describe "instance methods" do
+    describe "#record_student_attendance_hours"
+  end
 end

@@ -1,5 +1,5 @@
 class SlackThreadParticipant
-  attr_reader :slack_id, :status, :join_time
+  attr_reader :slack_id, :status, :join_time, :leave_time
 
   SLACK_TARDY_GRACE_PERIOD_IN_MINUTES = 5
   SLACK_ABSENT_GRACE_PERIOD_IN_MINUTES = 30

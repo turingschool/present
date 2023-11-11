@@ -11,6 +11,7 @@ RSpec.describe Attendance, type: :model do
     it {should belong_to(:meeting)} 
     it {should have_many :student_attendances}
     it {should have_many(:students).through(:student_attendances)}
+    it {should have_many(:student_attendance_hours).through(:student_attendances)}
   end
   
   describe 'instance methods' do

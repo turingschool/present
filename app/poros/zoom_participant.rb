@@ -1,5 +1,5 @@
 class ZoomParticipant
-  attr_reader :status, :join_time, :name
+  attr_reader :status, :join_time, :leave_time, :name
   attr_accessor :duration
 
   ZOOM_TARDY_GRACE_PERIOD_IN_MINUTES = 1
