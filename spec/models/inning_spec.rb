@@ -151,23 +151,13 @@ RSpec.describe Inning, type: :model do
         @module, @other_module = create_list(:turing_module, 2, inning: @current_inning)
         @attendance_check_complete = create(:slack_attendance, :presence_check_complete, turing_module: @module)
         @attendance_check_incomplete = create(:slack_attendance, :presence_check_incomplete, turing_module: @module)
+        create(:student_attendance, attendance: @attendance_check_incomplete)
         @other_attendance_check_complete = create(:slack_attendance, :presence_check_complete, turing_module: @other_module)
         @other_attendance_check_incomplete = create(:slack_attendance, :presence_check_incomplete, turing_module: @other_module)
+        create(:student_attendance, attendance: @other_attendance_check_incomplete)
         @zoom_attendance = create(:zoom_attendance, turing_module: @other_module)
-        # 1 current inning
-        # 2 modules for the inning (2 total)
-        # 4 students in each module (8 total)
-        # 2 attendances for each module (4 total)
-            # one with presence check complete 
-            # each one is an hour in length
-        # For the attendances with presence check not complete
-          # one student has no presence checks
-          # one student active presence checks for some of the 15 minute blocks
-          # one student has active presence checks for all of the 15 minute blocks
-          # one student has away presence checks for all of the 15 minute blocks
       end
 
-      
       it "will change slack attendances that haven't been marked complete" do
         expect { @current_inning.process_presence_data_for_slack_attendances! }.
           to change { @attendance_check_incomplete.student_attendance_hours.count} 
