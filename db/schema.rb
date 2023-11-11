@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_26_210742) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_11_191604) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,12 +54,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_210742) do
 
   create_table "student_attendance_hours", force: :cascade do |t|
     t.datetime "start"
-    t.datetime "end"
+    t.datetime "end_time"
     t.integer "duration"
     t.integer "status"
     t.bigint "student_attendance_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["student_attendance_id", "start"], name: "student_attendance_hours_unique_by_student_attendance_and_start", unique: true
     t.index ["student_attendance_id"], name: "index_student_attendance_hours_on_student_attendance_id"
   end
 
