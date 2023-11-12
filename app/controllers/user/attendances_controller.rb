@@ -45,8 +45,10 @@ class User::AttendancesController < User::BaseController
 
   def destroy
     attendance = Attendance.find(params[:id])
-    module_id = attendance.turing_module.id
-    attendance.destroy
+    module_id = attendance.turing_module.id    
+    if attendance.destroy
+      logger.info("Attendance #{attendance.id} deleted by user #{current_user.email}. Deleted Attendance Details: #{attendance.attributes.inspect}")
+    end
     redirect_to turing_module_path(module_id)
     flash[:sucess] = "Attendance successfully deleted."
   end
