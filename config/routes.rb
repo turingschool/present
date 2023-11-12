@@ -47,5 +47,7 @@ Rails.application.routes.draw do
     get '/', to: 'dashboard#show'
     resources :innings, only: [:update, :edit, :new, :create]
     resources :slack_presence_checks, only: [:index]
+    resources :reports, only: [:index]
+    get "/students/:student_id/report", to: "reports#student", as: "student_report"
   end
 end

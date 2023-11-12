@@ -10,15 +10,17 @@ FactoryBot.define do
       factory :zoom_attendance do
         meeting {create(:zoom_meeting_with_details)}
 
-        after(:create) do |attendance|
-          2.times do 
-            create(:student_attendance_present, attendance: attendance)
-          end
-          2.times do 
-            create(:student_attendance_tardy, attendance: attendance)
-          end
-          2.times do 
-            create(:student_attendance_absent, attendance: attendance)
+        trait :with_student_attendances do
+          after(:create) do |attendance|
+            2.times do 
+              create(:student_attendance_present, attendance: attendance)
+            end
+            2.times do 
+              create(:student_attendance_tardy, attendance: attendance)
+            end
+            2.times do 
+              create(:student_attendance_absent, attendance: attendance)
+            end
           end
         end
       end
