@@ -16,6 +16,10 @@ class SlackThread < Meeting
     })
   end
 
+  def message_link
+    "https://turingschool.slack.com/archives/#{self.channel_id}/#{self.sent_timestamp}"
+  end
+
   def participants
     replies_report = SlackService.replies_from_message(channel_id, sent_timestamp)
     replies = replies_report[:data].map do |reply_info|
