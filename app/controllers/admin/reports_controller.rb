@@ -1,5 +1,6 @@
 class Admin::ReportsController < Admin::BaseController
   def index
+    # comment
     require 'csv'
     csv_data = CSV.generate(headers: true) do |csv|
       csv << ["Name"]
