@@ -49,8 +49,9 @@ Otherwise, you can copy and paste the following template into the file:
 ```
 GOOGLE_OAUTH_CLIENT_ID: <YOUR_GOOGLE_OAUTH_CLIENT_ID_HERE>
 GOOGLE_OAUTH_CLIENT_SECRET: <YOUR_GOOGLE_OAUTH_CLIENT_SECRET_HERE>
-ZOOM_API_SECRET: <YOUR_ZOOM_API_SECRET_HERE>
-ZOOM_API_KEY: <YOUR_ZOOM_API_KEY_HERE>
+ZOOM_ACCOUNT_ID: <YOUR_ZOOM_ACCOUNT_ID>
+ZOOM_CLIENT_ID: <YOUR_ZOOM_CLIENT_ID>
+ZOOM_CLIENT_SECRET: <YOUR_ZOOM_CLIENT_SECRET>
 slack_api_key: <YOUR_SLACK_API_KEY_HERE>
 POPULI_API_ACCESS_KEY: <YOUR_POPULI_API_KEY_HERE>
 POPULI_API_URL: https://turing-validation.populi.co/api/
@@ -58,7 +59,7 @@ POPULI_API_URL: https://turing-validation.populi.co/api/
 
 To obtain the Google Cloud credentials, you will need to create an application in the Google Cloud Console and create OAuth Credentials for a Web Application. Register `http://localhost:3000/auth/google_oauth2/callback` as an Authorized Redirect URI.
 
-To obtain Zoom credentials, you will need to follow [these instructions](https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/#create-a-server-to-server-oauth-app) to create a Server to Server Oauth App with Zoom. You will need to select scopes for getting meeting details and reports.
+To obtain Zoom credentials, you will need to follow [these instructions](https://developers.zoom.us/docs/internal-apps/create/) to create a Server to Server Oauth App with Zoom. You will need to select scopes for getting meeting details and reports. **note** You may need elevated permissions for your Zoom account to be able to select the required scopes.
 
 If you do not wish to use Figaro you will need to use another method to set the above referenced environment variables.
 
@@ -87,16 +88,17 @@ Keep in mind that the app will make real HTTP calls to the Zoom API and Google O
 
 ![Schema](./doc/schema.jpg)
 
-## Contributing
-
-If you would like to contribute, please contact @BrianZanti on Github or Turing Slack.
 
 ## Developer Resources:
 
+* [Notion](https://www.notion.so/turingschool/Present-7a7ae18ee4044e4dbd18303f9fdeb20e)
 * [project board](https://www.notion.so/e2903cbd009d45329a9324d83cfb44ec?v=72ee4cad35ab44cab4b41c712e7b8dd0)
+* [Heroku](https://dashboard.heroku.com/pipelines/7dc60a3f-3ec7-4d3f-b224-fae3806473a3)
 * [Staging](https://present-staging.turing.edu/)
 * [CircleCI](https://app.circleci.com/pipelines/github/turingschool/present?filter=all)
+* [Postman Suite](https://turing-school-student-plan-team.postman.co/workspace/Present~5f3853b2-37ad-482e-9086-ced13c20e5d3)
 * [Wireframes](https://miro.com/app/board/o9J_luclx_c=/)
 * [Saville Style System](https://savile.turing.edu/)
 * [Google Cloud Console](https://console.cloud.google.com/apis/dashboard?project=present-334418)
 * [Zoom Marketplace](https://marketplace.zoom.us/)
+

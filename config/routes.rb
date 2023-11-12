@@ -1,5 +1,4 @@
 require 'sidekiq/web'
-require 'sidekiq/cron/web'
 
 VERIFY_USER = lambda do |request|
   return false unless request.session[:user_id]
