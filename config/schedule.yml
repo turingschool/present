@@ -3,3 +3,9 @@ monitor_presence_job:
   class: "PresenceMonitoringJob"
   queue: default
   timezone: "America/Denver"
+
+process_presence_data_job:
+  cron: "0 19 * * 1-5"
+  class: "ProcessPresenceDataJob"
+  queue: default
+  timezone: "America/Denver"
