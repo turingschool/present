@@ -1,0 +1,4 @@
+<h2>Current Inning Students</h2>
+<% @students.each do |student| %>
+  <p><%= link_to student.name, admin_student_report_path(student) %></p>
+<% end %>

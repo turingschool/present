@@ -27,4 +27,8 @@ class Student < ApplicationRecord
   def zoom_alias_names
     zoom_aliases.pluck(:name)
   end
+
+  def report(start_date, end_date)
+    self.student_attendance_hours.where(start: start_date...Date.parse(end_date).end_of_day).includes(:attendance)
+  end
 end

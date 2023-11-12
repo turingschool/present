@@ -18,12 +18,5 @@
     <% end %>
   </section>
 </section>
-<section id='available-reports'>
-  <h2>Reports</h2>
-  <section id="current-inning-report">
-    <%= form_with url: admin_reports_path, method: :get do |f| %>
-      <%= f.label "Current Inning report" %>
-      <%= f.submit "Generate Report" %>
-    <% end %>
-  </section>
-</section>
+
+<%= link_to "Reports", admin_reports_path %>
