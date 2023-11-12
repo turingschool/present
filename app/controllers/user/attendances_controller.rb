@@ -42,4 +42,10 @@ class User::AttendancesController < User::BaseController
     attendance.rerecord
     redirect_to attendance_path(attendance)
   end
+
+  def retake
+    attendance = Attendance.find(params[:attendance_id])
+    attendance.rerecord
+    redirect_to attendance_path(attendance)
+  end
 end

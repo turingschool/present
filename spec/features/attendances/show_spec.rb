@@ -76,6 +76,12 @@ RSpec.describe 'attendance show page' do
         expect(present).to eq 7
       end
     end
+
+    it 'shows the meeting id' do
+      visit "/attendances/#{@test_attendance.id}"
+
+      expect(page).to have_content("Meeting ID: #{@test_attendance.meeting.meeting_id}")
+    end
   end
   
   context "for a Slack Thread" do
@@ -136,6 +142,12 @@ RSpec.describe 'attendance show page' do
         expect(absent).to eq 3
         expect(present).to eq 7
       end
+    end
+
+    it 'shows the message link' do
+      visit "/attendances/#{@test_attendance.id}"
+      
+      expect(page).to have_content("Thread Link: #{@test_attendance.meeting.message_link}")
     end
   end
 end
