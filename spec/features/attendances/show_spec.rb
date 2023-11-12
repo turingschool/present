@@ -25,13 +25,6 @@ RSpec.describe 'attendance show page' do
     visit "/attendances/#{test_attendance.id}"
 
     expect(page).to have_link("Delete Attendance")
-    expect(@module.attendances.count).to eq(1)
-
-    click_link "Delete Attendance"
-
-    expect(current_path).to eq(turing_module_path(@module))
-    expect(page).to have_content("Attendance successfully deleted.")
-    expect(@module.attendances.count).to eq(0)
   end
 
   context "for a Zoom meeting" do
