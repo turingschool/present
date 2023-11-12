@@ -27,7 +27,10 @@ Rails.application.routes.draw do
         resources :populi_transfer, only: [:new, :create, :index]
         get 'populi_transfer/time_select', to: "populi_transfer#time_select"
         patch "students/:id", to: 'attendances#update_zoom_alias', as: :student
+        post "retake", to: "attendances#retake", as: "retake"
       end
+
+      
 
       resources :students
 

@@ -1,4 +1,5 @@
 <h1><%= link_to @module.name, turing_module_path(@module) %></h1>
+<h3><%= button_to "Retake Attendance", attendance_retake_path(@attendance) %></h3>
 <% if @attendance.meeting_type == "ZoomMeeting" %>
   <%= render partial: "shared/zoom_attendance_table", locals: {facade: AttendanceShowFacade.new(@attendance, updatable: true)} %>  
 <% else %>
