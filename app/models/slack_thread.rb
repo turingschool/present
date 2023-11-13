@@ -17,7 +17,7 @@ class SlackThread < Meeting
   end
 
   def message_link
-    "https://turingschool.slack.com/archives/#{self.channel_id}/#{self.sent_timestamp}"
+    "https://turingschool.slack.com/archives/#{self.channel_id}/p#{self.sent_timestamp}"
   end
 
   def participants
