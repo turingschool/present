@@ -10,7 +10,8 @@
 
 <% if @student_attendance_hours %>
   <section id="report">
-    <table>
+    <%= link_to "Download as CSV", url_for(params: request.query_parameters, format: :csv) %>
+    <table class="sortable s-table">
       <thead>
         <tr>
             <th>Status</th>
