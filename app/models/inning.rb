@@ -52,7 +52,11 @@ class Inning < ApplicationRecord
 
   def process_presence_data_for_slack_attendances!
     SlackThread.joins(:inning).where(inning: {id: self.id}, presence_check_complete: false).each do |slack_thread|
-      slack_thread.record_duration_from_presence_checks!
+      begin
+        slack_thread.record_duration_from_presence_checks!
+      rescue => e
+        Honeybadger.notify("Error recording presence data for Slack Thread #{slack_thread.message_link}: #{e.message}")
+      end
     end
   end
 
