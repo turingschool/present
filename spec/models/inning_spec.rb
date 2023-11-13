@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Inning, type: :model do
   describe 'relationships' do 
     it {should have_many :turing_modules}
+    it {should have_many(:attendances).through(:turing_modules)}
     it {should have_many(:students).through(:turing_modules)}
   end 
 

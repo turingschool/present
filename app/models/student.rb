@@ -29,6 +29,6 @@ class Student < ApplicationRecord
   end
 
   def report(start_date, end_date)
-    self.student_attendance_hours.where(start: start_date...Date.parse(end_date).end_of_day).includes(:attendance)
+    self.student_attendance_hours.where(start: start_date...Date.parse(end_date).end_of_day).includes(:attendance).order(start: :desc)
   end
 end

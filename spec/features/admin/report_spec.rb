@@ -35,6 +35,39 @@ RSpec.describe "Admin Reporting" do
     expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 7th, 2023 3:00 PM", "End" => "November 7th, 2023 4:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 60)
   end
 
+  it 'can download a CSV report a student' do
+    visit admin_path
+
+    click_link "Reports"
+
+    click_link @student.name
+    
+    fill_in :start_date, with: "2023-11-06"
+    fill_in :end_date, with: "2023-11-07"
+
+    click_button "Generate Report"
+    click_link "Download as CSV"
+
+    report = CSV.parse(page.body, headers: true)
+    
+    expect(report.headers).to eq(["Status","Minutes Active","Start","End","Type","Check Method"])
+    expect(report.count).to eq(12)
+
+    expect(report[0]["Status"]).to eq("present")
+    expect(report[0]["Start"]).to eq("November 7th, 2023 3:00 PM")
+    expect(report[0]["End"]).to eq("November 7th, 2023 4:00 PM")
+    expect(report[0][ "Type"]).to eq("Lab")
+    expect(report[0]["Check Method"]).to eq("Slack")
+    expect(report[0]["Minutes Active"]).to eq("60")
+
+    expect(report[11]["Status"]).to eq("present")
+    expect(report[11]["Start"]).to eq("November 6th, 2023 9:00 AM")
+    expect(report[11]["End"]).to eq("November 6th, 2023 10:00 AM")
+    expect(report[11][ "Type"]).to eq("Lesson")
+    expect(report[11]["Check Method"]).to eq("Zoom")
+    expect(report[11]["Minutes Active"]).to eq("60")
+  end
+
   xit 'can show a report for a module' do
     visit admin_path
 
