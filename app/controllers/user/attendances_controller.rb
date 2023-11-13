@@ -50,7 +50,6 @@ class User::AttendancesController < User::BaseController
       id: attendance.id,
       turing_module_id: attendance.turing_module_id,
       user_id: attendance.user_id,
-      attendance_time: attendance.attendance_time,
       meeting_type: attendance.meeting_type,
       meeting_id: attendance.meeting_id,
       end_time: attendance.end_time

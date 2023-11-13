@@ -25,7 +25,6 @@ RSpec.describe 'delete zoom attendance' do
       id: @test_attendance.id,
       turing_module_id: @test_attendance.turing_module_id,
       user_id: @test_attendance.user_id,
-      attendance_time: @test_attendance.attendance_time,
       meeting_type: @test_attendance.meeting_type,
       meeting_id: @test_attendance.meeting_id,
       end_time: @test_attendance.end_time
