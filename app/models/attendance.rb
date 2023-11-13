@@ -1,5 +1,6 @@
 class Attendance < ApplicationRecord
   belongs_to :turing_module
+  has_one :inning, through: :turing_module
   belongs_to :user
   belongs_to :meeting, polymorphic: true
   has_many :student_attendances, dependent: :destroy

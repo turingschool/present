@@ -4,6 +4,7 @@ class Inning < ApplicationRecord
 
   has_many :turing_modules, dependent: :destroy
   has_many :students, through: :turing_modules
+  has_many :attendances, through: :turing_modules
 
   def date_within_allowed_range
     if Inning.none?
