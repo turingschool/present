@@ -4,9 +4,7 @@ RSpec.describe "Admin Reporting" do
   before :each do
     mock_admin_login
     @student = create(:setup_student, :with_attendances)
-  end
 
-  it 'can create a report for a single student' do
     visit admin_path
 
     click_link "Reports"
@@ -17,7 +15,9 @@ RSpec.describe "Admin Reporting" do
     fill_in :end_date, with: "2023-11-07"
 
     click_button "Generate Report"
+  end
 
+  it 'can create a report for a single student' do
     expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 6th, 2023 9:00 AM", "End" => "November 6th, 2023 10:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 60)
     expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 6th, 2023 10:00 AM", "End" => "November 6th, 2023 11:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 60)
     expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 6th, 2023 11:00 AM", "End" => "November 6th, 2023 12:00 PM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 55)
@@ -36,16 +36,6 @@ RSpec.describe "Admin Reporting" do
   end
 
   it 'can download a CSV report a student' do
-    visit admin_path
-
-    click_link "Reports"
-
-    click_link @student.name
-    
-    fill_in :start_date, with: "2023-11-06"
-    fill_in :end_date, with: "2023-11-07"
-
-    click_button "Generate Report"
     click_link "Download as CSV"
 
     report = CSV.parse(page.body, headers: true)
@@ -68,41 +58,12 @@ RSpec.describe "Admin Reporting" do
     expect(report[11]["Minutes Active"]).to eq("60")
   end
 
-  xit 'can show a report for a module' do
-    visit admin_path
-
-    within '#available-reports' do
-      within '#current-inning-reports' do
-        click_link @module.name
-      end
-    end
-
-    expect(current_path).to eq("admin/module_reports/#{@module.id}")
-    expect(find("#report")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Join Time" => "N/A")
-
-  end
-
-  xit 'can show a report for all students in the current inning' do
-    visit admin_path
-
-    click_link "Current Inning Report"
-
-    expect(page).to have_content("Report for #{test_inning.name} Inning")
-
-    expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Join Time" => "N/A")
-
-  end
-
-  xit 'can download a CSV report for all students in the current inning' do
-    visit admin_path
-    within '#available-reports' do
-      within '#current-inning-report' do
-        click_button 'Generate Report'
-      end
-    end
-
-    report = CSV.parse(page.body, headers: true)
-    expect(report.headers).to eq([])
-    expect(report.count).to eq(0)
+  it 'shows a summary of the report' do
+    expect(page).to have_content("Credit Hours Eligible: 12.0")
+    expect(page).to have_content("Credit Hours Earned: 7.0")
+    expect(page).to have_content("Lesson Hours Eligible: 6.0")
+    expect(page).to have_content("Lesson Hours Earned: 3.0")
+    expect(page).to have_content("Lab Hours Eligible: 6.0")
+    expect(page).to have_content("Lab Hours Earned: 4.0")
   end
 end

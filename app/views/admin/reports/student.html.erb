@@ -1,5 +1,5 @@
-<h2>Reporting for <%= @student.name %></h2>
-<h3>Select Date Range for Report</h3>
+<h1>Reporting for <%= @student.name %></h1>
+<h2>Select Date Range for Report</h2>
 <%= form_with method: :get do |f| %>
   <%= f.label "Start Date" %>
   <%= f.date_field :start_date %>
@@ -9,31 +9,45 @@
 <% end %>
 
 <% if @student_attendance_hours %>
-  <section id="report">
-    <%= link_to "Download as CSV", url_for(params: request.query_parameters, format: :csv) %>
-    <table class="sortable s-table">
-      <thead>
-        <tr>
-            <th>Status</th>
-            <th>Minutes Active</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Type</th>
-            <th>Check Method</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @student_attendance_hours.each do |hour| %>
+<section id="report">
+    <h2><%= @student.name %>: <%= params[:start_date] %> to <%= params[:end_date] %></h2>
+    <section id="summary">
+      <h3>Summary</h3>
+      <p><strong>Credit Hours Eligible: <%= @student_attendance_hours.total.in_hours %></strong></p>
+      <p><strong>Credit Hours Earned: <%= @student_attendance_hours.total(status: :present).in_hours %></strong></p>
+      <p><strong>Lesson Hours Eligible: <%= @student_attendance_hours.total(meeting_type: "ZoomMeeting").in_hours %></strong></p>
+      <p><strong>Lesson Hours Earned: <%= @student_attendance_hours.total(status: :present, meeting_type: "ZoomMeeting").in_hours %></strong></p>
+      <p><strong>Lab Hours Eligible: <%= @student_attendance_hours.total(meeting_type: "SlackThread").in_hours %></strong></p>
+      <p><strong>Lab Hours Earned: <%= @student_attendance_hours.total(status: :present, meeting_type: "SlackThread").in_hours %></strong></p>
+    </section>
+
+    <section id="attendance-hours">
+      <h2>Attendance Hours</h2>
+      <%= link_to "Download as CSV", url_for(params: request.query_parameters, format: :csv) %>
+      <table class="sortable s-table">
+        <thead>
           <tr>
-            <td><%= hour.status %></td>
-            <td><%= hour.duration %></td>
-            <td><%= pretty_date(hour.start) %> <%= pretty_time(hour.start) %></td>
-            <td><%= pretty_date(hour.end_time) %> <%= pretty_time(hour.end_time) %></td>
-            <td><%= hour.attendance_type %></td>
-            <td><%= hour.check_method %></td>
+              <th>Status</th>
+              <th>Minutes Active</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Type</th>
+              <th>Check Method</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @student_attendance_hours.each do |hour| %>
+            <tr>
+              <td><%= hour.status %></td>
+              <td><%= hour.duration %></td>
+              <td><%= pretty_date(hour.start) %> <%= pretty_time(hour.start) %></td>
+              <td><%= pretty_date(hour.end_time) %> <%= pretty_time(hour.end_time) %></td>
+              <td><%= hour.attendance_type %></td>
+              <td><%= hour.check_method %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </section>
   </section>
 <% end %>
