@@ -47,6 +47,10 @@ RSpec.describe StudentAttendanceHour do
         create(:setup_student, :with_attendances)
         expect(@student_attendance_hours.total).to eq(12.hours + 30.minutes)
       end
+
+      it 'will still return a duration if there are no matching attendance hours' do
+        expect(@student_attendance_hours.total(meeting_type: "THIS IS NOT A MEETING TYPE")).to be_a(ActiveSupport::Duration)
+      end
     end
   end
 end
