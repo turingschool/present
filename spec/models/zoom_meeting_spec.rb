@@ -7,6 +7,10 @@ RSpec.describe ZoomMeeting do
     it {should have_one(:turing_module).through(:attendance)}
   end
 
+  describe 'validations' do
+    it {should validate_uniqueness_of(:meeting_id)}
+  end
+
   describe "instance methods" do
     describe "#record_student_attendance_hours"
   end

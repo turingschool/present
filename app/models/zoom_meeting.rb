@@ -1,6 +1,8 @@
 class ZoomMeeting < Meeting
   has_many :zoom_aliases, dependent: :destroy
 
+  validates_uniqueness_of :meeting_id
+
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
     meeting_details = ZoomService.meeting_details(meeting_id)
@@ -11,14 +13,16 @@ class ZoomMeeting < Meeting
     
     start_time = meeting_details[:start_time].to_datetime
     end_time = start_time + meeting_details[:duration].minutes
+    
     attributes = {
-      meeting_id: meeting_id, 
       start_time: start_time, 
       end_time: end_time, 
       title: meeting_details[:topic],
       duration: (meeting_details[:duration])
     }
-    ZoomMeeting.upsert(attributes, unique_by: :meeting_id)
+    zoom = ZoomMeeting.find_or_create_by(meeting_id: meeting_id)
+    zoom.update(attributes)
+    return zoom
   end
 
   def take_participant_attendance
