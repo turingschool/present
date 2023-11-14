@@ -5,6 +5,10 @@ RSpec.describe SlackThread do
   it {should have_one(:turing_module).through(:attendance)}
   it {should have_one(:inning).through(:turing_module)}
 
+  describe 'validations' do
+    it {should validate_uniqueness_of(:sent_timestamp).scoped_to(:channel_id)}
+  end
+
   describe "Instance Methods" do
     describe "#record_duration_from_presence_checks!" do
       context "class is 3 hours long" do

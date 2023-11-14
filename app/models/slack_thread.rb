@@ -1,4 +1,6 @@
 class SlackThread < Meeting
+  validates_uniqueness_of :sent_timestamp, scope: :channel_id
+
   def find_student_from_participant(participant)
     turing_module.students.find_by(slack_id: participant.slack_id)
   end
@@ -8,14 +10,13 @@ class SlackThread < Meeting
     sent_timestamp = message_url.split("/").last[1..-1]
     replies_report = SlackService.replies_from_message(channel_id, sent_timestamp)
     start_time = replies_report[:attendance_start_time].to_datetime
+    slack = SlackThread.find_or_create_by(channel_id: channel_id, sent_timestamp: sent_timestamp)
     attributes = {
-      channel_id: channel_id,
-      sent_timestamp: sent_timestamp,
       start_time: start_time,
       presence_check_complete: false
     }
-    SlackThread.upsert(attributes, unique_by: [:channel_id, :sent_timestamp])
-    thread = SlackThread.find_or_create_by({channel_id: channel_id, sent_timestamp: sent_timestamp})
+    slack.update(attributes)
+    return slack
   end
 
   def message_link
