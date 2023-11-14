@@ -11,4 +11,11 @@ class StudentAttendanceHour < ApplicationRecord
   def check_method
     attendance_type == "Lesson" ? "Zoom" : "Slack"
   end
+  
+  def self.total(meeting_type: nil, status: nil)
+    query = self.all
+    query = query.where(attendances: {meeting_type: meeting_type}) if meeting_type
+    query = query.where(student_attendance_hours: {status: status}) if status
+    query.sum("student_attendance_hours.end_time - student_attendance_hours.start")
+  end
 end
