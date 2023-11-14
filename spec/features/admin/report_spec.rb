@@ -18,21 +18,22 @@ RSpec.describe "Admin Reporting" do
   end
 
   it 'can create a report for a single student' do
-    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "9:00 AM", "End" => "10:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 60)
-    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "10:00 AM", "End" => "11:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 60)
-    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "11:00 AM", "End" => "12:00 PM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 55)
+    save_and_open_page
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "9:00 AM", "End" => "10:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 60, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "10:00 AM", "End" => "11:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 60, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "11:00 AM", "End" => "12:00 PM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 55, "Potential Minutes" => 60)
     
-    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "1:00 PM", "End" => "2:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 58)
-    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/06/2023", "Start" => "2:00 PM", "End" => "3:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 13)
-    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/06/2023", "Start" => "3:00 PM", "End" => "4:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 0)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "1:00 PM", "End" => "2:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 58, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/06/2023", "Start" => "2:00 PM", "End" => "3:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 13, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/06/2023", "Start" => "3:00 PM", "End" => "4:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 0, "Potential Minutes" => 60)
 
-    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/07/2023", "Start" => "9:00 AM", "End" => "10:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 0)
-    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/07/2023", "Start" => "10:00 AM", "End" => "11:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 15)
-    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/07/2023", "Start" => "11:00 AM", "End" => "12:00 PM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 15)
+    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/07/2023", "Start" => "9:00 AM", "End" => "10:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 0, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/07/2023", "Start" => "10:00 AM", "End" => "11:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 15, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/07/2023", "Start" => "11:00 AM", "End" => "12:00 PM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 15, "Potential Minutes" => 60)
 
-    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/07/2023", "Start" => "1:00 PM", "End" => "2:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 60)
-    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/07/2023", "Start" => "2:00 PM", "End" => "3:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 60)
-    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/07/2023", "Start" => "3:00 PM", "End" => "4:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/07/2023", "Start" => "1:00 PM", "End" => "2:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 60, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/07/2023", "Start" => "2:00 PM", "End" => "3:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 60, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/07/2023", "Start" => "3:00 PM", "End" => "4:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 60, "Potential Minutes" => 60)
   end
 
   it 'can download a CSV report a student' do
@@ -40,7 +41,7 @@ RSpec.describe "Admin Reporting" do
 
     report = CSV.parse(page.body, headers: true)
     
-    expect(report.headers).to eq(["Status","Minutes Active","Date","Start","End","Type","Check Method"])
+    expect(report.headers).to eq(["Status","Potential Minutes", "Active Minutes","Date","Start","End","Type","Check Method"])
     expect(report.count).to eq(12)
 
     expect(report[0]["Status"]).to eq("present")
@@ -49,7 +50,8 @@ RSpec.describe "Admin Reporting" do
     expect(report[0]["End"]).to eq("4:00 PM")
     expect(report[0][ "Type"]).to eq("Lab")
     expect(report[0]["Check Method"]).to eq("Slack")
-    expect(report[0]["Minutes Active"]).to eq("60")
+    expect(report[0]["Active Minutes"]).to eq("60")
+    expect(report[0]["Potential Minutes"]).to eq("60")
 
     expect(report[11]["Status"]).to eq("present")
     expect(report[11]["Date"]).to eq("11/06/2023")
@@ -57,7 +59,8 @@ RSpec.describe "Admin Reporting" do
     expect(report[11]["End"]).to eq("10:00 AM")
     expect(report[11][ "Type"]).to eq("Lesson")
     expect(report[11]["Check Method"]).to eq("Zoom")
-    expect(report[11]["Minutes Active"]).to eq("60")
+    expect(report[11]["Active Minutes"]).to eq("60")
+    expect(report[11]["Potential Minutes"]).to eq("60")
   end
 
   it 'shows a summary of the report' do

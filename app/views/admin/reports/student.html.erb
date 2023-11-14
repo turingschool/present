@@ -27,11 +27,12 @@
       <table class="sortable s-table">
         <thead>
           <tr>
-              <th>Status</th>
-              <th>Minutes Active</th>
               <th>Date</th>
               <th>Start</th>
               <th>End</th>
+              <th>Status</th>
+              <th>Potential Minutes</th>
+              <th>Active Minutes</th>
               <th>Type</th>
               <th>Check Method</th>
           </tr>
@@ -39,11 +40,12 @@
         <tbody>
           <% @student_attendance_hours.each do |hour| %>
             <tr>
-              <td><%= hour.status %></td>
-              <td><%= hour.duration %></td>
               <td><%= short_date(hour.start) %></td>
               <td><%= pretty_time(hour.start) %></td>
               <td><%= pretty_time(hour.end_time) %></td>
+              <td><%= hour.status %></td>
+              <td><%= hour.potential_minutes %></td>
+              <td><%= hour.duration %></td>
               <td><%= hour.attendance_type %></td>
               <td><%= hour.check_method %></td>
             </tr>

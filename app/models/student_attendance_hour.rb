@@ -18,4 +18,8 @@ class StudentAttendanceHour < ApplicationRecord
     query = query.where(student_attendance_hours: {status: status}) if status
     query.sum("student_attendance_hours.end_time - student_attendance_hours.start")
   end
+
+  def potential_minutes
+    ((self.end_time - self.start) / 60).round
+  end
 end
