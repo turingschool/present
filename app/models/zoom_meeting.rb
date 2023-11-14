@@ -27,7 +27,7 @@ class ZoomMeeting < Meeting
 
   def take_participant_attendance
     raise ZoomMeeting.participants_not_ready_error if participant_report.nil?
-    create_zoom_aliases if zoom_aliases.empty? # If we are retaking attendance no need to recreate zoom aliases
+    create_zoom_aliases
     grouped_participants = participants.group_by(&:name)
     turing_module.students.each do |student|
       # REFACTOR: use upsert_all instead
