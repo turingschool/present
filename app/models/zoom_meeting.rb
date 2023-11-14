@@ -1,5 +1,5 @@
 class ZoomMeeting < Meeting
-  has_many :zoom_aliases
+  has_many :zoom_aliases, dependent: :destroy
 
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
