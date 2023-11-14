@@ -1,3 +1,10 @@
+<h3>Type: Slack Thread</h3>
+<h3>Thread Link: <%= link_to facade.thread_link, facade.thread_link %></h3>
+<h3>Date: <%= facade.attendance_date %></h3>
+<h3>Attendance Time: <%= facade.attendance_time %> <%= link_to "Update Attendance Time", edit_attendance_path(facade.attendance) if facade.updatable %></h3>
+<p><strong>Present: <%= facade.status_count(:present) %>, Tardy: <%= facade.status_count(:tardy) %>, Absent: <%= facade.status_count(:absent) %></strong></p>
+<%= link_to "Transfer Student Attendances to Populi", new_attendance_populi_transfer_path(facade.attendance) if facade.updatable %>
+
 <table id='student-attendances' class="sortable">
   <thead>
     <tr>

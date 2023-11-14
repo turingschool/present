@@ -2,6 +2,7 @@ class Student < ApplicationRecord
   belongs_to :turing_module, optional: true
   has_many :student_attendances, dependent: :destroy
   has_many :attendances, through: :student_attendances
+  has_many :student_attendance_hours, through: :student_attendances
   has_many :zoom_aliases
   has_many :slack_presence_checks
 
@@ -25,5 +26,9 @@ class Student < ApplicationRecord
 
   def zoom_alias_names
     zoom_aliases.pluck(:name)
+  end
+
+  def report(start_date, end_date)
+    self.student_attendance_hours.where(start: start_date...Date.parse(end_date).end_of_day).includes(:attendance).order(start: :desc)
   end
 end

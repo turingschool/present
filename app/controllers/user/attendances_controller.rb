@@ -59,5 +59,10 @@ class User::AttendancesController < User::BaseController
     end
     redirect_to turing_module_path(module_id)
     flash[:sucess] = "Attendance successfully deleted."
+
+  def retake
+    attendance = Attendance.find(params[:attendance_id])
+    attendance.rerecord
+    redirect_to attendance_path(attendance)
   end
 end

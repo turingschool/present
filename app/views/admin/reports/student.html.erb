@@ -1,0 +1,39 @@
+<h2>Reporting for <%= @student.name %></h2>
+<h3>Select Date Range for Report</h3>
+<%= form_with method: :get do |f| %>
+  <%= f.label "Start Date" %>
+  <%= f.date_field :start_date %>
+  <%= f.label "End Date" %>
+  <%= f.date_field :end_date %>
+  <%= f.submit "Generate Report" %>
+<% end %>
+
+<% if @student_attendance_hours %>
+  <section id="report">
+    <%= link_to "Download as CSV", url_for(params: request.query_parameters, format: :csv) %>
+    <table class="sortable s-table">
+      <thead>
+        <tr>
+            <th>Status</th>
+            <th>Minutes Active</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Type</th>
+            <th>Check Method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @student_attendance_hours.each do |hour| %>
+          <tr>
+            <td><%= hour.status %></td>
+            <td><%= hour.duration %></td>
+            <td><%= pretty_date(hour.start) %> <%= pretty_time(hour.start) %></td>
+            <td><%= pretty_date(hour.end_time) %> <%= pretty_time(hour.end_time) %></td>
+            <td><%= hour.attendance_type %></td>
+            <td><%= hour.check_method %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+<% end %>

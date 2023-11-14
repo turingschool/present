@@ -4,6 +4,7 @@ class Inning < ApplicationRecord
 
   has_many :turing_modules, dependent: :destroy
   has_many :students, through: :turing_modules
+  has_many :attendances, through: :turing_modules
 
   def date_within_allowed_range
     if Inning.none?
@@ -49,6 +50,15 @@ class Inning < ApplicationRecord
     end
   end
 
+  def process_presence_data_for_slack_attendances!
+    SlackThread.joins(:inning).where(inning: {id: self.id}, presence_check_complete: false).each do |slack_thread|
+      begin
+        slack_thread.record_duration_from_presence_checks!
+      rescue => e
+        Honeybadger.notify("Error recording presence data for Slack Thread #{slack_thread.message_link}: #{e.message}")
+      end
+    end
+  end
 
   def create_turing_modules
     turing_modules.create!(program: 'Combined', module_number: 4)

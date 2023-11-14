@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Inning, type: :model do
   describe 'relationships' do 
     it {should have_many :turing_modules}
+    it {should have_many(:attendances).through(:turing_modules)}
     it {should have_many(:students).through(:turing_modules)}
   end 
 
@@ -15,7 +16,7 @@ RSpec.describe Inning, type: :model do
       expect(inning.current).to eq(false)
     end 
 
-    describe '# date_within_allowed_range validation' do
+    describe '#date_within_allowed_range validation' do
       it 'start_date must be at least 12 weeks after the current innings start_date' do
         inning1 = create(:inning, :is_current)
         inning = Inning.new(name: '2108', start_date: Date.today)
@@ -142,6 +143,48 @@ RSpec.describe Inning, type: :model do
         expect(@student_5.slack_presence_checks.count).to eq(0)
         # 2 students should have successful presence checks
         expect(SlackPresenceCheck.pluck(:student_id).sort).to eq([@student_1.id, @student_4.id].sort)
+      end
+    end
+
+    describe "#process_presence_data_for_slack_attendances!" do
+      before :each do
+        @current_inning = create(:inning, :current_past)
+        @module, @other_module = create_list(:turing_module, 2, inning: @current_inning)
+        @attendance_check_complete = create(:slack_attendance, :presence_check_complete, turing_module: @module)
+        @attendance_check_incomplete = create(:slack_attendance, :presence_check_incomplete, turing_module: @module)
+        create(:student_attendance, attendance: @attendance_check_incomplete)
+        @other_attendance_check_complete = create(:slack_attendance, :presence_check_complete, turing_module: @other_module)
+        @other_attendance_check_incomplete = create(:slack_attendance, :presence_check_incomplete, turing_module: @other_module)
+        create(:student_attendance, attendance: @other_attendance_check_incomplete)
+        @zoom_attendance = create(:zoom_attendance, turing_module: @other_module)
+      end
+
+      it "will change slack attendances that haven't been marked complete" do
+        expect { @current_inning.process_presence_data_for_slack_attendances! }.
+          to change { @attendance_check_incomplete.student_attendance_hours.count} 
+      end
+
+      it 'does not change zoom attendances' do
+        expect { @current_inning.process_presence_data_for_slack_attendances! }.
+          to_not change { @zoom_attendance.student_attendance_hours.count} 
+      end
+
+      it 'does not change a slack attendance that has already been marked completed' do
+        expect { @current_inning.process_presence_data_for_slack_attendances! }.
+          to_not change { @attendance_check_complete.student_attendance_hours.count} 
+      end
+
+      it "works for multiple modules" do
+        expect { @current_inning.process_presence_data_for_slack_attendances! }.
+          to change { @other_attendance_check_incomplete.student_attendance_hours.count} 
+      end
+
+      it "does not touch any attendances from other innings" do
+        @invalid_module = create(:turing_module)
+        create(:student, turing_module: @invalid_module)
+        @attendance_from_other_inning = create(:slack_attendance, :presence_check_incomplete, turing_module: @invalid_module)
+        expect {@current_inning.process_presence_data_for_slack_attendances! }.
+          to_not change { @attendance_from_other_inning.student_attendance_hours.count }
       end
     end
   end 
