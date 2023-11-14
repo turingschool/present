@@ -8,12 +8,14 @@ class SlackThread < Meeting
     sent_timestamp = message_url.split("/").last[1..-1]
     replies_report = SlackService.replies_from_message(channel_id, sent_timestamp)
     start_time = replies_report[:attendance_start_time].to_datetime
-    create({
+    attributes = {
       channel_id: channel_id,
       sent_timestamp: sent_timestamp,
       start_time: start_time,
       presence_check_complete: false
-    })
+    }
+    SlackThread.upsert(attributes, unique_by: [:channel_id, :sent_timestamp])
+    thread = SlackThread.find_or_create_by({channel_id: channel_id, sent_timestamp: sent_timestamp})
   end
 
   def message_link

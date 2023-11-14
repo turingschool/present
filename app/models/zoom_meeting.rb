@@ -11,14 +11,14 @@ class ZoomMeeting < Meeting
     
     start_time = meeting_details[:start_time].to_datetime
     end_time = start_time + meeting_details[:duration].minutes
-
-    create(
+    attributes = {
       meeting_id: meeting_id, 
       start_time: start_time, 
       end_time: end_time, 
       title: meeting_details[:topic],
       duration: (meeting_details[:duration])
-    )
+    }
+    ZoomMeeting.upsert(attributes, unique_by: :meeting_id)
   end
 
   def take_participant_attendance

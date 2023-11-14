@@ -305,4 +305,39 @@ RSpec.describe SlackThread do
       end
     end
   end
+
+  describe 'class methods' do
+    describe '.from_message_link' do
+      before :each do 
+        @channel_id = "C02HRH7MF5K"
+        @timestamp = "1672861516089859"
+        @slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
+
+        stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
+        .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
+      end
+
+      it 'creates the slack thread' do
+        slack_thread = SlackThread.from_message_link(@slack_url)
+        expect(slack_thread.channel_id).to eq(@channel_id)
+        expect(slack_thread.sent_timestamp).to eq(@timestamp)
+        expect(slack_thread.start_time).to eq(DateTime.parse("Wed, 30 Nov 2022 20:00:59.999000000 UTC +00:00"))
+        expect(slack_thread.presence_check_complete).to eq(false)
+      end
+
+      it 'will not duplicate slack thread records with the same channel id and sent timestamp' do
+        SlackThread.from_message_link(@slack_url)
+        SlackThread.from_message_link(@slack_url)
+        expect(SlackThread.count).to eq(1)
+      end
+
+      it 'will update existing records if any non unique fields changed' do
+        slack_thread = SlackThread.from_message_link(@slack_url)
+        slack_thread.update!(presence_check_complete: true)
+        slack_thread = SlackThread.from_message_link(@slack_url)
+        expect(slack_thread.presence_check_complete).to eq(false)
+        expect(SlackThread.count).to eq(1)
+      end
+    end
+  end
 end
