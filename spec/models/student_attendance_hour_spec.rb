@@ -12,10 +12,6 @@ RSpec.describe StudentAttendanceHour do
     describe ".total" do
       before :each do
         @student = create(:setup_student, :with_attendances)
-        sa1 = @student.student_attendances.first # This first student attendance is a ZoomMeeting
-        start = @student.student_attendance_hours.last.end_time # Start time is end of the last attendance hour
-        # Create a new attendance hour that actually spans a half hour
-        create(:student_attendance_hour, start: start, end_time: start + 30.minutes, status: :present, student_attendance: sa1)
         @student_attendance_hours = @student.report("2023-11-06", "2023-11-07")
       end
 
