@@ -89,7 +89,10 @@ RSpec.describe 'Retaking Attendance' do
       @slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
 
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
-      .to_return(body: File.read('spec/fixtures/slack/channel_members_report.json'))
+        .to_return(body: File.read('spec/fixtures/slack/channel_members_report.json'))
+
+      stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
+        .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
 
       stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"instanceID"=>@test_module.populi_course_id, "task"=>"getCourseInstanceMeetings"}).
