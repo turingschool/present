@@ -22,6 +22,7 @@ FactoryBot.define do
           create(:student_attendance_hour, student_attendance: sa1, status: :present, start: Time.parse("2023-11-06 09:00:00 -0700"), end_time: Time.parse("2023-11-06 10:00:00 -0700"), duration: 60)
           create(:student_attendance_hour, student_attendance: sa1, status: :present, start: Time.parse("2023-11-06 10:00:00 -0700"), end_time: Time.parse("2023-11-06 11:00:00 -0700"), duration: 60)
           create(:student_attendance_hour, student_attendance: sa1, status: :present, start: Time.parse("2023-11-06 11:00:00 -0700"), end_time: Time.parse("2023-11-06 12:00:00 -0700"), duration: 55)
+          create(:student_attendance_hour, student_attendance: sa1, status: :present, start: Time.parse("2023-11-06 12:00:00 -0700"), end_time: Time.parse("2023-11-06 12:30:00 -0700"), duration: 30)
 
           create(:student_attendance_hour, student_attendance: sa2, status: :present, start: Time.parse("2023-11-06 13:00:00 -0700"), end_time: Time.parse("2023-11-06 14:00:00 -0700"), duration: 58)
           create(:student_attendance_hour, student_attendance: sa2, status: :absent, start: Time.parse("2023-11-06 14:00:00 -0700"), end_time: Time.parse("2023-11-06 15:00:00 -0700"), duration: 13)

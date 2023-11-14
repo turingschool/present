@@ -6,4 +6,8 @@ module ApplicationHelper
   def pretty_date(datetime)
     datetime.in_time_zone('Mountain Time (US & Canada)').to_date.to_fs(:long_ordinal)
   end
+
+  def short_date(datetime)
+    datetime.strftime("%m/%d/%Y")
+  end
 end
