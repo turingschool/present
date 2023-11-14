@@ -26,9 +26,9 @@ class Admin::ReportsController < Admin::BaseController
   private 
   def student_csv_report(attendance_hours)
     csv_data = CSV.generate(headers: true) do |csv|
-      csv << ["Status","Minutes Active","Start","End","Type","Check Method"]
+      csv << ["Status","Minutes Active","Date","Start","End","Type","Check Method"]
       attendance_hours.each do |hour|
-        csv << [hour.status, hour.duration, "#{pretty_date(hour.start)} #{pretty_time(hour.start)}", "#{pretty_date(hour.end_time)} #{pretty_time(hour.end_time)}", hour.attendance_type, hour.check_method]
+        csv << [hour.status, hour.duration, "#{short_date(hour.start)}",  "#{pretty_time(hour.start)}", "#{pretty_time(hour.end_time)}", hour.attendance_type, hour.check_method]
       end
     end
     return csv_data

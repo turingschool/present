@@ -22,13 +22,14 @@
     </section>
 
     <section id="attendance-hours">
-      <h2>Attendance Hours</h2>
+      <h3>Attendance Hours</h3>
       <%= link_to "Download as CSV", url_for(params: request.query_parameters, format: :csv) %>
       <table class="sortable s-table">
         <thead>
           <tr>
               <th>Status</th>
               <th>Minutes Active</th>
+              <th>Date</th>
               <th>Start</th>
               <th>End</th>
               <th>Type</th>
@@ -40,8 +41,9 @@
             <tr>
               <td><%= hour.status %></td>
               <td><%= hour.duration %></td>
-              <td><%= pretty_date(hour.start) %> <%= pretty_time(hour.start) %></td>
-              <td><%= pretty_date(hour.end_time) %> <%= pretty_time(hour.end_time) %></td>
+              <td><%= short_date(hour.start) %></td>
+              <td><%= pretty_time(hour.start) %></td>
+              <td><%= pretty_time(hour.end_time) %></td>
               <td><%= hour.attendance_type %></td>
               <td><%= hour.check_method %></td>
             </tr>
