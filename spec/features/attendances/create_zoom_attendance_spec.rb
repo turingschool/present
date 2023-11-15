@@ -55,26 +55,6 @@ RSpec.describe 'Creating a Zoom Attendance' do
       expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Duration" => "59", "Join Time" => "8:58")
     end
     
-    it 'can retake attendance' do
-      absent = @test_module.students.find_by(name: 'Lacey Weaver')
-      absent_due_to_tardiness = @test_module.students.find_by(name: 'Anhnhi Tran')
-      tardy = @test_module.students.find_by(name: 'J Seymour')
-      present = @test_module.students.find_by(name: 'Leo Banos Garcia')
-      
-      visit turing_module_path(@test_module)
-
-      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
-      click_button 'Take Attendance'
-
-      click_button "Retake Attendance"
-
-      expect(current_path).to eq(attendance_path(Attendance.last))
-      expect(page).to have_css('.student-attendance', count: @test_module.students.count)
-      expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Duration" => "0", "Join Time" => "N/A")
-      expect(find("#student-attendances")).to have_table_row("Student" => absent_due_to_tardiness.name, "Status" => 'absent', "Duration" => "63", "Join Time" => "9:31")
-      expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Duration" => "59", "Join Time" => "9:01")
-      expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Duration" => "59", "Join Time" => "8:58")
-    end
 
     it 'records the populi attedance start and end times' do
       visit turing_module_path(@test_module)

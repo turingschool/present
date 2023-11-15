@@ -1,5 +1,7 @@
 class ZoomMeeting < Meeting
-  has_many :zoom_aliases
+  has_many :zoom_aliases, dependent: :destroy
+
+  validates_uniqueness_of :meeting_id
 
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
@@ -11,19 +13,21 @@ class ZoomMeeting < Meeting
     
     start_time = meeting_details[:start_time].to_datetime
     end_time = start_time + meeting_details[:duration].minutes
-
-    create(
-      meeting_id: meeting_id, 
+    
+    attributes = {
       start_time: start_time, 
       end_time: end_time, 
       title: meeting_details[:topic],
       duration: (meeting_details[:duration])
-    )
+    }
+    zoom = ZoomMeeting.find_or_create_by(meeting_id: meeting_id)
+    zoom.update(attributes)
+    return zoom
   end
 
   def take_participant_attendance
     raise ZoomMeeting.participants_not_ready_error if participant_report.nil?
-    create_zoom_aliases if zoom_aliases.empty? # If we are retaking attendance no need to recreate zoom aliases
+    create_zoom_aliases
     grouped_participants = participants.group_by(&:name)
     turing_module.students.each do |student|
       # REFACTOR: use upsert_all instead
