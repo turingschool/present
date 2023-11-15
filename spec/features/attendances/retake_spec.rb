@@ -77,6 +77,15 @@ RSpec.describe 'Retaking Attendance' do
 
         expect { click_button 'Take Attendance' }.to_not change { ZoomMeeting.count }
       end
+
+      it 'will not duplicate if a different user takes attendance' do
+        mock_login # Creates and logs in a new user
+        
+        visit turing_module_path(@test_module)
+        fill_in :attendance_meeting_url, with: @test_zoom_meeting_id
+
+        expect { click_button 'Take Attendance' }.to_not change { Attendance.count }
+      end
     end
   end
 
