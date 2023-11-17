@@ -32,7 +32,7 @@ class TuringModule < ApplicationRecord
           # Don't retry again if we've reached the retry limit
           retry_counter = 0
           # We want to be notified if any API call to get a user's presence fails and 5 retries are unsuccessful
-          Honeybadger.notify("Slack Response: #{response.to_s}, Student Slack ID: #{student.slack_id.to_s}, Student: #{student.id}: #{student.name}")
+          Rails.logger.warn "Couldn't get presence for student ##{student.id}: #{student.name} - Slack Response: #{response.to_s}"
         end
       end 
     end
