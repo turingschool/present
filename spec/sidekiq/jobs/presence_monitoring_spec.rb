@@ -63,6 +63,9 @@ RSpec.describe PresenceMonitoringJob, type: :job do
     expect(@student_1.slack_presence_checks.first.presence).to eq("active")
     expect(@student_1.slack_presence_checks.count).to eq(1)
     expect(@student_2.slack_presence_checks.first.presence).to eq("away")
+    expect(@student_3.slack_presence_checks.first.presence).to eq("active")
+    expect(@student_4.slack_presence_checks.first.presence).to eq("active")
+    expect(@student_5.slack_presence_checks.first.presence).to eq("active")
 
     # call .to_fs(:short) to remove any precision past hour/minute/second
     expect(@student_1.slack_presence_checks.first.check_time.to_fs(:short)).to eq(check_time.to_fs(:short))
