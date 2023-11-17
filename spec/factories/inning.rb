@@ -23,5 +23,11 @@ FactoryBot.define do
       current { false }
       start_date { Date.today+15.weeks }
     end
+
+    factory :inning_with_modules do
+      after :create do |inning|
+        inning.create_turing_modules
+      end
+    end
   end
 end
