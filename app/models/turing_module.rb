@@ -14,6 +14,31 @@ class TuringModule < ApplicationRecord
   validates_presence_of :program
   enum program: [:FE, :BE, :Combined, :Launch]
 
+  def check_presence_for_students!
+    check_time = Time.now
+    service = SlackApiService.new
+    retry_counter = 0
+    presence_checks = []
+    students.each do |student|
+      response = service.get_presence(student.slack_id)
+      if response[:ok]
+        presence_checks << { student_id: student.id, presence: response[:presence], check_time: check_time }
+        retry_counter = 0
+      else
+        if retry_counter < 5
+          retry_counter += 1
+          redo
+        else
+          # Don't retry again if we've done 5 retries already
+          retry_counter = 0
+          # We want to be notified if any API call to get a user's presence fails and 5 retries are unsuccessful
+          Honeybadger.notify("Slack Response: #{response.to_s}, Student Slack ID: #{student.slack_id.to_s}, Student: #{student.id}: #{student.name}")
+        end
+      end 
+    end
+    SlackPresenceCheck.insert_all(presence_checks)
+  end
+
   def unclaimed_aliases
     ZoomAlias.where(turing_module_id: self.id).where(student_id: nil)
   end

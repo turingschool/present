@@ -15,6 +15,75 @@ RSpec.describe TuringModule, type: :model do
 
 
   describe 'instance methods' do
+    describe "#check_presence_for_students!" do
+      before :each do
+        @mod1 = create(:turing_module)
+        @student_1 = create(:student, turing_module: @mod1, slack_id: "1")
+        @student_2 = create(:student, turing_module: @mod1, slack_id: "2")
+        @student_3 = create(:student, turing_module: @mod1, slack_id: "3")
+        @student_4 = create(:student, turing_module: @mod1, slack_id: "4")
+        @student_5 = create(:student, turing_module: @mod1, slack_id: "5")
+
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=1").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
+        
+        @user2_stub = stub_request(:get, "https://slack.com/api/users.getPresence?user=2").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_away.json"))
+
+        @user3_stub = stub_request(:get, "https://slack.com/api/users.getPresence?user=3").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
+        
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=4").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
+          
+        @user5_stub = stub_request(:get, "https://slack.com/api/users.getPresence?user=5").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))  
+      end
+
+      it 'records the presence' do
+        @mod1.check_presence_for_students!
+
+        expect(SlackPresenceCheck.count).to eq(5)
+        expect(@student_1.slack_presence_checks.first.presence).to eq("active")
+        expect(@student_1.slack_presence_checks.count).to eq(1)
+        expect(@student_2.slack_presence_checks.first.presence).to eq("away")
+      end
+
+      it 'records the check time' do
+        check_time = Time.now
+        allow(Time).to receive(:now).and_return(check_time)
+        
+        @mod1.check_presence_for_students!
+
+        # call .to_fs(:short) to remove any precision past hour/minute/second
+        expect(@student_1.slack_presence_checks.first.check_time.to_fs(:short)).to eq(check_time.to_fs(:short))
+        expect(@student_2.slack_presence_checks.first.check_time.to_fs(:short)).to eq(check_time.to_fs(:short))
+      end
+
+      it "retries up to 5 times upon receiving a failure" do
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=2").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
+
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=3").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
+        
+        stub_request(:get, "https://slack.com/api/users.getPresence?user=5").
+          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
+
+        @mod1.check_presence_for_students!
+        
+        # expect 6 times for 1 initial call plus 5 retries
+        expect(@user2_stub).to have_been_requested.times(6)
+        expect(@user3_stub).to have_been_requested.times(6)
+        expect(@user5_stub).to have_been_requested.times(6)
+        expect(@student_2.slack_presence_checks.count).to eq(0)
+        expect(@student_3.slack_presence_checks.count).to eq(0)
+        expect(@student_5.slack_presence_checks.count).to eq(0)
+        # 2 students should have successful presence checks
+        expect(SlackPresenceCheck.pluck(:student_id).sort).to eq([@student_1.id, @student_4.id].sort)
+      end
+    end
+
     describe "#unclaimed_aliases" do
       before :each do
         @attendance = create(:attendance)

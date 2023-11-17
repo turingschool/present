@@ -26,29 +26,6 @@ class Inning < ApplicationRecord
   def self.current_and_future
     where(["current = ? or start_date >= ?", true, Date.today]).order(:start_date)
   end
-  
-  def check_presence_for_students
-    check_time = Time.now
-    service = SlackApiService.new
-    retry_counter = 0
-    students.each do |student|
-      response = service.get_presence(student.slack_id)
-      if response[:ok]
-        student.slack_presence_checks.create(presence: response[:presence], check_time: check_time)
-        retry_counter = 0
-      else
-        if retry_counter < 5
-          retry_counter += 1
-          redo
-        else
-          # Don't retry again if we've done 5 retries already
-          retry_counter = 0
-          # We want to be notified if any API call to get a user's presence fails and 5 retries are unsuccessful
-          Honeybadger.notify("Slack Response: #{response.to_s}, Student Slack ID: #{student.slack_id.to_s}, Student: #{student.id}: #{student.name}")
-        end
-      end 
-    end
-  end
 
   def process_presence_data_for_slack_attendances!
     SlackThread.joins(:inning).where(inning: {id: self.id}, presence_check_complete: false).each do |slack_thread|
