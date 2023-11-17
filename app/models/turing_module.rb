@@ -36,7 +36,7 @@ class TuringModule < ApplicationRecord
         end
       end 
     end
-    SlackPresenceCheck.insert_all(presence_checks)
+    SlackPresenceCheck.insert_all(presence_checks) unless presence_checks.empty?
   end
 
   def unclaimed_aliases

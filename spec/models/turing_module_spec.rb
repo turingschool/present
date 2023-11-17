@@ -82,6 +82,14 @@ RSpec.describe TuringModule, type: :model do
         # 2 students should have successful presence checks
         expect(SlackPresenceCheck.pluck(:student_id).sort).to eq([@student_1.id, @student_4.id].sort)
       end
+
+      it "doesn't throw an error if there are no students" do
+        mod = create(:turing_module)
+
+        expect {
+          mod.check_presence_for_students!
+        }.to_not raise_error
+      end
     end
 
     describe "#unclaimed_aliases" do
