@@ -7,7 +7,6 @@ RSpec.describe PresenceMonitoringJob, type: :job do
   end
 
   it 'will queue a job to check presence for each module' do
-    ENV["PRESENCE_MONTIORING"] = "true"
     inning = create(:inning_with_modules)
     PresenceMonitoringJob.perform_async
     expect(PresenceMonitoringJob.jobs.size).to eq(1)
