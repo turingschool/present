@@ -3,6 +3,7 @@ require 'sidekiq/testing'
 
 RSpec.describe PresenceMonitoringJob, type: :job do
   before :each do
+    Sidekiq::Testing.fake!
     ENV["PRESENCE_MONTIORING"] = "true"
   end
 
