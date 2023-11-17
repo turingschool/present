@@ -60,7 +60,7 @@ RSpec.describe TuringModule, type: :model do
         expect(@student_2.slack_presence_checks.first.check_time.to_fs(:short)).to eq(check_time.to_fs(:short))
       end
 
-      it "retries up to 5 times upon receiving a failure" do
+      it "can be configured to retry a certain number of times" do
         stub_request(:get, "https://slack.com/api/users.getPresence?user=2").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
 
@@ -70,7 +70,7 @@ RSpec.describe TuringModule, type: :model do
         stub_request(:get, "https://slack.com/api/users.getPresence?user=5").
           to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
 
-        @mod1.check_presence_for_students!
+        @mod1.check_presence_for_students!(retry_limit: 5)
         
         # expect 6 times for 1 initial call plus 5 retries
         expect(@user2_stub).to have_been_requested.times(6)
