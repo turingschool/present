@@ -49,13 +49,50 @@ RSpec.describe 'Student Attendance By Hours' do
       expect(hours.third.status).to eq("absent")
     end
 
-    it 'does not include time before the hour'
-
-    it 'does not include time after the hour'
-
     it 'the total duration from the hours matches the duration of the parent student attendance record'
 
     it 'works if participants join/leave exactly on the hour'
+
+    context 'class includes a half hour' do
+      before :each do
+        stub_request(:post, ENV['POPULI_API_URL']).
+          with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@test_module.populi_course_id}).
+          to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_for_half_hours.xml'))
+
+        visit turing_module_path(@test_module)
+        fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
+        click_button 'Take Attendance'  
+      end
+
+      it 'will create an attendance half hour' do
+        attendance = Attendance.last
+        expect(attendance.student_attendance_hours.count).to eq(2 * 6) # This class was 1.5 hours long and there are 6 students
+
+        flaky_student = Student.find_by(name: "Leo Banos Garcia")
+        hours = flaky_student.student_attendance_hours.order(:start)
+        expect(hours.first.start).to eq(attendance.attendance_time)
+        expect(hours.first.end_time).to eq(attendance.attendance_time + 1.hour)
+        expect(hours.first.duration).to eq(60) # Duration greater than or equal to 50 minutes out of the hour counts as present
+        expect(hours.first.status).to eq("present")
+
+        expect(hours.second.start).to eq(attendance.attendance_time + 1.hour)
+        expect(hours.second.end_time).to eq(attendance.attendance_time + 1.hour + 30.minutes)
+        expect(hours.second.duration).to eq(30) # Duration greater than 50 minutes out of the hour counts as present
+        expect(hours.second.status).to eq("present")
+      end
+
+      it 'will use the 50/60 minute ratio to determine presence' do
+        sam = Student.find_by(name: "Samuel Cox")
+        hours = sam.student_attendance_hours.order(:start)
+        expect(hours.second.duration).to eq(25) # 25 / 30 minutes meets the ratio of 50/60 minutes for an hour
+        expect(hours.second.status).to eq("present")
+
+        anhnhi = Student.find_by(name: "Anhnhi Tran")
+        hours = anhnhi.student_attendance_hours.order(:start)
+        expect(hours.second.duration).to eq(24) # 24 / 30 minutes is less than the ratio of 50/60 minutes for an hour
+        expect(hours.second.status).to eq("absent")
+      end
+    end
   end
 
   context "for slack attendances" do
