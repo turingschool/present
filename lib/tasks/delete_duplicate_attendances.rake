@@ -7,7 +7,7 @@ task :delete_duplicate_attendances, [:testing_mode_enabled] => :environment do |
   duplicate_meeting_ids.each do |meeting_id, _|
     zooms = ZoomMeeting.where(meeting_id: meeting_id)
     zooms[1..-1].each do |zoom| # Destroy all except the first
-      zoom.attendance.destroy
+      zoom.attendance.destroy if zoom.attendance
       zoom.destroy
     end
   end
@@ -16,7 +16,7 @@ task :delete_duplicate_attendances, [:testing_mode_enabled] => :environment do |
   duplicate_threads.each do |(channel_id, sent_timestamp), _|
     slacks = SlackThread.where(channel_id: channel_id, sent_timestamp: sent_timestamp)
     slacks[1..-1].each do |slack| # Destroy all except the first
-      slack.attendance.destroy
+      slack.attendance.destroy if slack.attendance
       slack.destroy
     end
   end
