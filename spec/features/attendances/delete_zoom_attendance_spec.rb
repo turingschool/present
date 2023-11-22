@@ -6,7 +6,7 @@ RSpec.describe 'delete zoom attendance' do
   before :each do
     @user = mock_login
     @module = create(:turing_module)
-    @test_attendance = create(:zoom_attendance, turing_module: @module)
+    @test_attendance = create(:attendance_with_student_attendances, turing_module: @module)
     visit "/attendances/#{@test_attendance.id}"
   end
 
