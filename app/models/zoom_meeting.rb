@@ -1,5 +1,7 @@
 class ZoomMeeting < Meeting
-  has_many :zoom_aliases
+  has_many :zoom_aliases, dependent: :destroy
+
+  validates_uniqueness_of :meeting_id
 
   def self.from_meeting_details(meeting_url)
     meeting_id = meeting_url.split("/").last
@@ -11,19 +13,21 @@ class ZoomMeeting < Meeting
     
     start_time = meeting_details[:start_time].to_datetime
     end_time = start_time + meeting_details[:duration].minutes
-
-    create(
-      meeting_id: meeting_id, 
+    
+    attributes = {
       start_time: start_time, 
       end_time: end_time, 
       title: meeting_details[:topic],
       duration: (meeting_details[:duration])
-    )
+    }
+    zoom = ZoomMeeting.find_or_create_by(meeting_id: meeting_id)
+    zoom.update(attributes)
+    return zoom
   end
 
   def take_participant_attendance
     raise ZoomMeeting.participants_not_ready_error if participant_report.nil?
-    create_zoom_aliases if zoom_aliases.empty? # If we are retaking attendance no need to recreate zoom aliases
+    create_zoom_aliases
     grouped_participants = participants.group_by(&:name)
     turing_module.students.each do |student|
       # REFACTOR: use upsert_all instead
@@ -114,15 +118,25 @@ private
   end  
 
   def record_student_attendance_hours(matching_participants, student_attendance)
+    student_attendance_hours = []
     num_hours = ((self.attendance.end_time - self.attendance.attendance_time).to_f / 3600).to_i
+    tail_minutes = (((self.attendance.end_time - self.attendance.attendance_time).to_f % 3600) / 60).to_i
     num_hours.times do |hour|
       start = self.attendance.attendance_time + (hour * 1.hour)
       end_time = start + 1.hour
       time_in_hour = calculate_time_in_hour(start, end_time, matching_participants)
       status = time_in_hour >= 50 ? :present : :absent
-      attributes = {start: start, end_time: end_time, duration: time_in_hour, status: status}
-      attendance_hour = student_attendance.student_attendance_hours.upsert(attributes, unique_by: [:student_attendance_id, :start])
+      student_attendance_hours << {start: start, end_time: end_time, duration: time_in_hour, status: status, student_attendance_id: student_attendance.id}
     end
+    if tail_minutes != 0
+      start = self.attendance.attendance_time + (num_hours * 1.hour)
+      end_time = start + tail_minutes.minutes
+      present_threshold = ((end_time - start) / 60 * (5.0 / 6.0)).to_i
+      time_in_hour = calculate_time_in_hour(start, end_time, matching_participants)
+      status = time_in_hour >= present_threshold ? :present : :absent
+      student_attendance_hours << {student_attendance_id: student_attendance.id, duration: time_in_hour, status: status, start: start, end_time: end_time}
+    end
+    StudentAttendanceHour.upsert_all(student_attendance_hours, unique_by: [:student_attendance_id, :start])
   end
 
   def calculate_time_in_hour(start_time, end_time, participants)
@@ -130,7 +144,7 @@ private
       if participant.join_time >= start_time && participant.leave_time < end_time # this participation falls within the hour
         participant.duration
       elsif participant.join_time < start_time && participant.leave_time > end_time # this participation starts before the hour and ends after the hour
-        3600
+        end_time - start_time
       elsif participant.join_time < end_time && participant.leave_time > end_time # this participation starts within the hour and extends beyond the hour
         end_time - participant.join_time
       elsif participant.join_time < start_time && participant.leave_time > start_time # this participation starts before the hour and ends within the hour

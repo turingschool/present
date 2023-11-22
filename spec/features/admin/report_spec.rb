@@ -4,105 +4,71 @@ RSpec.describe "Admin Reporting" do
   before :each do
     mock_admin_login
     @student = create(:setup_student, :with_attendances)
+
+    visit admin_path
+
+    click_link "Reports"
+
+    click_link @student.name
+    
+    fill_in :start_date, with: "2023-11-06"
+    fill_in :end_date, with: "2023-11-07"
+
+    click_button "Generate Report"
   end
 
   it 'can create a report for a single student' do
-    visit admin_path
-
-    click_link "Reports"
-
-    click_link @student.name
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "9:00 AM", "End" => "10:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 60, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "10:00 AM", "End" => "11:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 60, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "11:00 AM", "End" => "12:00 PM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 55, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "12:00 PM", "End" => "12:30 PM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 30, "Potential Minutes" => 30)
     
-    fill_in :start_date, with: "2023-11-06"
-    fill_in :end_date, with: "2023-11-07"
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/06/2023", "Start" => "1:00 PM", "End" => "2:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 58, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/06/2023", "Start" => "2:00 PM", "End" => "3:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 13, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/06/2023", "Start" => "3:00 PM", "End" => "4:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 0, "Potential Minutes" => 60)
 
-    click_button "Generate Report"
+    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/07/2023", "Start" => "9:00 AM", "End" => "10:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 0, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/07/2023", "Start" => "10:00 AM", "End" => "11:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 15, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "absent", "Date" => "11/07/2023", "Start" => "11:00 AM", "End" => "12:00 PM", "Type" => "Lesson", "Check Method" => "Zoom", "Active Minutes" => 15, "Potential Minutes" => 60)
 
-    expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 6th, 2023 9:00 AM", "End" => "November 6th, 2023 10:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 60)
-    expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 6th, 2023 10:00 AM", "End" => "November 6th, 2023 11:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 60)
-    expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 6th, 2023 11:00 AM", "End" => "November 6th, 2023 12:00 PM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 55)
-    
-    expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 6th, 2023 1:00 PM", "End" => "November 6th, 2023 2:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 58)
-    expect(find("#report")).to have_table_row("Status" => "absent", "Start" => "November 6th, 2023 2:00 PM", "End" => "November 6th, 2023 3:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 13)
-    expect(find("#report")).to have_table_row("Status" => "absent", "Start" => "November 6th, 2023 3:00 PM", "End" => "November 6th, 2023 4:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 0)
-
-    expect(find("#report")).to have_table_row("Status" => "absent", "Start" => "November 7th, 2023 9:00 AM", "End" => "November 7th, 2023 10:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 0)
-    expect(find("#report")).to have_table_row("Status" => "absent", "Start" => "November 7th, 2023 10:00 AM", "End" => "November 7th, 2023 11:00 AM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 15)
-    expect(find("#report")).to have_table_row("Status" => "absent", "Start" => "November 7th, 2023 11:00 AM", "End" => "November 7th, 2023 12:00 PM", "Type" => "Lesson", "Check Method" => "Zoom", "Minutes Active" => 15)
-
-    expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 7th, 2023 1:00 PM", "End" => "November 7th, 2023 2:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 60)
-    expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 7th, 2023 2:00 PM", "End" => "November 7th, 2023 3:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 60)
-    expect(find("#report")).to have_table_row("Status" => "present", "Start" => "November 7th, 2023 3:00 PM", "End" => "November 7th, 2023 4:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Minutes Active" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/07/2023", "Start" => "1:00 PM", "End" => "2:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 60, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/07/2023", "Start" => "2:00 PM", "End" => "3:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 60, "Potential Minutes" => 60)
+    expect(find("#report")).to have_table_row("Status" => "present", "Date" => "11/07/2023", "Start" => "3:00 PM", "End" => "4:00 PM", "Type" => "Lab", "Check Method" => "Slack", "Active Minutes" => 60, "Potential Minutes" => 60)
   end
 
   it 'can download a CSV report a student' do
-    visit admin_path
-
-    click_link "Reports"
-
-    click_link @student.name
-    
-    fill_in :start_date, with: "2023-11-06"
-    fill_in :end_date, with: "2023-11-07"
-
-    click_button "Generate Report"
     click_link "Download as CSV"
 
     report = CSV.parse(page.body, headers: true)
     
-    expect(report.headers).to eq(["Status","Minutes Active","Start","End","Type","Check Method"])
-    expect(report.count).to eq(12)
+    expect(report.headers).to eq(["Status","Potential Minutes", "Active Minutes","Date","Start","End","Type","Check Method"])
+    expect(report.count).to eq(13)
 
     expect(report[0]["Status"]).to eq("present")
-    expect(report[0]["Start"]).to eq("November 7th, 2023 3:00 PM")
-    expect(report[0]["End"]).to eq("November 7th, 2023 4:00 PM")
+    expect(report[0]["Date"]).to eq("11/07/2023")
+    expect(report[0]["Start"]).to eq("3:00 PM")
+    expect(report[0]["End"]).to eq("4:00 PM")
     expect(report[0][ "Type"]).to eq("Lab")
     expect(report[0]["Check Method"]).to eq("Slack")
-    expect(report[0]["Minutes Active"]).to eq("60")
+    expect(report[0]["Active Minutes"]).to eq("60")
+    expect(report[0]["Potential Minutes"]).to eq("60")
 
-    expect(report[11]["Status"]).to eq("present")
-    expect(report[11]["Start"]).to eq("November 6th, 2023 9:00 AM")
-    expect(report[11]["End"]).to eq("November 6th, 2023 10:00 AM")
-    expect(report[11][ "Type"]).to eq("Lesson")
-    expect(report[11]["Check Method"]).to eq("Zoom")
-    expect(report[11]["Minutes Active"]).to eq("60")
+    expect(report[12]["Status"]).to eq("present")
+    expect(report[12]["Date"]).to eq("11/06/2023")
+    expect(report[12]["Start"]).to eq("9:00 AM")
+    expect(report[12]["End"]).to eq("10:00 AM")
+    expect(report[12][ "Type"]).to eq("Lesson")
+    expect(report[12]["Check Method"]).to eq("Zoom")
+    expect(report[12]["Active Minutes"]).to eq("60")
+    expect(report[12]["Potential Minutes"]).to eq("60")
   end
 
-  xit 'can show a report for a module' do
-    visit admin_path
-
-    within '#available-reports' do
-      within '#current-inning-reports' do
-        click_link @module.name
-      end
-    end
-
-    expect(current_path).to eq("admin/module_reports/#{@module.id}")
-    expect(find("#report")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Join Time" => "N/A")
-
-  end
-
-  xit 'can show a report for all students in the current inning' do
-    visit admin_path
-
-    click_link "Current Inning Report"
-
-    expect(page).to have_content("Report for #{test_inning.name} Inning")
-
-    expect(find("#student-attendances")).to have_table_row("Student" => absent.name, "Status" => 'absent', "Join Time" => "N/A")
-
-  end
-
-  xit 'can download a CSV report for all students in the current inning' do
-    visit admin_path
-    within '#available-reports' do
-      within '#current-inning-report' do
-        click_button 'Generate Report'
-      end
-    end
-
-    report = CSV.parse(page.body, headers: true)
-    expect(report.headers).to eq([])
-    expect(report.count).to eq(0)
+  it 'shows a summary of the report' do
+    expect(page).to have_content("Credit Hours Eligible: 12.5")
+    expect(page).to have_content("Credit Hours Earned: 7.5")
+    expect(page).to have_content("Lesson Hours Eligible: 6.5")
+    expect(page).to have_content("Lesson Hours Earned: 3.5")
+    expect(page).to have_content("Lab Hours Eligible: 6.0")
+    expect(page).to have_content("Lab Hours Earned: 4.0")
   end
 end

@@ -1,7 +1,9 @@
 class SlackApiService 
   extend Limiter::Mixin
   # Rate limit users.getPresence api call to 50 requests per minute
-  limit_method :get_presence, rate: 50 
+  limit_method :get_presence, rate: 50 do
+    Rails.logger.info "Rate Limit exceeded for Slack API Presence call"
+  end
 
   def get_presence(user_id)
     response = conn.get("users.getPresence") do |req|
