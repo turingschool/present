@@ -1,10 +1,12 @@
 class CreateAttendanceFacade
   def self.take_attendance(meeting_url, turing_module, user)
-    meeting = create_meeting(meeting_url)
-    populi_meeting = meeting.closest_populi_meeting_to_start_time(turing_module.populi_course_id)
-    attendance = turing_module.attendances.find_or_create_by(user: user, attendance_time: populi_meeting.start, end_time: populi_meeting.end, meeting: meeting)
-    attendance.record
-    return attendance
+    ActiveRecord::Base.transaction do
+      meeting = create_meeting(meeting_url)
+      populi_meeting = meeting.closest_populi_meeting_to_start_time(turing_module.populi_course_id)
+      attendance = turing_module.attendances.find_or_create_by(user: user, attendance_time: populi_meeting.start, end_time: populi_meeting.end, meeting: meeting)
+      attendance.record
+      attendance
+    end
   end
 
   def self.create_meeting(meeting_url)
