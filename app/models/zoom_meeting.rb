@@ -8,7 +8,6 @@ class ZoomMeeting < Meeting
     raise invalid_error if meeting_details[:code] == 3001
     raise no_meeting_error if meeting_details[:code] == 2300
     raise personal_meeting_error if meeting_details[:start_time].nil?
-    raise no_participants_error if meeting_details[:participants_count] == 0
 
     start_time = meeting_details[:start_time].to_datetime
     end_time = start_time + meeting_details[:duration].minutes
