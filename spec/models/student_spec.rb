@@ -13,6 +13,7 @@ RSpec.describe Student, type: :model do
     it {should have_many(:attendances).through(:student_attendances)}
     it {should have_many(:zoom_aliases)}
     it {should have_many(:slack_presence_checks)}
+    it {should have_many(:student_attendance_hours).through(:student_attendances)}
   end
 
   describe 'class methods' do

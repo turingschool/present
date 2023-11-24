@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+    <meeting>
+        <meetingid>1962</meetingid>
+        <roomid>0</roomid>
+        <room_name>TBA</room_name>
+        <start>2023-01-10T09:00:00-07:00</start>
+        <end>2023-01-10T10:30:00-07:00</end>
+        <counts_toward_attendance_hours>0</counts_toward_attendance_hours>
+        <counts_toward_clinical_hours>0</counts_toward_clinical_hours>
+    </meeting>
+    <meeting>
+        <meetingid>1963</meetingid>
+        <roomid>0</roomid>
+        <room_name>TBA</room_name>
+        <start>2023-01-10T13:00:00-07:00</start>
+        <end>2023-01-10T16:00:00-07:00</end>
+        <counts_toward_attendance_hours>0</counts_toward_attendance_hours>
+        <counts_toward_clinical_hours>0</counts_toward_clinical_hours>
+    </meeting>
+</response>

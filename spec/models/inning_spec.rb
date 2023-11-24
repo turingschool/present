@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Inning, type: :model do
   describe 'relationships' do 
     it {should have_many :turing_modules}
+    it {should have_many(:attendances).through(:turing_modules)}
     it {should have_many(:students).through(:turing_modules)}
   end 
 
@@ -15,7 +16,7 @@ RSpec.describe Inning, type: :model do
       expect(inning.current).to eq(false)
     end 
 
-    describe '# date_within_allowed_range validation' do
+    describe '#date_within_allowed_range validation' do
       it 'start_date must be at least 12 weeks after the current innings start_date' do
         inning1 = create(:inning, :is_current)
         inning = Inning.new(name: '2108', start_date: Date.today)
@@ -75,73 +76,45 @@ RSpec.describe Inning, type: :model do
       expect(inning1.turing_modules.where(module_number: 6).count).to eq(1)
     end
 
-    describe "#check_presence_for_students" do
+    describe "#process_presence_data_for_slack_attendances!" do
       before :each do
-        @inning = create(:inning)
-        mod1, mod2, mod3 = create_list(:turing_module, 3, inning: @inning)
-        @student_1 = create(:student, turing_module: mod1, slack_id: "1")
-        @student_2 = create(:student, turing_module: mod1, slack_id: "2")
-        @student_3 = create(:student, turing_module: mod2, slack_id: "3")
-        @student_4 = create(:student, turing_module: mod2, slack_id: "4")
-        @student_5 = create(:student, turing_module: mod3, slack_id: "5")
-
-        stub_request(:get, "https://slack.com/api/users.getPresence?user=1").
-          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
-        
-        @user2_stub = stub_request(:get, "https://slack.com/api/users.getPresence?user=2").
-          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_away.json"))
-
-        @user3_stub = stub_request(:get, "https://slack.com/api/users.getPresence?user=3").
-          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
-        
-        stub_request(:get, "https://slack.com/api/users.getPresence?user=4").
-          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))
-          
-        @user5_stub = stub_request(:get, "https://slack.com/api/users.getPresence?user=5").
-          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_active.json"))  
+        @current_inning = create(:inning, :current_past)
+        @module, @other_module = create_list(:turing_module, 2, inning: @current_inning)
+        @attendance_check_complete = create(:slack_attendance, :presence_check_complete, turing_module: @module)
+        @attendance_check_incomplete = create(:slack_attendance, :presence_check_incomplete, turing_module: @module)
+        create(:student_attendance, attendance: @attendance_check_incomplete)
+        @other_attendance_check_complete = create(:slack_attendance, :presence_check_complete, turing_module: @other_module)
+        @other_attendance_check_incomplete = create(:slack_attendance, :presence_check_incomplete, turing_module: @other_module)
+        create(:student_attendance, attendance: @other_attendance_check_incomplete)
+        @zoom_attendance = create(:zoom_attendance, turing_module: @other_module)
       end
 
-      it 'records the presence' do
-        @inning.check_presence_for_students
-
-        expect(SlackPresenceCheck.count).to eq(5)
-        expect(@student_1.slack_presence_checks.first.presence).to eq("active")
-        expect(@student_1.slack_presence_checks.count).to eq(1)
-        expect(@student_2.slack_presence_checks.first.presence).to eq("away")
+      it "will change slack attendances that haven't been marked complete" do
+        expect { @current_inning.process_presence_data_for_slack_attendances! }.
+          to change { @attendance_check_incomplete.student_attendance_hours.count} 
       end
 
-      it 'records the check time' do
-        check_time = Time.now
-        allow(Time).to receive(:now).and_return(check_time)
-        
-        @inning.check_presence_for_students
-
-        # call .to_fs(:short) to remove any precision past hour/minute/second
-        expect(@student_1.slack_presence_checks.first.check_time.to_fs(:short)).to eq(check_time.to_fs(:short))
-        expect(@student_2.slack_presence_checks.first.check_time.to_fs(:short)).to eq(check_time.to_fs(:short))
+      it 'does not change zoom attendances' do
+        expect { @current_inning.process_presence_data_for_slack_attendances! }.
+          to_not change { @zoom_attendance.student_attendance_hours.count} 
       end
 
-      it "retries up to 5 times upon receiving a failure" do
-        stub_request(:get, "https://slack.com/api/users.getPresence?user=2").
-          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
+      it 'does not change a slack attendance that has already been marked completed' do
+        expect { @current_inning.process_presence_data_for_slack_attendances! }.
+          to_not change { @attendance_check_complete.student_attendance_hours.count} 
+      end
 
-        stub_request(:get, "https://slack.com/api/users.getPresence?user=3").
-          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
-        
-        stub_request(:get, "https://slack.com/api/users.getPresence?user=5").
-          to_return(status: 200, body: File.read("spec/fixtures/slack/presence_error.json"))
+      it "works for multiple modules" do
+        expect { @current_inning.process_presence_data_for_slack_attendances! }.
+          to change { @other_attendance_check_incomplete.student_attendance_hours.count} 
+      end
 
-        @inning.check_presence_for_students
-        
-        # expect 6 times for 1 initial call plus 5 retries
-        expect(@user2_stub).to have_been_requested.times(6)
-        expect(@user3_stub).to have_been_requested.times(6)
-        expect(@user5_stub).to have_been_requested.times(6)
-        expect(@student_2.slack_presence_checks.count).to eq(0)
-        expect(@student_3.slack_presence_checks.count).to eq(0)
-        expect(@student_5.slack_presence_checks.count).to eq(0)
-        # 2 students should have successful presence checks
-        expect(SlackPresenceCheck.pluck(:student_id).sort).to eq([@student_1.id, @student_4.id].sort)
+      it "does not touch any attendances from other innings" do
+        @invalid_module = create(:turing_module)
+        create(:student, turing_module: @invalid_module)
+        @attendance_from_other_inning = create(:slack_attendance, :presence_check_incomplete, turing_module: @invalid_module)
+        expect {@current_inning.process_presence_data_for_slack_attendances! }.
+          to_not change { @attendance_from_other_inning.student_attendance_hours.count }
       end
     end
   end 

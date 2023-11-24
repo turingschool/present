@@ -1,6 +1,7 @@
 class StudentAttendance < ApplicationRecord
   belongs_to :student
   belongs_to :attendance
+  has_many :student_attendance_hours, dependent: :destroy
 
   enum status: [:present, :tardy, :absent]
 

@@ -24,6 +24,16 @@ FactoryBot.define do
         create(:zoom_alias, student: student5, name: "J Seymour (he/they) BE", turing_module: mod)
         create(:zoom_alias, student: student6, name: "Samuel C (He/Him) BE", turing_module: mod)
       end
+
+      factory :setup_module_with_presence_checks do
+        after(:create) do |mod|
+          mod.students.each do |student|
+            8.times do |i|
+              create(:slack_presence_check, student: student, check_time: Time.now - (i * 5).minutes)
+            end
+          end
+        end
+      end
     end
     
     factory :setup_module_no_aliases do

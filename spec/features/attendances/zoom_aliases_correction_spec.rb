@@ -193,13 +193,20 @@ RSpec.describe 'attendance show page' do
   it 'will duplicate aliases for different modules' do
     student = create(:setup_student) # Need to create one setup student so the module will be considered "set up"
     other_module = student.turing_module
+    other_zoom_id = "12345"
 
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>other_module.populi_course_id}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
 
+    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{other_zoom_id}/participants?page_size=300") \
+        .to_return(body: File.read('spec/fixtures/zoom/participant_report_for_name_matching.json'))
+
+    stub_request(:get, "https://api.zoom.us/v2/meetings/#{other_zoom_id}") \
+      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
+
     visit turing_module_path(other_module)
-    fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
+    fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{other_zoom_id}"
     
     expect { click_button 'Take Attendance' }.to change { ZoomAlias.count }
   end

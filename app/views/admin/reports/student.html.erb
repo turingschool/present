@@ -1,0 +1,57 @@
+<h1>Reporting for <%= @student.name %></h1>
+<h2>Select Date Range for Report</h2>
+<%= form_with method: :get do |f| %>
+  <%= f.label "Start Date" %>
+  <%= f.date_field :start_date %>
+  <%= f.label "End Date" %>
+  <%= f.date_field :end_date %>
+  <%= f.submit "Generate Report" %>
+<% end %>
+
+<% if @student_attendance_hours %>
+<section id="report">
+    <h2><%= @student.name %>: <%= params[:start_date] %> to <%= params[:end_date] %></h2>
+    <section id="summary">
+      <h3>Summary</h3>
+      <p><strong>Credit Hours Eligible: <%= @student_attendance_hours.total.in_hours %></strong></p>
+      <p><strong>Credit Hours Earned: <%= @student_attendance_hours.total(status: :present).in_hours %></strong></p>
+      <p><strong>Lesson Hours Eligible: <%= @student_attendance_hours.total(meeting_type: "ZoomMeeting").in_hours %></strong></p>
+      <p><strong>Lesson Hours Earned: <%= @student_attendance_hours.total(status: :present, meeting_type: "ZoomMeeting").in_hours %></strong></p>
+      <p><strong>Lab Hours Eligible: <%= @student_attendance_hours.total(meeting_type: "SlackThread").in_hours %></strong></p>
+      <p><strong>Lab Hours Earned: <%= @student_attendance_hours.total(status: :present, meeting_type: "SlackThread").in_hours %></strong></p>
+    </section>
+
+    <section id="attendance-hours">
+      <h3>Attendance Hours</h3>
+      <%= link_to "Download as CSV", url_for(params: request.query_parameters, format: :csv) %>
+      <table class="sortable s-table">
+        <thead>
+          <tr>
+              <th>Date</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Status</th>
+              <th>Potential Minutes</th>
+              <th>Active Minutes</th>
+              <th>Type</th>
+              <th>Check Method</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @student_attendance_hours.each do |hour| %>
+            <tr>
+              <td><%= short_date(hour.start) %></td>
+              <td><%= pretty_time(hour.start) %></td>
+              <td><%= pretty_time(hour.end_time) %></td>
+              <td><%= hour.status %></td>
+              <td><%= hour.potential_minutes %></td>
+              <td><%= hour.duration %></td>
+              <td><%= hour.attendance_type %></td>
+              <td><%= hour.check_method %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </section>
+  </section>
+<% end %>

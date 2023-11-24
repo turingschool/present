@@ -7,10 +7,12 @@ RSpec.describe Attendance, type: :model do
 
   describe 'relationships' do
     it {should belong_to :turing_module}
+    it {should have_one(:inning).through(:turing_module)}
     it {should belong_to :user}
     it {should belong_to(:meeting)} 
     it {should have_many :student_attendances}
     it {should have_many(:students).through(:student_attendances)}
+    it {should have_many(:student_attendance_hours).through(:student_attendances)}
   end
   
   describe 'instance methods' do

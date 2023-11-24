@@ -54,6 +54,7 @@ RSpec.describe 'Creating a Zoom Attendance' do
       expect(find("#student-attendances")).to have_table_row("Student" => tardy.name, "Status" => 'tardy', "Duration" => "59", "Join Time" => "9:01")
       expect(find("#student-attendances")).to have_table_row("Student" => present.name, "Status" => 'present', "Duration" => "59", "Join Time" => "8:58")
     end
+    
 
     it 'records the populi attedance start and end times' do
       visit turing_module_path(@test_module)
