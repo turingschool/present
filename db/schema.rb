@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_11_191604) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_28_185757) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -119,6 +119,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_11_191604) do
     t.datetime "updated_at", precision: nil, null: false
     t.bigint "zoom_meeting_id"
     t.bigint "turing_module_id"
+    t.boolean "instructor", default: false
     t.index ["name", "turing_module_id"], name: "index_zoom_aliases_on_name_and_turing_module_id", unique: true
     t.index ["student_id"], name: "index_zoom_aliases_on_student_id"
     t.index ["turing_module_id"], name: "index_zoom_aliases_on_turing_module_id"
