@@ -173,9 +173,12 @@ RSpec.describe 'Creating a Zoom Attendance' do
     it 'flashes a message letting the user know the report isnt ready yet' do
       visit turing_module_path(@test_module)
 
+      expect(Attendance.all.count).to eq(0)
+      
       fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
       click_button 'Take Attendance'
 
+      expect(Attendance.all.count).to eq(0)
       expect(page).to have_content("That Zoom Meeting does not have any participants yet. This could be because the meeting is still in progress. Please try again later.")
     end
   end

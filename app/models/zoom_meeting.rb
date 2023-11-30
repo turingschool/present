@@ -10,7 +10,7 @@ class ZoomMeeting < Meeting
     raise invalid_error if meeting_details[:code] == 3001
     raise no_meeting_error if meeting_details[:code] == 2300
     raise personal_meeting_error if meeting_details[:start_time].nil?
-    
+
     start_time = meeting_details[:start_time].to_datetime
     end_time = start_time + meeting_details[:duration].minutes
     
@@ -26,7 +26,7 @@ class ZoomMeeting < Meeting
   end
 
   def take_participant_attendance
-    raise ZoomMeeting.participants_not_ready_error if participant_report.nil?
+    raise ZoomMeeting.no_participants_error if participant_report.nil?
     create_zoom_aliases
     grouped_participants = participants.group_by(&:name)
     turing_module.students.each do |student|
@@ -72,7 +72,7 @@ private
     InvalidMeetingError.new("It looks like that Zoom link is for a Personal Meeting Room. You will need to use a unique meeting instead.")
   end
 
-  def self.participants_not_ready_error
+  def self.no_participants_error
     InvalidMeetingError.new("That Zoom Meeting does not have any participants yet. This could be because the meeting is still in progress. Please try again later.")
   end
 
