@@ -58,7 +58,7 @@ class User::AttendancesController < User::BaseController
       logger.info("Attendance #{attendance.id} deleted by user #{current_user.email}. Deleted Attendance Details: #{attendance_details.inspect}")
     end
     redirect_to turing_module_path(module_id)
-    flash[:sucess] = "Attendance successfully deleted."
+    flash[:success] = "Attendance successfully deleted."
   end
 
   def retake
