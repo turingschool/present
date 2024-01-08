@@ -5,15 +5,15 @@ class PopuliService
 
   def initialize
     check_env_vars
+    PopuliAPI.connect(
+        url: ENV["POPULI_API_URL"],  
+        access_key: ENV["POPULI_API_ACCESS_KEY"]
+    )
   end
 
   def get_person(id)
     response = conn.get("people/#{id}")
     parse_response(response)
-  end
-
-  def get_courses(term_id)
-      PopuliAPI.get_term_course_instances(term_id: term_id)
   end
 
   def get_current_academic_term
