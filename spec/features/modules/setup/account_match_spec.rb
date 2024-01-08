@@ -7,12 +7,12 @@ RSpec.describe "Module Setup Account Matching" do
       @mod = create(:turing_module, module_number: 2, program: :BE)
       @channel_id = "C02HRH7MF5K" 
 
-      stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getCurrentAcademicTerm"}).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.xml'), headers: {})
+      stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
+         with(headers: {'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"}).
+         to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.json')) 
       
       stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
+        with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295952"}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
       
       stub_request(:post, ENV['POPULI_API_URL']).
