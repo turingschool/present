@@ -7,8 +7,8 @@ class PopuliStudent
   end
 
   def self.from_populi(populi_data)
-    name = full_name(populi_data[:first], populi_data[:last], populi_data[:preferred])
-    new(name, populi_data[:personid])
+    name = full_name(populi_data[:first_name], populi_data[:last_name], populi_data[:preferred_name])
+    new(name, populi_data[:id])
   end
 
   def self.full_name(first, last, preferred)
