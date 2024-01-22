@@ -51,5 +51,19 @@ RSpec.describe PopuliService do
       expect(response).to have_key(:updated_at)
       expect(response).to have_key(:private_profile)
     end
+
+    describe 'get_students method' do
+      it 'get_course_offering_name method gets course_offering name from Populi API call' do
+        # response = @populi.get_course_offering_name
+        WebMock.allow_net_connect!
+        # expect(response).to be_a Hash
+        # expect(response).to have_key(:id)
+        # expect(response).to have_key(:catalog_courses)
+        # expect(response[:catalog_courses]).to have_key(:abbrv)
+        # expect(res)
+        response = PopuliAPI.get_course_instance_students(instance_id: 10547884)
+        require 'pry'; binding.pry
+      end
+    end
   end
 end

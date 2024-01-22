@@ -22,6 +22,12 @@ class PopuliService
   end
 
   def get_students(course_instance_id)
+    require 'pry'; binding.pry
+    # get course offering/catalog_course information, 
+    # dig through the course offering information to get abbreviation and name of course,
+    # utilize interpolated abbreviation and name of course to filer for all students in this course
+    # barriers: course offering occasionally contains more than 1 course, catalog_course may be better route
+    # but we need to verify where the course_id for a PopuliFacade is being aquired through and what object type it pertains to
       PopuliAPI.get_course_instance_students(instance_id: course_instance_id)
   end
 
