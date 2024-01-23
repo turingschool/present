@@ -1,6 +1,6 @@
 {
   "object": "academic_term",
-  "id": 295952,
+  "id": 295946,
   "academic_year_id": 74259,
   "name": "2311",
   "display_name": "2311",
@@ -19,7 +19,7 @@
   "evaluations_available_from": null,
   "evaluations_available_to": null,
   "evaluations_lock_grades_at": null,
-  "financial_aid_report_as_academic_term_id": 295951,
+  "financial_aid_report_as_academic_term_id": 295946,
   "online_registration_delay_until": null,
   "online_registration_randomization_seconds": 0,
   "evaluations_lock_grades_until": null,
