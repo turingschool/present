@@ -52,7 +52,7 @@ private
   end
 
   def populi_students
-    @populi_students ||= service.get_students(course_id)[:response][:courseinstance_student].map do |student|
+    @populi_students ||= service.get_students(course_id)[:body].map do |student|
       PopuliStudent.from_populi(student)
     end
   end
