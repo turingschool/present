@@ -5,6 +5,11 @@ RSpec.describe PopuliService do
     before(:each) do
       @populi = PopuliService.new
       @personId = "12"
+      @personId_1 = "1"
+      @personId_2 = "2"
+      @personId_3 = "3"
+      @personId_4 = "4"
+      @course_offering_1 = "1"
       stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
          with(
            headers: {
@@ -12,12 +17,47 @@ RSpec.describe PopuliService do
            }).
          to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.json')) 
 
-         stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId}").
-         with(
-           headers: {
-       	  'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
-           }).
-         to_return(status: 200, body: File.read('spec/fixtures/populi/get_person.json')) 
+      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId}").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_1.json'))
+      
+      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_1}").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_1.json'))
+      
+      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_2}").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_2.json'))
+      
+      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_3}").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_3.json'))
+      
+      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_4}").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_4.json'))
+      
+      stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings/#{@course_offering_1}/students").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_enrollments.json'))
     end
 
     it 'can get current academic term' do
@@ -54,15 +94,25 @@ RSpec.describe PopuliService do
 
     describe 'get_students method' do
       it 'get_course_offering_name method gets course_offering name from Populi API call' do
-        # response = @populi.get_course_offering_name
-        WebMock.allow_net_connect!
-        # expect(response).to be_a Hash
-        # expect(response).to have_key(:id)
-        # expect(response).to have_key(:catalog_courses)
-        # expect(response[:catalog_courses]).to have_key(:abbrv)
-        # expect(res)
-        response = PopuliAPI.get_course_instance_students(instance_id: 10547884)
-        require 'pry'; binding.pry
+        response = @populi.get_students(@course_offering_1)
+        expect(response).to be_a(Hash)
+        expect(response).to have_key(:body)
+        expect(response[:body]).to be_a(Array)
+        expect(response[:body].first).to have_key(:first_name)
+        expect(response[:body].first).to have_key(:last_name)
+        expect(response[:body].first).to have_key(:preferred_name)
+        expect(response[:body].first).to have_key(:id)
+      end
+    end
+
+    describe 'get_enrollments method' do
+      it 'get_enrollments method gets enrollments from Populi API call' do
+        response = @populi.get_enrollments(@course_offering_1)
+        expect(response).to be_a(Hash)
+        expect(response).to have_key(:data)
+        expect(response[:data]).to be_a(Array)
+        expect(response[:data].first).to be_an(Hash)
+        expect(response[:data].first).to have_key(:student_id)
       end
     end
   end
