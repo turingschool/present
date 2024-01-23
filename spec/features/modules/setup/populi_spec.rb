@@ -4,6 +4,12 @@ RSpec.describe "Module Setup Populi Workflow" do
   before(:each) do
     @user = mock_login
     @mod = create(:turing_module, module_number: 2, program: :BE)
+    @personId_1 = "1"
+    @personId_2 = "2"
+    @personId_3 = "3"
+    @personId_4 = "4"
+    @course_offering_1 = "10547831"
+    @course_offering_2 = "10547876"
 
     stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
          with(headers: {'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"}).
@@ -13,13 +19,13 @@ RSpec.describe "Module Setup Populi Workflow" do
       with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
     
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
+    # stub_request(:post, ENV['POPULI_API_URL']).
+    #   with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
+    #   to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
     
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547876"}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
+    # stub_request(:post, ENV['POPULI_API_URL']).
+    #   with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547876"}).
+    #   to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
     
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getAcademicTerms"}).
@@ -28,6 +34,48 @@ RSpec.describe "Module Setup Populi Workflow" do
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295898"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2308.xml'), headers: {})
+
+    stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_1}").
+      with(
+        headers: {
+      'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+        }).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_1.json'))
+    
+    stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_2}").
+      with(
+        headers: {
+      'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+        }).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_2.json'))
+    
+    stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_3}").
+      with(
+        headers: {
+      'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+        }).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_3.json'))
+    
+    stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_4}").
+      with(
+        headers: {
+      'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+        }).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_4.json'))
+    
+    stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings/#{@course_offering_1}/students").
+      with(
+        headers: {
+      'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+        }).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/get_enrollments.json'))
+    
+    stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings/#{@course_offering_2}/students").
+      with(
+        headers: {
+      'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+        }).
+      to_return(status: 200, body: File.read('spec/fixtures/populi/get_enrollments.json'))
   end
 
   it 'suggests the best match of module from the list of populi courses' do
@@ -35,7 +83,7 @@ RSpec.describe "Module Setup Populi Workflow" do
 
     within '#best-match' do
       expect(page).to have_content('BE Mod 2 - Web Application Development')
-      expect(page).to have_content('Inning: 2301')
+      expect(page).to have_content('Inning: 2311')
     end
   end
 
@@ -49,7 +97,7 @@ RSpec.describe "Module Setup Populi Workflow" do
 
     within '#best-match' do
       expect(page).to have_content('C#.NET Mod 1')
-      expect(page).to have_content('Inning: 2301')
+      expect(page).to have_content('Inning: 2311')
     end
   end
   
@@ -67,12 +115,12 @@ RSpec.describe "Module Setup Populi Workflow" do
     end
 
     it 'populates the mod with students' do
-      expect(@mod.students.length).to eq(7)
+      expect(@mod.students.length).to eq(4)
       students = @mod.students.sort_by(&:name)
-      expect(@mod.students.fifth.name).to eq('J Seymour')
-      expect(@mod.students.fifth.populi_id).to eq('24490161')
-      expect(@mod.students.second.name).to eq('Anthony Blackwell Tallent')
-      expect(@mod.students.second.populi_id).to eq('24490140')
+      expect(@mod.students.third.name).to eq('J Seymour')
+      expect(@mod.students.third.populi_id).to eq('3')
+      expect(@mod.students.first.name).to eq('Anthony Blackwell Tallent')
+      expect(@mod.students.first.populi_id).to eq('1')
     end
 
     it 'saves the populi course id to the module' do
@@ -87,7 +135,7 @@ RSpec.describe "Module Setup Populi Workflow" do
         within '#best-match' do
           click_button 'Yes'
         end
-        expect(@mod.students.length).to eq(7)
+        expect(@mod.students.length).to eq(4)
       end 
     end 
   end
@@ -149,7 +197,7 @@ RSpec.describe "Module Setup Populi Workflow" do
 
       expect(current_path).to eq(turing_module_slack_integration_path(@mod))
       
-      expect(@mod.students.length).to eq(7)
+      expect(@mod.students.length).to eq(4)
     end
   end
 end
