@@ -5,19 +5,55 @@ RSpec.describe "Module Setup Account Matching" do
     before :each do
       @user = mock_login
       @mod = create(:turing_module, module_number: 2, program: :BE)
-      @channel_id = "C02HRH7MF5K" 
+      @channel_id = "C02HRH7MF5K"
+      @personId_1 = "1"
+      @personId_2 = "2"
+      @personId_3 = "3"
+      @personId_4 = "4"
+      @course_offering_1 = "10547831"
 
       stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
-         with(headers: {'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"}).
-         to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.json')) 
-      
+        with(headers: {'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"}).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.json')) 
+         
       stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295952"}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
       
-      stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
+      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_1}").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_1.json'))
+      
+      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_2}").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_2.json'))
+      
+      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_3}").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_3.json'))
+      
+      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_4}").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_4.json'))
+
+      stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings/#{@course_offering_1}/students").
+        with(
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/get_enrollments.json'))
 
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))
@@ -122,7 +158,7 @@ RSpec.describe "Module Setup Account Matching" do
         end
         
         within '.populi-id' do
-          expect(page).to have_content('24490140')
+          expect(page).to have_content('1')
         end
       end
 
@@ -132,7 +168,7 @@ RSpec.describe "Module Setup Account Matching" do
         end
         
         within '.populi-id' do
-          expect(page).to have_content('24490161')
+          expect(page).to have_content('3')
         end
       end
       
