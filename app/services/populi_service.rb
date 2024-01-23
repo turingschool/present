@@ -21,14 +21,16 @@ class PopuliService
       parse_response(response)
   end
 
-  def get_students(course_instance_id)
-    require 'pry'; binding.pry
-    # get course offering/catalog_course information, 
-    # dig through the course offering information to get abbreviation and name of course,
-    # utilize interpolated abbreviation and name of course to filer for all students in this course
-    # barriers: course offering occasionally contains more than 1 course, catalog_course may be better route
-    # but we need to verify where the course_id for a PopuliFacade is being aquired through and what object type it pertains to
-      PopuliAPI.get_course_instance_students(instance_id: course_instance_id)
+  def get_students(course_offering_id)
+    enrollments = get_enrollments(course_offering_id)
+    student_ids = enrollments[:data].map { |enrollment| enrollment[:student_id] }
+    students = Hash.new
+    students[:body] = student_ids.map { |id| get_person(id) }
+    students
+  end
+
+  def get_enrollments(course_offering_id)
+    parse_response(conn.get("courseofferings/#{course_offering_id}/students"))
   end
 
   def get_terms
