@@ -193,6 +193,37 @@
       "automatically_removed_at": null,
       "automatically_removed_from": null,
       "display_status": "Enrolled"
+    },
+    {
+      "object": "enrollment",
+      "id": 76297640,
+      "course_offering_id": 1,
+      "catalog_course_id": 2,
+      "student_id": 24490150,
+      "status": "enrolled",
+      "status_expires_at": "2023-11-16T14:21:30+00:00",
+      "pending_reason": null,
+      "final_comment": null,
+      "final_grade": 100,
+      "final_attendance": 95.15,
+      "commented_by_id": null,
+      "enrolled_by_id": 4,
+      "enrolled_by_type": "registrar",
+      "status_date": "2023-11-15",
+      "enrolled_date": "2023-11-15",
+      "retake": false,
+      "credits": 0,
+      "hours": 180,
+      "attendance_hours": 68.5,
+      "clinical_hours": 87.5,
+      "pass_fail": true,
+      "retake_by_id": "system",
+      "finalized": false,
+      "finalized_at": null,
+      "delivery_method_id": 1,
+      "automatically_removed_at": null,
+      "automatically_removed_from": null,
+      "display_status": "Enrolled"
     }
   ]
 }
