@@ -34,7 +34,8 @@ class PopuliService
   end
 
   def get_terms
-    PopuliAPI.get_academic_terms
+    response = conn.get("academicterms")
+    parse_response(response)
   end
 
   def get_term_courses(term_id)
