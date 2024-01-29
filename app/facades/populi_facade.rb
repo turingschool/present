@@ -32,8 +32,8 @@ class PopuliFacade
   end
 
   def term_options
-    PopuliService.new.get_terms[:response][:academic_term].map do |term|
-      [term[:fullname], term[:termid]]
+    PopuliService.new.get_terms[:data].map do |term|
+      [term[:name], term[:id]]
     end
   end
 
