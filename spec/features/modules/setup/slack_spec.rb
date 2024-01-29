@@ -1,10 +1,13 @@
 require 'rails_helper'
+require './spec/fixtures/populi/stub_requests.rb'
 
 RSpec.describe "Module Setup Slack Workflow" do
   before(:each) do
     @user = mock_login
     @mod = create(:turing_module, module_number: 2, program: :BE)
     @channel_id = "C02HRH7MF5K"
+    stub_call_requests_for_persons
+    stub_call_requests_for_course_offerings
 
     stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
          with(headers: {'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"}).
@@ -13,10 +16,6 @@ RSpec.describe "Module Setup Slack Workflow" do
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
-    
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
 
     stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
       .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))  
