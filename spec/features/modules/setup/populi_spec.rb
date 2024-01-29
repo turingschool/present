@@ -7,6 +7,7 @@ RSpec.describe "Module Setup Populi Workflow" do
     @mod = create(:turing_module, module_number: 2, program: :BE)
     stub_call_requests_for_persons
     stub_call_requests_for_course_offerings
+    stub_call_requests_for_academic_terms
 
     stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
       with(headers: {'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"}).
@@ -15,10 +16,6 @@ RSpec.describe "Module Setup Populi Workflow" do
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
-    
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getAcademicTerms"}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/academic_terms.xml'), headers: {})
     
     stub_request(:post, ENV['POPULI_API_URL']).
       with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295898"}).
