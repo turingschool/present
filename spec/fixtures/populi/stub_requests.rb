@@ -84,3 +84,12 @@ def stub_call_requests_for_course_offerings
       }).
     to_return(status: 200, body: File.read('spec/fixtures/populi/get_enrollments.json'))
 end
+
+def stub_call_requests_for_academic_terms
+  stub_request(:get, "https://turing-validation.populi.co/api2/academicterms").
+    with(
+      headers: {
+    'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+      }).
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_academic_terms.json'))
+end
