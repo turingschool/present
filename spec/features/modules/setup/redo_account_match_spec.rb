@@ -1,4 +1,5 @@
 require 'rails_helper'
+require './spec/fixtures/populi/stub_requests.rb'
 
 RSpec.describe "Redo Module Setup Account Matching" do
   context 'user can choose to redo module setup after its already been done' do
@@ -7,6 +8,9 @@ RSpec.describe "Redo Module Setup Account Matching" do
       @test_module = create(:setup_module, module_number: 2, program: :BE)
       @channel_id = "C02HRH7MF5K" 
       @zoom_meeting_id = 96428502996
+      @instance_id = 10547831
+      stub_call_requests_for_persons
+      stub_call_requests_for_course_offerings
 
       stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
          with(headers: {'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"}).
@@ -15,10 +19,6 @@ RSpec.describe "Redo Module Setup Account Matching" do
       stub_request(:post, ENV['POPULI_API_URL']).
         with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
         to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
-      
-      stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
