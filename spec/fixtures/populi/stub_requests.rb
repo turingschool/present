@@ -61,6 +61,7 @@ end
 def stub_call_requests_for_course_offerings
   course_offering_1 = "10547831"
   course_offering_2 = "10547876"
+  course_offering_3 = "10547836"
 
   stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_1}/students").
     with(
@@ -70,6 +71,13 @@ def stub_call_requests_for_course_offerings
     to_return(status: 200, body: File.read('spec/fixtures/populi/get_enrollments.json'))
 
   stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_2}/students").
+    with(
+      headers: {
+    'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+      }).
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_enrollments.json'))
+  
+  stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_3}/students").
     with(
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
