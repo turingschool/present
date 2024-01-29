@@ -1,63 +1,21 @@
 require 'rails_helper'
+require './spec/fixtures/populi/stub_requests.rb'
 
 RSpec.describe PopuliService do
   describe 'api calls' do
     before(:each) do
       @populi = PopuliService.new
-      @personId = "12"
-      @personId_1 = "1"
-      @personId_2 = "2"
-      @personId_3 = "3"
-      @personId_4 = "4"
-      @course_offering_1 = "1"
+      @personId = "24490130"
+      @course_offering = "10547831"
+      stub_call_requests_for_persons
+      stub_call_requests_for_course_offerings
+      
       stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
-         with(
-           headers: {
-       	  'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
-           }).
-         to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.json')) 
-
-      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId}").
         with(
           headers: {
         'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
           }).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_1.json'))
-      
-      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_1}").
-        with(
-          headers: {
-        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
-          }).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_1.json'))
-      
-      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_2}").
-        with(
-          headers: {
-        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
-          }).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_2.json'))
-      
-      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_3}").
-        with(
-          headers: {
-        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
-          }).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_3.json'))
-      
-      stub_request(:get, "https://turing-validation.populi.co/api2/people/#{@personId_4}").
-        with(
-          headers: {
-        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
-          }).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_4.json'))
-      
-      stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings/#{@course_offering_1}/students").
-        with(
-          headers: {
-        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
-          }).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/get_enrollments.json'))
+        to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.json')) 
     end
 
     it 'can get current academic term' do
@@ -94,7 +52,7 @@ RSpec.describe PopuliService do
 
     describe 'get_students method' do
       it 'get_course_offering_name method gets course_offering name from Populi API call' do
-        response = @populi.get_students(@course_offering_1)
+        response = @populi.get_students(@course_offering)
         expect(response).to be_a(Hash)
         expect(response).to have_key(:body)
         expect(response[:body]).to be_a(Array)
@@ -107,7 +65,7 @@ RSpec.describe PopuliService do
 
     describe 'get_enrollments method' do
       it 'get_enrollments method gets enrollments from Populi API call' do
-        response = @populi.get_enrollments(@course_offering_1)
+        response = @populi.get_enrollments(@course_offering)
         expect(response).to be_a(Hash)
         expect(response).to have_key(:data)
         expect(response[:data]).to be_a(Array)
