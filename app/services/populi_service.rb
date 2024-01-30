@@ -39,7 +39,16 @@ class PopuliService
   end
 
   def get_term_courses(term_id)
-    PopuliAPI.get_term_course_instances(term_id: term_id)
+    response = conn.get("courseofferings") do |req|
+      req.body = {academic_term_id: term_id}.to_json
+    end
+    courseofferings = parse_response(response)
+    catalog_courses = courseofferings[:data].map do |course|
+      course[:catalog_courses].map do |catalog_course|
+        catalog_course
+      end
+    end.flatten.uniq
+    catalog_courses
   end
 
   def update_student_attendance(instance_id, meeting_id, person_id, status)
