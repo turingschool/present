@@ -9,8 +9,8 @@ class PopuliFacade
     @term_id = term_id
   end
 
-  def course
-    service.get_term_courses(@term_id)[:response][:course_instance].map do |course_data|
+  def courses
+    get_term_courses(@term_id).map do |course_data|
       PopuliCourse.new(course_data)
     end
   end
@@ -38,11 +38,10 @@ class PopuliFacade
   end
 
   def get_students(course_offering_id)
-    require 'pry'; binding.pry
     enrollments = service.get_enrollments(course_offering_id)
     student_ids = enrollments[:data].map { |enrollment| enrollment[:student_id] }
     students = Hash.new
-    students[:body] = student_ids.map { |id| get_person(id) }
+    students[:body] = student_ids.map { |id| service.get_person(id) }
     students
   end
 
@@ -58,10 +57,6 @@ class PopuliFacade
 
 private
   attr_reader :course_id
-
-  def get_person(id)
-    @person ||= service.get_person(id)
-  end
 
   def find_matching_module
     current_term_id = service.get_current_academic_term[:id]
