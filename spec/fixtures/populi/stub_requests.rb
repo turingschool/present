@@ -93,3 +93,24 @@ def stub_call_requests_for_academic_terms
       }).
     to_return(status: 200, body: File.read('spec/fixtures/populi/get_academic_terms.json'))
 end
+
+def stub_call_requests_for_current_academic_term
+  stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
+    with(
+      headers: {
+    'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+      }).
+    to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.json')) 
+end
+
+def stub_call_requests_for_course_offerings_by_term
+  term = 295946
+  
+  stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings").
+    with(
+      body: {academic_term_id: term},
+      headers: {
+    'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+      }).
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_courseofferings_by_term.json'))
+end
