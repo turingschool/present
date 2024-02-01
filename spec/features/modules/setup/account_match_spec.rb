@@ -5,18 +5,13 @@ RSpec.describe "Module Setup Account Matching" do
   context 'user imports students from populi and imports a slack channel' do
     before :each do
       @user = mock_login
-      @mod = create(:turing_module, module_number: 2, program: :BE, populi_course_id: 10547831)
+      @mod = create(:turing_module, module_number: 2, program: :BE)
       @channel_id = "C02HRH7MF5K"
       @term_id = "295946"
       stub_call_requests_for_persons
       stub_call_requests_for_course_offerings
       stub_call_requests_for_current_academic_term
       stub_call_requests_for_course_offerings_by_term
-      
-
-      # stub_request(:post, ENV['POPULI_API_URL']).
-      #   with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
-      #   to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
       
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))
