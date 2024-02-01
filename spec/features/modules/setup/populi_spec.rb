@@ -8,18 +8,8 @@ RSpec.describe "Module Setup Populi Workflow" do
     stub_call_requests_for_persons
     stub_call_requests_for_course_offerings
     stub_call_requests_for_academic_terms
-
-    stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
-      with(headers: {'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.json')) 
-    
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
-    
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295898"}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2308.xml'), headers: {})
+    stub_call_requests_for_current_academic_term
+    stub_call_requests_for_course_offerings_by_term
   end
 
   it 'suggests the best match of module from the list of populi courses' do
@@ -40,7 +30,7 @@ RSpec.describe "Module Setup Populi Workflow" do
     visit turing_module_populi_integration_path(launch_mod)
 
     within '#best-match' do
-      expect(page).to have_content('C#.NET Mod 1')
+      expect(page).to have_content('C#.NET Mod 0')
       expect(page).to have_content('Inning: 2311')
     end
   end
