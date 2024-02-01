@@ -8,14 +8,8 @@ RSpec.describe "Module Setup Slack Workflow" do
     @channel_id = "C02HRH7MF5K"
     stub_call_requests_for_persons
     stub_call_requests_for_course_offerings
-
-    stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
-         with(headers: {'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"}).
-         to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.json')) 
-    
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
+    stub_call_requests_for_current_academic_term
+    stub_call_requests_for_course_offerings_by_term
 
     stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
       .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))  
