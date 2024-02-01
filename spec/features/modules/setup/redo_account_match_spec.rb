@@ -11,14 +11,8 @@ RSpec.describe "Redo Module Setup Account Matching" do
       @instance_id = 10547831
       stub_call_requests_for_persons
       stub_call_requests_for_course_offerings
-
-      stub_request(:get, "https://turing-validation.populi.co/api2/academicterms/current").
-         with(headers: {'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"}).
-         to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.json')) 
-      
-      stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
+      stub_call_requests_for_current_academic_term
+      stub_call_requests_for_course_offerings_by_term
 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
