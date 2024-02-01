@@ -17,20 +17,13 @@ class PopuliService
   end
 
   def get_current_academic_term
-      response = conn.get("academicterms/current")
-      parse_response(response)
-  end
-
-  def get_students(course_offering_id)
-    enrollments = get_enrollments(course_offering_id)
-    student_ids = enrollments[:data].map { |enrollment| enrollment[:student_id] }
-    students = Hash.new
-    students[:body] = student_ids.map { |id| get_person(id) }
-    students
+    response = conn.get("academicterms/current")
+    parse_response(response)
   end
 
   def get_enrollments(course_offering_id)
-    parse_response(conn.get("courseofferings/#{course_offering_id}/students"))
+    response = conn.get("courseofferings/#{course_offering_id}/students")
+    parse_response(response)
   end
 
   def get_terms
@@ -38,17 +31,11 @@ class PopuliService
     parse_response(response)
   end
 
-  def get_term_courses(term_id)
+  def get_courseofferings_by_term(term_id)
     response = conn.get("courseofferings") do |req|
-      req.body = {academic_term_id: term_id}.to_json
+      req.body = {academic_term_id: term_id}
     end
-    courseofferings = parse_response(response)
-    catalog_courses = courseofferings[:data].map do |course|
-      course[:catalog_courses].map do |catalog_course|
-        catalog_course
-      end
-    end.flatten.uniq
-    catalog_courses
+    parse_response(response)
   end
 
   def update_student_attendance(instance_id, meeting_id, person_id, status)
