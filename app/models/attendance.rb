@@ -48,8 +48,14 @@ class Attendance < ApplicationRecord
   def transfer_to_populi!(populi_meeting_id)
     service = PopuliService.new
     course_id = self.turing_module.populi_course_id
+    require 'pry'; binding.pry
+    enrollments = service.get_enrollments(course_id)
     student_attendances.includes(:student).each do |student_attendance|
-      response = service.update_student_attendance(course_id, populi_meeting_id, student_attendance.student.populi_id, student_attendance.status)
+      student_enrollment = enrollments[:data].find do |enrollment|
+        enrollment.student_id == student_attendance.student.populi_id
+      end
+        
+      response = service.update_student_attendance(course_id, student_enrollment[:id], student_attendance.status)
       Rails.logger.info "Update Attendance Response: #{response.to_s}"
       begin
         raise AttendanceUpdateError.new("UPDATE FAILED") unless response[:response][:result] == "UPDATED"

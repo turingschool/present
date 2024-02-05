@@ -38,8 +38,10 @@ class PopuliService
     parse_response(response)
   end
 
-  def update_student_attendance(instance_id, meeting_id, person_id, status)
-    PopuliAPI.update_student_attendance(instanceID: instance_id, meetingID: meeting_id, personID: person_id, status: status.upcase)
+  def update_student_attendance(course_offering_id, enrollment_id, course_meeting_id, status)
+    response = conn.put("courseofferings/#{course_offering_id}/students/#{enrollment_id}/attendance/update") do |req|
+      req.body = {course_meeting_id: course_meeting_id, status: status}
+    end
   end
 
   def course_meetings(course_id)

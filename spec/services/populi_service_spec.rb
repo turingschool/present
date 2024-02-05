@@ -92,5 +92,11 @@ RSpec.describe PopuliService do
         expect(catalog_courses.first).to have_key(:name)
       end
     end
+
+    describe '#update_student_attendance' do
+      it 'updates student attendance status' do
+        
+      end
+    end
   end
 end
