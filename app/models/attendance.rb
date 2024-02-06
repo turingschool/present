@@ -28,7 +28,6 @@ class Attendance < ApplicationRecord
 
   def update_time(time)
     hour, minutes = time.split(":").map(&:to_i)
-    
     if !validate_time_input(hour, minutes)
       new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
       self.update!(attendance_time: new_time)
@@ -48,13 +47,11 @@ class Attendance < ApplicationRecord
   def transfer_to_populi!(populi_meeting_id)
     service = PopuliService.new
     course_id = self.turing_module.populi_course_id
-    require 'pry'; binding.pry
     enrollments = service.get_enrollments(course_id)
     student_attendances.includes(:student).each do |student_attendance|
       student_enrollment = enrollments[:data].find do |enrollment|
         enrollment.student_id == student_attendance.student.populi_id
       end
-        
       response = service.update_student_attendance(course_id, student_enrollment[:id], student_attendance.status)
       Rails.logger.info "Update Attendance Response: #{response.to_s}"
       begin
