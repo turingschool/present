@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'sidekiq/testing' 
+require './spec/fixtures/populi/stub_requests.rb'
 
 RSpec.describe 'Populi Transfer' do 
   include ApplicationHelper
@@ -11,7 +12,8 @@ RSpec.describe 'Populi Transfer' do
     @test_zoom_meeting_id = 96428502996
 
     allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
-    
+
+
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
       .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
 
