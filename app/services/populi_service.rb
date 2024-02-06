@@ -42,6 +42,7 @@ class PopuliService
     response = conn.put("courseofferings/#{course_offering_id}/students/#{enrollment_id}/attendance/update") do |req|
       req.body = {course_meeting_id: course_meeting_id, status: status}
     end
+    parse_response(response)
   end
 
   def course_meetings(course_id)
