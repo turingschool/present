@@ -1,0 +1,6 @@
+{
+  "object": "error",
+  "code": 404,
+  "type": "object_not_found",
+  "message": "Could not find a coursestudent object with id 762976"
+}

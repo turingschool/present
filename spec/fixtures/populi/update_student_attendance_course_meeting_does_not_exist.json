@@ -1,0 +1,6 @@
+{
+  "object": "error",
+  "code": 400,
+  "type": "invalid_parameter",
+  "message": "The specified course_meeting does not exist in this course instance."
+}
