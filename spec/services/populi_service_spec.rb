@@ -13,6 +13,7 @@ RSpec.describe PopuliService do
       stub_call_requests_for_academic_terms
       stub_call_requests_for_current_academic_term
       stub_call_requests_for_course_offerings_by_term
+      stub_call_for_request_successful_update_student_attendance
     end
 
     describe '#get_person' do
@@ -95,7 +96,20 @@ RSpec.describe PopuliService do
 
     describe '#update_student_attendance' do
       it 'updates student attendance status' do
-        
+        course_offering_id_1 = "10547884"
+        enrollment_id_1 = "76297621"
+        status = "PRESENT"
+        course_meeting_id_1 = "5314"
+        response = @populi.update_student_attendance(course_offering_id_1, enrollment_id_1, course_meeting_id_1, status)
+
+        expect(response).to be_a(Hash)
+        expect(response).to have_key(:object)
+        expect(response[:object]).to eq("course_attendance")
+        expect(response).to have_key(:id)
+        expect(response).to have_key(:status)
+        expect(response[:status]).to eq("present")
+        expect(response).to have_key(:course_meeting_id)
+        expect(response).to have_key(:student_id)
       end
     end
   end
