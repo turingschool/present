@@ -5,11 +5,11 @@ RSpec.describe "Module Setup Populi Workflow" do
   before(:each) do
     @user = mock_login
     @mod = create(:turing_module, module_number: 2, program: :BE)
-    stub_call_requests_for_persons
-    stub_call_requests_for_course_offerings
-    stub_call_requests_for_academic_terms
-    stub_call_requests_for_current_academic_term
-    stub_call_requests_for_course_offerings_by_term
+    stub_persons
+    stub_course_offerings
+    stub_academic_terms
+    stub_current_academic_term
+    stub_course_offerings_by_term
   end
 
   it 'suggests the best match of module from the list of populi courses' do

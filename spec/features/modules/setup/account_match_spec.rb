@@ -8,10 +8,10 @@ RSpec.describe "Module Setup Account Matching" do
       @mod = create(:turing_module, module_number: 2, program: :BE)
       @channel_id = "C02HRH7MF5K"
       @term_id = "295946"
-      stub_call_requests_for_persons
-      stub_call_requests_for_course_offerings
-      stub_call_requests_for_current_academic_term
-      stub_call_requests_for_course_offerings_by_term
+      stub_persons
+      stub_course_offerings
+      stub_current_academic_term
+      stub_course_offerings_by_term
       
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))

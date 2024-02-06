@@ -9,10 +9,10 @@ RSpec.describe "Redo Module Setup Account Matching" do
       @channel_id = "C02HRH7MF5K" 
       @zoom_meeting_id = 96428502996
       @instance_id = 10547831
-      stub_call_requests_for_persons
-      stub_call_requests_for_course_offerings
-      stub_call_requests_for_current_academic_term
-      stub_call_requests_for_course_offerings_by_term
+      stub_persons
+      stub_course_offerings
+      stub_current_academic_term
+      stub_course_offerings_by_term
 
       stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@zoom_meeting_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))

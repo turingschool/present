@@ -8,9 +8,9 @@ RSpec.describe PopuliFacade do
       @term_id = "295946"
       @populi = PopuliFacade.new(turing_module)
       @course_offering = "10547831"
-      stub_call_requests_for_persons
-      stub_call_requests_for_course_offerings
-      stub_call_requests_for_course_offerings_by_term
+      stub_persons
+      stub_course_offerings
+      stub_course_offerings_by_term
     end
 
     describe '#get_students' do

@@ -75,10 +75,10 @@ RSpec.describe 'Modules show page' do
 
   context 'when setup isnt fully complete' do 
     before(:each) do 
-      stub_call_requests_for_persons
-      stub_call_requests_for_course_offerings
-      stub_call_requests_for_current_academic_term
-      stub_call_requests_for_course_offerings_by_term
+      stub_persons
+      stub_course_offerings
+      stub_current_academic_term
+      stub_course_offerings_by_term
 
       @user = mock_login
 
