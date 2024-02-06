@@ -131,3 +131,18 @@ def stub_call_requests_for_course_offerings_by_term
       }).
     to_return(status: 200, body: File.read('spec/fixtures/populi/get_courseofferings_by_term_2.json'))
 end
+
+def stub_call_for_request_successful_update_student_attendance
+  course_offering_id_1 = "10547884"
+  enrollment_id_1 = "76297621"
+  status = "PRESENT"
+  course_meeting_id_1 = "5314"
+
+  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_1}/students/#{enrollment_id_1}/attendance/update").
+    with(
+      body: {course_meeting_id: course_meeting_id_1, status: status},
+      headers: {
+    'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+      }).
+    to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_success.json'))
+end
