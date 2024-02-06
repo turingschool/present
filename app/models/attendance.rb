@@ -50,9 +50,9 @@ class Attendance < ApplicationRecord
     enrollments = service.get_enrollments(course_id)
     student_attendances.includes(:student).each do |student_attendance|
       student_enrollment = enrollments[:data].find do |enrollment|
-        enrollment.student_id == student_attendance.student.populi_id
+        enrollment[:student_id] == student_attendance.student.populi_id.to_i
       end
-      response = service.update_student_attendance(course_id, student_enrollment[:id], student_attendance.status)
+      response = service.update_student_attendance(course_id, student_enrollment[:id], populi_meeting_id, student_attendance.status)
       Rails.logger.info "Update Attendance Response: #{response.to_s}"
       begin
         raise AttendanceUpdateError.new("UPDATE FAILED") unless response[:response][:result] == "UPDATED"
