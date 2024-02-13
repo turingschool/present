@@ -134,24 +134,27 @@ end
 
 def stub_successful_update_student_attendance
   course_offering_id = "10547884"
+  course_offering_id_2 = '10547831'
   enrollment_id_1 = "76297621"
   enrollment_id_2 = "76296027"
   enrollment_id_3 = "76296028"
   enrollment_id_4 = "76296029"
   enrollment_id_5 = "76296030"
   enrollment_id_6 = "76296031"
-  status = "PRESENT"
+  status_present = "PRESENT"
+  status_absent = "ABSENT"
+  status_tardy = "TARDY"
+  status_excused = "EXCUSED"
   course_meeting_id_1 = "5314"
-  meeting_id = '1962'
-  instance_id = '10547831'
+  course_meeting_id_2 = '1962'
 
-  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_1}/attendance/update").
+  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_2}/students/#{enrollment_id_2}/attendance/update").
     with(
-      body: {course_meeting_id: course_meeting_id_1, status: status},
+      body: {course_meeting_id: course_meeting_id_2, status: status_present},
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_success.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_success_1.json'))
 
   # update_response = File.read('spec/fixtures/populi/update_student_attendance_success.json')
 
