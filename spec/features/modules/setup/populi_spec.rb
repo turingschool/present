@@ -6,7 +6,7 @@ RSpec.describe "Module Setup Populi Workflow" do
     @user = mock_login
     @mod = create(:turing_module, module_number: 2, program: :BE)
     stub_persons
-    stub_course_offerings
+    stub_get_enrollments
     stub_academic_terms
     stub_current_academic_term
     stub_course_offerings_by_term

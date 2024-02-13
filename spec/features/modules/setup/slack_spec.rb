@@ -7,7 +7,7 @@ RSpec.describe "Module Setup Slack Workflow" do
     @mod = create(:turing_module, module_number: 2, program: :BE)
     @channel_id = "C02HRH7MF5K"
     stub_persons
-    stub_course_offerings
+    stub_get_enrollments
     stub_current_academic_term
     stub_course_offerings_by_term
 

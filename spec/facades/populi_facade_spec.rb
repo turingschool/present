@@ -9,7 +9,7 @@ RSpec.describe PopuliFacade do
       @populi = PopuliFacade.new(turing_module)
       @course_offering = "10547831"
       stub_persons
-      stub_course_offerings
+      stub_get_enrollments
       stub_course_offerings_by_term
     end
 

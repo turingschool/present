@@ -10,7 +10,7 @@ RSpec.describe "Redo Module Setup Account Matching" do
       @zoom_meeting_id = 96428502996
       @instance_id = 10547831
       stub_persons
-      stub_course_offerings
+      stub_get_enrollments
       stub_current_academic_term
       stub_course_offerings_by_term
 

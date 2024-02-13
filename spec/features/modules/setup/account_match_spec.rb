@@ -9,7 +9,7 @@ RSpec.describe "Module Setup Account Matching" do
       @channel_id = "C02HRH7MF5K"
       @term_id = "295946"
       stub_persons
-      stub_course_offerings
+      stub_get_enrollments
       stub_current_academic_term
       stub_course_offerings_by_term
       

@@ -58,7 +58,7 @@ def stub_persons
     to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_7.json'))
 end
 
-def stub_course_offerings
+def stub_get_enrollments
   course_offering_1 = "10547831"
   course_offering_2 = "10547876"
   course_offering_3 = "10547836"

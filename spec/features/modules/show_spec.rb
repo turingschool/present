@@ -76,7 +76,7 @@ RSpec.describe 'Modules show page' do
   context 'when setup isnt fully complete' do 
     before(:each) do 
       stub_persons
-      stub_course_offerings
+      stub_get_enrollments
       stub_current_academic_term
       stub_course_offerings_by_term
 
