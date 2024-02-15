@@ -53,12 +53,11 @@ class Attendance < ApplicationRecord
         enrollment[:student_id] == student_attendance.student.populi_id.to_i
       end
       response = service.update_student_attendance(course_id, student_enrollment[:id], populi_meeting_id, student_attendance.status)
-      require 'pry'; binding.pry
       Rails.logger.info "Update Attendance Response: #{response.to_s}"
       begin
-        raise AttendanceUpdateError.new("UPDATE FAILED") unless response[:response][:object] == "UPDATED"
+        raise AttendanceUpdateError.new("UPDATE FAILED") unless response[:object] == "course_attendance"
       rescue AttendanceUpdateError, NoMethodError
-        Honeybadger.notify("UPDATE FAILED. Student: #{student_attendance.student.populi_id}, status: #{student_attendance.status}, response: #{response.to_s}")
+        Honeybadger.notify("UPDATE FAILED. Student: #{student_attendance.student.populi_id}, status: #{student_attendance.status}, response: #{response[:message]}")
       end
     end
   end
