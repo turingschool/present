@@ -1,8 +1,8 @@
 {
   "object": "course_attendance",
   "id": 153762,
-  "student_id": 24490389,
-  "course_meeting_id": 5314,
+  "student_id": 24490161,
+  "course_meeting_id": 1962,
   "status": "tardy",
   "present_coef": 1,
   "note": null,

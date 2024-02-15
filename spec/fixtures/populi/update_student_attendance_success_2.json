@@ -1,8 +1,8 @@
 {
   "object": "course_attendance",
   "id": 153758,
-  "student_id": 24490582,
-  "course_meeting_id": 5314,
+  "student_id": 24490130,
+  "course_meeting_id": 1962,
   "status": "present",
   "present_coef": 1,
   "note": null,
