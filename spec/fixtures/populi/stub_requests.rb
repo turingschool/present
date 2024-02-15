@@ -133,18 +133,18 @@ def stub_course_offerings_by_term
 end
 
 def stub_successful_update_student_attendance
-  course_offering_id = "10547884"
+  course_offering_id = "10547831"
   enrollment_id_1 = "76297621"
-  enrollment_id_2 = "76297356"
-  enrollment_id_3 = "76297640"
-  enrollment_id_4 = "76297610"
-  enrollment_id_5 = "76296520"
-  enrollment_id_6 = "76297644"
-  status_present = "PRESENT"
-  status_absent = "ABSENT"
-  status_tardy = "TARDY"
+  enrollment_id_2 = "76296027"
+  enrollment_id_3 = "76296028"
+  enrollment_id_4 = "76296029"
+  enrollment_id_5 = "76296030"
+  enrollment_id_6 = "76296031"
+  status_present = "present"
+  status_absent = "absent"
+  status_tardy = "tardy"
   status_excused = "EXCUSED"
-  course_meeting_id = "5314"
+  course_meeting_id = "1962"
 
   @update_attendance_stub1 = stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_1}/attendance/update").
     with(
