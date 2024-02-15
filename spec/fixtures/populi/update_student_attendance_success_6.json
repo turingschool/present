@@ -1,0 +1,17 @@
+{
+  "object": "course_attendance",
+  "id": 153764,
+  "student_id": 24490579,
+  "course_meeting_id": 5314,
+  "status": "tardy",
+  "present_coef": 1,
+  "note": null,
+  "kiosk_id": null,
+  "beacon_id": null,
+  "device_id": null,
+  "beacon_found_at": null,
+  "attendance_hours": 3,
+  "added_by_id": 24490285,
+  "added_at": "2023-11-27T22:54:42+00:00",
+  "clinical_hours": 3
+}
