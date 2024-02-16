@@ -13,49 +13,49 @@ def stub_persons
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_1.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person/get_person_1.json'))
   
   stub_request(:get, "https://turing-validation.populi.co/api2/people/#{personId_2}").
     with(
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_2.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person/get_person_2.json'))
   
   stub_request(:get, "https://turing-validation.populi.co/api2/people/#{personId_3}").
     with(
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_3.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person/get_person_3.json'))
   
   stub_request(:get, "https://turing-validation.populi.co/api2/people/#{personId_4}").
     with(
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_4.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person/get_person_4.json'))
 
   stub_request(:get, "https://turing-validation.populi.co/api2/people/#{personId_5}").
     with(
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_5.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person/get_person_5.json'))
 
   stub_request(:get, "https://turing-validation.populi.co/api2/people/#{personId_6}").
     with(
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_6.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person/get_person_6.json'))
 
   stub_request(:get, "https://turing-validation.populi.co/api2/people/#{personId_7}").
     with(
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person_7.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_person/get_person_7.json'))
 end
 
 def stub_get_enrollments
