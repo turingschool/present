@@ -100,7 +100,7 @@ RSpec.describe PopuliService do
         it 'updates student attendance status' do
           course_offering_id_1 = "10547884"
           enrollment_id_1 = "76297621"
-          status = "PRESENT"
+          status = "present"
           course_meeting_id_1 = "5314"
           response = @populi.update_student_attendance(course_offering_id_1, enrollment_id_1, course_meeting_id_1, status)
 
