@@ -99,7 +99,7 @@ def stub_academic_terms
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_academic_terms.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/get_terms/get_academic_terms.json'))
 end
 
 def stub_current_academic_term
