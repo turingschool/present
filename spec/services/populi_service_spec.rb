@@ -1,5 +1,5 @@
 require 'rails_helper'
-require './spec/fixtures/populi/stub_requests.rb'
+require './spec/fixtures/populi/test_data/stub_requests.rb'
 
 RSpec.describe PopuliService do
   describe 'api calls' do

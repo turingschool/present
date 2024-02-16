@@ -1,6 +1,6 @@
 require 'rails_helper'
 require 'sidekiq/testing' 
-require './spec/fixtures/populi/stub_requests.rb'
+require './spec/fixtures/populi/test_data/stub_requests.rb'
 
 RSpec.describe 'Populi Transfer' do 
   include ApplicationHelper
