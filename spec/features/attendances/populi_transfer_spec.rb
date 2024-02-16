@@ -13,7 +13,8 @@ RSpec.describe 'Populi Transfer' do
 
     allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
 
-    stub_get_enrollments
+    stub_get_enrollments # Need enrollment ids to update student attendance in Populi
+    # see stub_requests.rb for the stubs/ more info 
 
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
       .to_return(body: File.read('spec/fixtures/zoom/participant_report.json'))
@@ -80,29 +81,8 @@ RSpec.describe 'Populi Transfer' do
       end    
 
       it 'can transfer to a different time slot' do
-        update_response = File.read('spec/fixtures/populi/update_student_attendance_success.xml')
-
-        @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490140", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response) 
-        @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490130", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response) 
-        # Absent
-        @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490100", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response) 
-        # Absent due to tardiness
-        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response) 
-        @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490161", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response) 
-        @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1963", "personID"=>"24490123", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response) 
-
+        stub_successful_update_student_attendance
+        
         click_link "Transfer Student Attendances to Populi"
         click_link "I have created the Attendance record in Populi"
 
@@ -111,40 +91,76 @@ RSpec.describe 'Populi Transfer' do
         select("1:00 PM")
         click_button "Transfer Student Attendances to Populi"
 
-        expect(@update_attendance_stub1).to have_been_requested
-        expect(@update_attendance_stub2).to have_been_requested
-        expect(@update_attendance_stub3).to have_been_requested
-        expect(@update_attendance_stub4).to have_been_requested
-        expect(@update_attendance_stub5).to have_been_requested
-        expect(@update_attendance_stub6).to have_been_requested
+        expect(@update_attendance_stub7).to have_been_requested
+        expect(@update_attendance_stub8).to have_been_requested
+        expect(@update_attendance_stub9).to have_been_requested
+        expect(@update_attendance_stub10).to have_been_requested
+        expect(@update_attendance_stub11).to have_been_requested
+        expect(@update_attendance_stub12).to have_been_requested
       end
     end
 
     context "update error" do
-      before :each do
-        update_response = File.read('spec/fixtures/populi/update_student_attendance_success.xml')
+      before :each do      
+        course_offering_id = "10547831"
+        enrollment_id_1 = "76297621"
+        enrollment_id_2 = "76296027"
+        enrollment_id_3 = "76296028"
+        enrollment_id_4 = "76296029"
+        enrollment_id_5 = "76296030"
+        enrollment_id_6 = "76296031"
+        status_present = "present"
+        status_absent = "absent"
+        status_tardy = "tardy"
+        course_meeting_id_1 = "1962"
 
-        @update_attendance_stub1 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490140", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response) 
-        @update_attendance_stub2 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490130", "status"=>"PRESENT", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response) 
-        @update_attendance_stub3 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490100", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response) 
-        
-        # This attendance update fails for some reason
-        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_error.xml')) 
-        
-        @update_attendance_stub5 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490161", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response) 
-        @update_attendance_stub6 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490123", "status"=>"TARDY", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: update_response)         
+      @update_attendance_stub1 = stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_1}/attendance/update").
+        with(
+          body: {course_meeting_id: course_meeting_id_1, status: status_present},
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_success_1.json'))
+      
+      @update_attendance_stub2 = stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_2}/attendance/update").
+        with(
+          body: {course_meeting_id: course_meeting_id_1, status: status_present},
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_success_2.json'))
+      
+      @update_attendance_stub3 = stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_3}/attendance/update").
+        with(
+          body: {course_meeting_id: course_meeting_id_1, status: status_absent},
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_success_3.json'))
+      
+      @update_attendance_stub4 = stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_4}/attendance/update").
+        with(
+          body: {course_meeting_id: course_meeting_id_1, status: status_absent},
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_no_course_meeting.json'))
+      
+      @update_attendance_stub5 = stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_5}/attendance/update").
+        with(
+          body: {course_meeting_id: course_meeting_id_1, status: status_tardy},
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_success_5.json'))
+      
+      @update_attendance_stub6 = stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_6}/attendance/update").
+        with(
+          body: {course_meeting_id: course_meeting_id_1, status: status_tardy},
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_success_6.json'))
 
         click_link "Transfer Student Attendances to Populi"
         click_link "I have created the Attendance record in Populi"
@@ -164,28 +180,26 @@ RSpec.describe 'Populi Transfer' do
       end
 
       it 'sends a Honeybadger notification' do
-        expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: {\"response\"=>{\"error\"=>\"Something went wrong\"}}")
-        click_button "Transfer Student Attendances to Populi"  
-      end
-
-      it 'can handle a no method error' do
-        # responding with an empty body so that it creates a no method error when accessing the response
-        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: "")
-
-        expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: {}")
-        
+        expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: The specified course_meeting does not exist in this course instance.")
         click_button "Transfer Student Attendances to Populi"  
       end
       
       it 'can handle a populi error when the student is not found' do
-        # responding with an error that says the student was not found
-        @update_attendance_stub4 = stub_request(:post, ENV['POPULI_API_URL']).         
-          with(body: {"instanceID"=>"10547831", "meetingID"=>"1962", "personID"=>"24490062", "status"=>"ABSENT", "task"=>"updateStudentAttendance"},).
-          to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_not_found.xml'))
+        course_offering_id = "10547831"
+        enrollment_id_4 = "76296029"
+        course_meeting_id_1 = "1962"
+        status_absent = "absent"
 
-        expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: {\"error\"=>{\"code\"=>\"BAD_PARAMETER\", \"message\"=>\"We could not find personID \\\"24490062\\\" in instanceID \\\"10547831\\\"\"}}")
+        # responding with an error that says the student was not found
+        @update_attendance_stub4 = stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_4}/attendance/update").
+        with(
+          body: {course_meeting_id: course_meeting_id_1, status: status_absent},
+          headers: {
+        'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+          }).
+        to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance_not_found.json'))
+
+        expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: Could not find a coursestudent object with id 76296029")
         
         click_button "Transfer Student Attendances to Populi"  
       end
