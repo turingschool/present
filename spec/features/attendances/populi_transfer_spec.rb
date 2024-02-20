@@ -207,11 +207,6 @@ RSpec.describe 'Populi Transfer' do
   end
 
   context "user doesn't follow instructions" do # Populi meeting won't have an id
-    before :each do
-      stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_without_ids.xml'))  
-    end
     
     it 'returns them to the populi transfer start page and displays an error' do
       click_link "Transfer Student Attendances to Populi"
