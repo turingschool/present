@@ -1,4 +1,5 @@
 require 'rails_helper'
+require './spec/fixtures/populi/test_data/stub_requests.rb'
 
 RSpec.describe 'attendance show page' do
   before(:each) do
@@ -14,9 +15,7 @@ RSpec.describe 'attendance show page' do
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@test_module.populi_course_id}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+    stub_course_meetings
 
     visit turing_module_path(@test_module)
 
@@ -194,10 +193,10 @@ RSpec.describe 'attendance show page' do
     student = create(:setup_student) # Need to create one setup student so the module will be considered "set up"
     other_module = student.turing_module
     other_zoom_id = "12345"
-
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>other_module.populi_course_id}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+    stub_course_meetings_nil
+    # stub_request(:post, ENV['POPULI_API_URL']).
+    #   with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>other_module.populi_course_id}).
+    #   to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
 
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{other_zoom_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/zoom/participant_report_for_name_matching.json'))

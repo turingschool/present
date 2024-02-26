@@ -6,7 +6,6 @@ class Meeting < ApplicationRecord
   has_one :inning, through: :turing_module
 
   def closest_populi_meeting_to_start_time(course_id)
-    # need to restructure to access new API object
     meeting_data = PopuliService.new.course_meetings(course_id)[:data].min_by do |data|
       (start_time.to_i - data[:start_at].to_datetime.to_i).abs
     end
