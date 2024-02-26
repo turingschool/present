@@ -26,6 +26,8 @@ RSpec.describe 'Populi Transfer' do
       with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@mod.populi_course_id}).
       to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_without_ids.xml'))
     
+    stub_successful_update_student_attendance
+
     visit turing_module_path(@mod)
 
     fill_in :attendance_meeting_url, with:  "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
@@ -38,9 +40,9 @@ RSpec.describe 'Populi Transfer' do
   end
 
   context "visual display of page for #populi_transfer/new" do
-    stub_successful_update_student_attendance
-
-    click_link "Transfer Student Attendances to Populi"
+    before :each do
+      click_link "Transfer Student Attendances to Populi"
+    end
 
     it 'shows information from the shared meeting view' do
       expect(page).to have_content(@test_attendance.meeting.title)
