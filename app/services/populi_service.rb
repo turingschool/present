@@ -45,8 +45,9 @@ class PopuliService
     parse_response(response)
   end
 
-  def course_meetings(course_id)
-    PopuliAPI.get_course_instance_meetings(instanceID: course_id)
+  def course_meetings(course_offering_id)
+    response = conn.get("courseofferings/#{course_offering_id}/coursemeetings")
+    parse_response(response)
   end
 
 private
