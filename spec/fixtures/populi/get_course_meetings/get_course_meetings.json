@@ -809,22 +809,6 @@
       "is_online": false
     },
     {
-      "roomid": "0",
-      "room_name": "TBA",
-      "start": "2023-01-16T09:00:00-07:00",
-      "end": "2023-01-16T12:00:00-07:00",
-      "counts_toward_attendance_hours": "0",
-      "counts_toward_clinical_hours": "0"
-    },
-    {
-      "roomid": "0",
-      "room_name": "TBA",
-      "start": "2023-01-16T13:00:00-07:00",
-      "end": "2023-01-16T16:00:00-07:00",
-      "counts_toward_attendance_hours": "0",
-      "counts_toward_clinical_hours": "0"
-    },
-    {
       "object": "course_meeting",
       "id": "1972",
       "course_offering_id": 10547831,
