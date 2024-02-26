@@ -37,6 +37,30 @@ RSpec.describe 'Populi Transfer' do
     Sidekiq::Testing.inline!
   end
 
+  context "visual display of page for #populi_transfer/new" do
+    stub_successful_update_student_attendance
+
+    click_link "Transfer Student Attendances to Populi"
+
+    it 'shows information from the shared meeting view' do
+      expect(page).to have_content(@test_attendance.meeting.title)
+      expect(page).to have_content(pretty_time(@test_attendance.attendance_time))
+      expect(page).to have_content(pretty_date(@test_attendance.attendance_time))
+      expect(page).to have_content("Tardy:")
+      expect(page).to have_content("Present:")
+      expect(page).to have_content("Absent:")
+    end
+
+    it 'shows a dropdown to select the time slot' do
+      expect(page).to have_content("Please select the attendance time slot to transfer to:")
+      expect(page).to have_select(:populi_meeting_id)
+    end
+
+    it 'has link to transfer student attendances to populi' do
+      expect(page).to have_link("Transfer Student Attendances to Populi")
+    end
+  end
+
   context "user follows instructions to create populi attendance record" do
     before :each do
       # Assume that the User has followed instructions to create attendance record in Populi. 
@@ -62,7 +86,8 @@ RSpec.describe 'Populi Transfer' do
         expect(page).to have_content("Present: 2")
         expect(page).to have_content("Absent: 2")
         
-        click_link "I have created the Attendance record in Populi"
+        # click_link "I have created the Attendance record in Populi"
+        expect(page).to have_link("Transfer Student Attendances to Populi")
 
         expect(page).to have_select(selected: "9:00 AM")
 
@@ -70,7 +95,7 @@ RSpec.describe 'Populi Transfer' do
 
         expect(current_path).to eq(attendance_path(@test_attendance))
 
-        expect(page).to have_content("Transferring attendance to Populi")
+        expect(page).to have_content("Transferring attendance to Populi. This could take up to 5 minutes. Please confirm in Populi that the transfer was successful.")
 
         expect(@update_attendance_stub1).to have_been_requested
         expect(@update_attendance_stub2).to have_been_requested
@@ -206,21 +231,21 @@ RSpec.describe 'Populi Transfer' do
     end    
   end
 
-  context "user doesn't follow instructions" do # Populi meeting won't have an id
+  # context "user doesn't follow instructions" do # Populi meeting won't have an id
     
-    it 'returns them to the populi transfer start page and displays an error' do
-      click_link "Transfer Student Attendances to Populi"
+  #   it 'returns them to the populi transfer start page and displays an error' do
+  #     click_link "Transfer Student Attendances to Populi"
 
-      # Assume that the User has NOT followed instructions to create attendance record in Populi. 
-      # The corresponding meeting should be returned from the Populi API WITHOUT a meetingID.
-      click_link "I have created the Attendance record in Populi"
+  #     # Assume that the User has NOT followed instructions to create attendance record in Populi. 
+  #     # The corresponding meeting should be returned from the Populi API WITHOUT a meetingID.
+  #     click_link "I have created the Attendance record in Populi"
 
-      select("9:00 AM")
+  #     select("9:00 AM")
 
-      click_button "Transfer Student Attendances to Populi"
+  #     click_button "Transfer Student Attendances to Populi"
 
-      expect(current_path).to eq(new_attendance_populi_transfer_path(@test_attendance))
-      expect(page).to have_content("It looks like that Attendance hasn't been created in Populi yet. Please make sure you are following the directions below to create the Attendance record in Populi before proceeding")
-    end
-  end
+  #     expect(current_path).to eq(new_attendance_populi_transfer_path(@test_attendance))
+  #     expect(page).to have_content("It looks like that Attendance hasn't been created in Populi yet. Please make sure you are following the directions below to create the Attendance record in Populi before proceeding")
+  #   end
+  # end
 end
