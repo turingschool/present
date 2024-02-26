@@ -15,6 +15,7 @@ RSpec.describe PopuliService do
       stub_course_offerings_by_term
       stub_successful_update_student_attendance
       stub_failed_update_student_attendance
+      stub_course_meetings
     end
 
     describe '#get_person' do
@@ -166,6 +167,31 @@ RSpec.describe PopuliService do
           expect(response[:object]).to eq("error")
           expect(response).to have_key(:message)
           expect(response[:message]).to eq("You cannot update attendance for a finalized student.")
+        end
+      end
+    end
+
+    describe 'course_meetings' do
+      it 'provides course meetings based on courseoffering id' do
+        response = @populi.course_meetings(@course_offering)
+
+        expect(response).to be_a(Hash)
+        expect(response).to have_key(:object)
+        expect(response[:object]).to eq("list")
+        expect(response).to have_key(:count)
+        expect(response).to have_key(:data)
+        response[:data].each do |meeting|
+          expect(meeting).to be_an(Hash)
+          expect(meeting).to have_key(:object)
+          expect(meeting).to have_key(:id)
+          expect(meeting).to have_key(:course_offering_id)
+          expect(meeting).to have_key(:start_at)
+          expect(meeting).to have_key(:end_at)
+          expect(meeting).to have_key(:room_id)
+          expect(meeting).to have_key(:status)
+          expect(meeting).to have_key(:summary)
+          expect(meeting).to have_key(:counts_toward_attendance_hours)
+          expect(meeting).to have_key(:counts_toward_clinical_hours)
         end
       end
     end
