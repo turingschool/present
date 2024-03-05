@@ -6,13 +6,6 @@ class User::PopuliTransferController < User::BaseController
     }
   end
 
-  def time_select
-    attendance = Attendance.find(params[:attendance_id])
-    render locals: {
-      facade: PopuliTransferFacade.new(attendance)
-    }
-  end
-
   def create
     attendance = Attendance.find(params[:attendance_id])
     if params[:populi_meeting_id].blank?
