@@ -9,7 +9,7 @@ class User::PopuliTransferController < User::BaseController
   def create
     attendance = Attendance.find(params[:attendance_id])
     if params[:populi_meeting_id].blank?
-      flash[:error] = "It looks like that Attendance hasn't been created in Populi yet. Please make sure you are following the directions below to create the Attendance record in Populi before proceeding"
+      flash[:error] = "Something went wrong while retrieving the Populi meeting times. Please try again."
       redirect_to new_attendance_populi_transfer_path(attendance)
     else
       PopuliTransferJob.perform_async(attendance.id, params[:populi_meeting_id])
