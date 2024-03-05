@@ -23,7 +23,7 @@ RSpec.describe 'Populi Transfer' do
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
     stub_course_meetings
-    
+
     stub_successful_update_student_attendance
 
     visit turing_module_path(@mod)
@@ -142,10 +142,21 @@ RSpec.describe 'Populi Transfer' do
       'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
         }).
       to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/error/update_student_attendance_not_found.json'))
-
+      
       expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: Could not find a coursestudent object with id 76296029")
       
       click_button "Transfer Student Attendances to Populi"  
     end
   end    
+
+  #  This test needs to somehow overide the stub requests to have blank/nill populi_meeting_id so as to prompt the correct error message
+  # context "api call fails" do
+  #   it "displays an error message when api call fails" do
+
+  #     click_link "Transfer Student Attendances to Populi"
+  #     click_button "Transfer Student Attendances to Populi"  
+  #     save_and_open_page
+  #     expect(page).to have_content("Something went wrong while retrieving the Populi meeting times. Please try again.")
+  #   end
+  # end
 end
