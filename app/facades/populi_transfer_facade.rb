@@ -14,7 +14,7 @@ class PopuliTransferFacade
   def populi_meeting_options
     meetings = attendance.meeting.populi_meetings_on_same_day(turing_module.populi_course_id)
     meetings.map do |populi_meeting|
-      ["#{pretty_time(populi_meeting.start)}", populi_meeting.id]
+      ["#{pretty_time(populi_meeting.start_at)}", populi_meeting.id]
     end
   end
 
