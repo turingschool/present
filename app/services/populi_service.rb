@@ -5,10 +5,6 @@ class PopuliService
 
   def initialize
     check_env_vars
-    PopuliAPI.connect(
-        url: ENV["POPULI_API_URL"],  
-        access_key: ENV["POPULI_API_ACCESS_KEY"]
-    )
   end
 
   def get_person(id)
@@ -53,19 +49,19 @@ class PopuliService
 
 private
   def check_env_vars
-    if ENV["POPULI_API_URL"] == FAKE_POPULI_URL || ENV["POPULI_API2_URL"] == FAKE_POPULI_URL
+    if ENV["POPULI_API_URL"] == FAKE_POPULI_URL
       Rails.logger.warn("WARNING: POPULI_API_URL environment variable is not set. Using a fake url. This may cause issues with features that utilize the Populi API")
     end
-    if ENV["POPULI_API_ACCESS_KEY"] == FAKE_POPULI_ACCESS_KEY || ENV["POPULI_API2_ACCESS_KEY"] == FAKE_POPULI_ACCESS_KEY
+    if ENV["POPULI_API_ACCESS_KEY"] == FAKE_POPULI_ACCESS_KEY
       Rails.logger.warn("WARNING: POPULI_API_ACCESS_KEY environment variable is not set. Using a fake access key. This may cause issues with features that utilize the Populi API")
     end
   end
 
   def conn
     Faraday.new(
-      url: ENV["POPULI_API2_URL"],
+      url: ENV["POPULI_API_URL"],
       headers: {
-        'Authorization' => "Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}"
+        'Authorization' => "Bearer #{ENV["POPULI_API_ACCESS_KEY"]}"
       }
     )
   end
