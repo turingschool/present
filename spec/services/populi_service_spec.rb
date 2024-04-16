@@ -65,9 +65,9 @@ RSpec.describe PopuliService do
       end
     end
 
-    describe '#get_terms method' do
-      it 'get_terms method gets terms from Populi API call' do
-        response = @populi.get_terms
+    describe '#terms method' do
+      it 'terms method gets terms from Populi API call' do
+        response = @populi.terms
         expect(response).to be_a(Hash)
         expect(response).to have_key(:data)
         expect(response[:data]).to be_a(Array)

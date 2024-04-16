@@ -23,7 +23,7 @@ class PopuliService
     parse_response(response)
   end
 
-  def get_terms
+  def terms
     response = conn.get("academicterms")
     parse_response(response)
   end

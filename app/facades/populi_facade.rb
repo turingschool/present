@@ -32,7 +32,7 @@ class PopuliFacade
   end
 
   def term_options
-    service.get_terms[:data].map do |term|
+    service.terms[:data].map do |term|
       [term[:name], term[:id]]
     end
   end
