@@ -7,28 +7,28 @@ class PopuliService
     check_env_vars
   end
 
-  def get_person(id)
+  def person(id)
     response = conn.get("people/#{id}")
     parse_response(response)
   end
 
-  def get_current_academic_term
+  def current_academic_term
     response = conn.get("academicterms/current")
     parse_response(response)
   end
 
-  def get_enrollments(course_offering_id)
+  def enrollments(course_offering_id)
     # enrollment objects contain student_id, catalog_course_id and status
     response = conn.get("courseofferings/#{course_offering_id}/students")
     parse_response(response)
   end
 
-  def get_terms
+  def terms
     response = conn.get("academicterms")
     parse_response(response)
   end
 
-  def get_courseofferings_by_term(term_id)
+  def courseofferings_by_term(term_id)
     response = conn.get("courseofferings") do |req|
       req.body = {academic_term_id: term_id}.to_json
     end

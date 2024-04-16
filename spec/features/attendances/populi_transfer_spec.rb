@@ -13,7 +13,7 @@ RSpec.describe 'Populi Transfer' do
 
     allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
 
-    stub_get_enrollments # Need enrollment ids to update student attendance in Populi
+    stub_enrollments # Need enrollment ids to update student attendance in Populi
     # see stub_requests.rb for the stubs/ more info 
 
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@test_zoom_meeting_id}/participants?page_size=300") \
