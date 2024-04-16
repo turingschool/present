@@ -41,7 +41,7 @@ class PopuliFacade
     enrollments = service.get_enrollments(course_offering_id)
     student_ids = enrollments[:data].map { |enrollment| enrollment[:student_id] }
     students = Hash.new
-    students[:body] = student_ids.map { |id| service.get_person(id) }
+    students[:body] = student_ids.map { |id| service.person(id) }
     students
   end
 

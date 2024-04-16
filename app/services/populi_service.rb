@@ -7,7 +7,7 @@ class PopuliService
     check_env_vars
   end
 
-  def get_person(id)
+  def person(id)
     response = conn.get("people/#{id}")
     parse_response(response)
   end

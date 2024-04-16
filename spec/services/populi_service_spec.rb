@@ -18,9 +18,9 @@ RSpec.describe PopuliService do
       stub_course_meetings
     end
 
-    describe '#get_person' do
+    describe '#person' do
       it 'can get person by id' do
-        response = @populi.get_person(@personId)
+        response = @populi.person(@personId)
         expect(response).to be_a(Hash)
         expect(response).to have_key(:object)
         expect(response).to have_key(:id)
