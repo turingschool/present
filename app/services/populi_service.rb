@@ -28,7 +28,7 @@ class PopuliService
     parse_response(response)
   end
 
-  def get_courseofferings_by_term(term_id)
+  def courseofferings_by_term(term_id)
     response = conn.get("courseofferings") do |req|
       req.body = {academic_term_id: term_id}.to_json
     end

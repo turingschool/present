@@ -79,9 +79,9 @@ RSpec.describe PopuliService do
       end
     end
 
-    describe '#get_courseofferings_by_term' do
-      it 'get_courseofferings_by_term method gets courseofferings by term from Populi API call' do
-        response = @populi.get_courseofferings_by_term(@term_id)
+    describe '#courseofferings_by_term' do
+      it 'courseofferings_by_term method gets courseofferings by term from Populi API call' do
+        response = @populi.courseofferings_by_term(@term_id)
         expect(response).to be_a(Hash)
         expect(response).to have_key(:data)
         expect(response[:data]).to be_a(Array)

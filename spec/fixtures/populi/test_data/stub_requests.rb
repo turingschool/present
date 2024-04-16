@@ -121,7 +121,7 @@ def stub_course_offerings_by_term
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_courseofferings_by_term/get_courseofferings_by_term_1.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/courseofferings_by_term/courseofferings_by_term_1.json'))
 
   stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings").
     with(
@@ -129,7 +129,7 @@ def stub_course_offerings_by_term
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_courseofferings_by_term/get_courseofferings_by_term_1.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/courseofferings_by_term/courseofferings_by_term_1.json'))
   
   stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings").
     with(
@@ -137,7 +137,7 @@ def stub_course_offerings_by_term
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_courseofferings_by_term/get_courseofferings_by_term_2.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/courseofferings_by_term/courseofferings_by_term_2.json'))
 
   stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings").
     with(
@@ -145,7 +145,7 @@ def stub_course_offerings_by_term
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
       }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_courseofferings_by_term/get_courseofferings_by_term_2.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/courseofferings_by_term/courseofferings_by_term_2.json'))
 end
 
 def stub_successful_update_student_attendance

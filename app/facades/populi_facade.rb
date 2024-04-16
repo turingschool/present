@@ -46,7 +46,7 @@ class PopuliFacade
   end
 
   def get_term_courses(term_id)
-    courseofferings = service.get_courseofferings_by_term(term_id)
+    courseofferings = service.courseofferings_by_term(term_id)
     catalog_courses = courseofferings[:data].map do |course|
       course[:catalog_courses].map do |catalog_course|
         catalog_course
