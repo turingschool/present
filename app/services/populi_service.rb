@@ -22,6 +22,7 @@ class PopuliService
   end
 
   def get_enrollments(course_offering_id)
+    # enrollment objects contain student_id, catalog_course_id and status
     response = conn.get("courseofferings/#{course_offering_id}/students")
     parse_response(response)
   end
