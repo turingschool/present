@@ -396,7 +396,7 @@ def stub_course_meetings
     headers: {
   'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
     }).
-  to_return(status: 200, body: File.read('spec/fixtures/populi/get_course_meetings/get_course_meetings.json'))
+  to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings/course_meetings.json'))
 end
 
 def stub_course_meetings_for_duration
@@ -407,7 +407,7 @@ def stub_course_meetings_for_duration
     headers: {
   'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
     }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_course_meetings/get_course_meetings_for_duration.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings/course_meetings_for_duration.json'))
 end
 
 def stub_course_meetings_for_half_hours
@@ -418,7 +418,7 @@ def stub_course_meetings_for_half_hours
     headers: {
   'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
     }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/get_course_meetings/get_course_meetings_for_half_hours.json'))
+    to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings/course_meetings_for_half_hours.json'))
 end
 
 def stub_course_meetings_nil
@@ -427,5 +427,5 @@ def stub_course_meetings_nil
     headers: {
   'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
     }).
-  to_return(status: 200, body: File.read('spec/fixtures/populi/get_course_meetings/get_course_meetings.json'))
+  to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings/course_meetings.json'))
 end
