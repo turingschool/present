@@ -139,7 +139,7 @@ RSpec.describe 'Populi Transfer' do
       with(
         body: {course_meeting_id: course_meeting_id_1, status: status_absent},
         headers: {
-      'Authorization'=>"Bearer #{ENV["POPULI_API2_ACCESS_KEY"]}",
+      'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
         }).
       to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/error/update_student_attendance_not_found.json'))
       

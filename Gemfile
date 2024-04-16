@@ -57,8 +57,6 @@ gem 'faraday'
 # Implements Google Oauth
 gem 'omniauth-google-oauth2'
 
-gem 'populi_api', git: 'https://github.com/turingschool/populi_api.git', branch: 'main'
-
 # String Matching algorithm
 gem 'fuzzy-string-match'
 
