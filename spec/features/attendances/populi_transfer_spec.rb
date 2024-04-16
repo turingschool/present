@@ -90,9 +90,9 @@ RSpec.describe 'Populi Transfer' do
       stub_successful_update_student_attendance
       
       click_link "Transfer Student Attendances to Populi"
-
+      
       expect(page).to have_select(:populi_meeting_id)
-
+      
       select("1:00 PM")
       click_button "Transfer Student Attendances to Populi"
 
@@ -147,16 +147,5 @@ RSpec.describe 'Populi Transfer' do
       
       click_button "Transfer Student Attendances to Populi"  
     end
-  end    
-
-  #  This test needs to somehow overide the stub requests to have blank/nill populi_meeting_id so as to prompt the correct error message
-  # context "api call fails" do
-  #   it "displays an error message when api call fails" do
-
-  #     click_link "Transfer Student Attendances to Populi"
-  #     click_button "Transfer Student Attendances to Populi"  
-  #     save_and_open_page
-  #     expect(page).to have_content("Something went wrong while retrieving the Populi meeting times. Please try again.")
-  #   end
-  # end
+  end
 end
