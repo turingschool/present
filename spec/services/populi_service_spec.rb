@@ -9,7 +9,7 @@ RSpec.describe PopuliService do
       @course_offering = "10547831"
       @term_id = "295946"
       stub_persons
-      stub_get_enrollments
+      stub_enrollments
       stub_academic_terms
       stub_current_academic_term
       stub_course_offerings_by_term
@@ -54,9 +54,9 @@ RSpec.describe PopuliService do
       end
     end  
 
-    describe '#get_enrollments method' do
-      it 'get_enrollments method gets enrollments from Populi API call' do
-        response = @populi.get_enrollments(@course_offering)
+    describe '#enrollments method' do
+      it 'enrollments method gets enrollments from Populi API call' do
+        response = @populi.enrollments(@course_offering)
         expect(response).to be_a(Hash)
         expect(response).to have_key(:data)
         expect(response[:data]).to be_a(Array)

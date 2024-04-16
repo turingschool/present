@@ -47,7 +47,7 @@ class Attendance < ApplicationRecord
   def transfer_to_populi!(populi_meeting_id)
     service = PopuliService.new
     course_id = self.turing_module.populi_course_id
-    enrollments = service.get_enrollments(course_id)
+    enrollments = service.enrollments(course_id)
     student_attendances.includes(:student).each do |student_attendance|
       student_enrollment = enrollments[:data].find do |enrollment|
         enrollment[:student_id] == student_attendance.student.populi_id.to_i
