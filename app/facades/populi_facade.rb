@@ -20,7 +20,7 @@ class PopuliFacade
   end
 
   def current_term_name
-    service.get_current_academic_term[:name]
+    service.current_academic_term[:name]
   end
 
   def import_students
@@ -59,7 +59,7 @@ private
   attr_reader :course_id
 
   def find_matching_module
-    current_term_id = service.get_current_academic_term[:id]
+    current_term_id = service.current_academic_term[:id]
     courses = get_term_courses(current_term_id)
     course_names = courses.map {|course| course[:abbrv]}
     match = find_jarow_match(@module.name, course_names)

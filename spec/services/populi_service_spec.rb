@@ -36,9 +36,9 @@ RSpec.describe PopuliService do
       end
     end
 
-    describe '#get_current_academic_term' do
+    describe '#current_academic_term' do
       it 'can get current academic term' do
-        response = @populi.get_current_academic_term
+        response = @populi.current_academic_term
         expect(response).to be_a(Hash)
         expect(response).to have_key(:object)
         expect(response).to have_key(:id)
