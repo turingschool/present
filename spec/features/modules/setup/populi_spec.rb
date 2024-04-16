@@ -22,10 +22,6 @@ RSpec.describe "Module Setup Populi Workflow" do
   end
 
   it 'can get a best match with a launch module' do
-    stub_request(:post, ENV['POPULI_API_URL']).
-      with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2308.xml'), headers: {})
-
     launch_mod = create(:turing_module, module_number: 1, program: :Launch)
     visit turing_module_populi_integration_path(launch_mod)
 
