@@ -34,3 +34,6 @@ coverage
 .ruby-version
 
 dump.rdb
+
+# ignore VCR
+/spec/fixtures/vcr_cassettes
