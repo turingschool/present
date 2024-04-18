@@ -40,6 +40,13 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+  config.around(:each) do |example|
+    if example.metadata.key?(:vcr)
+      example.run
+    else
+      VCR.turned_off { example.run }
+    end
+  end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 

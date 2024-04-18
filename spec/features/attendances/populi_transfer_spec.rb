@@ -24,8 +24,6 @@ RSpec.describe 'Populi Transfer' do
 
     stub_course_meetings
 
-    stub_successful_update_student_attendance
-
     visit turing_module_path(@mod)
     fill_in :attendance_meeting_url, with:  "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
     
@@ -38,6 +36,7 @@ RSpec.describe 'Populi Transfer' do
 
   context "visual display of page for #populi_transfer/new" do
     before :each do
+      stub_successful_update_student_attendance
       click_link "Transfer Student Attendances to Populi"
     end
 
@@ -61,9 +60,10 @@ RSpec.describe 'Populi Transfer' do
   end
 
   context "updates attendance successfully" do
-    it 'sends the request to update the students attendance in Populi' do
+    before(:each) do
       stub_successful_update_student_attendance
-
+    end
+    it 'sends the request to update the students attendance in Populi' do
       click_link "Transfer Student Attendances to Populi"
 
       expect(current_path).to eq("/attendances/#{@test_attendance.id}/populi_transfer/new")
@@ -87,7 +87,6 @@ RSpec.describe 'Populi Transfer' do
     end    
 
     it 'can transfer to a different time slot' do
-      stub_successful_update_student_attendance
       
       click_link "Transfer Student Attendances to Populi"
       
@@ -108,11 +107,11 @@ RSpec.describe 'Populi Transfer' do
   context "update attendance error" do
     before :each do      
       click_link "Transfer Student Attendances to Populi"
-      stub_single_failure_update_student_attendance
       select("9:00 AM")
     end
 
     it 'keeps processing the job if it encounters an error' do
+      stub_single_failure_update_student_attendance
       click_button "Transfer Student Attendances to Populi"  
 
       expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76297621/attendance/update")
@@ -124,18 +123,19 @@ RSpec.describe 'Populi Transfer' do
     end
 
     it 'sends a Honeybadger notification' do
+      stub_single_failure_update_student_attendance
       expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: The specified course_meeting does not exist in this course instance.")
       click_button "Transfer Student Attendances to Populi"  
     end
     
     it 'can handle a populi error when the student is not found' do
       course_offering_id = "10547831"
-      enrollment_id_4 = "76296029"
+      enrollment_id_4 = "762976"
       course_meeting_id_1 = "1962"
       status_absent = "absent"
 
       # responding with an error that says the student was not found
-      @update_attendance_stub4 = stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_4}/attendance/update").
+      stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_4}/attendance/update").
       with(
         body: {course_meeting_id: course_meeting_id_1, status: status_absent},
         headers: {
@@ -143,7 +143,9 @@ RSpec.describe 'Populi Transfer' do
         }).
       to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/error/update_student_attendance_not_found.json'))
       
-      expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: Could not find a coursestudent object with id 76296029")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/762976/attendance/update")
+
+      expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: Could not find a coursestudent object with id 762976")
       
       click_button "Transfer Student Attendances to Populi"  
     end
