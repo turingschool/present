@@ -78,12 +78,12 @@ RSpec.describe 'Populi Transfer' do
 
       expect(page).to have_content("Transferring attendance to Populi. This could take up to 5 minutes. Please confirm in Populi that the transfer was successful.")
 
-      expect(@update_attendance_stub1).to have_been_requested
-      expect(@update_attendance_stub2).to have_been_requested
-      expect(@update_attendance_stub3).to have_been_requested
-      expect(@update_attendance_stub4).to have_been_requested
-      expect(@update_attendance_stub5).to have_been_requested
-      expect(@update_attendance_stub6).to have_been_requested
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76297621/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296027/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296028/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296029/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296030/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296031/attendance/update")
     end    
 
     it 'can transfer to a different time slot' do
@@ -96,12 +96,12 @@ RSpec.describe 'Populi Transfer' do
       select("1:00 PM")
       click_button "Transfer Student Attendances to Populi"
 
-      expect(@update_attendance_stub7).to have_been_requested
-      expect(@update_attendance_stub8).to have_been_requested
-      expect(@update_attendance_stub9).to have_been_requested
-      expect(@update_attendance_stub10).to have_been_requested
-      expect(@update_attendance_stub11).to have_been_requested
-      expect(@update_attendance_stub12).to have_been_requested
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76297621/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296027/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296028/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296029/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296030/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296031/attendance/update")
     end
   end
 
@@ -115,12 +115,12 @@ RSpec.describe 'Populi Transfer' do
     it 'keeps processing the job if it encounters an error' do
       click_button "Transfer Student Attendances to Populi"  
 
-      expect(@update_attendance_stub1).to have_been_requested
-      expect(@update_attendance_stub2).to have_been_requested
-      expect(@update_attendance_stub3).to have_been_requested
-      expect(@update_attendance_stub4).to have_been_requested # This call errors out, but the job should continue to requests 5 and 6
-      expect(@update_attendance_stub5).to have_been_requested
-      expect(@update_attendance_stub6).to have_been_requested
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76297621/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296027/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296028/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296029/attendance/update")# This call errors out, but the job should continue to requests 5 and 6
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296030/attendance/update")
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296031/attendance/update")
     end
 
     it 'sends a Honeybadger notification' do
