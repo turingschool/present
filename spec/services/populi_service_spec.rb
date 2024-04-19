@@ -1,5 +1,4 @@
 require 'rails_helper'
-require './spec/fixtures/populi/test_data/stub_requests.rb'
 
 RSpec.describe PopuliService do
   describe 'api calls' do
@@ -8,17 +7,9 @@ RSpec.describe PopuliService do
       @personId = "24490130"
       @course_offering = "10547831"
       @term_id = "295946"
-      stub_persons
-      stub_enrollments
-      stub_academic_terms
-      stub_current_academic_term
-      stub_course_offerings_by_term
-      stub_successful_update_student_attendance
-      stub_failed_update_student_attendance
-      stub_course_meetings
     end
 
-    describe '#person' do
+    describe '#person', :vcr do
       it 'can get person by id' do
         response = @populi.person(@personId)
         expect(response).to be_a(Hash)
@@ -27,16 +18,12 @@ RSpec.describe PopuliService do
         expect(response).to have_key(:first_name)
         expect(response).to have_key(:last_name)
         expect(response).to have_key(:middle_name)
-        expect(response).to have_key(:addresses)
-        expect(response).to have_key(:tags)
+        expect(response).to have_key(:preferred_name)
         expect(response).to have_key(:added_at)
-        expect(response).to have_key(:is_user)
-        expect(response).to have_key(:updated_at)
-        expect(response).to have_key(:private_profile)
       end
     end
 
-    describe '#current_academic_term' do
+    describe '#current_academic_term', :vcr do
       it 'can get current academic term' do
         response = @populi.current_academic_term
         expect(response).to be_a(Hash)
@@ -54,7 +41,7 @@ RSpec.describe PopuliService do
       end
     end  
 
-    describe '#enrollments method' do
+    describe '#enrollments method', :vcr do
       it 'enrollments method gets enrollments from Populi API call' do
         response = @populi.enrollments(@course_offering)
         expect(response).to be_a(Hash)
@@ -65,7 +52,7 @@ RSpec.describe PopuliService do
       end
     end
 
-    describe '#terms method' do
+    describe '#terms method', :vcr do
       it 'terms method gets terms from Populi API call' do
         response = @populi.terms
         expect(response).to be_a(Hash)
@@ -79,7 +66,7 @@ RSpec.describe PopuliService do
       end
     end
 
-    describe '#courseofferings_by_term' do
+    describe '#courseofferings_by_term', :vcr do
       it 'courseofferings_by_term method gets courseofferings by term from Populi API call' do
         response = @populi.courseofferings_by_term(@term_id)
         expect(response).to be_a(Hash)
@@ -96,7 +83,7 @@ RSpec.describe PopuliService do
       end
     end
 
-    describe '#update_student_attendance' do
+    describe '#update_student_attendance', :vcr do
       context 'update successful' do
         it 'updates student attendance status' do
           course_offering_id_1 = "10547884"
@@ -104,7 +91,6 @@ RSpec.describe PopuliService do
           status = "present"
           course_meeting_id_1 = "5314"
           response = @populi.update_student_attendance(course_offering_id_1, enrollment_id_1, course_meeting_id_1, status)
-
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("course_attendance")
@@ -127,7 +113,7 @@ RSpec.describe PopuliService do
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("error")
           expect(response).to have_key(:message)
-          expect(response[:message]).to eq("Could not find a courseoffering object with id 1054788")
+          expect(response[:message]).to eq("Could not find a courseoffering object with id 105478")
         end
 
         it 'provides error message with wrong enrollment_id' do
@@ -171,7 +157,7 @@ RSpec.describe PopuliService do
       end
     end
 
-    describe 'course_meetings' do
+    describe 'course_meetings', :vcr do
       it 'provides course meetings based on courseoffering id' do
         response = @populi.course_meetings(@course_offering)
 

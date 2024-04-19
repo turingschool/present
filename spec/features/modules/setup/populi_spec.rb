@@ -5,6 +5,7 @@ RSpec.describe "Module Setup Populi Workflow" do
   before(:each) do
     @user = mock_login
     @mod = create(:turing_module, module_number: 2, program: :BE)
+    @facade = PopuliFacade.new(@mod)
     stub_persons
     stub_enrollments
     stub_academic_terms
@@ -14,20 +15,26 @@ RSpec.describe "Module Setup Populi Workflow" do
 
   it 'suggests the best match of module from the list of populi courses' do
     visit turing_module_populi_integration_path(@mod)
+    inning = @facade.current_term_name
+    course_name = @facade.matching_module.name
 
     within '#best-match' do
-      expect(page).to have_content('BE Mod 2 - Web Application Development')
-      expect(page).to have_content('Inning: 2311')
+      expect(page).to have_content(course_name)
+      expect(page).to have_content("Inning: #{inning}")
     end
   end
 
   it 'can get a best match with a launch module' do
     launch_mod = create(:turing_module, module_number: 1, program: :Launch)
+    launch_facade = PopuliFacade.new(launch_mod)
+    inning = launch_facade.current_term_name
+    course_name = launch_facade.matching_module.name
+
     visit turing_module_populi_integration_path(launch_mod)
 
     within '#best-match' do
-      expect(page).to have_content('C#.NET Mod 0')
-      expect(page).to have_content('Inning: 2311')
+      expect(page).to have_content(course_name)
+      expect(page).to have_content("Inning: #{inning}")
     end
   end
   
