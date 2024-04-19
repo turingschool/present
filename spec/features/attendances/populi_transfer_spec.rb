@@ -105,7 +105,7 @@ RSpec.describe 'Populi Transfer' do
   end
 
   context "update attendance error" do
-    before :each do      
+    before :each do   
       click_link "Transfer Student Attendances to Populi"
       select("9:00 AM")
     end
@@ -129,23 +129,15 @@ RSpec.describe 'Populi Transfer' do
     end
     
     it 'can handle a populi error when the student is not found' do
+      stub_single_failure_update_student_attendance_no_coursestudent
       course_offering_id = "10547831"
-      enrollment_id_4 = "762976"
+      enrollment_id_4 = "76296029"
       course_meeting_id_1 = "1962"
       status_absent = "absent"
 
       # responding with an error that says the student was not found
-      stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_4}/attendance/update").
-      with(
-        body: {course_meeting_id: course_meeting_id_1, status: status_absent},
-        headers: {
-      'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
-        }).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/error/update_student_attendance_not_found.json'))
       
-      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/762976/attendance/update")
-
-      expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: Could not find a coursestudent object with id 762976")
+      expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: Could not find a coursestudent object with id #{enrollment_id_4}")
       
       click_button "Transfer Student Attendances to Populi"  
     end
