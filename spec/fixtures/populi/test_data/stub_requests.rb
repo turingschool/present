@@ -165,14 +165,6 @@ def stub_successful_update_student_attendance
   course_meeting_id_2 = "1963"
   course_meeting_id = "5314"
   
-  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_1}/students/#{enrollment_id}/attendance/update").
-  with(
-    body: {course_meeting_id: course_meeting_id, status: status_present}.to_json,
-    headers: {
-  'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
-    }).
-  to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/success/update_student_attendance_success_1.json'))
-
   @update_attendance_stub1 = stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_1}/attendance/update").
     with(
       body: {course_meeting_id: course_meeting_id_1, status: status_present}.to_json,
@@ -268,62 +260,6 @@ def stub_successful_update_student_attendance
     'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
       }).
     to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/success/update_student_attendance_success_6.json'))
-end
-
-def stub_failed_update_student_attendance
-  status = "PRESENT"
-  
-  # course meeting does not exist
-  course_offering_id_1 = "10547884"
-  enrollment_id_1 = "76297621"
-  course_meeting_id_1 = "531"
-
-  # course offering not found
-  course_offering_id_2 = "105478"
-  enrollment_id_2 = "76297621"
-  course_meeting_id_2 = "5314"
-
-  # enrollment does not exist
-  course_offering_id_3 = "10547884"
-  enrollment_id_3 = "762976"
-  course_meeting_id_3 = "5314"
-
-  # finalized enrollment error
-  course_offering_id_4 = "10547884"
-  enrollment_id_4 = "76297620"
-  course_meeting_id_4 = "5314"
-
-  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_1}/students/#{enrollment_id_1}/attendance/update").
-    with(
-      body: {course_meeting_id: course_meeting_id_1, status: status},
-      headers: {
-    'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
-      }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/error/update_student_attendance_course_meeting_does_not_exist.json'))
-
-  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_2}/students/#{enrollment_id_2}/attendance/update").
-    with(
-      body: {course_meeting_id: course_meeting_id_2, status: status},
-      headers: {
-    'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
-      }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/error/update_student_attendance_course_offering_not_found.json'))
-
-  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_3}/students/#{enrollment_id_3}/attendance/update").
-    with(
-      body: {course_meeting_id: course_meeting_id_3, status: status},
-      headers: {
-    'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
-      }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/error/update_student_attendance_enrollment_does_not_exist.json'))
-
-  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_4}/students/#{enrollment_id_4}/attendance/update").
-    with(
-      body: {course_meeting_id: course_meeting_id_4, status: status},
-      headers: {
-    'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
-      }).
-    to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/error/update_student_attendance_finalized_enrollment_error.json'))
 end
 
 def stub_single_failure_update_student_attendance_no_coursestudent
