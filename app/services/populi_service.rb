@@ -2,6 +2,7 @@ class PopuliService
   extend Limiter::Mixin
   # Rate limit update_student_attendance api call to 50 requests per minute
   limit_method :update_student_attendance, rate: 50 
+  limit_method :person, rate: 50 
 
   def initialize
     check_env_vars
