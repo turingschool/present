@@ -28,7 +28,6 @@ class Attendance < ApplicationRecord
 
   def update_time(time)
     hour, minutes = time.split(":").map(&:to_i)
-    
     if !validate_time_input(hour, minutes)
       new_time = attendance_time.in_time_zone('Mountain Time (US & Canada)').change(hour: hour, min: minutes)
       self.update!(attendance_time: new_time)
@@ -48,13 +47,17 @@ class Attendance < ApplicationRecord
   def transfer_to_populi!(populi_meeting_id)
     service = PopuliService.new
     course_id = self.turing_module.populi_course_id
+    enrollments = service.enrollments(course_id)
     student_attendances.includes(:student).each do |student_attendance|
-      response = service.update_student_attendance(course_id, populi_meeting_id, student_attendance.student.populi_id, student_attendance.status)
+      student_enrollment = enrollments[:data].find do |enrollment|
+        enrollment[:student_id] == student_attendance.student.populi_id.to_i
+      end
+      response = service.update_student_attendance(course_id, student_enrollment[:id], populi_meeting_id, student_attendance.status)
       Rails.logger.info "Update Attendance Response: #{response.to_s}"
       begin
-        raise AttendanceUpdateError.new("UPDATE FAILED") unless response[:response][:result] == "UPDATED"
+        raise AttendanceUpdateError.new("UPDATE FAILED") unless response[:object] == "course_attendance"
       rescue AttendanceUpdateError, NoMethodError
-        Honeybadger.notify("UPDATE FAILED. Student: #{student_attendance.student.populi_id}, status: #{student_attendance.status}, response: #{response.to_s}")
+        Honeybadger.notify("UPDATE FAILED. Student: #{student_attendance.student.populi_id}, status: #{student_attendance.status}, response: #{response[:message]}")
       end
     end
   end

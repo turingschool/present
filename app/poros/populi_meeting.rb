@@ -1,9 +1,9 @@
 class PopuliMeeting
-  attr_reader :id, :start, :end
+  attr_reader :id, :start_at, :end_at
 
   def initialize(data)
-    @id = data[:meetingid]
-    @start = Time.parse(data[:start])
-    @end = Time.parse(data[:end])
+    @id = data[:id]
+    @start_at = Time.parse(data[:start_at])
+    @end_at = Time.parse(data[:end_at])
   end
 end

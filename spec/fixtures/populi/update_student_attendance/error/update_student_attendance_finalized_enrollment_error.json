@@ -1,0 +1,6 @@
+{
+  "object": "error",
+  "code": 400,
+  "type": "invalid_parameter",
+  "message": "You cannot update attendance for a finalized student."
+}

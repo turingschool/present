@@ -1,4 +1,5 @@
 require 'rails_helper'
+require './spec/fixtures/populi/test_data/stub_requests.rb'
 
 RSpec.describe 'Creating an Attendance' do
   before(:each) do
@@ -18,9 +19,7 @@ RSpec.describe 'Creating an Attendance' do
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
       .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
 
-      stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"instanceID"=>@test_module.populi_course_id, "task"=>"getCourseInstanceMeetings"}).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+      stub_course_meetings
     end
 
     it 'creates a new attendance by providing a slack message link' do

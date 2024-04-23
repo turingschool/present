@@ -1,4 +1,5 @@
 require 'rails_helper'
+require './spec/fixtures/populi/test_data/stub_requests.rb'
 
 RSpec.describe "Duration" do
   before(:each) do
@@ -14,9 +15,7 @@ RSpec.describe "Duration" do
     stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details_for_duration.json'))
 
-    stub_request(:post, ENV['POPULI_API_URL'] || "https://fake-populi-domain.com").
-      with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@test_module.populi_course_id}).
-      to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_for_duration.xml'))
+    stub_course_meetings_for_duration
 
     visit turing_module_path(@test_module)
 

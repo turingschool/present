@@ -1,37 +1,30 @@
 require 'rails_helper'
+require './spec/fixtures/populi/test_data/stub_requests.rb'
 
 RSpec.describe "Module Setup Account Matching" do
   context 'user imports students from populi and imports a slack channel' do
     before :each do
       @user = mock_login
       @mod = create(:turing_module, module_number: 2, program: :BE)
-      @channel_id = "C02HRH7MF5K" 
-
-      stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getCurrentAcademicTerm"}).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/current_academic_term.xml'), headers: {})
+      @channel_id = "C02HRH7MF5K"
+      @term_id = "295946"
+      stub_persons
+      stub_enrollments
+      stub_current_academic_term
+      stub_course_offerings_by_term
       
-      stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getTermCourseInstances", "term_id"=>"295946"}).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/courses_for_2211.xml'), headers: {})
-      
-      stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getCourseInstanceStudents", "instance_id"=>"10547831"}).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/students_for_be2_2211.xml'), headers: {})
-
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))
 
       visit turing_module_populi_integration_path(@mod)
-
+  
       within '#best-match' do
         click_button 'Yes'
       end
-
+      
       @anthony_b = @mod.students.find_by(name: "Anthony Blackwell Tallent")
       @j = @mod.students.find_by(name: "J Seymour")
       @leo = @mod.students.find_by(name: "Leo Banos Garcia")
-
       fill_in :slack_channel_id, with: @channel_id
       click_button "Import Channel"
     end
@@ -122,7 +115,7 @@ RSpec.describe "Module Setup Account Matching" do
         end
         
         within '.populi-id' do
-          expect(page).to have_content('24490140')
+          expect(page).to have_content('1')
         end
       end
 

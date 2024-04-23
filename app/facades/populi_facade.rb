@@ -10,7 +10,7 @@ class PopuliFacade
   end
 
   def courses
-    PopuliService.new.get_term_courses(@term_id)[:response][:course_instance].map do |course_data|
+    get_term_courses(@term_id).map do |course_data|
       PopuliCourse.new(course_data)
     end
   end
@@ -20,7 +20,7 @@ class PopuliFacade
   end
 
   def current_term_name
-    service.get_current_academic_term[:response][:name]
+    service.current_academic_term[:name]
   end
 
   def import_students
@@ -32,17 +32,35 @@ class PopuliFacade
   end
 
   def term_options
-    PopuliService.new.get_terms[:response][:academic_term].map do |term|
-      [term[:fullname], term[:termid]]
+    service.terms[:data].map do |term|
+      [term[:name], term[:id]]
     end
+  end
+
+  def get_students(course_offering_id)
+    enrollments = service.enrollments(course_offering_id)
+    student_ids = enrollments[:data].map { |enrollment| enrollment[:student_id] }
+    students = Hash.new
+    students[:body] = student_ids.map { |id| service.person(id) }
+    students
+  end
+
+  def get_term_courses(term_id)
+    courseofferings = service.courseofferings_by_term(term_id)
+    catalog_courses = courseofferings[:data].map do |course|
+      course[:catalog_courses].map do |catalog_course|
+        catalog_course
+      end
+    end.flatten.uniq
+    catalog_courses
   end
 
 private
   attr_reader :course_id
 
   def find_matching_module
-    current_term_id = service.get_current_academic_term[:response][:termid]
-    courses = service.get_courses(current_term_id)[:response][:course_instance]
+    current_term_id = service.current_academic_term[:id]
+    courses = get_term_courses(current_term_id)
     course_names = courses.map {|course| course[:abbrv]}
     match = find_jarow_match(@module.name, course_names)
     course_data = courses.find do |course|
@@ -52,7 +70,7 @@ private
   end
 
   def populi_students
-    @populi_students ||= service.get_students(course_id)[:response][:courseinstance_student].map do |student|
+    @populi_students ||= get_students(course_id)[:body].map do |student|
       PopuliStudent.from_populi(student)
     end
   end

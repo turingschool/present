@@ -1,4 +1,5 @@
 require 'rails_helper'
+require './spec/fixtures/populi/test_data/stub_requests.rb'
 
 RSpec.describe 'Student Attendance By Hours' do
   before(:each) do
@@ -18,9 +19,7 @@ RSpec.describe 'Student Attendance By Hours' do
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}") \
         .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
-      stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@test_module.populi_course_id}).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+      stub_course_meetings
     end
 
     it 'records student_attendance_hours' do
@@ -61,9 +60,7 @@ RSpec.describe 'Student Attendance By Hours' do
 
     context 'class includes a half hour' do
       before :each do
-        stub_request(:post, ENV['POPULI_API_URL']).
-          with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>@test_module.populi_course_id}).
-          to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings_for_half_hours.xml'))
+        stub_course_meetings_for_half_hours
 
         visit turing_module_path(@test_module)
         fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
@@ -114,9 +111,7 @@ RSpec.describe 'Student Attendance By Hours' do
       stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
       .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
 
-      stub_request(:post, ENV['POPULI_API_URL']).
-        with(body: {"instanceID"=>@test_module.populi_course_id, "task"=>"getCourseInstanceMeetings"}).
-        to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
+      stub_course_meetings
 
       slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
 
