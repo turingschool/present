@@ -194,9 +194,6 @@ RSpec.describe 'attendance show page' do
     other_module = student.turing_module
     other_zoom_id = "12345"
     stub_course_meetings_nil
-    # stub_request(:post, ENV['POPULI_API_URL']).
-    #   with(body: {"task"=>"getCourseInstanceMeetings", "instanceID"=>other_module.populi_course_id}).
-    #   to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings.xml'))
 
     stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{other_zoom_id}/participants?page_size=300") \
         .to_return(body: File.read('spec/fixtures/zoom/participant_report_for_name_matching.json'))
