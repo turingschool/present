@@ -25,7 +25,6 @@ RSpec.describe "Module Setup Account Matching" do
       @anthony_b = @mod.students.find_by(name: "Anthony Blackwell Tallent")
       @j = @mod.students.find_by(name: "J Seymour")
       @leo = @mod.students.find_by(name: "Leo Banos Garcia")
-      
       fill_in :slack_channel_id, with: @channel_id
       click_button "Import Channel"
     end
