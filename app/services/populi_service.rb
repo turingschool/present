@@ -2,6 +2,7 @@ class PopuliService
   extend Limiter::Mixin
   # Rate limit update_student_attendance api call to 50 requests per minute
   limit_method :update_student_attendance, rate: 50 
+  limit_method :person, rate: 50 
 
   def initialize
     check_env_vars
@@ -37,7 +38,7 @@ class PopuliService
 
   def update_student_attendance(course_offering_id, enrollment_id, course_meeting_id, status)
     response = conn.put("courseofferings/#{course_offering_id}/students/#{enrollment_id}/attendance/update") do |req|
-      req.body = {course_meeting_id: course_meeting_id, status: status}
+      req.body = {course_meeting_id: course_meeting_id, status: status}.to_json
     end
     parse_response(response)
   end

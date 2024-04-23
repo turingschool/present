@@ -81,16 +81,17 @@ group :development, :test do
 end
 
 group :test do
-  gem 'rspec-rails'
-  gem 'shoulda-matchers'
-  gem 'capybara'
-  gem 'launchy'
-  gem 'factory_bot_rails'
-  gem 'simplecov'
-  gem 'webmock'
   gem 'faker'
+  gem 'capybara'
   gem 'capybara_table'
-  gem 'orderly'
+  gem 'factory_bot_rails'
+  gem 'launchy'
+  gem 'rspec-rails'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers'
+  gem 'simplecov'
+  gem 'orderly'
+  gem 'webmock'
+  gem 'vcr'
 end
 

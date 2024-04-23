@@ -1,5 +1,4 @@
 require 'rails_helper'
-require './spec/fixtures/populi/test_data/stub_requests.rb'
 
 RSpec.describe PopuliFacade do
   describe 'instance methods' do
@@ -8,12 +7,9 @@ RSpec.describe PopuliFacade do
       @term_id = "295946"
       @populi = PopuliFacade.new(turing_module)
       @course_offering = "10547831"
-      stub_persons
-      stub_enrollments
-      stub_course_offerings_by_term
     end
 
-    describe '#get_students' do
+    describe '#get_students', :vcr do
       it 'filters through enrollment objects to return students objects' do
         response = @populi.get_students(@course_offering)
         expect(response).to be_a(Hash)
@@ -26,7 +22,7 @@ RSpec.describe PopuliFacade do
       end
     end
 
-    describe '#get_term_courses' do
+    describe '#get_term_courses', :vcr do
       it 'filters through courseoffering objects to return calatog courses' do
         response = @populi.get_term_courses(@term_id)
         expect(response).to be_a(Array)
