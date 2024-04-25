@@ -86,11 +86,13 @@ RSpec.describe PopuliService do
     describe '#update_student_attendance', :vcr do
       context 'update successful' do
         it 'updates student attendance status' do
-          course_offering_id_1 = "10547884"
-          enrollment_id_1 = "76297621"
+          current_academic_term = @populi.current_academic_term
+          updated_course_offering = @populi.courseofferings_by_term(current_academic_term[:id])[:data].first[:id]
+          course_meeting_id = @populi.course_meetings(updated_course_offering)[:data].first[:id]
+          enrollment_id = @populi.enrollments(updated_course_offering)[:data].first[:id]
           status = "present"
-          course_meeting_id_1 = "5314"
-          response = @populi.update_student_attendance(course_offering_id_1, enrollment_id_1, course_meeting_id_1, status)
+
+          response = @populi.update_student_attendance(updated_course_offering, enrollment_id, course_meeting_id, status)
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("course_attendance")
@@ -108,6 +110,7 @@ RSpec.describe PopuliService do
           enrollment_id = "76297621"
           status = "PRESENT"
           course_meeting_id = "5314"
+
           response = @populi.update_student_attendance(course_offering_id, enrollment_id, course_meeting_id, status)
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
@@ -121,6 +124,7 @@ RSpec.describe PopuliService do
           enrollment_id = "762976"
           status = "PRESENT"
           course_meeting_id = "5314"
+
           response = @populi.update_student_attendance(course_offering_id, enrollment_id, course_meeting_id, status)
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
@@ -130,11 +134,13 @@ RSpec.describe PopuliService do
         end
 
         it 'provides error message with wrong course_meeting_id' do
-          course_offering_id = "10547884"
-          enrollment_id = "76297621"
-          status = "PRESENT"
-          course_meeting_id = "531"
-          response = @populi.update_student_attendance(course_offering_id, enrollment_id, course_meeting_id, status)
+          current_academic_term = @populi.current_academic_term
+          updated_course_offering = @populi.courseofferings_by_term(current_academic_term[:id])[:data].first[:id]
+          enrollment_id = @populi.enrollments(updated_course_offering)[:data].first[:id]
+          status = "present"
+          course_meeting_id = "531" # always a four digit code in the API
+
+          response = @populi.update_student_attendance(updated_course_offering, enrollment_id, course_meeting_id, status)
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("error")
@@ -147,6 +153,7 @@ RSpec.describe PopuliService do
           enrollment_id = "76297620"
           status = "PRESENT"
           course_meeting_id = "5314"
+
           response = @populi.update_student_attendance(course_offering_id, enrollment_id, course_meeting_id, status)
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
@@ -160,7 +167,6 @@ RSpec.describe PopuliService do
     describe 'course_meetings', :vcr do
       it 'provides course meetings based on courseoffering id' do
         response = @populi.course_meetings(@course_offering)
-
         expect(response).to be_a(Hash)
         expect(response).to have_key(:object)
         expect(response[:object]).to eq("list")
