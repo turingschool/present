@@ -130,11 +130,7 @@ RSpec.describe 'Populi Transfer' do
     
     it 'can handle a populi error when the student is not found' do
       stub_single_failure_update_student_attendance_no_coursestudent
-      course_offering_id = "10547831"
       enrollment_id_4 = "76296029"
-      course_meeting_id_1 = "1962"
-      status_absent = "absent"
-
       # responding with an error that says the student was not found
       
       expect(Honeybadger).to receive(:notify).with("UPDATE FAILED. Student: 24490062, status: absent, response: Could not find a coursestudent object with id #{enrollment_id_4}")
