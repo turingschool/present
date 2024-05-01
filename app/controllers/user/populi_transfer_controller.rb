@@ -1,8 +1,8 @@
 class User::PopuliTransferController < User::BaseController
   def new
-    attendance = Attendance.find(params[:attendance_id])
+    @attendance = Attendance.find(params[:attendance_id])
     render locals: {
-      facade: PopuliTransferFacade.new(attendance)
+      facade: PopuliTransferFacade.new(@attendance)
     }
   end
 
