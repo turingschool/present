@@ -63,6 +63,7 @@ RSpec.describe 'Populi Transfer' do
     before(:each) do
       stub_successful_update_student_attendance
     end
+    
     it 'sends the request to update the students attendance in Populi' do
       click_link "Transfer Student Attendances to Populi"
 
@@ -74,7 +75,7 @@ RSpec.describe 'Populi Transfer' do
 
       click_button "Transfer Student Attendances to Populi"
 
-      expect(current_path).to eq(attendance_path(@test_attendance))
+      expect(current_path).to eq(turing_module_path(@mod))
 
       expect(page).to have_content("Transferring attendance to Populi. This could take up to 5 minutes. Please confirm in Populi that the transfer was successful.")
 
