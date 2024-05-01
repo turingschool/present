@@ -40,7 +40,7 @@ RSpec.describe "Populi API is non-responsive" do
       allow_any_instance_of(PopuliService).to receive(:current_academic_term).and_return(nil)
       visit turing_module_populi_integration_path(@mod)
       
-      expect(page).to have_content("The page you are trying to access is currently unavailable. This may be due to an API call failing. Please try again later.")
+      expect(page).to have_content("Request cannot be fulfilled at this time. This may be due to an unavailable API. Please try again later.")
     end
   end
 
@@ -63,7 +63,7 @@ RSpec.describe "Populi API is non-responsive" do
       click_button 'Take Attendance'
 
       expect(current_path).to eq(turing_module_path(@mod))
-      expect(page).to have_content("The page you are trying to access is currently unavailable. This may be due to an API call failing. Please try again later.")
+      expect(page).to have_content("Request cannot be fulfilled at this time. This may be due to an unavailable API. Please try again later.")
     end
 
     it "zoom attendance attempt" do
@@ -83,7 +83,7 @@ RSpec.describe "Populi API is non-responsive" do
       click_button 'Take Attendance'
 
       expect(current_path).to eq(turing_module_path(@mod))
-      expect(page).to have_content("The page you are trying to access is currently unavailable. This may be due to an API call failing. Please try again later.")
+      expect(page).to have_content("Request cannot be fulfilled at this time. This may be due to an unavailable API. Please try again later.")
     end
   end
 end

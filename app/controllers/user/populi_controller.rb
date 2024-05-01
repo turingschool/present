@@ -31,7 +31,7 @@ private
   end
 
   def no_api_response
-    flash[:error] = "The page you are trying to access is currently unavailable. This may be due to an API call failing. Please try again later."
+    flash[:error] = "Request cannot be fulfilled at this time. This may be due to an unavailable API. Please try again later."
     redirect_to turing_module_path(current_module)
   end
 end
