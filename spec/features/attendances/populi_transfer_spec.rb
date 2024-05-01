@@ -57,6 +57,15 @@ RSpec.describe 'Populi Transfer' do
     it 'has link to transfer student attendances to populi' do
       expect(page).to have_button("Transfer Student Attendances to Populi")
     end
+
+    it 'has a link to return to the attendance_show page' do
+      save_and_open_page
+      expect(page).to have_link("Back to Attendance")
+
+      click_link "Back to Attendance"
+
+      expect(current_path).to eq(attendance_path(@test_attendance))
+    end
   end
 
   context "updates attendance successfully" do
