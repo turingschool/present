@@ -59,7 +59,6 @@ RSpec.describe 'Populi Transfer' do
     end
 
     it 'has a link to return to the attendance_show page' do
-      save_and_open_page
       expect(page).to have_link("Back to Attendance")
 
       click_link "Back to Attendance"
