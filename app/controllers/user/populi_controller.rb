@@ -1,4 +1,6 @@
 class User::PopuliController < User::BaseController
+  rescue_from ActionView::Template::Error, with: :no_api_response
+  
   def new
     render locals: {
       facade: PopuliFacade.new(current_module)
@@ -26,5 +28,10 @@ class User::PopuliController < User::BaseController
 private
   def current_module
     @current_module ||= TuringModule.find(params[:turing_module_id])
+  end
+
+  def no_api_response
+    flash[:error] = "Request cannot be fulfilled at this time. This may be due to an unavailable API. Please try again later."
+    redirect_to turing_module_path(current_module)
   end
 end
