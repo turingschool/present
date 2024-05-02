@@ -27,6 +27,10 @@ class AttendanceShowFacade
   def meeting_id
     @attendance.meeting.meeting_id
   end
+
+  def turing_module_id
+    @attendance.turing_module.id
+  end
   
   def thread_link
     @attendance.meeting.message_link
