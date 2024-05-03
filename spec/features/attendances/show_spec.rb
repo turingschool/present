@@ -74,13 +74,13 @@ RSpec.describe 'attendance show page' do
         create_list(:student_attendance, 3, attendance: test_attendance, status: :absent)
         create_list(:student_attendance, 7, attendance: test_attendance, status: :present)
         create_list(:zoom_alias, 16, turing_module: test_attendance.turing_module) # 16 because 14 are students and 2 are instructors.
-        
+
         visit "/attendances/#{test_attendance.id}"
 
         within '#student-attendances' do
-          @test_attendance.student_attendances.each do |student_attendance|
+          test_attendance.student_attendances.each do |student_attendance|
             within "#student-attendance-#{student_attendance.id}" do
-              expect(test_attendance.turing_module.unclaimed_aliases).to_not be_empty
+              expect(test_attendance.turing_module.unclaimed_aliases.count).to eq(16)
               expect(page).to have_select("student[zoom_alias]", options: test_attendance.turing_module.unclaimed_aliases.map { |alias_name| alias_name.name })
             end
           end
