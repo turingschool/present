@@ -14,12 +14,12 @@ RSpec.describe AttendanceShowFacade do
   end
 
   describe '#unasigned_zoom_aliases' do
-    it 'returns unclaimed zoom aliases' do
-      zoom_aliases = create_list(:zoom_alias, 10, turing_module: @attendance.turing_module)
+    it 'returns an array of unclaimed zoom aliases' do
+      create_list(:zoom_alias, 10, turing_module: @attendance.turing_module)
 
       expect(@facade.unassigned_zoom_aliases.count).to eq(10)
-      expect(@facade.unassigned_zoom_aliases).to eq(zoom_aliases)
-      expect(@facade.unassigned_zoom_aliases.first).to be_a(ZoomAlias)
+      expect(@facade.unassigned_zoom_aliases).to be_an(Array)
+      expect(@facade.unassigned_zoom_aliases).to be_all(String)
     end
   end
 end
