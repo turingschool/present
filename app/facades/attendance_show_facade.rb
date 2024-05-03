@@ -17,7 +17,7 @@ class AttendanceShowFacade
   end
 
   def unassigned_zoom_aliases
-    @attendance.turing_module.unclaimed_aliases
+    @attendance.turing_module.unclaimed_aliases.map { |zoom_alias| zoom_alias.name }.sort
   end
 
   def student_attendances
