@@ -16,6 +16,10 @@ class AttendanceShowFacade
     end
   end
 
+  def unassigned_zoom_aliases
+    @attendance.turing_module.unclaimed_aliases
+  end
+
   def student_attendances
     @attendance.student_attendances.includes(:student).by_attendance_status
   end
