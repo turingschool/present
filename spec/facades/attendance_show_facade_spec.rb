@@ -1,13 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe AttendanceShowFacade do
+  before :each do
+    @turing_module = create(:setup_module)
+    @attendance = create(:attendance, turing_module: @turing_module)
+    @facade = AttendanceShowFacade.new(@attendance)
+  end
+  
   describe '#turing_module_id'do
     it 'returns the turing module id' do
-      turing_module = create(:setup_module)
-      attendance = create(:attendance, turing_module: turing_module)
-      facade = AttendanceShowFacade.new(attendance)
-      
-      expect(facade.turing_module_id).to eq(turing_module.id)
+      expect(@facade.turing_module_id).to eq(@turing_module.id)
+    end
+  end
+
+  describe '#unasigned_zoom_aliases' do
+    it 'returns unclaimed zoom aliases' do
+      zoom_aliases = create_list(:zoom_alias, 10, turing_module: @attendance.turing_module)
+
+      expect(@facade.unassigned_zoom_aliases.count).to eq(10)
+      expect(@facade.unassigned_zoom_aliases).to eq(zoom_aliases)
+      expect(@facade.unassigned_zoom_aliases.first).to be_a(ZoomAlias)
     end
   end
 end
