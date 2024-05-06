@@ -14,4 +14,14 @@ RSpec.describe StringMatcher do
       expect(string_distance('John', 'Jane')).to be_within(0.01).of(0.67)
     end
   end
+
+  describe '#find_jarow_match' do
+    it 'returns the item in the list with the highest similarity to the input string' do
+      list = ['John', 'Jon', 'John Johnson', 'Johnathan', 'Jane']
+      expect(find_jarow_match('Johnny', list)).to eq('John')
+      expect(find_jarow_match('John John', list)).to eq('John Johnson')
+      expect(find_jarow_match('Jack', list)).to eq('Jane')
+      expect(find_jarow_match('Bobby', list)).to eq('Jon')
+    end
+  end
 end
