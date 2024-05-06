@@ -30,6 +30,16 @@ RSpec.describe Student, type: :model do
         
         expect(Student.have_slack_ids).to eq false
       end 
-    end 
+    end
+
+    describe '::instructors' do
+      it 'returns all students with the name "Instructor"' do
+        @turing_module = create(:setup_module)
+        create_list(:student, 2, name: "Instructor", turing_module: @turing_module)
+        
+        expect(Student.all.count).to eq(8)
+        expect(Student.instructors(@turing_module.id).count).to eq(2)
+      end
+    end
   end
 end
