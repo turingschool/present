@@ -1,5 +1,7 @@
 class User::AttendancesController < User::BaseController
-  
+  before_action :find_attendance_by_id, only: [:show, :edit, :update, :destroy]
+  before_action :find_attendance_by_attendance_id, only: [:update_zoom_alias, :update_zoom_alias_as_an_instructor, :retake]
+
   def create
     turing_module = TuringModule.find(params[:turing_module_id])
     begin
@@ -15,23 +17,26 @@ class User::AttendancesController < User::BaseController
   end
 
   def show
-    @attendance = Attendance.find(params[:id])
     @module = @attendance.turing_module
   end
 
   def edit
-    @attendance = Attendance.find(params[:id])
   end
 
   def update
-    attendance = Attendance.find(params[:id])
-    attendance.update_time(params[:attendance][:attendance_time])
-    attendance.rerecord
-    redirect_to attendance_path(attendance)
+    @attendance.update_time(params[:attendance][:attendance_time])
+    @attendance.rerecord
+    redirect_to attendance_path(@attendance)
+  end
+
+  def update_zoom_alias_as_an_instructor
+    instructor = Student.find_or_create_by(name: "Instructor", turing_module_id: params[:turing_module_id])
+    zoom_alias = ZoomAlias.find_by(name: "#{params[:attendance][:zoom_alias]}")
+    zoom_alias.update(student: instructor)
+    redirect_to attendance_path(@attendance)
   end
 
   def update_zoom_alias
-    attendance = Attendance.find(params[:attendance_id])
     student = Student.find(params[:id])
     zoom_alias = ZoomAlias.find(params[:student][:zoom_alias])
     if params[:commit] == "Undo"
@@ -39,31 +44,39 @@ class User::AttendancesController < User::BaseController
     else
       zoom_alias.update(student: student)
     end
-    attendance.rerecord
-    redirect_to attendance_path(attendance)
+    @attendance.rerecord
+    redirect_to attendance_path(@attendance)
   end
 
   def destroy
-    attendance = Attendance.find(params[:id])
-    module_id = attendance.turing_module.id  
+    module_id = @attendance.turing_module.id  
     attendance_details = {
-      id: attendance.id,
-      turing_module_id: attendance.turing_module_id,
-      user_id: attendance.user_id,
-      meeting_type: attendance.meeting_type,
-      meeting_id: attendance.meeting_id,
-      end_time: attendance.end_time
+      id: @attendance.id,
+      turing_module_id: @attendance.turing_module_id,
+      user_id: @attendance.user_id,
+      meeting_type: @attendance.meeting_type,
+      meeting_id: @attendance.meeting_id,
+      end_time: @attendance.end_time
     }
-    if attendance.destroy
-      logger.info("Attendance #{attendance.id} deleted by user #{current_user.email}. Deleted Attendance Details: #{attendance_details.inspect}")
+    if @attendance.destroy
+      logger.info("Attendance #{@attendance.id} deleted by user #{current_user.email}. Deleted Attendance Details: #{attendance_details.inspect}")
     end
     redirect_to turing_module_path(module_id)
     flash[:success] = "Attendance successfully deleted."
   end
 
   def retake
-    attendance = Attendance.find(params[:attendance_id])
-    attendance.rerecord
-    redirect_to attendance_path(attendance)
+    @attendance.rerecord
+    redirect_to attendance_path(@attendance)
+  end
+
+  private
+
+  def find_attendance_by_id
+    @attendance = Attendance.find(params[:id])
+  end
+
+  def find_attendance_by_attendance_id
+    @attendance = Attendance.find(params[:attendance_id])
   end
 end
