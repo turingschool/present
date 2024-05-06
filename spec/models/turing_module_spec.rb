@@ -104,8 +104,19 @@ RSpec.describe TuringModule, type: :model do
         @other_claimed = create_list(:alias_for_student, 2, zoom_meeting: @other_attendance.meeting, turing_module: @module)
       end
 
-      it 'returns all aliases from all zoom meetings that have no student assigned' do
-        expect(@module.unclaimed_aliases.sort).to eq(@unclaimed + @other_unclaimed)
+      it 'only includes aliases from the specified zoom meeting' do
+        expect(@module.unclaimed_aliases(@attendance.meeting_id).count).to eq(2)
+        @unclaimed.each do |a|
+          expect(a.in?(@module.unclaimed_aliases(@attendance.meeting_id).sort)).to eq(true)
+        end
+
+        @other_unclaimed.each do |a|
+          expect(a.in?(@module.unclaimed_aliases(@attendance.meeting_id).sort)).to eq(false)
+        end
+
+        @claimed.each do |a|
+          expect(a.in?(@module.unclaimed_aliases(@attendance.meeting_id).sort)).to eq(false)
+        end
       end
 
       it 'Does not include aliases from other modules' do
