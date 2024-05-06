@@ -26,4 +26,22 @@ RSpec.describe AttendanceShowFacade do
       expect(@facade.unassigned_zoom_aliases).to be_all(String)
     end
   end
+
+  describe '#instructor_zoom_aliases' do
+    it 'returns an array of students whos names are all Instructor' do
+      student_id = create(:student, turing_module: @turing_module, name: "Instructor").id
+      create_list(:student_attendance_present, 10, attendance: @attendance)
+      create_list(:student_attendance_present, 1, attendance: @attendance, student_id: student_id)
+      create_list(:zoom_alias, 2, turing_module: @attendance.turing_module, zoom_meeting_id: @attendance.meeting_id, student_id: student_id) # Instructor_aliases
+      create_list(:zoom_alias, 5, turing_module: @attendance.turing_module, zoom_meeting_id: @attendance.meeting_id) # List of student zoom aliases
+
+      expect(@facade.unassigned_zoom_aliases.count).to eq(5)
+      expect(@facade.instructor_zoom_aliases.count).to eq(2)
+      expect(@facade.instructor_zoom_aliases).to be_all(ZoomAlias)
+      
+      @facade.instructor_zoom_aliases.each do |zoom_alias|
+        expect(zoom_alias.name).to be_a(String)
+      end
+    end
+  end
 end
