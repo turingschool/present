@@ -70,18 +70,19 @@ RSpec.describe 'attendance show page' do
     context 'has and can save zoom aliases for students and instructors' do
       it "has a dropdown selector to save a new zoom alias" do
         test_attendance = create(:attendance)
+        zoom_meeting_id = test_attendance.meeting.id
         create_list(:student_attendance, 4, attendance: test_attendance, status: :tardy)
         create_list(:student_attendance, 3, attendance: test_attendance, status: :absent)
         create_list(:student_attendance, 7, attendance: test_attendance, status: :present)
-        create_list(:zoom_alias, 16, turing_module: test_attendance.turing_module) # 16 because 14 are students and 2 are instructors.
+        create_list(:zoom_alias, 16, turing_module: test_attendance.turing_module, zoom_meeting: test_attendance.meeting) # 16 because 14 are students and 2 are instructors.
 
         visit "/attendances/#{test_attendance.id}"
 
         within '#student-attendances' do
           test_attendance.student_attendances.each do |student_attendance|
             within "#student-attendance-#{student_attendance.id}" do
-              expect(test_attendance.turing_module.unclaimed_aliases.count).to eq(16)
-              expect(page).to have_select("student[zoom_alias]", options: test_attendance.turing_module.unclaimed_aliases.map { |alias_name| alias_name.name })
+              expect(test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id).count).to eq(16)
+              expect(page).to have_select("student[zoom_alias]", options: test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id).map { |alias_name| alias_name.name })
             end
           end
         end
@@ -89,10 +90,11 @@ RSpec.describe 'attendance show page' do
 
       xit "can save a new zoom alias for a student" do
         test_attendance = create(:attendance)
+        zoom_meeting_id = test_attendance.meeting.id
         create_list(:student_attendance, 4, attendance: test_attendance, status: :tardy)
         create_list(:student_attendance, 3, attendance: test_attendance, status: :absent)
         create_list(:student_attendance, 7, attendance: test_attendance, status: :present)
-        create_list(:zoom_alias, 16, turing_module: test_attendance.turing_module) # 16 because 14 are students and 2 are instructors.
+        create_list(:zoom_alias, 16, turing_module: test_attendance.turing_module, zoom_meeting: test_attendance.meeting) # 16 because 14 are students and 2 are instructors.
         
         visit "/attendances/#{test_attendance.id}"
 
@@ -100,12 +102,13 @@ RSpec.describe 'attendance show page' do
           student_attendance = test_attendance.student_attendances.first
       
           within "#student-attendance-#{student_attendance.id}" do
-            expect(test_attendance.turing_module.unclaimed_aliases.count).to eq(16)
-            expect(page).to have_select("student[zoom_alias]", options: test_attendance.turing_module.unclaimed_aliases.map { |alias_name| alias_name.name })
-            select(test_attendance.turing_module.unclaimed_aliases.first.name, from: "student[zoom_alias]")
+            expect(test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id).count).to eq(16)
+            expect(page).to have_select("student[zoom_alias]", options: test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id).map { |alias_name| alias_name.name })
+            select(test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id).first.name, from: "student[zoom_alias]")
+            
             click_button "Save Zoom Alias" # If this button is clicked, an API call is made durring the attendance.rerecord method in the attendance controller update_zoom_alias.
-            save_and_open_page
-            expect(test_attendance.turing_module.unclaimed_aliases.count).to eq(15)
+           
+            expect(test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id).count).to eq(15)
           end
         end
       end
