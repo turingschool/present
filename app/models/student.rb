@@ -14,7 +14,11 @@ class Student < ApplicationRecord
 
   def self.have_slack_ids 
     Student.where.not(slack_id: nil).any?
-  end 
+  end
+
+  def self.instructors(turing_module_id)
+    Student.all.where(name: "Instructor").where(turing_module_id: turing_module_id)
+  end
 
   def latest_zoom_alias
     zoom_aliases.order(created_at: :DESC).limit(1).first
