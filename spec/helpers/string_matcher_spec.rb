@@ -1,10 +1,6 @@
 require 'rails_helper'
-require 'string_matcher'
-require 'fuzzystringmatch'
 
 RSpec.describe StringMatcher do
-  include StringMatcher
-
   describe '#string_distance' do
     it 'returns the correct distance in similarity between two strings' do
       expect(string_distance('John', 'John')).to eq(1.0)
