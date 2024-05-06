@@ -39,8 +39,8 @@ class TuringModule < ApplicationRecord
     SlackPresenceCheck.insert_all(presence_checks) unless presence_checks.empty?
   end
 
-  def unclaimed_aliases
-    ZoomAlias.where(turing_module_id: self.id).where(student_id: nil)
+  def unclaimed_aliases(zoom_meeting_id)
+    ZoomAlias.where(turing_module_id: self.id).where(student_id: nil).where(zoom_meeting_id: zoom_meeting_id)
   end
 
   def name
