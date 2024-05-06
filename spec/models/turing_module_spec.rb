@@ -112,7 +112,7 @@ RSpec.describe TuringModule, type: :model do
         expect {
           create(:zoom_alias) 
         }.to_not change {
-          @module.unclaimed_aliases.length
+          @module.unclaimed_aliases(@attendance.meeting_id).length
         }
       end
     end
