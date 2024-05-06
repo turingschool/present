@@ -24,6 +24,15 @@ class AttendanceShowFacade
     @attendance.student_attendances.includes(:student).by_attendance_status
   end
 
+  def instructor_zoom_aliases
+    turing_module_id = @attendance.turing_module.id
+    if instructor = Student.instructors(turing_module_id).first
+      return instructor.zoom_aliases
+    else
+      return false
+    end
+  end
+
   def meeting_title
     @attendance.meeting.title
   end
