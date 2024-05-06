@@ -110,7 +110,34 @@ RSpec.describe 'attendance show page' do
         end
       end
 
-      xit "can save a new zoom alias as an instructor" do
+      it "can save a new zoom alias as an instructor" do
+        test_attendance = create(:attendance)
+        zoom_meeting_id = test_attendance.meeting.id
+        create_list(:student_attendance, 4, attendance: test_attendance, status: :tardy)
+        create_list(:student_attendance, 3, attendance: test_attendance, status: :absent)
+        create_list(:student_attendance, 7, attendance: test_attendance, status: :present)
+        create_list(:zoom_alias, 16, turing_module: test_attendance.turing_module, zoom_meeting: test_attendance.meeting) # 16 because 14 are students and 2 are instructors.
+
+        visit "/attendances/#{test_attendance.id}"
+        
+        expect(page).to have_select("attendance[zoom_alias]", options: test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id).map { |alias_name| alias_name.name })
+
+        within '.assign_instructor_aliases' do
+          expect(test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id).count).to eq(16)
+
+          select(test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id)[0].name, from: "attendance[zoom_alias]")
+          click_button "Save Zoom Alias As Instructor" 
+          
+          expect(test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id).count).to eq(15)
+          expect(current_path).to eq(attendance_path(test_attendance))
+        
+          # Assign another zoom alias as an instructor
+          select(test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id)[0].name, from: "attendance[zoom_alias]")
+          click_button "Save Zoom Alias As Instructor" 
+      
+          expect(test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id).count).to eq(14) 
+          expect(current_path).to eq(attendance_path(test_attendance))
+        end
       end
     end
 
