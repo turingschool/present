@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       resources :attendances, only: [:create, :show, :edit, :update, :destroy] do
         resources :populi_transfer, only: [:new, :create, :index]
         patch "students/:id", to: 'attendances#update_zoom_alias', as: :student
+        patch "/update_instructor_alias", to: 'attendances#update_zoom_alias_as_an_instructor', as: :instructor
         post "retake", to: "attendances#retake", as: "retake"
       end
 
