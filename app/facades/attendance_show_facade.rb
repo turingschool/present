@@ -9,7 +9,7 @@ class AttendanceShowFacade
   end
   
   def alias_options_for(student)
-    @attendance.turing_module.unclaimed_aliases.sort_by do |zoom_alias|
+    @attendance.turing_module.unclaimed_aliases(@attendance.meeting_id).sort_by do |zoom_alias|
       -1 * string_distance(student.name, zoom_alias.name)
     end.map do |zoom_alias|
       [zoom_alias.name, zoom_alias.id]
@@ -17,7 +17,7 @@ class AttendanceShowFacade
   end
 
   def unassigned_zoom_aliases
-    @attendance.turing_module.unclaimed_aliases.map { |zoom_alias| zoom_alias.name }.sort
+    @attendance.turing_module.unclaimed_aliases(@attendance.meeting_id).map { |zoom_alias| zoom_alias.name }.sort
   end
 
   def student_attendances
