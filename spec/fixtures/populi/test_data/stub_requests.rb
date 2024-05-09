@@ -262,6 +262,20 @@ def stub_successful_update_student_attendance
     to_return(status: 200, body: File.read('spec/fixtures/populi/update_student_attendance/success/update_student_attendance_success_6.json'))
 end
 
+def stub_create_student_attendance
+  course_offering_id = "10547831"
+  enrollment_id_1 = "76297621"
+  start_time = "2023-01-30T16:00:00+00:00"
+
+  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_1}/attendance/update").
+    with(
+      body: {start_time: start_time, status: "excused"}.to_json,
+      headers: {
+    'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
+      }).
+    to_return(status: 200, body: File.read('spec/fixtures/populi/create_student_attendances/create_student_attendances_success_1.json'))
+end
+
 def stub_single_failure_update_student_attendance_no_coursestudent
   course_offering_id = "10547831"
   enrollment_id_1 = "76297621"
