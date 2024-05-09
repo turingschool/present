@@ -59,6 +59,7 @@ gem 'omniauth-google-oauth2'
 
 # String Matching algorithm
 gem 'fuzzy-string-match'
+gem 'text'
 
 # Monitoring
 gem "honeybadger", "~> 5.2"
