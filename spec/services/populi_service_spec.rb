@@ -93,6 +93,7 @@ RSpec.describe PopuliService do
           status = "present"
 
           response = @populi.update_student_attendance(updated_course_offering, enrollment_id, course_meeting_id, status)
+
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("course_attendance")
@@ -160,6 +161,30 @@ RSpec.describe PopuliService do
           expect(response[:object]).to eq("error")
           expect(response).to have_key(:message)
           expect(response[:message]).to eq("You cannot update attendance for a finalized student.")
+        end
+      end
+    end
+
+    describe '#create_student_attendance', :vcr do
+      context 'meeting not yet created in populi prior to transfering attendance to populi' do
+        it 'creates and updates student_attendances status in populi to excused using start_time' do
+          today = Date.today
+          start_time = Time.new(today.year, today.month, today.day, 13, 00, 0).utc
+
+          current_academic_term = @populi.current_academic_term
+          updated_course_offering = @populi.courseofferings_by_term(current_academic_term[:id])[:data].first[:id]
+          enrollment_id = @populi.enrollments(updated_course_offering)[:data].first[:id]
+          
+          response = @populi.create_student_attendance(updated_course_offering, enrollment_id, start_time)
+
+          expect(response).to be_a(Hash)
+          expect(response).to have_key(:object)
+          expect(response[:object]).to eq("course_attendance")
+          expect(response).to have_key(:id)
+          expect(response).to have_key(:status)
+          expect(response[:status]).to eq("excused")
+          expect(response).to have_key(:course_meeting_id)
+          expect(response).to have_key(:student_id)
         end
       end
     end
