@@ -12,6 +12,7 @@ RSpec.describe PopuliService do
     describe '#person', :vcr do
       it 'can get person by id' do
         response = @populi.person(@personId)
+        
         expect(response).to be_a(Hash)
         expect(response).to have_key(:object)
         expect(response).to have_key(:id)
@@ -26,6 +27,7 @@ RSpec.describe PopuliService do
     describe '#current_academic_term', :vcr do
       it 'can get current academic term' do
         response = @populi.current_academic_term
+        
         expect(response).to be_a(Hash)
         expect(response).to have_key(:object)
         expect(response).to have_key(:id)
@@ -44,6 +46,7 @@ RSpec.describe PopuliService do
     describe '#enrollments method', :vcr do
       it 'enrollments method gets enrollments from Populi API call' do
         response = @populi.enrollments(@course_offering)
+        
         expect(response).to be_a(Hash)
         expect(response).to have_key(:data)
         expect(response[:data]).to be_a(Array)
@@ -55,6 +58,7 @@ RSpec.describe PopuliService do
     describe '#terms method', :vcr do
       it 'terms method gets terms from Populi API call' do
         response = @populi.terms
+        
         expect(response).to be_a(Hash)
         expect(response).to have_key(:data)
         expect(response[:data]).to be_a(Array)
@@ -68,13 +72,17 @@ RSpec.describe PopuliService do
 
     describe '#courseofferings_by_term', :vcr do
       it 'courseofferings_by_term method gets courseofferings by term from Populi API call' do
+        
         response = @populi.courseofferings_by_term(@term_id)
+        
         expect(response).to be_a(Hash)
         expect(response).to have_key(:data)
         expect(response[:data]).to be_a(Array)
         expect(response[:data].first).to be_an(Hash)
         expect(response[:data].first).to have_key(:catalog_courses)
+        
         catalog_courses = response[:data].first[:catalog_courses]
+        
         expect(catalog_courses).to be_an(Array)
         expect(catalog_courses.first).to have_key(:course_offering_id)
         expect(catalog_courses.first).to have_key(:catalog_course_id)
@@ -113,6 +121,7 @@ RSpec.describe PopuliService do
           course_meeting_id = "5314"
 
           response = @populi.update_student_attendance(course_offering_id, enrollment_id, course_meeting_id, status)
+          
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("error")
@@ -127,6 +136,7 @@ RSpec.describe PopuliService do
           course_meeting_id = "5314"
 
           response = @populi.update_student_attendance(course_offering_id, enrollment_id, course_meeting_id, status)
+          
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("error")
@@ -142,6 +152,7 @@ RSpec.describe PopuliService do
           course_meeting_id = "531" # always a four digit code in the API
 
           response = @populi.update_student_attendance(updated_course_offering, enrollment_id, course_meeting_id, status)
+          
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("error")
@@ -156,6 +167,7 @@ RSpec.describe PopuliService do
           course_meeting_id = "5314"
 
           response = @populi.update_student_attendance(course_offering_id, enrollment_id, course_meeting_id, status)
+          
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("error")
@@ -192,11 +204,13 @@ RSpec.describe PopuliService do
     describe 'course_meetings', :vcr do
       it 'provides course meetings based on courseoffering id' do
         response = @populi.course_meetings(@course_offering)
+
         expect(response).to be_a(Hash)
         expect(response).to have_key(:object)
         expect(response[:object]).to eq("list")
         expect(response).to have_key(:count)
         expect(response).to have_key(:data)
+
         response[:data].each do |meeting|
           expect(meeting).to be_an(Hash)
           expect(meeting).to have_key(:object)
