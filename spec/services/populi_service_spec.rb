@@ -227,7 +227,7 @@ RSpec.describe PopuliService do
       end
 
       it 'provides an empty array of meetings if no course meetings are found' do
-        course_offering = "10548112"
+        course_offering = "10548113"
         response = @populi.course_meetings(course_offering)
 
         expect(response).to be_a(Hash)
