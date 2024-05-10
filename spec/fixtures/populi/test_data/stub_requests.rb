@@ -275,6 +275,8 @@ def stub_create_student_attendance
   
   start_time_3 = "2022-11-30T20:00:59.999+00:00"
   start_time_4 = "2023-08-23T15:30:00.000+00:00"
+  start_time_5 = "2022-11-28T16:00:00.000+00:00"
+  start_time_6 = "2023-01-21T16:00:00.000+00:00"
 
   stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_1}/attendance/update").
     with(
@@ -303,6 +305,22 @@ def stub_create_student_attendance
   stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_2}/students/#{enrollment_id_2}/attendance/update").
     with(
       body: {start_time: start_time_4, status: "excused"}.to_json,
+      headers: {
+    'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
+      }).
+    to_return(status: 200, body: File.read('spec/fixtures/populi/create_student_attendances/create_student_attendances_success_1.json'), headers: {})
+  
+  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_2}/students/#{enrollment_id_2}/attendance/update").
+    with(
+      body: {start_time: start_time_5, status: "excused"}.to_json,
+      headers: {
+    'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
+      }).
+    to_return(status: 200, body: File.read('spec/fixtures/populi/create_student_attendances/create_student_attendances_success_1.json'), headers: {})
+  
+  stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_2}/students/#{enrollment_id_2}/attendance/update").
+    with(
+      body: {start_time: start_time_6, status: "excused"}.to_json,
       headers: {
     'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
       }).
@@ -453,7 +471,16 @@ def stub_course_meetings
 end
         
 def stub_no_course_meetings
-  course_offering_id_2 = "10548007"
+  course_offering_id_1 = "10548007"
+  course_offering_id_2 = "10547831"
+  
+  stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_1}/coursemeetings").
+  with(
+    headers: {
+  'Authorization'=>"Bearer #{ENV["POPULI_API_ACCESS_KEY"]}",
+    }).
+  to_return(status: 200, body: File.read('spec/fixtures/populi/course_meetings/no_course_meetings.json'))
+  
   stub_request(:get, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id_2}/coursemeetings").
   with(
     headers: {
