@@ -49,12 +49,17 @@ RSpec.describe StringMatcher do
 
     context 'when the string is similar to one of the list items' do
     it 'returns the item in the list with the highest similarity to the input string' do
-      list = ['John', 'Jon', 'John Johnson', 'Johnathan', 'Jane']
-
-      expect(find_jarow_match('Johnny', list)).to eq('John')
-      expect(find_jarow_match('John John', list)).to eq('John Johnson')
-      expect(find_jarow_match('Jack J', list)).to eq('Jane')
-      expect(find_jarow_match('Bobby', list)).to eq('Jon')
+        expect(find_jarow_match('C.', courses)).to eq('C#.NET Mod 0')
+        expect(find_jarow_match('Mod 0', courses)).to eq('BE Mod 0 Classic')
+        expect(find_jarow_match('FE Mod', courses)).to eq('FE Mod 0 Classic')
+      end
+    end
+    
+    context 'when the string is not similar to any of the list items' do
+      it 'returns the item in the list with the highest similarity to the input string' do
+        expect(find_jarow_match('xyz', courses)).to eq('BE Mod 0 Classic')
+        expect(find_jarow_match('$*5', courses)).to eq('BE Mod 0 Classic')
+      end
     end
   end
 end
