@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe StringMatcher do
+  describe '#sanitize_name' do
+    it 'returns the first name and last initial of a name downcased' do
+      expect(sanitize_name('Ed C FE')).to eq('ed c')
+      expect(sanitize_name('Edward Chambers')).to eq('edward c')
+      expect(sanitize_name('Adam B (he/him), FE')).to eq('adam b')
+    end
+    
+    context 'when the name does not have a last name' do
+      it 'returns the name downcased' do
+        expect(sanitize_name('maTt')).to eq('matt')
+      end
+    end
+  end
+
   describe '#string_distance' do
     it 'returns the correct distance in similarity between two strings' do
       expect(string_distance('John', 'John')).to eq(1.0)
