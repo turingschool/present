@@ -1,7 +1,15 @@
 require 'fuzzystringmatch'
 
 module StringMatcher
-  def string_distance(s1, s2)
+  def sanitize_name(name)
+    if name.include?(' ')
+      first, last = name.downcase.strip.split(' ', 2).then { |first, last| "#{first} #{last[0]}" }
+    else
+      name = name.downcase.strip
+    end
+  end
+
+  def string_distance(s1, s2) # higher number --> more similar
     jarow = FuzzyStringMatch::JaroWinkler.create(:pure)
     jarow.getDistance(s1.downcase, s2.downcase)
   end
