@@ -11,6 +11,7 @@ class User::AttendancesController < User::BaseController
     rescue URI::InvalidURIError => error
       flash[:error] = ZoomMeeting.invalid_error
       redirect_to request.referrer
+    end
   end
 
   def show
