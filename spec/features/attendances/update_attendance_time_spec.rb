@@ -16,7 +16,9 @@ RSpec.describe 'Attendance Update' do
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
     stub_course_meetings
-
+    stub_enrollments
+    stub_create_student_attendance
+    
     visit turing_module_path(@test_module)
 
     fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"

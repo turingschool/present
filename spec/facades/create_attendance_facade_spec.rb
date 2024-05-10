@@ -9,65 +9,96 @@ RSpec.describe CreateAttendanceFacade do
           facade = CreateAttendanceFacade
           test_zoom_meeting_id = 95490216907
           test_module = create(:setup_module)
-
-          response = {
-            "object": "course_attendance",
-            "id": 179442,
-            "student_id": 24490190,
-            "course_meeting_id": 7134,
-            "status": "excused",
-            "present_coef": 1,
-            "note": nil,
-            "kiosk_id": nil,
-            "beacon_id": nil,
-            "device_id": nil,
-            "beacon_found_at": nil,
-            "attendance_hours": 2.5,
-            "added_by_id": 24490729,
-            "added_at": "2024-05-08T18:24:55+00:00",
-            "clinical_hours": 2.5,
-            "sandbox": true
-          }
+          test_module.populi_course_id = "10548007"
           
           stub_course_meetings
           stub_enrollments
           stub_create_student_attendance
+
           allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
-
+          
           meeting = stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
-            .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
-
+          .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
+          
           meeting_details = JSON.parse(meeting.response.body, symbolize_names: true)
-          meeting_details[:start_time] = "2024-05-08T15:00:00"
-
-          expect(PopuliService.new.create_student_attendance(test_module.populi_course_id, "76297621", "2024-05-08T15:00:00")).to eq(response)
-
+          meeting_details[:start_time] = "2024-05-13T15:30:00.000+00:00"
+          
           result = facade.check_or_create_populi_course_meeting(meeting_details, test_module)
-         
+
+          expect(result).to be_a(Hash)
+          expect(result).to have_key(:object)
+          expect(result[:object]).to eq("course_attendance")
+          expect(result).to have_key(:id)
+          expect(result[:id]).to be_a(Integer)
+          expect(result).to have_key(:student_id)
+          expect(result[:student_id]).to be_a(Integer)
+          expect(result).to have_key(:course_meeting_id)
+          expect(result[:course_meeting_id]).to be_a(Integer)
+          expect(result).to have_key(:status)
+          expect(result[:status]).to eq("excused")
+          expect(result).to have_key(:attendance_hours)
+          expect(result[:attendance_hours]).to be_a(Float)
+          expect(result).to have_key(:clinical_hours)
+          expect(result[:clinical_hours]).to be_a(Float)
         end
         
         it 'creates a new populi course meeting for zoom if there are no meetings' do
           facade = CreateAttendanceFacade
           test_zoom_meeting_id = 95490216907
           test_module = create(:setup_module)
-          course_offering_id = test_module.populi_course_id
-        # We need a course_offering_id
-          stub_course_meetings
+          test_module.populi_course_id = "10548007"
+          
+          stub_no_course_meetings
+          stub_enrollments
+          stub_create_student_attendance
+
           allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
-
+          
           meeting = stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
-            .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
-
+          .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
+          
           meeting_details = JSON.parse(meeting.response.body, symbolize_names: true)
+          meeting_details[:start_time] = "2024-05-13T15:30:00.000+00:00"
+          
+          result = facade.check_or_create_populi_course_meeting(meeting_details, test_module)
 
-          facade.check_or_create_populi_course_meeting(meeting_details, test_module)
-          expect(PopuliService.course_meetings(course_offering_id)).to eq(meeting_details)
-          expect(PopuliService.course_meetings(course_offering_id).count).to eq(1)
-          expe
+          expect(result).to be_a(Hash)
+          expect(result).to have_key(:object)
+          expect(result[:object]).to eq("course_attendance")
+          expect(result).to have_key(:id)
+          expect(result[:id]).to be_a(Integer)
+          expect(result).to have_key(:student_id)
+          expect(result[:student_id]).to be_a(Integer)
+          expect(result).to have_key(:course_meeting_id)
+          expect(result[:course_meeting_id]).to be_a(Integer)
+          expect(result).to have_key(:status)
+          expect(result[:status]).to eq("excused")
+          expect(result).to have_key(:attendance_hours)
+          expect(result[:attendance_hours]).to be_a(Float)
+          expect(result).to have_key(:clinical_hours)
+          expect(result[:clinical_hours]).to be_a(Float)
         end
 
         it 'does not create a zoom meeting if one already exists' do
-          # Need to create at least 2 other meetings. One with the same id
+          facade = CreateAttendanceFacade
+          test_zoom_meeting_id = 95490216907
+          test_module = create(:setup_module)
+          test_module.populi_course_id = "10548007"
+          
+          stub_course_meetings
+          stub_enrollments
+
+          allow(ZoomService).to receive(:access_token) # Do nothing when fetching Zoom access token
+          
+          meeting = stub_request(:get, "https://api.zoom.us/v2/meetings/#{test_zoom_meeting_id}") \
+          .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
+          
+          meeting_details = JSON.parse(meeting.response.body, symbolize_names: true)
+          meeting_details[:start_time] = "2022-11-28T09:00:00-07:00"
+          
+          result = facade.check_or_create_populi_course_meeting(meeting_details, test_module)
+
+          expect(result).to eq("Meeting already exists in Populi.")
         end
       end
       

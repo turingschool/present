@@ -20,6 +20,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
         .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
       stub_course_meetings
+      stub_enrollments
+      stub_create_student_attendance
     end
 
     it 'creates a new attendance by filling in a past zoom meeting' do
@@ -165,6 +167,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
         .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
       stub_course_meetings
+      stub_enrollments
+      stub_create_student_attendance
     end
 
     it 'flashes a message letting the user know the report isnt ready yet' do
@@ -191,6 +195,8 @@ RSpec.describe 'Creating a Zoom Attendance' do
         .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
       stub_course_meetings
+      stub_enrollments
+      stub_create_student_attendance
     end
 
     it "will create the new zoom aliases that weren't in the original report" do

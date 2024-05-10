@@ -20,6 +20,8 @@ RSpec.describe 'Creating an Attendance' do
       .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
 
       stub_course_meetings
+      stub_enrollments
+      stub_create_student_attendance
     end
 
     it 'creates a new attendance by providing a slack message link' do

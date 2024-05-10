@@ -28,7 +28,7 @@ class CreateAttendanceFacade
       return "Meeting already exists in Populi."
     else
       enrollment_id = service.enrollments(course_offering_id)[:data].first[:id]
-      service.create_student_attendance(course_offering_id, enrollment_id, meeting[:start_time].to_datetime)
+      return service.create_student_attendance(course_offering_id, enrollment_id, meeting[:start_time].to_datetime)
     end
   end
 end
