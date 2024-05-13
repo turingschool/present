@@ -16,6 +16,7 @@ RSpec.describe StringMatcher do
   end
 
   describe '#string_distance' do
+    # higher number --> more similar
     it 'returns the correct Jaro-Winkler distance in similarity between two strings' do
       expect(string_distance('test', 'test')).to eq(1.0)
       expect(string_distance('test', 'tssts').round(2)).to eq(0.81)
@@ -23,10 +24,22 @@ RSpec.describe StringMatcher do
       expect(string_distance('test', '').round(2)).to eq(0.0) # empty string
     end
   end
-
+  
   describe '#name_distance' do
-    it 'returns the correct distance in similarity between two names' do
-      
+    # lower number --> more similar
+    it 'returns the correct Levenshtein distance in similarity between two names' do
+      expect(name_distance('test name', 'test name')).to eq(0)
+      expect(name_distance('test name', 'tsst na')).to eq(1)
+      expect(name_distance('test', '&,?89()))')).to eq(9)
+      expect(name_distance('test name', '')).to eq(6)
+    end
+
+    it 'is case insensitive' do
+      expect(name_distance('JoHn DoE', 'john doe')).to eq(0)
+    end
+  
+    it 'considers only the first letter of the last name if the name contains a space' do
+      expect(name_distance('John Doe', 'John D')).to eq(0)
     end
   end
 
@@ -56,7 +69,7 @@ RSpec.describe StringMatcher do
     end
 
     context 'when the string is similar to one of the list items' do
-    it 'returns the item in the list with the highest similarity to the input string' do
+      it 'returns the item in the list with the highest similarity to the input string' do
         expect(find_jarow_match('C.', courses)).to eq('C#.NET Mod 0')
         expect(find_jarow_match('Mod 0', courses)).to eq('BE Mod 0 Classic')
         expect(find_jarow_match('FE Mod', courses)).to eq('FE Mod 0 Classic')
