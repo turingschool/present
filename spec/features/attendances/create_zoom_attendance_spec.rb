@@ -67,6 +67,26 @@ RSpec.describe 'Creating a Zoom Attendance' do
       expect(attendance.attendance_time).to eq(DateTime.parse("2023-01-10T09:00:00-07:00"))
       expect(attendance.end_time).to eq(DateTime.parse("2023-01-10T12:00:00-07:00"))
     end
+
+    it 'if populi meeting is not created successfully, it renders to populi_transfer_error_instructions' do
+      allow(CreateAttendanceFacade).to receive(:take_attendance).and_raise(InvalidMeetingError.new("Populi meeting was not created successfully."))
+
+      visit turing_module_path(@test_module)
+
+      fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
+      click_button 'Take Attendance'
+
+      
+      expect(page).to have_content("To transfer attendance results to Populi, you must first create the Populi attendance record by following these steps:")
+      expect(page).to have_content("Populi meeting was not created successfully.")
+      expect(page).to have_link("I have created the Attendance record in Populi")
+      
+      click_link "I have created the Attendance record in Populi"
+
+      expect(current_path).to eq(turing_module_path(@test_module))
+
+      expect(page).to_not have_content("To transfer attendance results to Populi, you must first create the Populi attendance record by following these steps:")
+    end
   end
 
   context "With invalid ids" do
