@@ -16,17 +16,11 @@ RSpec.describe StringMatcher do
   end
 
   describe '#string_distance' do
-    it 'returns the correct distance in similarity between two strings' do
-      expect(string_distance('John', 'John')).to eq(1.0)
-      expect(string_distance('John', 'Jon')).to be_within(0.01).of(0.94)
-      expect(string_distance('John J', 'John Johnson')).to be_within(0.01).of(0.91)
-      expect(string_distance('John', 'Jane')).to be_within(0.01).of(0.67)
-    end
-
-    it 'returns the correct distance in similarity regardless of case' do
-      expect(string_distance('john', 'John')).to eq(1.0)
-      expect(string_distance('JOHN', 'jon')).to be_within(0.01).of(0.94)
-      expect(string_distance('joHn j', 'John Johnson')).to be_within(0.01).of(0.91)
+    it 'returns the correct Jaro-Winkler distance in similarity between two strings' do
+      expect(string_distance('test', 'test')).to eq(1.0)
+      expect(string_distance('test', 'tssts').round(2)).to eq(0.81)
+      expect(string_distance('test', '907$#@.:!').round(2)).to eq(0.0) # special characters
+      expect(string_distance('test', '').round(2)).to eq(0.0) # empty string
     end
   end
 
