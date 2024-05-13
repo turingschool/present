@@ -3,6 +3,27 @@ require './spec/fixtures/populi/test_data/stub_requests.rb'
 
 RSpec.describe CreateAttendanceFacade do
   describe 'class methods' do
+    describe '.take_attendance' do
+      context 'error handling' do
+        it 'is rescued from NoMethodError when call to retreive populi_meeting fails' do
+          allow(ZoomService).to receive(:access_token)
+          @facade = CreateAttendanceFacade
+          @test_zoom_meeting_id = 95490216907
+          @test_module = create(:setup_module)
+          @test_module.populi_course_id = "10548007"
+          @zoom_url = "https://api.zoom.us/v2/meetings/#{@test_zoom_meeting_id}"
+          stub_enrollments
+          stub_course_meetings
+          stub_create_student_attendance
+          stub_request(:get, @zoom_url).to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
+          allow_any_instance_of(PopuliService).to receive(:create_student_attendance).and_return({object: "course_attendance", id: 1, student_id: 1, course_meeting_id: 1, status: "excused"})
+          allow_any_instance_of(Meeting).to receive(:closest_populi_meeting_to_start_time).and_raise(NoMethodError)
+
+          expect(@facade.take_attendance(@zoom_url, @test_module, create(:user))).to be_a(InvalidMeetingError)
+        end
+      end
+    end
+
     describe '.check_or_create_populi_course_meeting' do
       context 'zoom meeting' do
         before :each do
