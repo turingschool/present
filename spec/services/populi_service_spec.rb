@@ -180,15 +180,16 @@ RSpec.describe PopuliService do
     describe '#create_student_attendance', :vcr do
       context 'meeting not yet created in populi prior to transfering attendance to populi' do
         it 'creates and updates student_attendances status in populi to excused using start_time' do
+          
+          puts "\nThis test is created to be dynamic and will pass if run on weekdays when classes are scheduled. It will fail on weekends and during intermissions"
+
           today = Date.today
           start_time = Time.new(today.year, today.month, today.day, 13, 00, 0)
-
           current_academic_term = @populi.current_academic_term
           updated_course_offering = @populi.courseofferings_by_term(current_academic_term[:id])[:data].first[:id]
           enrollment_id = @populi.enrollments(updated_course_offering)[:data].first[:id]
-      
+          
           response = @populi.create_student_attendance(updated_course_offering, enrollment_id, start_time)
-
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("course_attendance")
