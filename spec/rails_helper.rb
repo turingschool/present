@@ -81,6 +81,8 @@ RSpec.configure do |config|
   WebMock.disable_net_connect!(allow_localhost: true)
 
   Capybara.javascript_driver = :selenium_chrome_headless
+
+  config.include ActiveSupport::Testing::TimeHelpers
 end
 
 Shoulda::Matchers.configure do |config|
