@@ -1,0 +1,9 @@
+<div class="meeting-details__zoom"> 
+  <h3>Title:<span style="font-weight: lighter; font-size: smaller;"> <%= facade.meeting_title %></span></h3>
+  <h3>Type:<span style="font-weight: lighter; font-size: smaller;"> Zoom Meeting</span></h3>
+  <h3>Meeting ID:<span style="font-weight: lighter; font-size: smaller;"> <%= facade.meeting_id %></span></h3>
+  <h3>Date:<span style="font-weight: lighter; font-size: smaller;"> <%= facade.attendance_date %></span></h3>
+  <%= turbo_frame_tag facade.attendance do %>
+    <h3>Attendance Time:<span style="font-weight: lighter; font-size: smaller;"> <%= facade.attendance_time %> <%= link_to "Update Attendance Time", edit_attendance_path(facade.attendance) if facade.updatable %></span></h3>
+  <% end %>
+</div>
