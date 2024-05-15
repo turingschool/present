@@ -191,6 +191,7 @@ RSpec.describe PopuliService do
           
           response = @populi.create_student_attendance(updated_course_offering, enrollment_id, start_time)
           
+          expect(start_time).to eq("11111")
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("course_attendance")
