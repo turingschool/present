@@ -194,11 +194,11 @@ RSpec.describe PopuliService do
           
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
+          expect(response[:message]).to eq("You cannot update attendance for a finalized student.")
           expect(response[:object]).to eq("course_attendance")
           expect(response).to have_key(:id)
           expect(response).to have_key(:status)
           expect(response).to have_key(:message)
-          expect(response[:message]).to eq("You cannot update attendance for a finalized student.")
           expect(response[:status]).to eq("excused")
           expect(response).to have_key(:course_meeting_id)
           expect(response).to have_key(:student_id)
