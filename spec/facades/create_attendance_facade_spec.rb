@@ -42,7 +42,7 @@ RSpec.describe CreateAttendanceFacade do
           stub_course_meetings
 
           created_meeting = @facade.create_meeting(@zoom_url)
-          created_meeting.start_time = "2024-05-13T15:30:00.000+00:00".to_datetime
+          created_meeting.start_time = "2024-05-13T15:30:00.000+00:00".to_time
           
           result = @facade.check_or_create_populi_course_meeting(created_meeting, @test_module)
 
