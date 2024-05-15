@@ -177,13 +177,13 @@ RSpec.describe PopuliService do
       end
     end
 
-    describe '#create_student_attendance', :vcr do
+    describe '#create_student_attendance' do
       context 'meeting not yet created in populi prior to transfering attendance to populi' do
         it 'creates and updates student_attendances status in populi to excused using start_time' do
           # This test is created to be dynamic and will pass if run on weekdays when classes are scheduled. 
           # It will fail on weekends and during intermissions"
-          
-          freeze_time
+          WebMock.allow_net_connect!
+
           today = Date.today
           start_time = Time.new(today.year, today.month, today.day, 13, 00, 0)
           current_academic_term = @populi.current_academic_term
@@ -197,6 +197,8 @@ RSpec.describe PopuliService do
           expect(response[:object]).to eq("course_attendance")
           expect(response).to have_key(:id)
           expect(response).to have_key(:status)
+          expect(response).to have_key(:message)
+          expect(response[:message]).to eq("You cannot update attendance for a finalized student.")
           expect(response[:status]).to eq("excused")
           expect(response).to have_key(:course_meeting_id)
           expect(response).to have_key(:student_id)
