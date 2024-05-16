@@ -27,7 +27,7 @@ jobs: # a collection of steps
           install-yarn: true
           node-version: '16.19'
       - browser-tools/install-chrome:
-          chrome-version: 114.0.5735.90
+          chrome-version: 116.0.5845.140
           replace-existing: true
       - browser-tools/install-chromedriver
       - run:
