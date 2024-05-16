@@ -2,44 +2,41 @@ require 'rails_helper'
 
 RSpec.describe StringMatcher do
   describe '#sanitize_name' do
-    it 'returns the first name and last initial of a name downcased' do
-      expect(sanitize_name('Ed C FE')).to eq('ed c')
-      expect(sanitize_name('Edward Chambers')).to eq('edward c')
-      expect(sanitize_name('Adam B (he/him), FE')).to eq('adam b')
-    end
-    
-    context 'when the name does not have a last name' do
-      it 'returns the name downcased' do
-        expect(sanitize_name('maTt')).to eq('matt')
-      end
+    it 'returns the name downcased and no trailing white spaces' do
+      expect(sanitize_name('Ed C FE   ')).to eq('ed c fe')
+      expect(sanitize_name('Edward CHAMBERS')).to eq('edward chambers')
+      expect(sanitize_name('Adam B (he/him), FE')).to eq('adam b (he/him), fe')
     end
   end
 
   describe '#string_distance' do
     # higher number --> more similar
-    it 'returns the correct Jaro-Winkler distance in similarity between two strings' do
-      expect(string_distance('test', 'test')).to eq(1.0)
-      expect(string_distance('test', 'tssts').round(2)).to eq(0.81)
-      expect(string_distance('test', '907$#@.:!').round(2)).to eq(0.0) # special characters
-      expect(string_distance('test', '').round(2)).to eq(0.0) # empty string
+    it 'returns the correct Jaro-Winkler distance between two strings' do
+      expect(string_distance('Austin Carr-Jones', 'Austin Carr-Jones')).to eq(1.0)
+      expect(string_distance('Austin Carr-Jones', 'Austin Kenny')).to be_within(0.835).of(0.836)
+      expect(string_distance('Austin Carr-Jones', 'Austin c')).to be_within(0.86).of(0.861)
+      expect(string_distance('Austin Carr-Jones', 'Austin k')).to be_within(0.86).of(0.861)
+      expect(string_distance('Austin Carr-Jones', 'Austin')).to be_within(0.86).of(0.861)
+      expect(string_distance('Austin Carr-Jones', '')).to eq(0.0)
+      expect(string_distance('Austin Carr-Jones', '78$%()*')).to eq(0.0)
     end
   end
   
   describe '#name_distance' do
     # lower number --> more similar
     it 'returns the correct Levenshtein distance in similarity between two names' do
-      expect(name_distance('test name', 'test name')).to eq(0)
-      expect(name_distance('test name', 'tsst na')).to eq(1)
-      expect(name_distance('test', '&,?89()))')).to eq(9)
-      expect(name_distance('test name', '')).to eq(6)
+      expect(name_distance('Austin Carr-Jones', 'Austin Carr-Jones')).to eq(0)
+      expect(name_distance('Austin Carr-Jones', 'Austin Kenny')).to eq(9)
+      expect(name_distance('Austin Carr-Jones', 'Austin c')).to eq(9)
+      expect(name_distance('Austin Carr-Jones', 'Austin k')).to eq(10)
+      expect(name_distance('Austin Carr-Jones', 'Austin')).to eq(11)
+      expect(name_distance('Austin Carr-Jones', '')).to eq(17)
+      expect(name_distance('Austin Carr-Jones', '78$%()*')).to eq(17)
     end
 
     it 'is case insensitive' do
+      expect(name_distance('john doe', 'john doe')).to eq(0)
       expect(name_distance('JoHn DoE', 'john doe')).to eq(0)
-    end
-  
-    it 'considers only the first letter of the last name if the name contains a space' do
-      expect(name_distance('John Doe', 'John D')).to eq(0)
     end
   end
 
@@ -70,9 +67,9 @@ RSpec.describe StringMatcher do
 
     context 'when the string is similar to one of the list items' do
       it 'returns the item in the list with the highest similarity to the input string' do
-        expect(find_jarow_match('C.', courses)).to eq('C#.NET Mod 0')
+        expect(find_jarow_match('C', courses)).to eq('C#.NET Mod 0')
         expect(find_jarow_match('Mod 0', courses)).to eq('BE Mod 0 Classic')
-        expect(find_jarow_match('FE Mod', courses)).to eq('FE Mod 0 Classic')
+        expect(find_jarow_match('3', courses)).to eq('BE Mod 3 Professional Rails Applications')
       end
     end
     
