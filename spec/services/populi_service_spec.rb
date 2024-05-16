@@ -184,14 +184,13 @@ RSpec.describe PopuliService do
           # It will fail on weekends and during intermissions"
 
           today = Date.today
-          start_time = Time.new(today.year, today.month, today.day, 13, 0000, 0000)
+          start_time = Time.new(today.year, today.month, today.day, 13, 00, 000000)
           current_academic_term = @populi.current_academic_term
           updated_course_offering = @populi.courseofferings_by_term(current_academic_term[:id])[:data].first[:id]
           enrollment_id = @populi.enrollments(updated_course_offering)[:data].first[:id]
           
           response = @populi.create_student_attendance(updated_course_offering, enrollment_id, start_time)
           
-          expect(start_time).to eq("11111")
           expect(response).to be_a(Hash)
           expect(response).to have_key(:object)
           expect(response[:object]).to eq("course_attendance")

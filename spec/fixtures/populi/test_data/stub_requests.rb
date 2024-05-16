@@ -267,16 +267,16 @@ end
 def stub_create_student_attendance
   course_offering_id = "10548007"
   enrollment_id_1 = "76298082"
-  start_time = "2024-05-13T15:30:00.000+00:00".to_time.to_s
+  start_time = "2024-05-13T15:30:00.000+00:00".to_time.utc
 
   course_offering_id_2 = "10547831"
   enrollment_id_2 = "76297621"
-  start_time_2 = "2023-01-10T15:45:22.000+00:00".to_time.to_s
+  start_time_2 = "2023-01-10T15:45:22.000+00:00".to_time.utc
   
-  start_time_3 = "2022-11-30T20:00:59.999+00:00".to_time.to_s
-  start_time_4 = "2023-08-23T15:30:00.000+00:00".to_time.to_s
-  start_time_5 = "2022-11-28T16:00:00.000+00:00".to_time.to_s
-  start_time_6 = "2023-01-21T16:00:00.000+00:00".to_time.to_s
+  start_time_3 = "2022-11-30T20:00:59.999+00:00".to_time.utc
+  start_time_4 = "2023-08-23T15:30:00.000+00:00".to_time.utc
+  start_time_5 = "2022-11-28T16:00:00.000+00:00".to_time.utc
+  start_time_6 = "2023-01-21T16:00:00.000+00:00".to_time.utc
 
   stub_request(:put, "https://turing-validation.populi.co/api2/courseofferings/#{course_offering_id}/students/#{enrollment_id_1}/attendance/update").
     with(
