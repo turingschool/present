@@ -26,9 +26,7 @@ jobs: # a collection of steps
       - node/install:
           install-yarn: true
           node-version: '16.19'
-      - browser-tools/install-chrome:
-          chrome-version: 116.0.5845.140
-          replace-existing: true
+      - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - run:
           name: Force Bundler Version
