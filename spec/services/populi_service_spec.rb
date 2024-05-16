@@ -184,7 +184,7 @@ RSpec.describe PopuliService do
           # It will fail on weekends and during intermissions"
 
           today = Date.today
-          start_time = Time.new(today.year, today.month, today.day, 9, 00, 000000)
+          start_time = Time.new(today.year, today.month, today.day, 13, 00, 000000).in_time_zone("UTC")
           current_academic_term = @populi.current_academic_term
           updated_course_offering = @populi.courseofferings_by_term(current_academic_term[:id])[:data].first[:id]
           enrollment_id = @populi.enrollments(updated_course_offering)[:data].first[:id]
