@@ -21,7 +21,7 @@ class AttendanceShowFacade
   end
 
   def student_attendances
-    @attendance.student_attendances.includes(:student).by_attendance_status
+    @attendance.student_attendances.includes(:student).where.not(students: { name: "Instructor" }).by_attendance_status
   end
 
   def instructor_zoom_aliases
