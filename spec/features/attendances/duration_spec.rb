@@ -16,6 +16,8 @@ RSpec.describe "Duration" do
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details_for_duration.json'))
 
     stub_course_meetings_for_duration
+    stub_enrollments
+    stub_create_student_attendance
 
     visit turing_module_path(@test_module)
 

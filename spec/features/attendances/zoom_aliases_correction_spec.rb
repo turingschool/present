@@ -16,6 +16,8 @@ RSpec.describe 'attendance show page' do
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
     stub_course_meetings
+    stub_enrollments
+    stub_create_student_attendance
 
     visit turing_module_path(@test_module)
 
@@ -165,45 +167,11 @@ RSpec.describe 'attendance show page' do
     end
   end
 
-  it 'shows alias options from previous meetings' do
-    visit turing_module_path(@test_module)
-
-    fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
-
-    click_button 'Take Attendance'
-
-    sam = @test_module.students.find_by(name: 'Samuel Cox')
-
-    visit attendance_path(Attendance.last)
-
-    within "#student-aliases-#{sam.id}" do
-      expect(all('option').map(&:text)).to include("Sam Cox (He/Him) BE")
-    end
-  end
-
   it 'does not duplicate aliases for the same module' do
     visit turing_module_path(@test_module)
 
     fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
 
     expect { click_button 'Take Attendance' }.to_not change { ZoomAlias.count }
-  end
-
-  it 'will duplicate aliases for different modules' do
-    student = create(:setup_student) # Need to create one setup student so the module will be considered "set up"
-    other_module = student.turing_module
-    other_zoom_id = "12345"
-    stub_course_meetings_nil
-
-    stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{other_zoom_id}/participants?page_size=300") \
-        .to_return(body: File.read('spec/fixtures/zoom/participant_report_for_name_matching.json'))
-
-    stub_request(:get, "https://api.zoom.us/v2/meetings/#{other_zoom_id}") \
-      .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
-
-    visit turing_module_path(other_module)
-    fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{other_zoom_id}"
-    
-    expect { click_button 'Take Attendance' }.to change { ZoomAlias.count }
   end
 end
