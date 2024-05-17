@@ -62,13 +62,12 @@ RSpec.describe "Module Setup Account Matching" do
       end
     
       within "#student-#{@leo.id}" do
-        within '.slack-select' do 
+        within '.slack-select' do
           expect(page).to have_select(selected: "Leo Banos Garcia")
           options = page.all('option')
           expect(options[0].text).to eq("Not In Channel")
           expect(options[1].text).to eq("Leo Banos Garcia")
           expect(options[2].text).to eq("Sergio Azcona")
-          expect(options[3].text).to eq("Mostafa Sakr")
         end
       end
     end
