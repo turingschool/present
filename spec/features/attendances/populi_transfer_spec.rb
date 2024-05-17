@@ -23,6 +23,8 @@ RSpec.describe 'Populi Transfer' do
       .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
     stub_course_meetings
+    stub_enrollments
+    stub_create_student_attendance
 
     visit turing_module_path(@mod)
     fill_in :attendance_meeting_url, with:  "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
@@ -71,7 +73,7 @@ RSpec.describe 'Populi Transfer' do
     before(:each) do
       stub_successful_update_student_attendance
     end
-    
+
     it 'sends the request to update the students attendance in Populi' do
       click_link "Transfer Student Attendances to Populi"
 
@@ -87,7 +89,8 @@ RSpec.describe 'Populi Transfer' do
 
       expect(page).to have_content("Transferring attendance to Populi. This could take up to 5 minutes. Please confirm in Populi that the transfer was successful.")
 
-      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76297621/attendance/update")
+      #This enrollment id is used to first create the course meeting attendance record and then is requested again to update the student attendance record.
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76297621/attendance/update").times(2)
       expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296027/attendance/update")
       expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296028/attendance/update")
       expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296029/attendance/update")
@@ -104,7 +107,8 @@ RSpec.describe 'Populi Transfer' do
       select("1:00 PM")
       click_button "Transfer Student Attendances to Populi"
 
-      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76297621/attendance/update")
+      #This enrollment id is used to first create the course meeting attendance record and then is requested again to update the student attendance record.
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76297621/attendance/update").times(2)
       expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296027/attendance/update")
       expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296028/attendance/update")
       expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296029/attendance/update")
@@ -123,7 +127,8 @@ RSpec.describe 'Populi Transfer' do
       stub_single_failure_update_student_attendance
       click_button "Transfer Student Attendances to Populi"  
 
-      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76297621/attendance/update")
+      #This enrollment id is used to first create the course meeting attendance record and then is requested again to update the student attendance record.
+      expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76297621/attendance/update").times(2)
       expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296027/attendance/update")
       expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296028/attendance/update")
       expect(WebMock).to have_requested(:put, "https://turing-validation.populi.co/api2/courseofferings/10547831/students/76296029/attendance/update")# This call errors out, but the job should continue to requests 5 and 6
@@ -139,10 +144,7 @@ RSpec.describe 'Populi Transfer' do
     
     it 'can handle a populi error when the student is not found' do
       stub_single_failure_update_student_attendance_no_coursestudent
-      course_offering_id = "10547831"
       enrollment_id_4 = "76296029"
-      course_meeting_id_1 = "1962"
-      status_absent = "absent"
 
       # responding with an error that says the student was not found
       

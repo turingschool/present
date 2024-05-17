@@ -20,7 +20,9 @@ RSpec.describe 'Retaking Attendance' do
         .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
       stub_course_meetings
-
+      stub_enrollments
+      stub_create_student_attendance
+      
       visit turing_module_path(@test_module)
 
       fill_in :attendance_meeting_url, with: @test_zoom_meeting_id
@@ -103,6 +105,8 @@ RSpec.describe 'Retaking Attendance' do
         .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
 
       stub_course_meetings
+      stub_enrollments
+      stub_create_student_attendance
     end
 
     it 'has a button to retake attendance' do

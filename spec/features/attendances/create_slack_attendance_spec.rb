@@ -20,6 +20,8 @@ RSpec.describe 'Creating an Attendance' do
       .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
 
       stub_course_meetings
+      stub_enrollments
+      stub_create_student_attendance
     end
 
     it 'creates a new attendance by providing a slack message link' do
@@ -72,6 +74,29 @@ RSpec.describe 'Creating an Attendance' do
       attendance = Attendance.last
 
       expect(attendance.meeting.presence_check_complete).to eq(false)
+    end
+
+    it 'if populi meeting is not created successfully, it renders to populi_transfer_error_instructions' do
+      allow(CreateAttendanceFacade).to receive(:take_attendance).and_raise(InvalidMeetingError.new("Populi meeting was not created successfully."))
+
+      slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
+
+      visit turing_module_path(@test_module)
+
+      expect(page).to have_content(@test_module.name)
+
+      fill_in :attendance_meeting_url, with: slack_url
+      click_button 'Take Attendance'
+
+      expect(page).to have_content("To transfer attendance results to Populi, you must first create the Populi attendance record by following these steps:")
+      expect(page).to have_content("Populi meeting was not created successfully.")
+      expect(page).to have_link("I have created the Attendance record in Populi")
+      
+      click_link "I have created the Attendance record in Populi"
+
+      expect(current_path).to eq(turing_module_path(@test_module))
+
+      expect(page).to_not have_content("To transfer attendance results to Populi, you must first create the Populi attendance record by following these steps:")
     end
   end
 end 

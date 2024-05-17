@@ -20,6 +20,8 @@ RSpec.describe 'Student Attendance By Hours' do
         .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))
 
       stub_course_meetings
+      stub_enrollments
+      stub_create_student_attendance
     end
 
     it 'records student_attendance_hours' do
@@ -112,6 +114,8 @@ RSpec.describe 'Student Attendance By Hours' do
       .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
 
       stub_course_meetings
+      stub_enrollments
+      stub_create_student_attendance
 
       slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
 
