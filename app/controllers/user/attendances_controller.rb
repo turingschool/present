@@ -1,13 +1,17 @@
 class User::AttendancesController < User::BaseController
   
   def create
-    turing_module = TuringModule.find(params[:turing_module_id])
+    @turing_module = TuringModule.find(params[:turing_module_id])
     begin
-      attendance = CreateAttendanceFacade.take_attendance(params[:attendance][:meeting_url], turing_module, current_user)
+      attendance = CreateAttendanceFacade.take_attendance(params[:attendance][:meeting_url], @turing_module, current_user)
       redirect_to attendance_path(attendance)
     rescue InvalidMeetingError => error
       flash[:error] = error.message
-      redirect_to request.referrer
+      if error.message == "Populi meeting was not created successfully."
+        render "shared/_populi_transfer_error_instructions"
+      else
+        redirect_to request.referrer
+      end
     rescue URI::InvalidURIError => error
       flash[:error] = ZoomMeeting.invalid_error
       redirect_to request.referrer
