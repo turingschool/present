@@ -59,6 +59,14 @@ RSpec.describe 'Populi Transfer' do
     it 'has link to transfer student attendances to populi' do
       expect(page).to have_button("Transfer Student Attendances to Populi")
     end
+
+    it 'has a link to return to the attendance_show page' do
+      expect(page).to have_link("Back to Attendance")
+
+      click_link "Back to Attendance"
+
+      expect(current_path).to eq(attendance_path(@test_attendance))
+    end
   end
 
   context "updates attendance successfully" do
@@ -77,7 +85,7 @@ RSpec.describe 'Populi Transfer' do
 
       click_button "Transfer Student Attendances to Populi"
 
-      expect(current_path).to eq(attendance_path(@test_attendance))
+      expect(current_path).to eq(turing_module_path(@mod))
 
       expect(page).to have_content("Transferring attendance to Populi. This could take up to 5 minutes. Please confirm in Populi that the transfer was successful.")
 

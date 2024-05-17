@@ -1,3 +1,5 @@
+<br>
+<%= link_to sanitize("&larr; Back to Attendance"), attendance_path(@attendance) %>
 <h1><%= link_to facade.turing_module.name, turing_module_path(facade.turing_module) %></h1>
 <%= render partial: "shared/attendance_details", locals: {attendance: facade.attendance, updatable: false} %>
 <h1>Transfer Student Attendances to Populi</h1>
