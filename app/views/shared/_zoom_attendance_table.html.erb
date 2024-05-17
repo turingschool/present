@@ -1,22 +1,4 @@
-<h3>Title: <%= facade.meeting_title %></h3>
-<h3>Type: Zoom Meeting</h3>
-<h3>Meeting ID: <%= facade.meeting_id %></h3>
-<h3>Date: <%= facade.attendance_date %></h3>
-<h3>Attendance Time: <%= facade.attendance_time %> <%= link_to "Update Attendance Time", edit_attendance_path(facade.attendance) if facade.updatable %></h3>
 <p><strong>Present: <%= facade.status_count(:present) %>, Tardy: <%= facade.status_count(:tardy) %>, Absent: <%= facade.status_count(:absent) %></strong></p>
-<%= link_to "Transfer Student Attendances to Populi", new_attendance_populi_transfer_path(facade.attendance) if facade.updatable %>
-
-<p>Use the zoom alias fields to correct student attendances</p>
-<div class="assign_instructor_aliases">
-  <% if facade.unassigned_zoom_aliases.any? %>
-    <%= form_with model: [@attendance], url: attendance_instructor_path(@attendance), class: "alias-correction" do |f| %>
-      <%= f.select :zoom_alias, facade.unassigned_zoom_aliases, {}, class: "alias-correction" %>
-      <%= hidden_field_tag :turing_module_id, "#{facade.turing_module_id}" %>
-      <%= f.submit "Save Zoom Alias As Instructor", class: "s-button alias-correction" %>
-    <% end %>
-  <% end %> 
-</div>
-<br>
 <div class="list_of_instructors">
   <% if facade.instructor_zoom_aliases %>
     <h3>Instructors Present In Meeting:</h3>
@@ -28,7 +10,24 @@
   <% else %>
     <p>No zoom aliases have been assigned as instructors yet.</p>
   <% end %>
+<div class="assign_instructor_aliases">
+  <% if facade.unassigned_zoom_aliases.any? %>
+    <%= form_with model: [@attendance], url: attendance_instructor_path(@attendance), class: "alias-correction" do |f| %>
+      <%= f.select :zoom_alias, facade.unassigned_zoom_aliases, {}, class: "alias-correction" %>
+      <%= hidden_field_tag :turing_module_id, "#{facade.turing_module_id}" %>
+      <%= f.submit "Save Zoom Alias As Instructor", class: "s-button alias-correction" %>
+    <% end %>
+  <% end %> 
 </div>
+</div>
+<% if !facade.unassigned_zoom_aliases.empty? %>
+  <p>Use the zoom alias fields in the table to correct student attendances.</p>
+  <p>When attendance is correct, click the button below.</p>
+<% else %>
+  <p>All Zoom Aliases have been assigned.</p>
+<% end %>
+<%= link_to "Transfer Student Attendances to Populi", new_attendance_populi_transfer_path(facade.attendance), class: "s-button transfer-btn" if facade.updatable %>
+<br>
 <br>
 <table id='student-attendances' class="sortable">
   <thead>
@@ -38,7 +37,9 @@
       <th>Status</th>
       <th>Duration (minutes)</th>
       <th>Zoom Aliases Used</th>
-      <th>Save a new Zoom Alias</th>
+      <% if !facade.unassigned_zoom_aliases.empty? %>
+        <th>Save a new Zoom Alias</th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
@@ -57,12 +58,14 @@
             <%= student_attendance.student.zoom_alias_names.to_sentence %>
             <%= link_to "Edit", student_path(student_attendance.student), class: "s-button danger alias-correction" %>
           </td>
-          <td id='student-aliases-<%= student_attendance.student.id %>'>
-            <%= form_with model: [@attendance, student_attendance.student], class: "alias-correction" do |f| %>
-              <%= f.select :zoom_alias, facade.alias_options_for(student_attendance.student), {}, class: "alias-correction" %>
-              <%= f.submit "Save Zoom Alias", class: "s-button alias-correction" %>
-            <% end %>
+          <% if !facade.alias_options_for(student_attendance.student).empty? %>
+            <td id='student-aliases-<%= student_attendance.student.id %>'>
+              <%= form_with model: [@attendance, student_attendance.student], class: "alias-correction" do |f| %>
+                <%= f.select :zoom_alias, facade.alias_options_for(student_attendance.student), {}, class: "alias-correction" %>
+                <%= f.submit "Save Zoom Alias", class: "s-button alias-correction-btn" %>
+              <% end %>
           </td>
+        <% end %>
         </section>
       </tr>
     <% end %>
