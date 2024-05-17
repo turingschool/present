@@ -45,7 +45,7 @@ class PopuliService
   
   def create_student_attendance(course_offering_id, enrollment_id, start_time)
     response = conn.put("courseofferings/#{course_offering_id}/students/#{enrollment_id}/attendance/update") do |req|
-      req.body = {start_time: start_time, status: "excused"}.to_json
+      req.body = {start_time: start_time.utc, status: "excused"}.to_json
     end
     parse_response(response)
   end
