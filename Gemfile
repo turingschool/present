@@ -76,12 +76,13 @@ gem 'ruby-limiter'
 # Pagination
 gem 'kaminari'
 
+
 group :development, :test do
+  gem 'faker'
   gem 'figaro'
 end
 
 group :test do
-  gem 'faker'
   gem 'capybara'
   gem 'capybara_table'
   gem 'factory_bot_rails'
