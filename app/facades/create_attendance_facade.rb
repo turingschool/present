@@ -27,8 +27,8 @@ class CreateAttendanceFacade
     service = PopuliService.new
     course_offering_id = turing_module.populi_course_id
     course_meetings = service.course_meetings(course_offering_id)
-    slack_or_zoom_meeting_start_time = meeting.start_time.to_time.utc
-    if course_meetings[:data].any? { |course_meeting| course_meeting[:start_at].to_time.utc == slack_or_zoom_meeting_start_time }
+    slack_or_zoom_meeting_start_time = meeting.start_time.to_time
+    if course_meetings[:data].any? { |course_meeting| course_meeting[:start_at].to_time == slack_or_zoom_meeting_start_time }
       return "Meeting already exists in Populi."
     else
       enrollment_id = service.enrollments(course_offering_id)[:data].first[:id]
