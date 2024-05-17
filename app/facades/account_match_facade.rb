@@ -26,7 +26,7 @@ private
 
   def slack_members_by_match(student)
     slack_channel_members.sort_by do |member|
-      string_distance(student.name, member.name)
-    end.reverse
+      name_distance(student.name, member.name)
+    end
   end
 end
