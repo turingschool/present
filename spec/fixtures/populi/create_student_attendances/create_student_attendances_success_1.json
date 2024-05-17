@@ -1,0 +1,18 @@
+{
+  "object": "course_attendance",
+  "id": 179442,
+  "student_id": 24490190,
+  "course_meeting_id": 7134,
+  "status": "excused",
+  "present_coef": 1,
+  "note": null,
+  "kiosk_id": null,
+  "beacon_id": null,
+  "device_id": null,
+  "beacon_found_at": null,
+  "attendance_hours": 2.5,
+  "added_by_id": 24490729,
+  "added_at": "2024-05-08T18:24:55+00:00",
+  "clinical_hours": 2.5,
+  "sandbox": true
+}
