@@ -18,6 +18,40 @@
   margin: 20px;
 }
 
+.primary-btn {
+  font-size: 13px;
+  background-color: #005562;
+
+  &:hover {
+    background-color: #047a8c;
+  }
+}
+
+.update-btn {
+  padding: 0.75rem 1.5rem 0.5rem 1.5rem;
+  background-color: #005562;
+
+  &:hover {
+    background-color: #047a8c;
+  }
+}
+
+.secondary-btn {
+  background-color: #4d4d4f;
+
+  &:hover {
+    background-color: #047a8c;
+  }
+}
+
+.take-attendance-btn {
+  background-color: #005562;
+
+  &:hover {
+    background-color: #047a8c;
+  }
+}
+
 .pagination span {
   border: 1px solid #DDD;
   border-radius: 5px;
@@ -140,8 +174,13 @@
 }
 
 .danger {
-  background-color: #9b0428;
+  background-color: #9b0404;  
+  &:hover {
+    background-color: #d50000;
+  }
 }
+
+
 
 button.populi-course {
   margin-top: 5px;
