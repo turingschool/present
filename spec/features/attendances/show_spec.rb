@@ -142,6 +142,33 @@ RSpec.describe 'attendance show page' do
           expect(current_path).to eq(attendance_path(test_attendance))
         end
       end
+
+      it 'Does not display andy instructor student objects within the student_attendance table' do
+        test_attendance = create(:attendance)
+        zoom_meeting_id = test_attendance.meeting.id
+        create_list(:student_attendance, 4, attendance: test_attendance, status: :tardy)
+        create_list(:student_attendance, 3, attendance: test_attendance, status: :absent)
+        create_list(:student_attendance, 7, attendance: test_attendance, status: :present)
+        create_list(:zoom_alias, 16, turing_module: test_attendance.turing_module, zoom_meeting: test_attendance.meeting) # 16 because 14 are students and 2 are instructors.
+
+
+        visit "/attendances/#{test_attendance.id}"
+        
+        within '.assign_instructor_aliases' do
+          select(test_attendance.turing_module.unclaimed_aliases(zoom_meeting_id)[0].name, from: "attendance[zoom_alias]")
+          click_button "Save Zoom Alias As Instructor" 
+        end
+
+        expect(page).to have_content("Instructors Present In Meeting:")
+        
+        within '#student-attendances' do
+          @test_attendance.student_attendances.each do |student_attendance|
+            within "#student-attendance-#{student_attendance.id}" do
+              expect(page).to_not have_content("Instructor")
+            end
+          end
+        end
+      end
     end
 
     it 'applies css classes to all students based on status' do
