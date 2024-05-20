@@ -1,0 +1,21 @@
+<div class="list_of_instructors">
+  <% if facade.instructor_zoom_aliases %>
+    <h3>Instructors Present In Meeting:</h3>
+    <% facade.instructor_zoom_aliases.each do |zoom_alias| %>
+    <ul>
+      <li><%= zoom_alias.name %></li>
+    </ul>
+    <% end %>
+  <% else %>
+    <p>No zoom aliases have been assigned as instructors yet.</p>
+  <% end %>
+</div>
+<div class="assign_instructor_aliases">
+  <% if facade.unassigned_zoom_aliases.any? %>
+    <%= form_with model: [@attendance], url: attendance_instructor_path(@attendance), class: "alias-correction" do |f| %>
+      <%= f.select :zoom_alias, facade.unassigned_zoom_aliases, {}, class: "alias-correction" %>
+      <%= hidden_field_tag :turing_module_id, "#{facade.turing_module_id}" %>
+      <%= f.submit "Save Zoom Alias As Instructor", class: "s-button primary-btn" %>
+    <% end %>
+  <% end %> 
+</div>
