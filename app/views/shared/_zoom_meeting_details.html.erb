@@ -1,0 +1,5 @@
+<h3>Title: <%= facade.meeting_title %></h3>
+<h3>Type: Zoom Meeting</h3>
+<h3>Meeting ID: <%= facade.meeting_id %></h3>
+<h3>Date: <%= facade.attendance_date %></h3>
+<h3>Attendance Time: <%= facade.attendance_time %> <%= link_to "Update Attendance Time", edit_attendance_path(facade.attendance) if facade.updatable %></h3>

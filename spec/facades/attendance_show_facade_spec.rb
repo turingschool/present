@@ -44,4 +44,18 @@ RSpec.describe AttendanceShowFacade do
       end
     end
   end
+
+  describe '#student_attendances' do
+    it 'returns a list of student attendances without any Student objects named instructor' do
+      student_id = create(:student, turing_module: @turing_module, name: "Instructor").id
+      create_list(:student_attendance_present, 10, attendance: @attendance)
+      create_list(:student_attendance_present, 1, attendance: @attendance, student_id: student_id)
+      
+      expect(@facade.student_attendances.count).to eq(10)
+      
+      @facade.student_attendances.each do |student_attendance|
+        expect(student_attendance.student.name).to_not eq("Instructor")
+      end
+    end
+  end
 end
