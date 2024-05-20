@@ -1,4 +1,4 @@
-<h3>Type: Slack Thread</h3>
-<h3>Thread Link: <%= link_to facade.thread_link, facade.thread_link %></h3>
-<h3>Date: <%= facade.attendance_date %></h3>
-<h3>Attendance Time: <%= facade.attendance_time %> <%= link_to "Update Attendance Time", edit_attendance_path(facade.attendance) if facade.updatable %></h3>
+<h3>Type: <span style="font-weight: lighter; font-size: smaller;"> Slack Thread</span></h3>
+<h3>Thread Link: <span style="font-weight: lighter; font-size: smaller;"><%= link_to facade.thread_link, facade.thread_link %></span></h3>
+<h3>Date: <span style="font-weight: lighter; font-size: smaller;"><%= facade.attendance_date %></span></h3>
+<h3>Attendance Time: <span style="font-weight: lighter; font-size: smaller;"><%= facade.attendance_time %> <%= link_to "Update Attendance Time", edit_attendance_path(facade.attendance) if facade.updatable %></span></h3>

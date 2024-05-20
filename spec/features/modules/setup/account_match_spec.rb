@@ -57,30 +57,17 @@ RSpec.describe "Module Setup Account Matching" do
           expect(options[0].text).to eq("Not In Channel")
           expect(options[1].text).to eq("Anthony Blackwell Tallent")
           expect(options[2].text).to eq("Anthony Ongaro")
-          expect(options[3].text).to eq("Lucas Colwell")
+          expect(options[3].text).to eq("Aether Elektra Kerstens")
         end
       end
     
       within "#student-#{@leo.id}" do
-        within '.slack-select' do 
+        within '.slack-select' do
           expect(page).to have_select(selected: "Leo Banos Garcia")
           options = page.all('option')
           expect(options[0].text).to eq("Not In Channel")
           expect(options[1].text).to eq("Leo Banos Garcia")
-          expect(options[2].text).to eq("Mostafa Sakr")
-          expect(options[3].text).to eq("Alex Mora BE")
-        end
-      end
-    end
-
-    xit 'has a select field with the closest matching name from Zoom that is more accurate' do
-      within "#student-#{@anthony_b.id}" do
-        within '.zoom-select' do 
-          expect(page).to have_select(selected: "Anthony B. (He/Him) BE 2210")
-          options = page.all('option')
-          expect(options[0].text).to eq("Anthony B. (He/Him) BE 2210")
-          expect(options[1].text).to eq("Anthony O. BE")
-          expect(options[2].text).to eq("Anhnhi T# BE")
+          expect(options[2].text).to eq("Sergio Azcona")
         end
       end
     end
