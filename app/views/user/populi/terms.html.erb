@@ -2,6 +2,6 @@
 <section id="term-select">
   <%= form_with url: turing_module_populi_path, method: :patch, data: {turbo: false}  do |f| %>
     <%= f.select :term_id, facade.term_options %>
-    <%= f.submit "Submit", class: 's-button' %>
+    <%= f.submit "Submit", class: 's-button secondary-btn' %>
   <% end %>
 </section>

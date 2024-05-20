@@ -4,5 +4,5 @@
 <%= form_with model: @attendance, local: true do |f| %>
   <%= f.label "Attendance Time:" %>
   <%= f.time_field :attendance_time, include_seconds: false, value: @attendance.attendance_time.in_time_zone('Mountain Time (US & Canada)').strftime("%H:%M") %>
-  <%= f.submit "Update Attendance Time" %>
+  <%= f.submit "Update Attendance Time", class: "s-button update-btn" %>
 <% end %>
