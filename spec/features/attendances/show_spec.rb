@@ -28,6 +28,17 @@ RSpec.describe 'attendance show page' do
     expect(page).to have_link("Delete Attendance")
   end
 
+  it "uses turbo frames to update attendance time", js: true do
+    @test_attendance = create(:zoom_attendance)
+
+    visit "/attendances/#{@test_attendance.id}"
+    expect(page).to have_content(pretty_date(@test_attendance.attendance_time))
+    
+    click_link "Update Attendance Time"
+    expect(current_path).to eq(attendance_path(@test_attendance)) # Check that there is no redirect or full page reload
+    expect(page).to have_field("attendance[attendance_time]")
+  end
+
   context "for a Zoom meeting" do
     before(:each) do
       @test_attendance = create(:zoom_attendance)
