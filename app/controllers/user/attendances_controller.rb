@@ -37,6 +37,7 @@ class User::AttendancesController < User::BaseController
     instructor = Student.find_or_create_by(name: "Instructor", turing_module_id: params[:turing_module_id])
     zoom_alias = ZoomAlias.find_by(name: "#{params[:attendance][:zoom_alias]}")
     zoom_alias.update(student: instructor)
+    @attendance.rerecord
     redirect_to attendance_path(@attendance)
   end
 

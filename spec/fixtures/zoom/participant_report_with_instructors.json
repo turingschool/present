@@ -1,0 +1,104 @@
+{
+  "page_count": 1,
+  "page_size": 300,
+  "total_records": 8,
+  "next_page_token": "",
+  "participants": [
+    {
+      "user_id": "16778240",
+      "name": "Brady Rohrig he/him BE",
+      "user_email": "",
+      "join_time": "2023-01-10T15:45:22Z",
+      "leave_time": "2023-01-10T16:39:03Z",
+      "duration": 3221,
+      "attentiveness_score": "",
+      "failover": false,
+      "status": "in_meeting",
+      "customer_key": ""
+    },
+    {
+      "user_id": "16780288",
+      "name": "Patricia S (She/Her)# BE",
+      "user_email": "",
+      "join_time": "2023-01-10T15:53:42Z",
+      "leave_time": "2023-01-10T16:39:15Z",
+      "duration": 2733,
+      "attentiveness_score": "",
+      "failover": false,
+      "status": "in_meeting",
+      "customer_key": ""
+    },
+    {
+      "user_id": "16781312",
+      "name": "Sergio A# BE",
+      "user_email": "",
+      "join_time": "2023-01-10T15:53:52Z",
+      "leave_time": "2023-01-10T16:39:28Z",
+      "duration": 2736,
+      "attentiveness_score": "",
+      "failover": false,
+      "status": "in_meeting",
+      "customer_key": ""
+    },
+    {
+      "user_id": "16782336",
+      "name": "Mike C (he/him)# BE",
+      "user_email": "",
+      "join_time": "2023-01-10T15:54:16Z",
+      "leave_time": "2023-01-10T16:38:43Z",
+      "duration": 2667,
+      "attentiveness_score": "",
+      "failover": false,
+      "status": "in_meeting",
+      "customer_key": ""
+    },
+    {
+      "user_id": "16783360",
+      "name": "Samuel C (He/Him) BE",
+      "user_email": "",
+      "join_time": "2023-01-10T16:05:45Z",
+      "leave_time": "2023-01-10T16:39:06Z",
+      "duration": 2661,
+      "attentiveness_score": "",
+      "failover": false,
+      "status": "in_meeting",
+      "customer_key": ""
+    },
+    {
+      "user_id": "16784384",
+      "name": "Drew L (he/him)# BE",
+      "user_email": "",
+      "join_time": "2023-01-10T15:55:18Z",
+      "leave_time": "2023-01-10T16:39:08Z",
+      "duration": 2630,
+      "attentiveness_score": "",
+      "failover": false,
+      "status": "in_meeting",
+      "customer_key": ""
+    },
+    {
+      "user_id": "16784302",
+      "name": "Chris Simmons",
+      "user_email": "",
+      "join_time": "2023-01-10T15:55:18Z",
+      "leave_time": "2023-01-10T16:39:08Z",
+      "duration": 2630,
+      "attentiveness_score": "",
+      "failover": false,
+      "status": "in_meeting",
+      "customer_key": ""
+    },
+    {
+      "user_id": "16784417",
+      "name": "Briant Zanti",
+      "user_email": "",
+      "join_time": "2023-01-10T15:55:18Z",
+      "leave_time": "2023-01-10T16:39:08Z",
+      "duration": 2630,
+      "attentiveness_score": "",
+      "failover": false,
+      "status": "in_meeting",
+      "customer_key": ""
+    }
+  ]
+}
