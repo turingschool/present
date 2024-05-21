@@ -27,6 +27,7 @@ First, clone this repo and run the following commands.
 bundle install
 rails db:create
 rails db:migrate
+bundle exec rake db:unseed (Test suite fails with seeded data because of conflicts with fixtures. Use this rake task to unseed the test db)
 bundle exec rspec
 ```
 
@@ -49,12 +50,13 @@ Otherwise, you can copy and paste the following template into the file:
 ```
 GOOGLE_OAUTH_CLIENT_ID: <YOUR_GOOGLE_OAUTH_CLIENT_ID_HERE>
 GOOGLE_OAUTH_CLIENT_SECRET: <YOUR_GOOGLE_OAUTH_CLIENT_SECRET_HERE>
+POPULI_API_ACCESS_KEY: <YOUR_POPULI_API_KEY_HERE>
+POPULI_API_URL: https://turing-validation.populi.co/api/
 ZOOM_ACCOUNT_ID: <YOUR_ZOOM_ACCOUNT_ID>
 ZOOM_CLIENT_ID: <YOUR_ZOOM_CLIENT_ID>
 ZOOM_CLIENT_SECRET: <YOUR_ZOOM_CLIENT_SECRET>
 slack_api_key: <YOUR_SLACK_API_KEY_HERE>
-POPULI_API_ACCESS_KEY: <YOUR_POPULI_API_KEY_HERE>
-POPULI_API_URL: https://turing-validation.populi.co/api/
+SIDEKIQ_CONCURRENCY: "15"
 ```
 
 To obtain the Google Cloud credentials, you will need to create an application in the Google Cloud Console and create OAuth Credentials for a Web Application. Register `http://localhost:3000/auth/google_oauth2/callback` as an Authorized Redirect URI.
