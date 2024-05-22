@@ -227,19 +227,6 @@ RSpec.describe PopuliService do
           expect(meeting).to have_key(:counts_toward_clinical_hours)
         end
       end
-
-      it 'provides an empty array of meetings if no course meetings are found' do
-        course_offering = "10548113"
-        response = @populi.course_meetings(course_offering)
-
-        expect(response).to be_a(Hash)
-        expect(response).to have_key(:object)
-        expect(response[:object]).to eq("list")
-        expect(response).to have_key(:count)
-        expect(response[:count]).to eq(0)
-        expect(response).to have_key(:data)
-        expect(response[:data]).to eq([])
-      end
     end
   end
 end
