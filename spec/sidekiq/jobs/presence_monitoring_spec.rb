@@ -8,7 +8,7 @@ RSpec.describe PresenceMonitoringJob, type: :job do
   end
 
   it 'will queue a job to check presence for each module' do
-    inning = create(:inning_with_modules)
+    create(:inning_with_modules)
     PresenceMonitoringJob.perform_async
     expect(PresenceMonitoringJob.jobs.size).to eq(1)
     PresenceMonitoringJob.drain
