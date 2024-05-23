@@ -26,7 +26,8 @@ class AttendanceShowFacade
 
   def instructor_zoom_aliases
     turing_module_id = @attendance.turing_module.id
-    if instructor = Student.instructors(turing_module_id).first
+    instructor = Student.instructors(turing_module_id).first
+    if instructor && instructor.zoom_aliases.any?
       return instructor.zoom_aliases
     else
       return false
