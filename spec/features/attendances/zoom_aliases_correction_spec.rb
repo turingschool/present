@@ -172,6 +172,35 @@ RSpec.describe 'attendance show page' do
 
     fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
 
-    expect { click_button 'Take Attendance' }.to_not change { ZoomAlias.count }
+    expect { click_button 'Take Attendance' }.to_not(change { ZoomAlias.count })
+  end
+
+  it 'allows user to remove zoom alias of instructors' do
+    student_id = create(:student, turing_module: @test_module, name: "Instructor").id
+    create_list(:student_attendance_present, 1, attendance: @attendance, student_id: student_id)
+    instructor_alias = create_list(:zoom_alias, 2, turing_module: @attendance.turing_module, zoom_meeting_id: @attendance.meeting_id, student_id: student_id) # Instructor_aliases
+    
+    visit attendance_path(@attendance)
+
+    within ".zoom-alias-#{instructor_alias.first.id}" do
+      expect(page).to have_content(instructor_alias.first.name)
+      expect(page).to have_button("Remove")
+      click_button("Remove")
+    end
+  
+    within ".zoom-alias-#{instructor_alias.second.id}" do
+      expect(page).to have_content(instructor_alias.second.name)
+      expect(page).to have_button("Remove")
+      click_button("Remove")
+    end
+
+    expect(current_path).to eq(attendance_path(@attendance))
+
+    within ".list_of_instructors" do
+      expect(page).to_not have_content(instructor_alias.first.name)
+      expect(page).to_not have_content(instructor_alias.second.name)
+    end
+    
+    expect(page).to have_content("No zoom aliases have been assigned as instructors yet.")
   end
 end

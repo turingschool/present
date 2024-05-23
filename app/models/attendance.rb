@@ -48,7 +48,9 @@ class Attendance < ApplicationRecord
     service = PopuliService.new
     course_id = self.turing_module.populi_course_id
     enrollments = service.enrollments(course_id)
-    student_attendances.includes(:student).each do |student_attendance|
+    student_attendances_list =  student_attendances.includes(:student).where.not(students: { name: "Instructor"})
+    
+    student_attendances_list.each do |student_attendance|
       student_enrollment = enrollments[:data].find do |enrollment|
         enrollment[:student_id] == student_attendance.student.populi_id.to_i
       end
