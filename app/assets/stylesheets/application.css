@@ -52,6 +52,12 @@
   }
 }
 
+.instructor-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .pagination span {
   border: 1px solid #DDD;
   border-radius: 5px;
