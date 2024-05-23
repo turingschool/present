@@ -42,6 +42,7 @@ class User::AttendancesController < User::BaseController
       zoom_alias = ZoomAlias.find_by(name: "#{params[:attendance][:zoom_alias]}")
       zoom_alias.update(student: instructor)
     end
+    @attendance.reload
     redirect_to attendance_path(@attendance)
   end
 

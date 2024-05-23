@@ -17,7 +17,7 @@ class Student < ApplicationRecord
   end
 
   def self.instructors(turing_module_id)
-    Student.all.where(name: "Instructor").where(turing_module_id: turing_module_id)
+    Student.where(name: "Instructor").where(turing_module_id: turing_module_id)
   end
 
   def latest_zoom_alias
