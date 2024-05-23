@@ -170,7 +170,7 @@ RSpec.describe 'attendance show page' do
           click_button "Save Zoom Alias As Instructor" 
         end
 
-        expect(page).to have_content("Instructors Present In Meeting:")
+        expect(page).to have_content("Instructors:")
         within '#student-attendances' do
           @facade.student_attendances.each do |student_attendance|
             within "#student-attendance-#{student_attendance.id}" do
