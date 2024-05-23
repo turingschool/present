@@ -172,7 +172,7 @@ RSpec.describe 'attendance show page' do
 
     fill_in :attendance_meeting_url, with: "https://turingschool.zoom.us/j/#{@test_zoom_meeting_id}"
 
-    expect { click_button 'Take Attendance' }.to_not change { ZoomAlias.count }
+    expect { click_button 'Take Attendance' }.to_not(change { ZoomAlias.count })
   end
 
   it 'allows user to remove zoom alias of instructors' do
