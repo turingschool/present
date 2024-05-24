@@ -7,11 +7,13 @@
           <div class="zoom-name">
             <%= zoom_alias.name %>
           </div>
-          <div class="instructor_zoom_alias_removal_form">
-            <%= form_with model: [@attendance], url: attendance_instructor_path(@attendance), class: "alias-correction" do |f| %>
-              <%= hidden_field_tag :turing_module_id, "#{facade.turing_module_id}" %>
-              <%= hidden_field_tag :zoom_alias, "#{zoom_alias.id}" %>
-              <%= f.submit "Remove", class: "s-button update-btn" %>
+          <div class="instructor_zoom_alias_removal_btn">
+            <%= button_to attendance_remove_instructor_path(@attendance),
+                          method: :patch,
+                          class: "s-button danger-btn-secondary",
+                          params: { zoom_alias: zoom_alias.id },
+                          form: { data: { turbo_confirm: "Are you sure?" } } do %>
+              Remove
             <% end %>
           </div>
         </div>
