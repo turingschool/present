@@ -130,7 +130,6 @@ RSpec.describe CreateAttendanceFacade do
           stub_create_student_attendance
           
           created_meeting = @facade.create_meeting(@slack_url)
-          created_meeting.start_time = "2022-11-28T09:00:00-07:00".to_datetime
           
           result = @facade.check_or_create_populi_course_meeting(created_meeting, @test_module)
        
@@ -164,14 +163,14 @@ RSpec.describe CreateAttendanceFacade do
             }).
           to_return(status: 200, body: File.read('spec/fixtures/slack/message_replies_response.json', headers: {}))
 
-          stub_course_meetings
+          
+          stub_course_meetings_no_matching_start_time
           stub_create_student_attendance
           
           created_meeting = @facade.create_meeting(@slack_url)
-          created_meeting.start_time = "2023-01-21T09:00:00-07:00".to_datetime
           
           result = @facade.check_or_create_populi_course_meeting(created_meeting, @test_module)
-          
+
           expect(result).to be_a(Hash)
           expect(result).to have_key(:object)
           expect(result[:object]).to eq("course_attendance")
@@ -205,7 +204,6 @@ RSpec.describe CreateAttendanceFacade do
           stub_course_meetings
           
           created_meeting = @facade.create_meeting(@slack_url)
-          created_meeting.start_time = "2022-11-28T09:00:00-07:00".to_datetime
           
           result = @facade.check_or_create_populi_course_meeting(created_meeting, @test_module)
           
