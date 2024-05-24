@@ -12,7 +12,7 @@
                           method: :patch,
                           class: "s-button danger-btn-secondary",
                           params: { zoom_alias: zoom_alias.id },
-                          form: { data: { turbo_confirm: "Are you sure?" } } do %>
+                          form: { data: { turbo: true, turbo_confirm: "Are you sure?" } } do %>
               Remove
             <% end %>
           </div>
