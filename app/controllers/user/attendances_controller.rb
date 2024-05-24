@@ -1,6 +1,6 @@
 class User::AttendancesController < User::BaseController
   before_action :find_attendance_by_id, only: [:show, :edit, :update, :destroy]
-  before_action :find_attendance_by_attendance_id, only: [:update_zoom_alias, :update_zoom_alias_as_an_instructor, :retake]
+  before_action :find_attendance_by_attendance_id, only: [:update_zoom_alias, :update_zoom_alias_as_an_instructor, :remove_zoom_alias_as_an_instructor, :retake]
 
   def create
     @turing_module = TuringModule.find(params[:turing_module_id])
@@ -33,19 +33,6 @@ class User::AttendancesController < User::BaseController
     redirect_to attendance_path(@attendance)
   end
 
-  def update_zoom_alias_as_an_instructor
-    if params[:commit] == "Remove"
-      zoom_alias = ZoomAlias.find(params[:zoom_alias])
-      zoom_alias.update(student: nil)
-    else 
-      instructor = Student.find_or_create_by(name: "Instructor", turing_module_id: params[:turing_module_id])
-      zoom_alias = ZoomAlias.find_by(name: "#{params[:attendance][:zoom_alias]}")
-      zoom_alias.update(student: instructor)
-    end
-    @attendance.reload
-    redirect_to attendance_path(@attendance)
-  end
-
   def update_zoom_alias
     student = Student.find(params[:id])
     zoom_alias = ZoomAlias.find(params[:student][:zoom_alias])
@@ -55,6 +42,21 @@ class User::AttendancesController < User::BaseController
       zoom_alias.update(student: student)
     end
     @attendance.rerecord
+    redirect_to attendance_path(@attendance)
+  end
+
+  def update_zoom_alias_as_an_instructor
+    instructor = Student.find_or_create_by(name: "Instructor", turing_module_id: params[:turing_module_id])
+    zoom_alias = ZoomAlias.find_by(name: "#{params[:attendance][:zoom_alias]}")
+    zoom_alias.update(student: instructor)
+    @attendance.reload
+    redirect_to attendance_path(@attendance)
+  end
+
+  def remove_zoom_alias_as_an_instructor
+    zoom_alias = ZoomAlias.find(params[:zoom_alias])
+    zoom_alias.update(student: nil)
+    @attendance.reload
     redirect_to attendance_path(@attendance)
   end
 
