@@ -27,17 +27,33 @@
   }
 }
 
-.update-btn {
-  padding: 0.75rem 1.5rem 0.5rem 1.5rem;
-  background-color: #005562;
+.secondary-btn {
+  background-color: #4d4d4f;
 
   &:hover {
     background-color: #047a8c;
   }
 }
 
-.secondary-btn {
+.danger {
+  background-color: #9b0404;  
+  &:hover {
+    background-color: #d50000;
+  }
+}
+
+.danger-btn-secondary {
   background-color: #4d4d4f;
+  padding: 0.75rem 1.5rem 0.5rem 1.5rem;
+
+  &:hover {
+    background-color: #9b0404;
+  }
+}
+
+.update-btn {
+  padding: 0.75rem 1.5rem 0.5rem 1.5rem;
+  background-color: #005562;
 
   &:hover {
     background-color: #047a8c;
@@ -178,15 +194,6 @@
   color: #9b0428;
   background-color: #fad7dc;
 }
-
-.danger {
-  background-color: #9b0404;  
-  &:hover {
-    background-color: #d50000;
-  }
-}
-
-
 
 button.populi-course {
   margin-top: 5px;
