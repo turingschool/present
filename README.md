@@ -4,6 +4,25 @@ Manage Turing student attendances.
 
 [Deployed Here](https://present.turing.edu/)
 
+## May 28th, 2024 Present Release Notes
+### Populi API V2 Upgrade:
+* Remove legacy Populi API wrapper and make direct requests to Populi API V2.
+* Automatically creates meeting in Populi which eliminates need for users to leave Present application.
+* Improve populi API error handling to accommodate for any failed API requests.
+* Refactor testing suite to utilize VCR to optimize testing in scenarios where dynamic testing is needed.
+* Create stub_request file to make test files DRY and update fixtures for static testing.
+
+### User Experience and Optimization Updates:
+* Optimize string matching algorithm for name matching.
+* Improve css styling for consistency across application.
+* Incorporate turbo frames for updating the attendance time.
+* Unassigned Zoom alias dropdown selector has unassigned zoom aliases exclusively from the current zoom meeting.
+* Add feature to save an unassigned zoom alias as an instructor.
+* When a zoom alias is saved(associated) to a student or instructor, it is removed from the list of unassigned zoom aliases.
+* When there are no more unassigned zoom aliases, the dropdown column is removed from the table.
+* Add seed data and create rake task to unseed database before running test suite.
+
+
 ## Local Setup
 
 ### Prerequisites
