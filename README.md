@@ -8,7 +8,7 @@ Manage Turing student attendances.
 ### Populi API V2 Upgrade:
 * Remove legacy Populi API wrapper and make direct requests to Populi API V2.
 * Automatically creates meeting in Populi which eliminates need for users to leave Present application.
-* Improve populi API error handling to accommodate for any failed API requests.
+* Improve Populi API error handling to accommodate for any failed API requests.
 * Refactor testing suite to utilize VCR to optimize testing in scenarios where dynamic testing is needed.
 * Create stub_request file to make test files DRY and update fixtures for static testing.
 
