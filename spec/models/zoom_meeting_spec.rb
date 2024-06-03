@@ -33,12 +33,11 @@ RSpec.describe ZoomMeeting do
         @zoom_meeting.attendance = @attendance
         stub_request(:get, "https://api.zoom.us/v2/report/meetings/#{@meeting_id}/participants?page_size=300") \
           .to_return(body: File.read('spec/fixtures/zoom/participant_report_for_student_present_less_than_thirty.json'))
-
-        end
+      end
         
       context 'when a student misses more than 30 minutes of a class' do
         it 'records the student as absent' do
-          student_1 = Student.create(name: "Sid Swaminathan", turing_module: @turing_module)
+          student_1 = Student.create(name: "Sid Swaminathan", turing_module: @turing_module) # This student was in class less than 30 minutes
           student_2 = Student.create(name: "Lito Croy", turing_module: @turing_module)
           student_3 = Student.create(name: "Karl Fallenius", turing_module: @turing_module)
           student_4 = Student.create(name: "Cameron Pittman", turing_module: @turing_module)
@@ -69,23 +68,17 @@ RSpec.describe ZoomMeeting do
             matching_participants = student.zoom_aliases.pluck(:name).flat_map do |zoom_name|
               grouped_participants[zoom_name]
             end.compact
-            require 'pry'; binding.pry
-            total_duration = calculate_duration(matching_participants)
-
-            student_attendance = record_student_attendance(student, matching_participants, total_duration)
-            
-            record_student_attendance_hours(matching_participants, student_attendance)
+          
+            total_duration = ((matching_participants.sum(&:duration).to_f) / 60 ).round
+            @zoom_meeting.record_student_attendance(student, matching_participants, total_duration)
           end
 
-
-          #expect attendance.student_attendance_hour to include 1 student with status absent named SID
-          #expect attendance.student_attendance_hour to include 3 students that are present
-          #expect attendance.student_attendance_hour to include 1 students that are tardy
+          expect(student_1.student_attendances[0].status).to eq("absent")
+          expect(student_2.student_attendances[0].status).to eq("present")
+          expect(student_3.student_attendances[0].status).to eq("present")
+          expect(student_4.student_attendances[0].status).to eq("tardy")
+          expect(student_5.student_attendances[0].status).to eq("present")
         end
-      end
-        
-
-      describe "#record_student_attendance_hours" do
       end
     end
   end
