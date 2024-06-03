@@ -6,10 +6,6 @@ FactoryBot.define do
     factory :setup_student do
       sequence(:slack_id) {|n| "<slack_id_#{n}>"}  
       sequence(:populi_id) {|n| "<populi_id_#{n}>"}
-      
-      after :create do |student|
-        create(:zoom_alias, student: student, turing_module: student.turing_module)
-      end
 
       trait :with_attendances do 
         after :create do |student|
