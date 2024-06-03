@@ -22,12 +22,14 @@ class Meeting < ApplicationRecord
 
   def record_student_attendance(student, matching_participants, duration)
     student_attendance = attendance.student_attendances.find_or_create_by(student: student)
-    best = matching_participants.min_by(&:join_time)
-    if best.nil?
+    closest_to_meeting_start_time = matching_participants.min_by(&:join_time)
+    if closest_to_meeting_start_time.nil?
       student_attendance.update(duration: duration, status: "absent", join_time: nil)
+    elsif self.is_a?(ZoomMeeting) && self.duration - duration > 30
+      student_attendance.update(duration: duration, status: "absent", join_time: closest_to_meeting_start_time.join_time)
     else
-      best.assign_status!(attendance.attendance_time)
-      student_attendance.update(duration: duration, status: best.status, join_time: best.join_time)
+      closest_to_meeting_start_time.assign_status!(attendance.attendance_time)
+      student_attendance.update(duration: duration, status: closest_to_meeting_start_time.status, join_time: closest_to_meeting_start_time.join_time)
     end
     return student_attendance
   end

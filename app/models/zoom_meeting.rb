@@ -94,7 +94,7 @@ private
     end
   end
 
-  def calculate_duration(participant_records) 
+  def calculate_duration(participant_records)
     ((participant_records.sum(&:duration).to_f) / 60 ).round
   end
 
@@ -116,7 +116,7 @@ private
     return nil
   end  
 
-  def record_student_attendance_hours(matching_participants, student_attendance)
+  def record_student_attendance_hours(matching_participants, student_attendance) # This method is used for collecting hour by hour reports for D.O.E.
     student_attendance_hours = []
     num_hours = ((self.attendance.end_time - self.attendance.attendance_time).to_f / 3600).to_i
     tail_minutes = (((self.attendance.end_time - self.attendance.attendance_time).to_f % 3600) / 60).to_i

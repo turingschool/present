@@ -59,7 +59,7 @@ RSpec.describe 'Attendance Update' do
     expect(find("#student-attendances")).to have_table_row("Student" => lacey.name, "Status" => 'absent')
     expect(find("#student-attendances")).to have_table_row("Student" => anhnhi.name, "Status" => 'tardy')
     expect(find("#student-attendances")).to have_table_row("Student" => leo.name, "Status" => 'present')
-    expect(find("#student-attendances")).to have_table_row("Student" => j.name, "Status" => 'present')
+    expect(find("#student-attendances")).to have_table_row("Student" => j.name, "Status" => 'absent')
   end
 
   it 'can move attendance backward in time' do
