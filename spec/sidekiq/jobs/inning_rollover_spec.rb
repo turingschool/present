@@ -43,6 +43,12 @@ RSpec.describe InningRolloverJob, type: :job do
       expect(@inning2.turing_modules.where(module_number: 6).count).to eq(1)
     end
 
+    it 'removes all zoom_aliases from prior modules' do
+      InningRolloverJob.perform_async(@inning2.id)
+
+      expect(ZoomAlias.count).to eq(0)
+    end
+
     it 'resets the modules for all users' do
       @inning1.create_turing_modules
       user1 = create(:user, turing_module: @inning1.turing_modules.first)
@@ -54,7 +60,7 @@ RSpec.describe InningRolloverJob, type: :job do
       expect(user3.turing_module_id).to_not eq(nil)
 
       InningRolloverJob.perform_async(@inning2.id)
-      
+
       expect(user1.reload.turing_module_id).to eq(nil)
       expect(user2.reload.turing_module_id).to eq(nil)
       expect(user3.reload.turing_module_id).to eq(nil)
