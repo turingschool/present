@@ -27,7 +27,7 @@ RSpec.describe InningRolloverJob, type: :job do
     it 'creates turing modules for the new inning' do
       expect(@inning2.turing_modules.count).to eq(0)
       InningRolloverJob.perform_async(@inning2.id)
-      
+
       expect(@inning2.turing_modules.count).to eq(13)
 
       expect(@inning2.turing_modules.where(program: 'FE').count).to eq(3)
@@ -44,6 +44,12 @@ RSpec.describe InningRolloverJob, type: :job do
     end
 
     it 'removes all zoom_aliases from prior modules' do
+      @inning1.create_turing_modules
+      turing_mod1 = @inning1.turing_modules.first
+      create_list(:zoom_alias, 7, turing_module: turing_mod1)
+
+      expect(ZoomAlias.count).to eq(7)
+
       InningRolloverJob.perform_async(@inning2.id)
 
       expect(ZoomAlias.count).to eq(0)
