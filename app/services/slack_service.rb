@@ -11,8 +11,8 @@ class SlackService
     
     private
       def self.conn
-        conn = Faraday.new('https://slack-attendance-service.herokuapp.com')
-      end 
+        conn = Faraday.new('https://slack-attendance-service.turing.edu')
+      end
 
       def self.parse_response(response)
         JSON.parse(response.body, symbolize_names: true)

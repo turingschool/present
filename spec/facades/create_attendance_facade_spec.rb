@@ -114,10 +114,10 @@ RSpec.describe CreateAttendanceFacade do
         end
 
         it 'creates a new populi course meeting for slack if no meetings exist' do
-          stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
+          stub_request(:get, "https://slack-attendance-service.turing.edu/api/v0/channel_members?channel_id=#{@channel_id}") \
           .to_return(body: File.read('spec/fixtures/slack/channel_members_report.json'))
-          
-          stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=C02HRH7MF5K&timestamp=672861516089859").
+
+          stub_request(:get, "https://slack-attendance-service.turing.edu/api/v1/attendance?channel_id=C02HRH7MF5K&timestamp=672861516089859").
           with(
             headers: {
            'Accept'=>'*/*',
@@ -151,10 +151,10 @@ RSpec.describe CreateAttendanceFacade do
         end
 
         it 'creates a new populi course meeting for slack if there are no corresponding meetings by start_time' do
-          stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
+          stub_request(:get, "https://slack-attendance-service.turing.edu/api/v0/channel_members?channel_id=#{@channel_id}") \
           .to_return(body: File.read('spec/fixtures/slack/channel_members_report.json'))
-          
-          stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=C02HRH7MF5K&timestamp=672861516089859").
+
+          stub_request(:get, "https://slack-attendance-service.turing.edu/api/v1/attendance?channel_id=C02HRH7MF5K&timestamp=672861516089859").
           with(
             headers: {
            'Accept'=>'*/*',
@@ -189,10 +189,10 @@ RSpec.describe CreateAttendanceFacade do
         end
 
         it 'does not create new populi course meeting for slack if one already exists with a corresponding start_time' do
-          stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
+          stub_request(:get, "https://slack-attendance-service.turing.edu/api/v0/channel_members?channel_id=#{@channel_id}") \
           .to_return(body: File.read('spec/fixtures/slack/channel_members_report.json'))
-                    
-          stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=C02HRH7MF5K&timestamp=672861516089859").
+
+          stub_request(:get, "https://slack-attendance-service.turing.edu/api/v1/attendance?channel_id=C02HRH7MF5K&timestamp=672861516089859").
           with(
             headers: {
             'Accept'=>'*/*',

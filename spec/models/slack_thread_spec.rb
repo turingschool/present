@@ -317,7 +317,7 @@ RSpec.describe SlackThread do
         @timestamp = "1672861516089859"
         @slack_url = "https://turingschool.slack.com/archives/C02HRH7MF5K/p1672861516089859"
 
-        stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
+        stub_request(:get, "https://slack-attendance-service.turing.edu/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
         .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
       end
 

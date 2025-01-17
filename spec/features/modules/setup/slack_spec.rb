@@ -11,8 +11,8 @@ RSpec.describe "Module Setup Slack Workflow" do
     stub_current_academic_term
     stub_course_offerings_by_term
 
-    stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
-      .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))  
+    stub_request(:get, "https://slack-attendance-service.turing.edu/api/v0/channel_members?channel_id=#{@channel_id}") \
+      .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))
   end
 
   context 'user imports Populi students' do

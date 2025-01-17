@@ -5,18 +5,18 @@ RSpec.describe 'Creating an Attendance' do
   before(:each) do
     @user = mock_login
   end
-  
+
   context 'with valid slack url' do
     before(:each) do
       @test_module = create(:setup_module)
-      
+
       @channel_id = "C02HRH7MF5K"
       @timestamp = "1672861516089859"
 
-      stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
+      stub_request(:get, "https://slack-attendance-service.turing.edu/api/v0/channel_members?channel_id=#{@channel_id}") \
       .to_return(body: File.read('spec/fixtures/slack/channel_members_report.json'))
 
-      stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
+      stub_request(:get, "https://slack-attendance-service.turing.edu/api/v1/attendance?channel_id=#{@channel_id}&timestamp=#{@timestamp}") \
       .to_return(body: File.read('spec/fixtures/slack/message_replies_response.json'))
 
       stub_course_meetings

@@ -20,7 +20,7 @@ RSpec.describe "Redo Module Setup Account Matching" do
       stub_request(:get, "https://api.zoom.us/v2/meetings/#{@zoom_meeting_id}") \
         .to_return(body: File.read('spec/fixtures/zoom/meeting_details.json'))  
 
-      stub_request(:get, "https://slack-attendance-service.herokuapp.com/api/v0/channel_members?channel_id=#{@channel_id}") \
+      stub_request(:get, "https://slack-attendance-service.turing.edu/api/v0/channel_members?channel_id=#{@channel_id}") \
         .to_return(body: File.read('spec/fixtures/slack/channel_members_for_module_setup.json'))
     end 
   
